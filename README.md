@@ -8,3 +8,4 @@ Contributors
 * Maurizio Casciano
 * Carmine Toriello
 * Donato Di Sapia
+* Luigi Durso
