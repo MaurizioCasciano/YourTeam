@@ -5,4 +5,4 @@ YourTeam
 [![Packagist](https://img.shields.io/packagist/v/izio7/YourTeam.svg)]()
 
 Contributors
-Maurizio Casciano Donato Di Sapia
+Maurizio Casciano Carmine Toriello
