@@ -4,8 +4,12 @@ YourTeam
 [![license](https://img.shields.io/github/license/izio7/YourTeam.svg)]()
 [![Packagist](https://img.shields.io/packagist/v/izio7/YourTeam.svg)]()
 
+Project Manager
+* Raffaele Donadio
+
 Contributors
 * Maurizio Casciano
 * Carmine Toriello
 * Donato Di Sapia
 * Luigi Durso
+* Raffaele Ceruso
