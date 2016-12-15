@@ -18,55 +18,61 @@ class ControllerChatAllenatore extends Controller
 {
 
     /**
-     * @Route("/inviaMessaggio")
+     * @Route("/comunicazione/allenatore/inviaMessaggio")
      * @Method("POST")
+     * @param $richiesta
      */
     public function inviaMessaggio(Request $richiesta){
 
     }
 
     /**
-     * @Route("/inviaMessaggioVoce)
+     * @Route("/comunicazione/allenatore/inviaMessaggioVoce)
      * @Method("POST")
+     * @param $richiesta
      */
     public function inviaMessaggioVoce(Request $richiesta){
 
     }
 
     /**
-     * @Route("/inviaRichiamoMulta")
+     * @Route("/comunicazione/allenatore/inviaRichiamoMulta")
      * @Method("POST")
+     * @param $richiesta
      */
     public function inviaRichiamoMulta(Request $richiesta){
 
     }
 
     /**
-     * @Route("/inviaRichiamoAvvertimento")
+     * @Route("/comunicazione/allenatore/inviaRichiamoAvvertimento")
      * @Method("POST")
+     * @param $richiesta
      */
     public function inviaRichiamoAvvertimento(Request $richiesta){
 
     }
 
     /**
-     * @Route("/inviaRichiamoDieta")
+     * @Route("/comunicazione/allenatore/inviaRichiamoDieta")
      * @Method("POST")
+     * @param $richiesta
      */
     public function inviaRichiamoDieta(Request $richiesta){
 
     }
 
     /**
-     * @Route("/inviaRichiamoAllenamento")
+     * @Route("/comunicazione/allenatore/inviaRichiamoAllenamento")
      * @Method("POST")
+     * @param $richiesta
      */
     public function inviaRichiamoAllenamento(Request $richiesta){
 
     }
 
     /**
-     * @Route("/ottieniMessaggioForm")
+     * @Route("/comunicazione/allenatore/ottieniMessaggioForm")
      * @Method("GET")
      */
     public function ottieniMessaggioForm(){
@@ -74,7 +80,7 @@ class ControllerChatAllenatore extends Controller
     }
 
     /**
-     * @Route("/ottieniMessaggioVoceForm")
+     * @Route("/comunicazione/allenatore/ottieniMessaggioVoceForm")
      * @Method("GET")
      */
     public function ottieniMessaggioVoceForm(){
@@ -82,7 +88,7 @@ class ControllerChatAllenatore extends Controller
     }
 
     /**
-     * @Route("/ottieniRichiamoMultaForm")
+     * @Route("/comunicazione/allenatore/ottieniRichiamoMultaForm")
      * @Method("GET")
      */
     public function ottieniRichiamoMultaForm(){
@@ -90,7 +96,7 @@ class ControllerChatAllenatore extends Controller
     }
 
     /**
-     * @Route("/ottieniRichiamoAvvertimentoForm")
+     * @Route("/comunicazione/allenatore/ottieniRichiamoAvvertimentoForm")
      * @Method("GET")
      */
     public function ottieniRichiamoAvvertimentoForm(){
@@ -98,7 +104,7 @@ class ControllerChatAllenatore extends Controller
     }
 
     /**
-     * @Route("/ottieniRichiamoDietaForm")
+     * @Route("/comunicazione/allenatore/ottieniRichiamoDietaForm")
      * @Method("GET")
      */
     public function ottieniRichiamoDietaForm(){
@@ -106,7 +112,7 @@ class ControllerChatAllenatore extends Controller
     }
 
     /**
-     * @Route("/ottieniRichiamoAllenamentoForm")
+     * @Route("/comunicazione/allenatore/ottieniRichiamoAllenamentoForm")
      * @Method("GET")
      */
     public function ottieniRichiamoAllenamentoForm(){
@@ -114,7 +120,7 @@ class ControllerChatAllenatore extends Controller
     }
 
     /**
-     * @Route("/ottieniMessaggioView")
+     * @Route("/comunicazione/allenatore/ottieniMessaggioView")
      * @Method("GET")
      */
     public function ottieniMessaggioView(){
@@ -122,7 +128,7 @@ class ControllerChatAllenatore extends Controller
     }
 
     /**
-     * @Route("/ottieniRichiamoVoceView")
+     * @Route("/comunicazione/allenatore/ottieniRichiamoVoceView")
      * @Method("GET")
      */
     public function ottieniMessaggioVoceView(){
@@ -130,7 +136,7 @@ class ControllerChatAllenatore extends Controller
     }
 
     /**
-     * @Route("/ottieniRichiamoMultaView")
+     * @Route("/comunicazione/allenatore/ottieniRichiamoMultaView")
      * @Method("GET")
      */
     public function ottieniRichiamoMultaView(){
@@ -138,7 +144,7 @@ class ControllerChatAllenatore extends Controller
     }
 
     /**
-     * @Route("/ottieniRichiamoAvvertimentoView")
+     * @Route("/comunicazione/allenatore/ottieniRichiamoAvvertimentoView")
      * @Method("GET")
      */
     public function ottieniRichiamoAvvertimentoView(){
@@ -146,7 +152,7 @@ class ControllerChatAllenatore extends Controller
     }
 
     /**
-     * @Route("/ottieniRichiamoDietaView")
+     * @Route("/comunicazione/allenatore/ottieniRichiamoDietaView")
      * @Method("GET")
      */
     public function ottieniRichiamoDietaView(){
@@ -154,7 +160,7 @@ class ControllerChatAllenatore extends Controller
     }
 
     /**
-     * @Route("/ottieniRichiamoAllenamentoView")
+     * @Route("/comunicazione/allenatore/ottieniRichiamoAllenamentoView")
      * @Method("GET")
      */
     public function ottieniRichiamoAllenamentoView(){

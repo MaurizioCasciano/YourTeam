@@ -13,8 +13,9 @@ class ControllerChatGiocatore extends Controller
 
 
     /**
-     * @Route("/inviaMessaggio")
+     * @Route("/comunicazione/giocatore/inviaMessaggio")
      * @Method("POST")
+     * @param $richiesta
      */
     public function inviaMessaggio(Request $richiesta){
 
@@ -22,15 +23,16 @@ class ControllerChatGiocatore extends Controller
     }
 
     /**
-     * @Route("/inviaMessaggioVoce")
+     * @Route("/comunicazione/giocatore/inviaMessaggioVoce")
      * @Method("POST")
+     * @param $richiesta
      */
     public function inviaMessaggioVoce(Request $richiesta){
 
     }
 
     /**
-     * @Route("/ottieniinviaMessaggioForm")
+     * @Route("/comunicazione/giocatore/ottieniinviaMessaggioForm")
      * @Method("GET")
      */
     public function ottieniMessaggioForm(){
@@ -39,7 +41,7 @@ class ControllerChatGiocatore extends Controller
 
 
     /**
-     * @Route("/ottieniMessaggioVoceForm")
+     * @Route("/comunicazione/giocatore/ottieniMessaggioVoceForm")
      * @Method("GET")
      */
     public function ottieniMessaggioVoceForm(){
@@ -47,7 +49,7 @@ class ControllerChatGiocatore extends Controller
     }
 
     /**
-     * @Route("/ottieniMessaggioView")
+     * @Route("/comunicazione/giocatore/ottieniMessaggioView")
      * @Method("GET")
      */
     public function ottieniMessaggioView(){
@@ -55,7 +57,7 @@ class ControllerChatGiocatore extends Controller
     }
 
     /**
-     * @Route("/ottieniMessaggioVoceView")
+     * @Route("/comunicazione/giocatore/ottieniMessaggioVoceView")
      * @Method("GET")
      */
     public function ottieniMessaggioVoceView(){
