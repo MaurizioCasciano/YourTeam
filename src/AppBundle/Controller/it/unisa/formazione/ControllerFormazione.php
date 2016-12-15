@@ -11,7 +11,9 @@
 
 namespace AppBundle\Controller\it\unisa\formazione;
 
-class ControllerFormazione extends Controller
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+class ControllerFormazione extends Controller 
 {
 
 
