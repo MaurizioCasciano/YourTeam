@@ -1,22 +1,29 @@
 <?php
-
+namespace AppBundle\it\unisa\account;
 /**
  * Created by PhpStorm.
  * User: Maurizio
  * Date: 14/12/2016
  * Time: 16:09
  */
-class Account
+abstract class Account
 {
+    /*Dati di accesso*/
     private $username;
     private $password;
+    private $squadra;
+    private $email;
+
+    /*Dati personali*/
     private $nome;
     private $cognome;
     private $dataDiNascita;
     private $domicilio;
-    private $residenza;
-    private $email;
-    private $tipo;
+    private $indirizzo;
+    private $provincia;
+    private $telefono;
+    private $immagine;
+
 
     /**
      * @return mixed
@@ -178,5 +185,85 @@ class Account
     {
         $this->tipo = $tipo;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSquadra()
+    {
+        return $this->squadra;
+    }
+
+    /**
+     * @param mixed $squadra
+     */
+    public function setSquadra($squadra)
+    {
+        $this->squadra = $squadra;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIndirizzo()
+    {
+        return $this->indirizzo;
+    }
+
+    /**
+     * @param mixed $indirizzo
+     */
+    public function setIndirizzo($indirizzo)
+    {
+        $this->indirizzo = $indirizzo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProvincia()
+    {
+        return $this->provincia;
+    }
+
+    /**
+     * @param mixed $provincia
+     */
+    public function setProvincia($provincia)
+    {
+        $this->provincia = $provincia;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTelefono()
+    {
+        return $this->telefono;
+    }
+
+    /**
+     * @param mixed $telefono
+     */
+    public function setTelefono($telefono)
+    {
+        $this->telefono = $telefono;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImmagine()
+    {
+        return $this->immagine;
+    }
+
+    /**
+     * @param mixed $immagine
+     */
+    public function setImmagine($immagine)
+    {
+        $this->immagine = $immagine;
     }
 }
