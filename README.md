@@ -1,4 +1,5 @@
 YourTeam
+<img src="http://i.imgur.com/MnIVP5r.png" alt="YourTeam logo" width="200px" height="200px">
 ========================
 [![Build Status](https://travis-ci.org/izio7/YourTeam.svg?branch=master)](https://travis-ci.org/izio7/YourTeam)
 [![license](https://img.shields.io/github/license/izio7/YourTeam.svg)]()
