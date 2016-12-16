@@ -6,7 +6,7 @@ namespace AppBundle\it\unisa\account;
  * Date: 14/12/2016
  * Time: 16:09
  */
-abstract class Account
+class Account
 {
     /*Dati di accesso*/
     private $username;
@@ -297,4 +297,6 @@ abstract class Account
     {
         $this->immagine = $immagine;
     }
+
+
 }

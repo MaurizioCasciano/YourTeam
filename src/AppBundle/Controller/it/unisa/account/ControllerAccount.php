@@ -9,39 +9,50 @@
 namespace AppBundle\Controller\it\unisa\account;
 use \AppBundle\it\unisa\account\GestoreAccount;
 use \AppBundle\it\unisa\account\Account;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Response;
 
 
-class ControllerAccount //extends Controller
+class ControllerAccount extends Controller
 {
-
-/* @Route("/account/utenteguest/aggiungi",name="aggiungiUtente")
-* @Method("POST")
-*/
-    public function aggiungiAccount()
+    /**
+     * @Route("/account/utenteguest/aggiungi",name="aggiungiUtente")
+     * @Method("POST")
+     */
+    public function aggiungiAccount(Request $r)
     {
 
-        //$g=new GestoreAccount();
-       //($username, $password, $squadra, $email, $nome, $cognome, $dataDiNascita, $domicilio, $indirizzo, $provincia, $telefono, $immagine)
-
-        //$a=new Account($request->r);
-
-
-
-    }
-        /*if(!isset($_SESSION)){
-            $manager = new ManagerUser();
-            $utente = new User();
-            $utente->setEmail($request->request->get("email"));
-            $utente->setPassword($request->request->get("password"));
-            $ris = $manager->registrazione($utente,$request->request->get("nomeSquadra"));
-            if($ris != FALSE){
-                return new Response("Registrazione avvenuta con successo");
-            } else {
-                return new Response("Problemi con la registrazione",404);
-            }
-        } else {
-            return new Response("Non puoi registrare più di una squadra",404);
+        $g=new GestoreAccount();
+        $a=new Account($r->request->get("u"),
+                       $r->request->get("p"),$r->request->get("s"),
+                       $r->request->get("e"),$r->request->get("n"),
+                       $r->request->get("c"),$r->request->get("d"),
+                       $r->request->get("do"),$r->request->get("i"),
+                       $r->request->get("pr"), $r->request->get("t"),
+                       $r->request->get("im"));
+        try{
+            $g->aggiungiAccount($a);
+            return new Response("inserimento andato a buon fine");
+        }catch (\Exception $e){
+            return new Response($e->getMessage(),404);
         }
+
     }
-*/
+    /**
+     * @Route("/account/utenteregistrato/{username}",name="ricercaAccount")
+     * @Method("GET")
+     */
+    public function ricercaAccount($username){
+         $g = new GestoreAccount();
+        try{
+            $a = $g->ricercaAccount($username);
+            return new Response("ACC:".$a->getUsername()."appartiene alla squadra".$a->getSquadra());
+        }catch (\Exception $e){
+            return new Response($e->getMessage(),404);
+        }
+
+     }
 }
