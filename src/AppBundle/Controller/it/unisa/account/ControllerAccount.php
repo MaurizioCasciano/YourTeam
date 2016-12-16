@@ -16,19 +16,17 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
 
+/*Aggiungere  i controller per :
+    aggiungiAccount_G
+    eliminaAccount_G
+    ricercaAcount_G
+    modificaAccount_G
+    getAccount_A_T_S
+    getAccount_G
+    e chiaramente quelli per visualizzare le schermate*/
 
 class ControllerAccount extends Controller
 {
-
-    /*Aggiungere  i controller per :
-        aggiungiAccount_G
-        eliminaAccount_G
-        ricercaAcount_G
-        modificaAccount_G
-        getAccount_A_T_S
-        getAccount_G
-     e chiaramente quelli per visualizzare le schermate*/
-
     /**
      * @Route("/account/Allenatore_Tifoso_Staff/aggiungi",name="aggiungiUtente")
      * @Method("POST")
