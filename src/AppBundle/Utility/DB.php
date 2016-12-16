@@ -12,18 +12,20 @@ class DB
 {
 
 
-    public  function connect()
+    public function connect()
     {
-        $conn = new \mysqli("localhost","root", "", "yourteam");
+        $conn = new \mysqli("mysql3.gear.host", "yourteam", "P@ssw0rd", "yourteam");
 
-    // Check connection
+        // Check connection
         if ($conn->connect_error) {
             die("Connection failed: " . $this->conn->connect_error);
-        }else{
-        return $conn;
+        } else {
+            return $conn;
         }
     }
-    public function close($con){
+
+    public function close($con)
+    {
         $con->close();
     }
 

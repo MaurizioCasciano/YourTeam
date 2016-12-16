@@ -19,7 +19,7 @@ class GestoreAccount
     private $conn;
     private $db;
 
-Aggiungere   :
+/*Aggiungere   :
     aggiungiAccount_G
     eliminaAccount_G
     ricercaAcount_G
@@ -28,7 +28,7 @@ Aggiungere   :
     getAccount_G
 
 Modificare convalida account come:
-    Aggiungere il controllo che il giocatore esiste veramente nella clausola, quindi sfruttare ricerca_G
+Aggiungere il controllo che il giocatore esiste veramente nella clausola, quindi sfruttare ricerca_G*/
 
 
 
