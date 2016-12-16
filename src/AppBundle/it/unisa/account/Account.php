@@ -1,5 +1,5 @@
 <?php
-
+namespace AppBundle\it\unisa\account;
 /**
  * Created by PhpStorm.
  * User: Maurizio
@@ -8,31 +8,72 @@
  */
 class Account
 {
-    private $username;
+    /*Dati di accesso*/
+    private $username_codiceContratto;
     private $password;
+    private $squadra;
+    private $email;
+
+    /*Dati personali*/
     private $nome;
     private $cognome;
     private $dataDiNascita;
     private $domicilio;
-    private $residenza;
-    private $email;
+    private $indirizzo;
+    private $provincia;
+    private $telefono;
+    private $immagine;
     private $tipo;
+    /**
+     * Account constructor.
+     * @param $username
+     * @param $password
+     * @param $squadra
+     * @param $email
+     * @param $nome
+     * @param $cognome
+     * @param $dataDiNascita
+     * @param $domicilio
+     * @param $indirizzo
+     * @param $provincia
+     * @param $telefono
+     * @param $immagine
+     * @param $tipo
+     */
+
+    public function __construct($username_codiceContratto, $password, $squadra, $email, $nome, $cognome, $dataDiNascita, $domicilio, $indirizzo, $provincia, $telefono, $immagine,$tipo)
+    {
+        $this->username_codiceContratto = $username_codiceContratto;
+        $this->password = $password;
+        $this->squadra = $squadra;
+        $this->email = $email;
+        $this->nome = $nome;
+        $this->cognome = $cognome;
+        $this->dataDiNascita = $dataDiNascita;
+        $this->domicilio = $domicilio;
+        $this->indirizzo = $indirizzo;
+        $this->provincia = $provincia;
+        $this->telefono = $telefono;
+        $this->immagine = $immagine;
+        $this->tipo=$tipo;
+    }
+
 
     /**
      * @return mixed
      */
-    public function getUsername()
+    public function getUsernameCodiceContratto()
     {
-        return $this->username;
+        return $this->username_codiceContratto;
     }
 
     /**
-     * @param mixed $username
+     * @param mixed $username_codiceContratto
      * @return Account
      */
-    public function setUsername(String $username)
+    public function setUsernameCodiceContratto(String $username_codiceContratto)
     {
-        $this->username = $username;
+        $this->username_codiceContratto = $username_codiceContratto;
         return $this;
     }
 
@@ -179,4 +220,85 @@ class Account
         $this->tipo = $tipo;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getSquadra()
+    {
+        return $this->squadra;
+    }
+
+    /**
+     * @param mixed $squadra
+     */
+    public function setSquadra($squadra)
+    {
+        $this->squadra = $squadra;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIndirizzo()
+    {
+        return $this->indirizzo;
+    }
+
+    /**
+     * @param mixed $indirizzo
+     */
+    public function setIndirizzo($indirizzo)
+    {
+        $this->indirizzo = $indirizzo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProvincia()
+    {
+        return $this->provincia;
+    }
+
+    /**
+     * @param mixed $provincia
+     */
+    public function setProvincia($provincia)
+    {
+        $this->provincia = $provincia;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTelefono()
+    {
+        return $this->telefono;
+    }
+
+    /**
+     * @param mixed $telefono
+     */
+    public function setTelefono($telefono)
+    {
+        $this->telefono = $telefono;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImmagine()
+    {
+        return $this->immagine;
+    }
+
+    /**
+     * @param mixed $immagine
+     */
+    public function setImmagine($immagine)
+    {
+        $this->immagine = $immagine;
+    }
+
 }
