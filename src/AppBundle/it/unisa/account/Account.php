@@ -9,7 +9,7 @@ namespace AppBundle\it\unisa\account;
 class Account
 {
     /*Dati di accesso*/
-    private $username;
+    private $username_codiceContratto;
     private $password;
     private $squadra;
     private $email;
@@ -23,7 +23,7 @@ class Account
     private $provincia;
     private $telefono;
     private $immagine;
-
+    private $tipo;
     /**
      * Account constructor.
      * @param $username
@@ -38,10 +38,12 @@ class Account
      * @param $provincia
      * @param $telefono
      * @param $immagine
+     * @param $tipo
      */
-    public function __construct($username, $password, $squadra, $email, $nome, $cognome, $dataDiNascita, $domicilio, $indirizzo, $provincia, $telefono, $immagine)
+
+    public function __construct($username_codiceContratto, $password, $squadra, $email, $nome, $cognome, $dataDiNascita, $domicilio, $indirizzo, $provincia, $telefono, $immagine,$tipo)
     {
-        $this->username = $username;
+        $this->username_codiceContratto = $username_codiceContratto;
         $this->password = $password;
         $this->squadra = $squadra;
         $this->email = $email;
@@ -53,24 +55,25 @@ class Account
         $this->provincia = $provincia;
         $this->telefono = $telefono;
         $this->immagine = $immagine;
+        $this->tipo=$tipo;
     }
 
 
     /**
      * @return mixed
      */
-    public function getUsername()
+    public function getUsernameCodiceContratto()
     {
-        return $this->username;
+        return $this->username_codiceContratto;
     }
 
     /**
-     * @param mixed $username
+     * @param mixed $username_codiceContratto
      * @return Account
      */
-    public function setUsername(String $username)
+    public function setUsernameCodiceContratto(String $username_codiceContratto)
     {
-        $this->username = $username;
+        $this->username_codiceContratto = $username_codiceContratto;
         return $this;
     }
 
@@ -297,6 +300,5 @@ class Account
     {
         $this->immagine = $immagine;
     }
-
 
 }
