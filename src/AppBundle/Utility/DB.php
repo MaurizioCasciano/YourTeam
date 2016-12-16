@@ -14,7 +14,7 @@ class DB
 
     public  function connect()
     {
-        $conn = new \mysqli("localhost","root", "", "calcio");
+        $conn = new \mysqli("localhost","root", "", "yourteam");
 
     // Check connection
         if ($conn->connect_error) {

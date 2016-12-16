@@ -24,6 +24,37 @@ abstract class Account
     private $telefono;
     private $immagine;
 
+    /**
+     * Account constructor.
+     * @param $username
+     * @param $password
+     * @param $squadra
+     * @param $email
+     * @param $nome
+     * @param $cognome
+     * @param $dataDiNascita
+     * @param $domicilio
+     * @param $indirizzo
+     * @param $provincia
+     * @param $telefono
+     * @param $immagine
+     */
+    public function __construct($username, $password, $squadra, $email, $nome, $cognome, $dataDiNascita, $domicilio, $indirizzo, $provincia, $telefono, $immagine)
+    {
+        $this->username = $username;
+        $this->password = $password;
+        $this->squadra = $squadra;
+        $this->email = $email;
+        $this->nome = $nome;
+        $this->cognome = $cognome;
+        $this->dataDiNascita = $dataDiNascita;
+        $this->domicilio = $domicilio;
+        $this->indirizzo = $indirizzo;
+        $this->provincia = $provincia;
+        $this->telefono = $telefono;
+        $this->immagine = $immagine;
+    }
+
 
     /**
      * @return mixed
