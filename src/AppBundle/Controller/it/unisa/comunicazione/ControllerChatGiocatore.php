@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\comunicazione;
+namespace AppBundle\Controller\it\unisa\comunicazione;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

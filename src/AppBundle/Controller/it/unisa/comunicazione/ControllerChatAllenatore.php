@@ -6,7 +6,7 @@
  * Time: 16:37
  */
 
-namespace AppBundle\comunicazione;
+namespace AppBundle\Controller\it\unisa\comunicazione;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -27,7 +27,7 @@ class ControllerChatAllenatore extends Controller
     }
 
     /**
-     * @Route("/comunicazione/allenatore/inviaMessaggioVoce)
+     * @Route("/comunicazione/allenatore/inviaMessaggioVoce")
      * @Method("POST")
      * @param $richiesta
      */
