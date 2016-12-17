@@ -145,6 +145,36 @@ Aggiungere il controllo che il giocatore esiste veramente nella clausola, quindi
         }
     }
 
+    public function aggiungiAccount_C(AccountCalciatore $c){
+
+
+        /*controlliamo che l'account non sia null(controllo piuttosto inutile)*/
+        if($c==null)throw new \Exception("valore nullo");
+        $sql = "INSERT INTO calciatore (contratto, squadra, email, password, nome, cognome, 
+                  datadinascita, domicilio, indirizzo, provincia, telefono,nazionalita, immagine) 
+                VALUES ('" . $c->getUsernameCodiceContratto() . "','"
+                . $c->getSquadra() . "','"
+                . $c->getEmail() . "','"
+                . $c->getPassword() . "','"
+                . $c->getNome() . "','"
+                . $c->getCognome() . "','"
+                . $c->getDataDiNascita() . "','"
+                . $c->getDomicilio() . "','"
+                . $c->getIndirizzo(). "','"
+                . $c->getProvincia() . "','"
+                . $c->getTelefono(). "','"
+                . $c->getNazionalita(). "','"
+                . $c->getImmagine(). "');";
+        $ris = $this->conn->query($sql);
+        /*il metodo query ritorna il valore false nel caso in cui la query non va c buon fine, casi:
+            - query non formattata bene(problema in fase di costruzione
+            - viola qualche vincolo(pe esempio il campo squadra dove squadra non esiste)
+          in tutti gli altri casi ritorna un oggetto con info che non ci serve
+          nota: se il cmpo prevede 10 caratteri, e passiamo una stringa di 12 caratteri, mysql la tronca -> non va in errore*/
+        if(!$ris) throw new \Exception(("errore inserimento dati nel db"));
+
+    }
+
     public function convalidaAccount_A_G($u){
 
         try{
