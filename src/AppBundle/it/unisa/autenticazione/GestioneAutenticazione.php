@@ -63,7 +63,7 @@ class GestioneAutenticazione
                     /*perchè non è stato trovato un account di tipo allenatore, staff o tifoso vediamo se è un calciatore*/
                     //DA IMPLEMENTARE
                     try{
-                        implementare il metodo ricerca AccountC
+                        //implementare il metodo ricerca AccountC
                         $acc = $g->ricercaAccount_C($username);
                         $check = $this->checkPassword($password, $acc->getPassword());
                             if ($check) {
@@ -111,13 +111,14 @@ class GestioneAutenticazione
      * @param $ogg
      */
     public function check($rotta){
-      questo metodo dovrà controllare se una rotta è accessibile dall'utente corrente'
+      /**questo metodo dovrà controllare se una rotta è accessibile dall'utente corrente'
         quindi creare una struttura dati che per esempio un array associativo:
         array("account/ciao/"=>"attore",
             "account/ciao/"=>"attore"
         "account/ciao/"=>"attore")
         chiaramente per tutte le rotte che richiedono autenticazione
         DA FARE
+        **/
     }
 
     /**
