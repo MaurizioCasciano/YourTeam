@@ -13,6 +13,9 @@ namespace AppBundle\Controller\it\unisa\formazione;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Response;
 
 class ControllerFormazione extends Controller
 {
@@ -26,7 +29,7 @@ class ControllerFormazione extends Controller
      */
     public function verificaConvocazioniVista()
     {
-
+        
     }
 
     /**
