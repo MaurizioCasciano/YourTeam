@@ -7,13 +7,13 @@
  * Time: 10:02
  */
 
-namespace AppBundle\Controller\it\unisa\formazione;
+namespace AppBundle\it\unisa\formazione;
 
 use AppBundle\it\unisa\account\Calciatore;
 use \AppBundle\Utility\DB;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
-class GestioneFormazione
+class GestioneRosa
 {
     private $db;
     private $connessione;
@@ -31,7 +31,6 @@ class GestioneFormazione
      */
     public function visualizzaRosa()
     {
-        $calciatori[]=null;
         if (isset($_SESSION))
         {
             $squadra=$_SESSION["squadra"];
@@ -42,14 +41,7 @@ class GestioneFormazione
 
             while ($calciatore=$risultato->fetch_assoc())
             {
-                $obj=new Calciatore();
-                $obj->setUsernameCodiceContratto($calciatore["UsernameCodiceContratto"]);
-                $obj->setNome($calciatore["Nome"]);
-                $obj->setCognome($calciatore["Cognome"]);
-                $obj->setCapitano($calciatore["Capitano"]);
-                $obj->setNumeroMaglia($calciatore["NumeroMaglia"]);
-                $obj->setTipo("Calciatore");
-                $obj->setSquadra($calciatore["Squadra"]);
+                $obj=new Calciatore($calciatore["contratto"],$calciatore["password"],$calciatore["squadra"],$calciatore["email"],$calciatore["nome"],$calciatore["cognome"],$calciatore["datadinascita"],$calciatore["domicilio"],$calciatore["indirizzo"],$calciatore["provincia"],$calciatore["telefono"],$calciatore["immagine"],$calciatore["nazionalita"]);
 
                 $calciatori[]=$obj;
             }

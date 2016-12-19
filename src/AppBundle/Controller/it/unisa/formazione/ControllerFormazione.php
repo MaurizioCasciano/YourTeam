@@ -11,6 +11,7 @@
 
 namespace AppBundle\Controller\it\unisa\formazione;
 
+use AppBundle\it\unisa\formazione\GestioneRosa;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -29,7 +30,8 @@ class ControllerFormazione extends Controller
      */
     public function verificaConvocazioniVista()
     {
-        
+        $gestoreRosa=new GestioneRosa();
+        return new Response("test");
     }
 
     /**
