@@ -48,13 +48,17 @@ class ControllerFormazione extends Controller
         return new Response("test ".$calciatori[0]->getNome());
         */
 
-
         if(isset($_SESSION))
         {
             $gestionePartita=new GestionePartita();
             $gestoreRosa=new GestioneRosa();
 
-            $partita=$gestionePartita->disponibilitaPartita($_SESSION["partita"]);
+            $partita=$gestionePartita->disponibilitaPartita($_SESSION["squadra"]);
+
+            if(!is_null($partita))
+            {
+                
+            }
 
         }
     }

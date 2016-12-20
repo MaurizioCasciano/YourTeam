@@ -39,7 +39,8 @@ class GestionePartita
         if($risultato->num_rows==1)
         {
             $partita=$risultato->fetch_assoc();
-            return $partita["nome"]; //in attesa del model
+            $modelPartita=new Partita($partita["nome"],$partita["data"],$partita["squadra"],$partita["stadio"]);
+            return $modelPartita;
         }
 
         return null;

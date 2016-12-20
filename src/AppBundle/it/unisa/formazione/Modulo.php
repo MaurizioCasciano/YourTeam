@@ -6,7 +6,7 @@
  * Time: 10:01
  */
 
-namespace AppBundle\Controller\it\unisa\formazione;
+namespace AppBundle\it\unisa\formazione;
 
 
 class Modulo
