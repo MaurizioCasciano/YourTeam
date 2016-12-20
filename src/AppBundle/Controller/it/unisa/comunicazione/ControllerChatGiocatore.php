@@ -1,7 +1,8 @@
 <?php
 
 namespace AppBundle\Controller\it\unisa\comunicazione;
-
+use AppBundle\it\unisa\comunicazione\GestoreComunicazione;
+use AppBundle\it\unisa\comunicazione\Messaggio;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -18,6 +19,17 @@ class ControllerChatGiocatore extends Controller
      * @param $richiesta
      */
     public function inviaMessaggio(Request $richiesta){
+
+        $g = new GestoreComunicazione();
+        $m = new Messaggio($richiesta->request->get("testo"),
+            $richiesta->request->get("username"),$richiesta->request->get("calciatore"),
+            $richiesta->request->get("mittente"));
+        try{
+            $g->inviaMessaggio($m);
+            return new Response("Messaggio inviato");
+        } catch (\Exception $e) {
+            return new Response($e->getMessage(), 404);
+        }
 
 
     }
