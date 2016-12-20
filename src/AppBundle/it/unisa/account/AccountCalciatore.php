@@ -17,6 +17,7 @@ class AccountCalciatore extends Account
      */
     public function __construct($username_codiceContratto, $password, $squadra, $email, $nome, $cognome, $dataDiNascita, $domicilio, $indirizzo, $provincia, $telefono, $immagine,$nazionalita)
     {
+        
         $this->setUsernameCodiceContratto($username_codiceContratto);
         $this->setPassword($password);
         $this->setSquadra($squadra);
