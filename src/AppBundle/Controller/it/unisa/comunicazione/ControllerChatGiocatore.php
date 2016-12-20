@@ -20,7 +20,9 @@ class ControllerChatGiocatore extends Controller
     public function inviaMessaggioVoce(Request $richiesta){
         $g=new GestoreComunicazione();
         try{
-            $g->inviaMessaggio(new Messaggio($richiesta->request->get("t"),$richiesta->request->get("u"),$richiesta->request->get("c"),$richiesta->request->get("m")));
+            $g->inviaMessaggio(new Messaggio($richiesta->request->get("t"),
+                                $richiesta->request->get("allenatore"),
+                                $richiesta->request->get("calciatore"),"calciatore"));/*lo invia sempre il calciatore da questa classe*/
             return new Response("messaggio inviato correttamente");
         }catch (\Exception $e){
             return new Response($e->getMessage(), 404);
@@ -44,10 +46,10 @@ class ControllerChatGiocatore extends Controller
 
     }
     /**
-     * @Route("/comunicazione/giocatore/ottieniMessaggioView")
+     * @Route("/comunicazione/giocatore/ottieniMessaggioView/{{contratto_giocatore}}")
      * @Method("GET")
      */
-    public function ottieniMessaggioView(){
+    public function ottieniMessaggioView($contratto_giocatore){
 
 
     }
