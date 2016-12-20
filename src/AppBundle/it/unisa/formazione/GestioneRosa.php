@@ -9,6 +9,7 @@
 
 namespace AppBundle\it\unisa\formazione;
 
+use AppBundle\it\unisa\account\AccountCalciatore;
 use AppBundle\it\unisa\account\Calciatore;
 use \AppBundle\Utility\DB;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -29,28 +30,22 @@ class GestioneRosa
      * Metodo che prende tutti i calciatori della squadra dal db e li restituisce
      * @return array
      */
-    public function visualizzaRosa()
+    public function visualizzaRosa($squadra)
     {
-        if (isset($_SESSION))
+
+        $query="SELECT * FROM Calciatore WHERE squadra='$squadra'";
+        $risultato=$this->connessione->query($query);
+
+        if($risultato->num_rows<=0) throw new Exception("nessun calciatore trovato per la squadra".$squadra);
+
+        while ($calciatore=$risultato->fetch_assoc())
         {
-            $squadra=$_SESSION["squadra"];
-            $query="SELECT * FROM Calciatore WHERE squadra='$squadra'";
-            $risultato=$this->connessione->query($query);
+            $obj=new AccountCalciatore($calciatore["contratto"],$calciatore["password"],$calciatore["squadra"],$calciatore["email"],$calciatore["nome"],$calciatore["cognome"],$calciatore["datadinascita"],$calciatore["domicilio"],$calciatore["indirizzo"],$calciatore["provincia"],$calciatore["telefono"],$calciatore["immagine"],$calciatore["nazionalita"]);
 
-            if($risultato->num_rows<=0) throw new Exception("nessun calciatore trovato per la squadra".$squadra);
-
-            while ($calciatore=$risultato->fetch_assoc())
-            {
-                $obj=new Calciatore($calciatore["contratto"],$calciatore["password"],$calciatore["squadra"],$calciatore["email"],$calciatore["nome"],$calciatore["cognome"],$calciatore["datadinascita"],$calciatore["domicilio"],$calciatore["indirizzo"],$calciatore["provincia"],$calciatore["telefono"],$calciatore["immagine"],$calciatore["nazionalita"]);
-
-                $calciatori[]=$obj;
-            }
-            return $calciatori;
+            $calciatori[]=$obj;
         }
-        else
-        {
-            throw new Exception("eseguire prima l'accesso");
-        }
+        return $calciatori;
+
     }
 
     /**
