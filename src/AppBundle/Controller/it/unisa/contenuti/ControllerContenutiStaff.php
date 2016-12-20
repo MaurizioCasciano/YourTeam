@@ -9,6 +9,8 @@ namespace AppBundle\Controller\it\unisa\contenuti;
  */
 
 use AppBundle\Utility\DB;
+use AppBundle\it\unisa\contenuti\Contenuto;
+use AppBundle\it\unisa\contenuti\GestioneContenuti;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,12 +41,17 @@ class ControllerContenutiStaff extends Controller
         $squadra = $richiesta->request->get("squadra");
 
         /* quando verrà implementata la sessione, la squadra sarà ottenuta dalla sessione
-
         $squadra= $_SESSION["squadra"];*/
 
         $contenuto = new Contenuto($titolo,$descrizione,$URL,$tipo,$squadra);
-        $gestore = new \GestioneContenuti();
-        $gestore.$this->inserisciContenuto($contenuto);
+
+        $gestore = new GestioneContenuti();
+        try {
+            $gestore->inserisciContenuto($contenuto);
+            return new Response("inserimento andato a buon fine");
+        } catch (\Exception $e) {
+            return new Response($e->getMessage(), 404);
+        }
 
         return new Response();
     }

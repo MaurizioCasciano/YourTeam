@@ -1,4 +1,5 @@
 <?php
+namespace AppBundle\it\unisa\contenuti;
 
 /**
  * Created by PhpStorm.
@@ -9,7 +10,7 @@
 class Contenuto
 {
     private $titolo;
-    private $desrizione;
+    private $descrizione;
     private $URL;
     private $tipo;
     private $squadra;
@@ -17,15 +18,15 @@ class Contenuto
     /**
      * Contenuto constructor.
      * @param $titolo
-     * @param $desrizione
+     * @param $descrizione
      * @param $URL
      * @param $tipo
      * @param $squadra
      */
-    public function __construct($titolo, $desrizione, $URL, $tipo,$squadra)
+    public function __construct($titolo, $descrizione, $URL, $tipo,$squadra)
     {
         $this->titolo = $titolo;
-        $this->desrizione = $desrizione;
+        $this->descrizione = $descrizione;
         $this->URL = $URL;
         $this->tipo = $tipo;
         $this->squadra=$squadra;
@@ -68,17 +69,17 @@ class Contenuto
     /**
      * @return mixed
      */
-    public function getDesrizione()
+    public function getDescrizione()
     {
-        return $this->desrizione;
+        return $this->descrizione;
     }
 
     /**
      * @param mixed $desrizione
      */
-    public function setDesrizione($desrizione)
+    public function setDescrizione($descrizione)
     {
-        $this->desrizione = $desrizione;
+        $this->descrizione = $descrizione;
     }
 
     /**
