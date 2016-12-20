@@ -145,7 +145,7 @@ Aggiungere il controllo che il giocatore esiste veramente nella clausola, quindi
         }
     }
 
-    public function aggiungiAccount_C(AccountCalciatore $c){
+    public function aggiungiAccount_C(Calciatore $c){
 
 
         /*controlliamo che l'account non sia null(controllo piuttosto inutile)*/

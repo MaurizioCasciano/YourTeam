@@ -13,58 +13,57 @@ class Account
 {
     /*Dati di accesso*/
     /**
-     * @Assert\NotBlank();
+     * @Assert\NotBlank()
      */
     private $username_codiceContratto;
     /**
-     * @Assert\NotBlank();
+     * @Assert\NotBlank()
      */
     private $password;
     /**
-     * @Assert\NotBlank();
+     * @Assert\NotBlank()
      */
     private $squadra;
     /**
-     * @Assert\NotBlank();
-     * @Assert\Email()
+     * @Assert\NotBlank()
      */
     private $email;
 
     /*Dati personali*/
     /**
-     * @Assert\NotBlank();
+     * @Assert\NotBlank()
      */
     private $nome;
     /**
-     * @Assert\NotBlank();
+     * @Assert\NotBlank()
      */
     private $cognome;
     /**
-     * @Assert\NotBlank();
+     * @Assert\NotBlank()
      */
     private $dataDiNascita;
     /**
-     * @Assert\NotBlank();
+     * @Assert\NotBlank()
      */
     private $domicilio;
     /**
-     * @Assert\NotBlank();
+     * @Assert\NotBlank()
      */
     private $indirizzo;
     /**
-     * @Assert\NotBlank();
+     * @Assert\NotBlank()
      */
     private $provincia;
     /**
-     * @Assert\NotBlank();
+     * @Assert\NotBlank()
      */
     private $telefono;
     /**
-     * @Assert\NotBlank();
+     * @Assert\NotBlank()
      */
     private $immagine;
     /**
-     * @Assert\NotBlank();
+     * @Assert\NotBlank()
      */
     private $tipo;
 
