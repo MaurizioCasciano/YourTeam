@@ -23,18 +23,18 @@ class GestoreComunicazione
 
     public function inviaMessaggio(Messaggio $msg){
 
-        if($msg == null) throw new \Exception("Valore nullo");
 
-            $sql = "INSERT INTO messaggio(testo,username,calciatore,mittente)
-                    VALUES ('" .$msg->getTesto()."','"
-                .$msg->getUsername()."','"
-                .$msg->getCalciatore()."','"
-                .$msg->getMittente()."');";
+        /*controlliamo che l'account non sia null(controllo piuttosto inutile)*/
+        if($msg==null)throw new \Exception("valore nullo");
 
 
-
-            $ris = $this->conn->query($sql);
-            if(!$ris) throw new \Exception("Errore invio Messaggio");
+            $sql = "INSERT INTO messaggio (testo,username,calciatore,mittente) 
+                VALUES ('" . $msg->getTesto() . "','"
+                . $msg->getUsername() . "','"
+                . $msg->getCalciatore() . "','"
+                . $msg->getMittente(). "');";
+        $ris = $this->conn->query($sql);
+        if(!$ris) throw new \Exception(("errore inserimento dati nel db"));
     }
 
 

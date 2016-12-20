@@ -14,33 +14,17 @@ class ControllerChatGiocatore extends Controller
 
 
     /**
-     * @Route("/comunicazione/giocatore/inviaMessaggio")
-     * @Method("POST")
-     * @param $richiesta
-     */
-    public function inviaMessaggio(Request $richiesta){
-
-        $g = new GestoreComunicazione();
-        $m = new Messaggio($richiesta->request->get("testo"),
-            $richiesta->request->get("username"),$richiesta->request->get("calciatore"),
-            $richiesta->request->get("mittente"));
-        try{
-            $g->inviaMessaggio($m);
-            return new Response("Messaggio inviato");
-        } catch (\Exception $e) {
-            return new Response($e->getMessage(), 404);
-        }
-
-
-    }
-
-    /**
      * @Route("/comunicazione/giocatore/inviaMessaggioVoce")
      * @Method("POST")
-     * @param $richiesta
      */
     public function inviaMessaggioVoce(Request $richiesta){
-
+        $g=new GestoreComunicazione();
+        try{
+            $g->inviaMessaggio(new Messaggio($richiesta->request->get("t"),$richiesta->request->get("u"),$richiesta->request->get("c"),$richiesta->request->get("m")));
+            return new Response("messaggio inviato correttamente");
+        }catch (\Exception $e){
+            return new Response($e->getMessage(), 404);
+        }
     }
 
     /**
@@ -59,12 +43,12 @@ class ControllerChatGiocatore extends Controller
     public function ottieniMessaggioVoceForm(){
 
     }
-
     /**
      * @Route("/comunicazione/giocatore/ottieniMessaggioView")
      * @Method("GET")
      */
     public function ottieniMessaggioView(){
+
 
     }
 
