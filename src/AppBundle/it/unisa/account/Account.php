@@ -71,7 +71,7 @@ class Account
      * @param mixed $username_codiceContratto
      * @return Account
      */
-    public function setUsernameCodiceContratto(String $username_codiceContratto)
+    public function setUsernameCodiceContratto($username_codiceContratto)
     {
         $this->username_codiceContratto = $username_codiceContratto;
         return $this;
