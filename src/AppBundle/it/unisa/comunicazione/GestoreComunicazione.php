@@ -28,28 +28,40 @@ class GestoreComunicazione
         if($msg==null)throw new \Exception("valore nullo");
 
 
-            $sql = "INSERT INTO messaggio (testo,allenatore,calciatore,mittente) 
+            $sql = "INSERT INTO messaggio (testo,allenatore,calciatore,mittente,data,tipo) 
                 VALUES ('" . $msg->getTesto() . "','"
-                . $msg->getUsername() . "','"
+                . $msg->getAllenatore() . "','"
                 . $msg->getCalciatore() . "','"
-                . $msg->getMittente(). "');";
+                . $msg->getMittente() . "','"
+                . $msg->getData() . "','"
+                . $msg->getTipo(). "');";
         $ris = $this->conn->query($sql);
         if(!$ris) throw new \Exception(("errore inserimento dati nel db"));
     }
 
 
+    public function ottieniMessaggiCalciatore($calciatore,$tipo){
+        if($calciatore==null)throw new \Exception("Messaggio non trovato");
+        $messaggi=array();
+        $sql="SELECT * from messaggio WHERE calciatore='$calciatore' and tipo='$tipo'";
+        $result = $this->conn->query($sql);
+        $res="";
+        $i=0;
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while($row = $result->fetch_assoc()) {
+                /*$t, $u, $c, $mitt,$data,$tipo*/
+                $m=new Messaggio($row["testo"],$row["allenatore"],$row["calciatore"],$row["mittente"],$row["data"],$row["tipo"]);
+                $m->setId($row["id"]);
+                $messaggi[$i]=$m;
+                $i++;
+            }
+            return $messaggi;
+        } else
+            throw new \Exception("non esistono messaggi");
 
-    public function ottieniMessaggio(Messaggio $msg){
-        if($msg==null)throw new \Exception("Messaggio non trovato");
 
-        $sql = "SELECT * FROM messaggio";
-        $res = $this->conn->query($sql);
 
-        if($res->num_rows <= 0) throw new \Exception("Messaggio non esiste");
-        $row = $res->fetch_assoc();
-        $messaggio = new Messaggio($row["mittente"],$row["destinatario"], $row["testo"]);
-
-        return $messaggio;
     }
 
     public function __destruct()

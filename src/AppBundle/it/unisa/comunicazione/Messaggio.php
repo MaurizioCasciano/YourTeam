@@ -14,16 +14,69 @@ class Messaggio
 
     private $mittente;
     private $calciatore;
-    private $username;
+    private $allenatore;
     private $testo;
+    private $data;
+    private $tipo;
+    private $id;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param mixed $data
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTipo()
+    {
+        return $this->tipo;
+    }
+
+    /**
+     * @param mixed $tipo
+     */
+    public function setTipo($tipo)
+    {
+        $this->tipo = $tipo;
+    }
 
 
-    public function __construct($t, $u, $c, $mitt)
+    public function __construct($t, $u, $c, $mitt,$data,$tipo)
     {
         $this->testo = $t;
-        $this->username = $u;
+        $this->allenatore = $u;
         $this->calciatore = $c;
         $this->mittente = $mitt;
+        $this->data=$data;
+        $this->tipo=$tipo;
     }
 
     /**
@@ -61,17 +114,17 @@ class Messaggio
     /**
      * @return mixed
      */
-    public function getUsername()
+    public function getAllenatore()
     {
-        return $this->username;
+        return $this->allenatore;
     }
 
     /**
      * @param mixed $allenatore
      */
-    public function setusername($username)
+    public function setAllenatore($allenatore)
     {
-        $this->username = $username;
+        $this->allenatore = $allenatore;
     }
 
     /**
@@ -90,6 +143,17 @@ class Messaggio
         $this->testo = $testo;
     }
 
-
+   /*
+    ;
+    private $testo;
+    private $data;
+    private $tipo;
+    */
+    public function __toString()
+    {
+       return "id:".$this->getId()." mittente:".$this->getMittente().
+       " calciatore:".$this->getCalciatore()." allenatore:".$this->getAllenatore().
+       " testo:".$this->getTesto()." data:".$this->getData()." tipo:".$this->getTipo();
+    }
 
 }
