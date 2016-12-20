@@ -24,10 +24,12 @@ class GestoreComunicazione
     public function inviaMessaggio(Messaggio $msg){
 
         if($msg == null) throw new \Exception("Valore nullo");
-        echo $msg->getUsername();
-            $sql = "INSERT INTO messaggio (testo,username,calciatore,mittente)
-                    VALUES ('" .$msg->getTesto(). "','" .$msg->getUsername(). "',
-                    '" .$msg->getCalciatore(). "','" .$msg->getMittente(). "');";
+
+            $sql = "INSERT INTO messaggio(testo,username,calciatore,mittente)
+                    VALUES ('" .$msg->getTesto()."','"
+                .$msg->getUsername()."','"
+                .$msg->getCalciatore()."','"
+                .$msg->getMittente()."');";
 
 
 
