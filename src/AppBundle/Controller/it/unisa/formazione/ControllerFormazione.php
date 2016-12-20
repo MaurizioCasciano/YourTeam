@@ -12,6 +12,7 @@
 namespace AppBundle\Controller\it\unisa\formazione;
 
 use AppBundle\it\unisa\formazione\GestioneRosa;
+use AppBundle\it\unisa\formazione\GestionePartita;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -46,6 +47,16 @@ class ControllerFormazione extends Controller
 
         return new Response("test ".$calciatori[0]->getNome());
         */
+
+
+        if(isset($_SESSION))
+        {
+            $gestionePartita=new GestionePartita();
+            $gestoreRosa=new GestioneRosa();
+
+            $partita=$gestionePartita->disponibilitaPartita($_SESSION["partita"]);
+
+        }
     }
 
     /**
