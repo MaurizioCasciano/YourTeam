@@ -11,11 +11,13 @@
 
 namespace AppBundle\Controller\it\unisa\formazione;
 
+use AppBundle\it\unisa\formazione\GestioneRosa;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 class ControllerFormazione extends Controller
 {
@@ -29,7 +31,21 @@ class ControllerFormazione extends Controller
      */
     public function verificaConvocazioniVista()
     {
-        
+        /* test
+        $_SESSION["squadra"]="h";
+        if(isset($_SESSION))
+        {
+            $squadra=$_SESSION["squadra"];
+            $gestoreRosa=new GestioneRosa();
+            $calciatori=$gestoreRosa->visualizzaRosa($squadra);
+        }
+        else
+        {
+            throw new Exception("eseguire prima l'accesso");
+        }
+
+        return new Response("test ".$calciatori[0]->getNome());
+        */
     }
 
     /**
