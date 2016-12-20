@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 class ControllerFormazione extends Controller
 {
@@ -30,8 +31,21 @@ class ControllerFormazione extends Controller
      */
     public function verificaConvocazioniVista()
     {
-        $gestoreRosa=new GestioneRosa();
-        return new Response("test");
+        /* test
+        $_SESSION["squadra"]="h";
+        if(isset($_SESSION))
+        {
+            $squadra=$_SESSION["squadra"];
+            $gestoreRosa=new GestioneRosa();
+            $calciatori=$gestoreRosa->visualizzaRosa($squadra);
+        }
+        else
+        {
+            throw new Exception("eseguire prima l'accesso");
+        }
+
+        return new Response("test ".$calciatori[0]->getNome());
+        */
     }
 
     /**
