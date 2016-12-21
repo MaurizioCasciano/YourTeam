@@ -22,11 +22,21 @@ class GestoreStatisticheCalciatore
         $this->conn = $this->db->connect();
     }
 
+    /**
+     * Inserisce la statistiche nel database.
+     * L'effetto dell'esecuzione di questo metodo è l'inserimento nel DB delle statistiche date in input, che andranno a sommarsi a quelle già presenti.
+     * @param StatisticheCalciatore $statisticheCalciatore
+     */
     public function inserisciStatistiche(StatisticheCalciatore $statisticheCalciatore)
     {
 
     }
 
+    /**
+     * Restituisce le statistiche di un calciatore.
+     * @param $usernameCalciatore L'ID del calciatore.
+     * @return StatisticheCalciatore Le statistiche del calciatore.
+     */
     public function getStatisticheCalciatore($usernameCalciatore)
     {
         /*EXAMPLE
@@ -123,8 +133,11 @@ class GestoreStatisticheCalciatore
         return $calciatori;
     }
 
-    public
-    function modificaStatisticheCalciatore(StatisticheCalciatore $statisticheCalciatore)
+    /**
+     * Modifica le statistiche del calciatore, sostituendole con quelle passate in input.
+     * @param StatisticheCalciatore $statisticheCalciatore
+     */
+    public function modificaStatisticheCalciatore(StatisticheCalciatore $statisticheCalciatore)
     {
 
     }
