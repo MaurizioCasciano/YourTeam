@@ -27,7 +27,7 @@ class GestionePartita
      * @param $squadra
      * @return Partita|null
      */
-    public function disponibilitaPartita($squadra)
+    private function disponibilitaPartita($squadra)
     {
         //creazione data odierna e +2 giorni
         $dateStart=date("Y-m-d");
@@ -60,7 +60,21 @@ class GestionePartita
         $partita=$this->disponibilitaPartita($squadra);
         if(!is_null($partita))
         {
-            $query=""; //controllare che non ci siano gia calciatori convocati
+            $query="SELECT * FROM giocare WHERE partita='$partita'";
+            $risultato=$this->connessione->query($query);
+
+            if($risultato->num_rows!=0)
+            {
+                throw new ConvocNonDispException("convocazioni gia diramate per questa partita");
+            }
+            else
+            {
+                return $partita;
+            }
+        }
+        else
+        {
+            throw new PartitaNonDispException("non esiste nessuna partita disponibile alla convocazione!");
         }
     }
 

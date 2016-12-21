@@ -11,8 +11,10 @@
 
 namespace AppBundle\Controller\it\unisa\formazione;
 
+use AppBundle\it\unisa\formazione\ConvocNonDispException;
 use AppBundle\it\unisa\formazione\GestioneRosa;
 use AppBundle\it\unisa\formazione\GestionePartita;
+use AppBundle\it\unisa\formazione\PartitaNonDispException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -32,29 +34,27 @@ class ControllerFormazione extends Controller
      */
     public function verificaConvocazioniVista()
     {
-        /* test
-        $_SESSION["squadra"]="h";
-        if(isset($_SESSION))
-        {
-            $squadra=$_SESSION["squadra"];
-            $gestoreRosa=new GestioneRosa();
-            $calciatori=$gestoreRosa->visualizzaRosa($squadra);
-        }
-        else
-        {
-            throw new Exception("eseguire prima l'accesso");
-        }
-
-        return new Response("test ".$calciatori[0]->getNome());
-        */
-
         if(isset($_SESSION))
         {
             $gestionePartita=new GestionePartita();
             $gestoreRosa=new GestioneRosa();
 
+            try
+            {
+                $partita=$gestionePartita->disponibilitaConvocazione();
+                $calciatori=$gestoreRosa->visualizzaRosa();
 
+                return new Response(var_dump($calciatori)); //in attesa della view
 
+            }
+            catch (PartitaNonDispException $e1)
+            {
+                return new Response($e1->messaggioDiErrore());
+            }
+            catch (ConvocNonDispException $e2)
+            {
+                return new Response($e2->messaggioDiErrore());
+            }
         }
     }
 
