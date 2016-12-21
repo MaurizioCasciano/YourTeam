@@ -29,7 +29,27 @@ class GestoreStatisticheCalciatore
 
     public function getStatisticheCalciatore($usernameCalciatore)
     {
+        /*EXAMPLE
+        // prepare and bind
+            $stmt = $conn->prepare("INSERT INTO MyGuests (firstname, lastname, email) VALUES (?, ?, ?)");
+            $stmt->bind_param("sss", $firstname, $lastname, $email);
+        */
+        /*
+         * The argument may be one of four types:
+            i - integer
+            d - double
+            s - string
+            b - BLOB*/
 
+        $statement = $this->conn->prepare("SELECT * FROM calciatore WHERE calciatore.contratto = ?");
+        $statement->bind_param("s", $usernameCalciatore);
+        $executed = $statement->execute();
+        $result = $statement->get_result();
+
+        $row = $result->fetch_assoc();
+
+        $statisticheCalciatore = new StatisticheCalciatore($row["contratto"], $row["tiritotali"], $row["tiriporta"], $row["fallifatti"], $row["fallisubiti"], $row["percentualepassaggiriusciti"], $row["golfatti"], $row["golsubiti"], $row["assist"], $row["ammonizioni"], $row["espulsioni"], $row["partitegiocate"]);
+        return $statisticheCalciatore;
     }
 
     /**

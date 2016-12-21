@@ -3,6 +3,7 @@ namespace AppBundle\Controller\it\unisa\statistiche;
 
 use AppBundle\it\unisa\statistiche\FiltroStatisticheCalciatore;
 use AppBundle\it\unisa\statistiche\GestoreStatisticheCalciatore;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,18 +26,19 @@ class ControllerStatisticheCalciatoreUtenteRegistrato extends Controller
         return $response;
     }
 
-
     /**
-     * @Route("/test")
+     * @param $calciatore L'ID del calciatore.
+     * @Route("/statistiche/user/{calciatore}/view")
+     * @Method("GET")
      */
-    public function test()
+    public function getStatisticheView($calciatore)
     {
-        $minInteger = pow(-2, PHP_INT_SIZE * 8 - 1);
+        $gestore = new GestoreStatisticheCalciatore();
+        $statistiche = $gestore->getStatisticheCalciatore($calciatore);
 
-
-        $response = new Response("Size: " . PHP_INT_SIZE . "\n" . "MAX: " . PHP_INT_MAX . "\n" . "MIN: " . PHP_INT_MIN);
-        return $response;
+        return new Response("Vierw con statistiche del callciatore " . var_dump($calciatore) . var_dump($statistiche));
     }
+
 
     /**
      * @Route("/statistiche/user/calciatore/filter/submit")
@@ -52,4 +54,6 @@ class ControllerStatisticheCalciatoreUtenteRegistrato extends Controller
         $response = new Response(var_dump($calciatori));
         return $response;
     }
+
+
 }
