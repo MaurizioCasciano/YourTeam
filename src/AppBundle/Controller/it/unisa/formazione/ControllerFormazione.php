@@ -53,12 +53,7 @@ class ControllerFormazione extends Controller
             $gestionePartita=new GestionePartita();
             $gestoreRosa=new GestioneRosa();
 
-            $partita=$gestionePartita->disponibilitaPartita($_SESSION["squadra"]);
 
-            if(!is_null($partita))
-            {
-                
-            }
 
         }
     }

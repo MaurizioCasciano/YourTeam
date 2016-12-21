@@ -24,18 +24,21 @@ class GestionePartita
 
     /**
      * Controlla la presenza di una partita tra massimo 2 giorni
+     * @param $squadra
+     * @return Partita|null
      */
     public function disponibilitaPartita($squadra)
     {
+        //creazione data odierna e +2 giorni
         $dateStart=date("Y-m-d");
         $dateEnd=date("Y-m-d",strtotime($dateStart."+ 2 days"));
-
+        //prendo partita tra 2 giorni
         $query="SELECT * FROM partita WHERE squadra='$squadra' AND data>='$dateStart' AND data<='$dateEnd'";
 
         $risultato=$this->connessione->query($query);
 
         if($risultato->num_rows<=0) throw new Exception("errore query partite per la squadra: ".$squadra);
-
+        //se esiste, ritorna la partita
         if($risultato->num_rows==1)
         {
             $partita=$risultato->fetch_assoc();
@@ -46,6 +49,19 @@ class GestionePartita
         return null;
 
 
+    }
+
+    /**
+     * prende , se presenta , una partita entro 2 giorni e ne controlla la disp. alle convocazioni
+     * @param $squadra
+     */
+    public function disponibilitaConvocazione($squadra)
+    {
+        $partita=$this->disponibilitaPartita($squadra);
+        if(!is_null($partita))
+        {
+            $query=""; //controllare che non ci siano gia calciatori convocati
+        }
     }
 
     function __destruct()
