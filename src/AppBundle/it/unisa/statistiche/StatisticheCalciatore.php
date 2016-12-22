@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\it\unisa\statistiche;
 /**
+ * Questa classe rappresenta le statistiche di un calciatore.
  * Created by PhpStorm.
  * User: Maurizio
  * Date: 14/12/2016
@@ -11,9 +12,9 @@ class StatisticheCalciatore
     private $usernameCalciatore;
     private $tiriTotali;
     private $tiriPorta;
-    private $falliCommessi;
+    private $falliFatti;
     private $falliSubiti;
-    private $percentualPassaggiRiusciti;
+    private $percentualePassaggiRiusciti;
     private $golFatti;
     private $golSubiti;
     private $assist;
@@ -26,7 +27,7 @@ class StatisticheCalciatore
      * @param $usernameCalciatore
      * @param $tiriTotali
      * @param $tiriPorta
-     * @param $falliCommessi
+     * @param $falliFatti
      * @param $falliSubiti
      * @param $percentualPassaggiRiusciti
      * @param $golFatti
@@ -41,9 +42,9 @@ class StatisticheCalciatore
         $this->usernameCalciatore = $usernameCalciatore;
         $this->tiriTotali = $tiriTotali;
         $this->tiriPorta = $tiriPorta;
-        $this->falliCommessi = $falliCommessi;
+        $this->falliFatti = $falliCommessi;
         $this->falliSubiti = $falliSubiti;
-        $this->percentualPassaggiRiusciti = $percentualPassaggiRiusciti;
+        $this->percentualePassaggiRiusciti = $percentualPassaggiRiusciti;
         $this->golFatti = $golFatti;
         $this->golSubiti = $golSubiti;
         $this->assist = $assist;
@@ -104,17 +105,17 @@ class StatisticheCalciatore
     /**
      * @return mixed
      */
-    public function getFalliCommessi()
+    public function getFalliFatti()
     {
-        return $this->falliCommessi;
+        return $this->falliFatti;
     }
 
     /**
-     * @param mixed $falliCommessi
+     * @param mixed $falliFatti
      */
-    public function setFalliCommessi($falliCommessi)
+    public function setFalliFatti($falliFatti)
     {
-        $this->falliCommessi = $falliCommessi;
+        $this->falliFatti = $falliFatti;
     }
 
     /**
@@ -136,17 +137,17 @@ class StatisticheCalciatore
     /**
      * @return mixed
      */
-    public function getPercentualPassaggiRiusciti()
+    public function getPercentualePassaggiRiusciti()
     {
-        return $this->percentualPassaggiRiusciti;
+        return $this->percentualePassaggiRiusciti;
     }
 
     /**
-     * @param mixed $percentualPassaggiRiusciti
+     * @param mixed $percentualePassaggiRiusciti
      */
-    public function setPercentualPassaggiRiusciti($percentualPassaggiRiusciti)
+    public function setPercentualePassaggiRiusciti($percentualePassaggiRiusciti)
     {
-        $this->percentualPassaggiRiusciti = $percentualPassaggiRiusciti;
+        $this->percentualePassaggiRiusciti = $percentualePassaggiRiusciti;
     }
 
     /**

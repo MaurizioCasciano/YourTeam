@@ -25,17 +25,26 @@ class GestoreStatisticheCalciatore
     /**
      * Inserisce la statistiche nel database.
      * L'effetto dell'esecuzione di questo metodo è l'inserimento nel DB delle statistiche date in input, che andranno a sommarsi a quelle già presenti.
-     * @param StatisticheCalciatore $statisticheCalciatore
+     * @param StatisticheCalciatore $statistiche
      */
-    public function inserisciStatistiche(StatisticheCalciatore $statisticheCalciatore)
+    public function inserisciStatistiche(StatisticheCalciatore $statistiche, $nomePartita, $dataPartita)
     {
+        $statement = $this->conn->prepare("INSERT INTO statistiche_calciatore(`calciatore`,`nome_partita`,`data_partita`,`tiri_totali`,`tiri_porta`,`falli_fatti`,`falli_subiti`,`percentuale_passaggi_riusciti`,`gol_fatti`,`gol_subiti`,`assist`,`ammonizioni`,`espulsioni`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $statement->bind_param("sssiiiiiiiiii", $statistiche->getUsernameCalciatore(), $nomePartita, $dataPartita, $statistiche->getTiriTotali(), $statistiche->getTiriPorta(), $statistiche->getFalliFatti(), $statistiche->getFalliSubiti(), $statistiche->getPercentualePassaggiRiusciti(), $statistiche->getGolFatti(), $statistiche->getGolSubiti(), $statistiche->getAssist(), $statistiche->getAmmonizioni(), $statistiche->getEspulsioni());
+        $executed = $statement->execute();
+        $result = $statement->get_result();
 
+        $row = $result->fetch_assoc();
+
+        $statistiche = new StatisticheCalciatore($row["contratto"], $row["tiritotali"], $row["tiriporta"], $row["fallifatti"], $row["fallisubiti"], $row["percentualepassaggiriusciti"], $row["golfatti"], $row["golsubiti"], $row["assist"], $row["ammonizioni"], $row["espulsioni"], $row["partitegiocate"]);
+        return $statistiche;
     }
 
     /**
      * Restituisce le statistiche di un calciatore.
      * @param $usernameCalciatore L'ID del calciatore.
      * @return StatisticheCalciatore Le statistiche del calciatore.
+     * @deprecated
      */
     public function getStatisticheCalciatore($usernameCalciatore)
     {
@@ -58,8 +67,45 @@ class GestoreStatisticheCalciatore
 
         $row = $result->fetch_assoc();
 
-        $statisticheCalciatore = new StatisticheCalciatore($row["contratto"], $row["tiritotali"], $row["tiriporta"], $row["fallifatti"], $row["fallisubiti"], $row["percentualepassaggiriusciti"], $row["golfatti"], $row["golsubiti"], $row["assist"], $row["ammonizioni"], $row["espulsioni"], $row["partitegiocate"]);
+        $statisticheCalciatore = new StatisticheCalciatore($row["contratto"], $row["tiritotali"], $row["tiriporta"], $row["fallifatti"], $row["fallisubiti"], $row["percentualepassaggiriusciti"], $row["golfatti"], $row["golsubiti"], $row["assist"], $row["ammonizioni"], $row["espulsioni"]/*, $row["partitegiocate"]*/);
         return $statisticheCalciatore;
+    }
+
+    /**
+     * Restituisce le statistiche complessive di un calciatore.
+     */
+    public function getStatisticheComplessiveCalciatore($usernameCalciatore)
+    {
+        if ($usernameCalciatore == null) throw new \Exception("L'username del calciatore è null.");
+
+        $statement = $this->conn->prepare(
+            "SELECT calciatore,
+                SUM(tiri_totali) AS tiri_totali,
+                SUM(tiri_porta) AS tiri_porta,
+                SUM(falli_fatti) AS falli_fatti,
+                SUM(falli_subiti) AS falli_subiti,
+                (SUM(percentuale_passaggi_riusciti) / COUNT('calciatore')) AS percentuale_passaggi_riusciti,
+                SUM(gol_fatti) AS gol_fatti,
+                SUM(gol_subiti) AS gol_subiti,
+                SUM(assist) AS assist,
+                SUM(ammonizioni) as ammonizioni,
+                SUM(espulsioni) as espulsioni,
+                COUNT('calciatore') AS partite_giocate
+            FROM
+                yourteam.statistiche_calciatore
+            WHERE
+                calciatore = ?
+            GROUP BY (calciatore);");
+
+        $statement->bind_param("s", $usernameCalciatore);
+        $statement->execute();
+        $result = $statement->get_result();
+
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            $statisticheCalciatore = new StatisticheCalciatore($usernameCalciatore, $row["tiri_totali"], $row["tiri_porta"], $row["falli_fatti"], $row["falli_subiti"], $row["percentuale_passaggi_riusciti"], $row["gol_fatti"], $row["gol_subiti"], $row["assist"], $row["ammonizioni"], $row["espulsioni"], $row["partite_giocate"]);
+            return $statisticheCalciatore;
+        }
     }
 
     /**

@@ -18,25 +18,18 @@ use Symfony\Component\HttpFoundation\Response;
 class ControllerStatisticheCalciatoreUtenteRegistrato extends Controller
 {
     /**
-     * @Route("/statistiche/hello")
-     */
-    public function hello()
-    {
-        $response = new Response("Hello Statistiche");
-        return $response;
-    }
-
-    /**
-     * @param $calciatore L'ID del calciatore.
-     * @Route("/statistiche/user/{calciatore}/view")
+     * Restituisce la view con le statistiche complessive di un calciatore.
+     * @param $calciatore L'ID del calciatore di cui si vogliono visualizzare le statistiche complessive.
+     * @Route("/statistiche/user/calciatore/view/{calciatore}")
      * @Method("GET")
      */
     public function getStatisticheView($calciatore)
     {
         $gestore = new GestoreStatisticheCalciatore();
-        $statistiche = $gestore->getStatisticheCalciatore($calciatore);
+        $statistiche = $gestore->getStatisticheComplessiveCalciatore($calciatore);
 
-        return new Response("Vierw con statistiche del callciatore " . var_dump($calciatore) . var_dump($statistiche));
+        //return new Response("Vierw con statistiche del callciatore " . var_dump($calciatore) . var_dump($statistiche));
+        return $this->render(":statistiche:statistichecalciatore.html.twig", array("statistiche_calciatore" => $statistiche));
     }
 
 
