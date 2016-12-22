@@ -18,6 +18,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
 
+
+
 /*Aggiungere  i controller per :
 
     aggiungere le altre viste
@@ -64,6 +66,10 @@ class ControllerAccount extends Controller
                 $r->request->get("do"), $r->request->get("i"),
                 $r->request->get("pr"), $r->request->get("t"),
                 $r->request->get("im"), $r->request->get("tipo"));
+            $validator=$this->get("validator");
+            $e=$validator->validate($a);
+            if(count($e)>0)
+                return new Response((string)$e,404);
             try {
                 $g->aggiungiAccount_A_T_S($a);
                 return new Response("inserimento andato a buon fine");
@@ -74,7 +80,7 @@ class ControllerAccount extends Controller
         else
             if($attore=="calciatore") {
                 $g = new GestoreAccount();
-                $a = new AccountCalciatore($r->request->get("u"),
+                $a = new Calciatore($r->request->get("u"),
                     $r->request->get("p"),
                     $r->request->get("s"),
                     $r->request->get("e"), $r->request->get("n"),
