@@ -34,13 +34,38 @@ class ControllerAutenticazione extends Controller
         $p=$richiesta->request->get("p");
         $g=new GestoreAutenticazione();
         $r=$g->login($u,$p);
-        if($r)
-            return new Response("login effettuato".$_SESSION["squadra"]);
+        if($r){
+            if($_SESSION["tipo"]=="allenatore")
+                    return $this->redirect("account/staff_allenatore_tifoso/".$u);
+            else
+                if($_SESSION["tipo"]=="calciatore")
+                    return $this->redirect("account/calciatore/".$u);
+                else
+                    if($_SESSION["tipo"]=="tifoso")
+                        return $this->redirect("account/staff_allenatore_tifoso/".$u);
+                    else
+                        if($_SESSION["tipo"]=="staff")
+                            return $this->redirect("account/staff_allenatore_tifoso/".$u);
+        }
+
         else
-            return new Response("non hai i permessi");
+            if(!$r)
+                return new Response("non hai i permessi");
+                else if($r==-1)
+                    return new Response("gia sei autenticato");
 
     }
+    /**
+     * @Route("/logout",name="logout")
+     * @Method("GET")
+     */
+    public function logout(Request $richiesta)
+    {
+       $g=new GestoreAutenticazione();
+        $g->logout();
+        return $this->redirect("/yourteam/web/app_dev.php/");
 
+    }
     /**
      * @Route("/",name="home")
      * @Method("GET")
