@@ -12,10 +12,12 @@
 namespace AppBundle\Controller\it\unisa\formazione;
 
 use AppBundle\it\unisa\formazione\ConvocNonDispException;
+use AppBundle\it\unisa\formazione\FormazioneNonDispException;
 use AppBundle\it\unisa\formazione\GestioneRosa;
 use AppBundle\it\unisa\formazione\GestionePartita;
 use AppBundle\it\unisa\formazione\PartitaNonDispException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -41,8 +43,10 @@ class ControllerFormazione extends Controller
 
             try
             {
-                $partita=$gestionePartita->disponibilitaConvocazione();
-                $calciatori=$gestoreRosa->visualizzaRosa();
+                $squadra=$_SESSION["squadra"];
+
+                $partita=$gestionePartita->disponibilitaConvocazione($squadra);
+                $calciatori=$gestoreRosa->visualizzaRosa($squadra);
 
                 $_SESSION["partita"]=$partita;
 
@@ -58,6 +62,10 @@ class ControllerFormazione extends Controller
                 return new Response($e2->messaggioDiErrore());
             }
         }
+        else
+        {
+            return new Response("devi effettuare prima l accesso!");
+        }
     }
 
     /**
@@ -70,6 +78,36 @@ class ControllerFormazione extends Controller
      */
     public function verificaFormazioneVista()
     {
+        if(isset($_SESSION))
+        {
+            $gestionePartita=new GestionePartita();
+
+            try
+            {
+                $squadra=$_SESSION["squadra"];
+
+                $partita=$gestionePartita->disponibilitaFormazione($squadra);
+
+                $_SESSION["partita"]=$partita;
+
+                return new Response(var_dump($partita)." per questa partita selezioneremo tattica e formazione"); //in attesa della view della selezione tattica
+
+            }
+            catch (PartitaNonDispException $e1)
+            {
+                return new Response($e1->messaggioDiErrore());
+            }
+            catch (FormazioneNonDispException $e2)
+            {
+                return new Response($e2->messaggioDiErrore());
+            }
+        }
+        else
+        {
+            return new Response("devi effettuare prima l accesso!");
+        }
+
+
 
     }
 
@@ -99,6 +137,8 @@ class ControllerFormazione extends Controller
 
         }
 
+        return new Response("nessun calciatore trovato!");
+
     }
 
     /**
@@ -106,12 +146,21 @@ class ControllerFormazione extends Controller
      * notifica ai calciatori via email.
      *
      * @Route("/formazione/allenatore/schieraFormazione")
-     * @Method("POST")
+     * @Method("GET")
      * @param Request $r
      */
     public function schieraFormazioneVista(Request  $r)
     {
 
+        $calciatori=$r->get("calciatori");
+
+        $calciatori=json_decode($calciatori);
+
+        $gestoreRosa=new GestioneRosa();
+
+        $gestoreRosa->inviaEmailSchieramentoFormazione($calciatori);
+
+        return new JsonResponse(array("risposta" => "ok"));
     }
 
     /**
@@ -122,6 +171,13 @@ class ControllerFormazione extends Controller
      */
     public function ottieniTattiche()
     {
+        $gestioneRosa=new GestioneRosa();
+
+        $tattiche=$gestioneRosa->visualizzaTattica();
+
+        $tattiche=json_encode($tattiche);
+
+        return new JsonResponse(array("tattiche" => $tattiche));
 
     }
 

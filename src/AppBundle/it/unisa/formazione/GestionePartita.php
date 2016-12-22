@@ -52,6 +52,34 @@ class GestionePartita
     }
 
     /**
+     * prende , se presenta , una partita entro 2 giorni e ne controlla la disp. alla formazione
+     * @param $squadra
+     */
+    public function disponibilitaFormazione($squadra)
+    {
+        $partita=$this->disponibilitaPartita($squadra);
+        if(!is_null($partita))
+        {
+            $query="SELECT * FROM giocare WHERE partita='$partita'";
+            $risultato=$this->connessione->query($query);
+
+            if($risultato->num_rows<=0)
+            {
+                throw new FormazioneNonDispException("convocazioni non ancora diramate per questa partita");
+            }
+            else
+            {
+                return $partita;
+            }
+        }
+        else
+        {
+            throw new PartitaNonDispException("non esiste nessuna partita disponibile alla convocazione!");
+        }
+
+    }
+
+    /**
      * prende , se presenta , una partita entro 2 giorni e ne controlla la disp. alle convocazioni
      * @param $squadra
      */
@@ -96,6 +124,17 @@ class GestionePartita
         $risultato=$this->connessione->query($query);
         if(!$risultato) throw new Exception("errore inserimento convocazioni!");
     }
+
+    /**
+     * Metodo che prende in input una partita ed un modulo ed aggiorna la tabella partita nel db.
+     * @param $partita
+     * @param $modulo
+     */
+    public function scritturaModulo($partita,$modulo)
+    {
+
+    }
+
 
     function __destruct()
     {
