@@ -25,6 +25,7 @@ class ControllerContenutiStaff extends Controller
      */
     public function inserisciContenutoForm(){
 
+        return $this->render("staff/inserisciContenutoForm.html.twig");
     }
 
     /**
