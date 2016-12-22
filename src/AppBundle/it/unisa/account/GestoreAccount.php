@@ -236,18 +236,18 @@ class GestoreAccount
     public function ricercaAccount_G($u){
         if($u==null)throw new \Exception("valore non settato");
 
-        $sql = "SELECT * FROM calciatore WHERE username_codiceContratto='$u'";
+        $sql = "SELECT * FROM calciatore WHERE contratto='$u'";
         $res = $this->conn->query($sql);
         /*se la query ha successo allora la proprietà di $res è >0
         chiaramente potremmo controllare anche se la query è ben formattata(controllo solo in fase di sviluppo)
         quindi si può evitare di fare*/
         if($res->num_rows <= 0) throw new \Exception("account con username".$u."non esiste");
         $row = $res->fetch_assoc();
-        $user = new AccountCalciatore($row["username_codiceContratto"],$row["password"],
+        $user = new AccountCalciatore($row["contratto"],$row["password"],
             $row["squadra"],$row["email"],$row["nome"],
             $row["cognome"],$row["datadinascita"],$row["domicilio"],
             $row["indirizzo"],$row["provincia"],$row["telefono"],
-            $row["immagine"],$row["nazionalità"]);
+            $row["immagine"],$row["nazionalita"]);
         // se è un calciatore query cercare tutti i suoi ruoli->cra un ruolo
         return $user;
 

@@ -1,9 +1,0 @@
-diff a/src/AppBundle/Controller/it/unisa/account/ControllerAccount.php b/src/AppBundle/Controller/it/unisa/account/ControllerAccount.php	(rejected hunks)
-@@ -40,6 +40,7 @@
-     public function aggiungiAccountForm($attore)
-     {
-         if($attore=="staff_allenatore_tifoso")
-+                return $this->render("guest/registrazione.html.twig");/*vista non completa*/
-         else
-             return new Response("da fare");
- 
