@@ -55,12 +55,11 @@ class GestoreStatisticheCalciatore
     }
 
     /**
-     * Restituisce le statistiche di un calciatore.
+     * Restituisce le statistiche di un calciatore relativamente ad una partita.
      * @param $usernameCalciatore L'ID del calciatore.
      * @return StatisticheCalciatore Le statistiche del calciatore.
-     * @deprecated
      */
-    public function getStatisticheCalciatore($usernameCalciatore)
+    public function getStatisticheCalciatore($usernameCalciatore, $nome_partita, $data_partita)
     {
         /*EXAMPLE
         // prepare and bind
@@ -74,15 +73,24 @@ class GestoreStatisticheCalciatore
             s - string
             b - BLOB*/
 
-        $statement = $this->conn->prepare("SELECT * FROM calciatore WHERE calciatore.contratto = ?");
-        $statement->bind_param("s", $usernameCalciatore);
+
+        $statement = $this->conn->prepare("SELECT * FROM statistiche_calciatore WHERE calciatore = ? AND nome_partita = ? AND data_partita = ?");
+        $statement->bind_param("sss", $usernameCalciatore, $nome_partita, $data_partita);
         $executed = $statement->execute();
         $result = $statement->get_result();
 
-        $row = $result->fetch_assoc();
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $statisticheCalciatore = new StatisticheCalciatore($usernameCalciatore,
+                $row["tiri_totali"], $row["tiri_porta"], $row["falli_fatti"],
+                $row["falli_subiti"], $row["percentuale_passaggi_riusciti"],
+                $row["gol_fatti"], $row["gol_subiti"], $row["assist"],
+                $row["ammonizioni"], $row["espulsioni"], 0);
 
-        $statisticheCalciatore = new StatisticheCalciatore($row["contratto"], $row["tiritotali"], $row["tiriporta"], $row["fallifatti"], $row["fallisubiti"], $row["percentualepassaggiriusciti"], $row["golfatti"], $row["golsubiti"], $row["assist"], $row["ammonizioni"], $row["espulsioni"]/*, $row["partitegiocate"]*/);
-        return $statisticheCalciatore;
+            return $statisticheCalciatore;
+        }
+
+        return null;
     }
 
     /**
@@ -106,7 +114,7 @@ class GestoreStatisticheCalciatore
                 SUM(espulsioni) as espulsioni,
                 COUNT('calciatore') AS partite_giocate
             FROM
-                yourteam.statistiche_calciatore
+                statistiche_calciatore
             WHERE
                 calciatore = ?
             GROUP BY (calciatore);");
@@ -199,8 +207,29 @@ class GestoreStatisticheCalciatore
      * Modifica le statistiche del calciatore, sostituendole con quelle passate in input.
      * @param StatisticheCalciatore $statisticheCalciatore
      */
-    public function modificaStatisticheCalciatore(StatisticheCalciatore $statisticheCalciatore)
+    public function modificaStatisticheCalciatore(StatisticheCalciatore $statistiche, $nomePartita, $dataPartita)
     {
+        $statement = $this->conn->prepare("UPDATE statistiche_calciatore SET tiri_totali = ?, tiri_porta = ?, 
+falli_fatti = ?, falli_subiti = ?, percentuale_passaggi_riusciti = ?, gol_fatti = ?, gol_subiti = ?, 
+assist = ?, ammonizioni = ?, espulsioni = ? WHERE calciatore = ? AND nome_partita = ? AND data_partita = ?");
+        $username = $statistiche->getUsernameCalciatore();
+        $tiriTotali = $statistiche->getTiriTotali();
+        $tiriPorta = $statistiche->getTiriPorta();
+        $falliFatti = $statistiche->getFalliFatti();
+        $falliSubiti = $statistiche->getFalliSubiti();
+        $percentualePassaggiRiusciti = $statistiche->getPercentualePassaggiRiusciti();
+        $golFatti = $statistiche->getGolFatti();
+        $golSubiti = $statistiche->getGolSubiti();
+        $assist = $statistiche->getAssist();
+        $ammonizioni = $statistiche->getAmmonizioni();
+        $espulsioni = $statistiche->getEspulsioni();
 
+        $statement->bind_param("sssiiiiiiiiii", $username, $nomePartita, $dataPartita, $tiriTotali,
+            $tiriPorta, $falliFatti, $falliSubiti, $percentualePassaggiRiusciti, $golFatti,
+            $golSubiti, $assist, $ammonizioni, $espulsioni);
+
+        $executed = $statement->execute();
+        $statement->close();
+        return $executed;
     }
 }

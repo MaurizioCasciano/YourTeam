@@ -1,5 +1,8 @@
 <?php
 namespace AppBundle\it\unisa\account;
+
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Created by PhpStorm.
  * User: Maurizio
@@ -8,25 +11,37 @@ namespace AppBundle\it\unisa\account;
  */
 class Account
 {
-    /*Dati di accesso*/
+
     private $username_codiceContratto;
+
     private $password;
+
     private $squadra;
+
     private $email;
 
-    /*Dati personali*/
+
     private $nome;
+
     private $cognome;
+
     private $dataDiNascita;
+
     private $domicilio;
+
     private $indirizzo;
+
     private $provincia;
+
     private $telefono;
+
     private $immagine;
+
     private $tipo;
+
     /**
      * Account constructor.
-     * @param $username
+     * @param $username_codiceContratto
      * @param $password
      * @param $squadra
      * @param $email
@@ -40,8 +55,7 @@ class Account
      * @param $immagine
      * @param $tipo
      */
-
-    public function __construct($username_codiceContratto, $password, $squadra, $email, $nome, $cognome, $dataDiNascita, $domicilio, $indirizzo, $provincia, $telefono, $immagine,$tipo)
+    public function __construct($username_codiceContratto, $password, $squadra, $email, $nome, $cognome, $dataDiNascita, $domicilio, $indirizzo, $provincia, $telefono, $immagine, $tipo)
     {
         $this->username_codiceContratto = $username_codiceContratto;
         $this->password = $password;
@@ -55,7 +69,7 @@ class Account
         $this->provincia = $provincia;
         $this->telefono = $telefono;
         $this->immagine = $immagine;
-        $this->tipo=$tipo;
+        $this->tipo = $tipo;
     }
 
 

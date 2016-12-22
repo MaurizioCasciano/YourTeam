@@ -80,10 +80,16 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
      * @Route("/statistiche/staff/calciatore/edit/form/{calciatore}/{nome_partita}/{data_partita}")
      * @Method("GET")
      */
-    public function getModificaStatisticheForm($calciatore)
+    public function getModificaStatisticheForm(Request $request, $calciatore, $nome_partita, $data_partita)
     {
+        $request->getSession()->set("calciatore", $calciatore);
+        $request->getSession()->set("nome_partita", $nome_partita);
+        $request->getSession()->set("data_partita", $data_partita);
 
-        return $this->render("FormInserisciStatisticheCalciatore.html.twig", array());
+        $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
+        $statisticheCalciatore = $gestoreStatisticheCalciatore->getStatisticheCalciatore($calciatore, $nome_partita, $data_partita);
+
+        return $this->render(":statistiche:FormModificaStatisticheCalciatore.html.twig", array("statistiche_calciatore" => $statisticheCalciatore));
     }
 
     /**
@@ -93,6 +99,33 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
      */
     public function modificaStatistiche(Request $request, $calciatore)
     {
+        /*
+         * Le informazioni riguardanti il calciatore è la partita vengono settate al momento della richiesta del form per l'inserimento delle statistiche.
+         */
+        //inizio chiave statistiche_calciatore
+        $calciatore = $request->getSession()->get("calciatore");
+        $nomePartita = $request->getSession()->get("nome_partita");
+        $dataPartita = $request->getSession()->get("data_partita");
+        //fine chiave statistiche calciatore
 
+        //statistiche
+        $tiriTotali = $request->get("tiri_totali");
+        $tiriPorta = $request->get("tiri_porta");
+        $falliFatti = $request->get("falli_fatti");
+        $falliSubiti = $request->get("falli_subiti");
+        $percentualePassaggiriusciti = $request->get("percentuale_passagii_riusciti");
+        $golFatti = $request->get("gol_fatti");
+        $golSubiti = $request->get("gol_subiti");
+        $assist = $request->get("assist");
+        $ammonizioni = $request->get("ammonizioni");
+        $espulsioni = $request->get("espulsioni");
+
+
+        //inserisco i dati nel DataBase
+        $statisticheCalciatore = new StatisticheCalciatore($calciatore, $tiriTotali, $tiriPorta, $falliFatti, $falliSubiti, $percentualePassaggiriusciti, $golFatti, $golSubiti, $assist, $ammonizioni, $espulsioni, 0);
+        $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
+        $executed = $gestoreStatisticheCalciatore->modificaStatisticheCalciatore($statisticheCalciatore, $nomePartita, $dataPartita);
+
+        return new Response("Modifica statistiche calciatore: " . $calciatore . " partita: " . $nomePartita . " " . $dataPartita . " statistiche: " . var_dump($statisticheCalciatore));
     }
 }
