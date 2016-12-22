@@ -9,6 +9,7 @@ namespace AppBundle\it\unisa\contenuti;
  */
 class Contenuto
 {
+    private $id;
     private $titolo;
     private $descrizione;
     private $URL;
@@ -31,6 +32,23 @@ class Contenuto
         $this->tipo = $tipo;
         $this->squadra=$squadra;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
 
     /**
      * @return mixed
@@ -114,5 +132,8 @@ class Contenuto
         $this->tipo = $tipo;
     }
 
-
+    public function __toString()
+    {
+        return "Titolo: ".$this->titolo."<br/> Descrizione: ".$this->descrizione."<br/> URL: ".$this->URL." <br/> Tipo: ".$this->tipo." <br/> Squadra: ".$this->squadra;
+    }
 }
