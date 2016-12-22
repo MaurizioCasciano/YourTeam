@@ -16,7 +16,7 @@ use AppBundle\Utility\DB;
  * Class GestioneAutenticazione
  * @package AppBundle\it\unisa\autenticazione
  */
-class GestioneAutenticazione
+class GestoreAutenticazione
 {
 
     /**
@@ -64,7 +64,7 @@ class GestioneAutenticazione
                     //DA IMPLEMENTARE
                     try{
                         //implementare il metodo ricerca AccountC
-                        $acc = $g->ricercaAccount_C($username);
+                        //$acc = $g->ricercaAccount_C($username);
                         $check = $this->checkPassword($password, $acc->getPassword());
                             if ($check) {
                                 $this->creaSession($acc->getUsernameCodiceContratto(),"calciatore", $acc->getSquadra());
