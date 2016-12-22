@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 class ControllerContenutiUtenteGuest
 {
     /**
-     * @Route("/contenuti/staff/visualizzaElencoContenuti/utenteGuest/")
+     * @Route("/contenuti/utenteGuest/visualizzaElencoContenuti/")
      * @Method("GET")
      */
     public function visualizzaElencoContenuti()
@@ -34,7 +34,7 @@ class ControllerContenutiUtenteGuest
     }
 
     /**
-     * @Route("/contenuti/staff/visualizzaContenutoView/utenteGuest{id}")
+     * @Route("/contenuti/utenteGuest/visualizzaContenutoView")
      * @Method("GET")
      */
     public function visualizzaContenutoView($id){
