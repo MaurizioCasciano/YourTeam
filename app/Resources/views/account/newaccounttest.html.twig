@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+{% block body %}
+    {{ form_start(form, {attr:{novalidate:"novalidate"}}) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}
+{% block javascripts %}{% endblock %}
+</body>
+</html>
