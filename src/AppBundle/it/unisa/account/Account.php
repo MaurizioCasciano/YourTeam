@@ -1,5 +1,8 @@
 <?php
 namespace AppBundle\it\unisa\account;
+
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Created by PhpStorm.
  * User: Maurizio
@@ -9,24 +12,64 @@ namespace AppBundle\it\unisa\account;
 class Account
 {
     /*Dati di accesso*/
+    /**
+     * @Assert\NotBlank()
+     */
     private $username_codiceContratto;
+    /**
+     * @Assert\NotBlank()
+     */
     private $password;
+    /**
+     * @Assert\NotBlank()
+     */
     private $squadra;
+    /**
+     * @Assert\NotBlank()
+     */
     private $email;
 
     /*Dati personali*/
+    /**
+     * @Assert\NotBlank()
+     */
     private $nome;
+    /**
+     * @Assert\NotBlank()
+     */
     private $cognome;
+    /**
+     * @Assert\NotBlank()
+     */
     private $dataDiNascita;
+    /**
+     * @Assert\NotBlank()
+     */
     private $domicilio;
+    /**
+     * @Assert\NotBlank()
+     */
     private $indirizzo;
+    /**
+     * @Assert\NotBlank()
+     */
     private $provincia;
+    /**
+     * @Assert\NotBlank()
+     */
     private $telefono;
+    /**
+     * @Assert\NotBlank()
+     */
     private $immagine;
+    /**
+     * @Assert\NotBlank()
+     */
     private $tipo;
+
     /**
      * Account constructor.
-     * @param $username
+     * @param $username_codiceContratto
      * @param $password
      * @param $squadra
      * @param $email
@@ -40,22 +83,9 @@ class Account
      * @param $immagine
      * @param $tipo
      */
-
-    public function __construct($username_codiceContratto, $password, $squadra, $email, $nome, $cognome, $dataDiNascita, $domicilio, $indirizzo, $provincia, $telefono, $immagine,$tipo)
+    public function __construct()
     {
-        $this->username_codiceContratto = $username_codiceContratto;
-        $this->password = $password;
-        $this->squadra = $squadra;
-        $this->email = $email;
-        $this->nome = $nome;
-        $this->cognome = $cognome;
-        $this->dataDiNascita = $dataDiNascita;
-        $this->domicilio = $domicilio;
-        $this->indirizzo = $indirizzo;
-        $this->provincia = $provincia;
-        $this->telefono = $telefono;
-        $this->immagine = $immagine;
-        $this->tipo=$tipo;
+
     }
 
 
