@@ -15,6 +15,7 @@ class GestoreStatisticheCalciatore
 {
     private $db;
     private $conn;
+    private static $tabellaStatisticheCalciatore = "statistiche_calciatore";
 
     public function __construct()
     {
@@ -29,15 +30,28 @@ class GestoreStatisticheCalciatore
      */
     public function inserisciStatistiche(StatisticheCalciatore $statistiche, $nomePartita, $dataPartita)
     {
-        $statement = $this->conn->prepare("INSERT INTO statistiche_calciatore(`calciatore`,`nome_partita`,`data_partita`,`tiri_totali`,`tiri_porta`,`falli_fatti`,`falli_subiti`,`percentuale_passaggi_riusciti`,`gol_fatti`,`gol_subiti`,`assist`,`ammonizioni`,`espulsioni`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $statement->bind_param("sssiiiiiiiiii", $statistiche->getUsernameCalciatore(), $nomePartita, $dataPartita, $statistiche->getTiriTotali(), $statistiche->getTiriPorta(), $statistiche->getFalliFatti(), $statistiche->getFalliSubiti(), $statistiche->getPercentualePassaggiRiusciti(), $statistiche->getGolFatti(), $statistiche->getGolSubiti(), $statistiche->getAssist(), $statistiche->getAmmonizioni(), $statistiche->getEspulsioni());
+        $statement = $this->conn->prepare("INSERT INTO " . "statistiche_calciatore" .
+            "(`calciatore`,`nome_partita`,`data_partita`,`tiri_totali`,`tiri_porta`,`falli_fatti`,`falli_subiti`,
+            `percentuale_passaggi_riusciti`,`gol_fatti`,`gol_subiti`,`assist`,`ammonizioni`,`espulsioni`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $username = $statistiche->getUsernameCalciatore();
+        $tiriTotali = $statistiche->getTiriTotali();
+        $tiriPorta = $statistiche->getTiriPorta();
+        $falliFatti = $statistiche->getFalliFatti();
+        $falliSubiti = $statistiche->getFalliSubiti();
+        $percentuaòlePassaggiRiusciti = $statistiche->getPercentualePassaggiRiusciti();
+        $golFatti = $statistiche->getGolFatti();
+        $golSubiti = $statistiche->getGolSubiti();
+        $assist = $statistiche->getAssist();
+        $ammonizioni = $statistiche->getAmmonizioni();
+        $espulsioni = $statistiche->getEspulsioni();
+
+        $statement->bind_param("sssiiiiiiiiii", $username, $nomePartita, $dataPartita, $tiriTotali,
+            $tiriPorta, $falliFatti, $falliSubiti, $percentuaòlePassaggiRiusciti, $golFatti,
+            $golSubiti, $assist, $ammonizioni, $espulsioni);
+
         $executed = $statement->execute();
-        $result = $statement->get_result();
-
-        $row = $result->fetch_assoc();
-
-        $statistiche = new StatisticheCalciatore($row["contratto"], $row["tiritotali"], $row["tiriporta"], $row["fallifatti"], $row["fallisubiti"], $row["percentualepassaggiriusciti"], $row["golfatti"], $row["golsubiti"], $row["assist"], $row["ammonizioni"], $row["espulsioni"], $row["partitegiocate"]);
-        return $statistiche;
+        $statement->close();
+        return $executed;
     }
 
     /**
@@ -106,6 +120,8 @@ class GestoreStatisticheCalciatore
             $statisticheCalciatore = new StatisticheCalciatore($usernameCalciatore, $row["tiri_totali"], $row["tiri_porta"], $row["falli_fatti"], $row["falli_subiti"], $row["percentuale_passaggi_riusciti"], $row["gol_fatti"], $row["gol_subiti"], $row["assist"], $row["ammonizioni"], $row["espulsioni"], $row["partite_giocate"]);
             return $statisticheCalciatore;
         }
+
+        return null;
     }
 
     /**
