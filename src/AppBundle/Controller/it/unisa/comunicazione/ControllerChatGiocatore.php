@@ -13,6 +13,23 @@ class ControllerChatGiocatore extends Controller
 {
 
     /**
+     * @Route("/comunicazione/giocatore/inviaMessaggioChat")
+     * @Method("POST")
+     */
+    public function inviaMessaggioChat(Request $richiesta){
+        $g = new GestoreComunicazione();
+        try{
+            $testo=$richiesta->request->get("testo");
+            $g->inviaMessaggio(new Messaggio($testo,
+                $richiesta->request->get("allenatore"),
+                $richiesta->request->get("calciatore"),"calciatore",time(),"chat"));/*lo invia sempre il calciatore da questa classe*/
+            return new Response("messaggio inviato correttamente");
+        }catch (\Exception $e){
+            return new Response($e->getMessage(), 404);
+        }
+    }
+
+    /**
      * @Route("/comunicazione/giocatore/inviaMessaggioVoce")
      * @Method("POST")
      */
@@ -30,22 +47,7 @@ class ControllerChatGiocatore extends Controller
             return new Response($e->getMessage(), 404);
         }
     }
-    /**
-     * @Route("/comunicazione/giocatore/inviaMessaggioChat")
-     * @Method("POST")
-     */
-    public function inviaMessaggioChat(Request $richiesta){
-        $g=new GestoreComunicazione();
-        try{
-            $testo=$richiesta->request->get("testo");
-            $g->inviaMessaggio(new Messaggio($testo,
-                $richiesta->request->get("allenatore"),
-                $richiesta->request->get("calciatore"),"calciatore",time(),"chat"));/*lo invia sempre il calciatore da questa classe*/
-            return new Response("messaggio inviato correttamente");
-        }catch (\Exception $e){
-            return new Response($e->getMessage(), 404);
-        }
-    }
+
     /**
      * @Route("/comunicazione/giocatore/ottieniinviaMessaggioForm")
      * @Method("GET")
@@ -61,22 +63,24 @@ class ControllerChatGiocatore extends Controller
     public function ottieniMessaggioVoceForm(){
 
     }
-/*CHIARAMENTE I MESSAGGI VANNO ORDINATI IN BASE ALLA DATA(DA FARE)*/
+
+
+
+    /*CHIARAMENTE I MESSAGGI VANNO ORDINATI IN BASE ALLA DATA(DA FARE)*/
     /**
      * @Route("/comunicazione/giocatore/ottieniMessaggioChatView/{contratto_giocatore}")
      * @Method("GET")
      */
     public function ottieniMessaggioChatView($contratto_giocatore){
-
         $g=new GestoreComunicazione();
         try{
             $messaggi=$g->ottieniMessaggiCalciatore($contratto_giocatore,"chat");
             $str="";
-            foreach ($messaggi as $m)
+            foreach ($messaggi as $m){
                 $str=$str.$m;
+                $str=$str."</br >";
+            }
             return new Response($str);
-
-
         }catch (\Exception $e){
             return new Response($e->getMessage(), 404);
         }
@@ -87,16 +91,15 @@ class ControllerChatGiocatore extends Controller
      * @Method("GET")
      */
     public function ottieniMessaggioVoceView($contratto_giocatore){
-
         $g=new GestoreComunicazione();
         try{
             $messaggi=$g->ottieniMessaggiCalciatore($contratto_giocatore,"voce");
             $str="";
-            foreach ($messaggi as $m)
+            foreach ($messaggi as $m){
                 $str=$str.$m;
+                $str=$str."</br >";
+            }
             return new Response($str);
-
-
         }catch (\Exception $e){
             return new Response($e->getMessage(), 404);
         }

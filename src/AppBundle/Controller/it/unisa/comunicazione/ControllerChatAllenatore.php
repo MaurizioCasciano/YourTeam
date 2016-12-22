@@ -8,6 +8,8 @@
 
 namespace AppBundle\Controller\it\unisa\comunicazione;
 
+use AppBundle\it\unisa\comunicazione\GestoreComunicazione;
+use AppBundle\it\unisa\comunicazione\Messaggio;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -18,12 +20,22 @@ class ControllerChatAllenatore extends Controller
 {
 
     /**
-     * @Route("/comunicazione/allenatore/inviaMessaggio")
+     * @Route("/comunicazione/allenatore/inviaMessaggioChat")
      * @Method("POST")
      * @param $richiesta
      */
-    public function inviaMessaggio(Request $richiesta){
 
+    public function inviaMessaggioChat(Request $richiesta){
+        $g = new GestoreComunicazione();
+        try{
+            $testo = $richiesta->request->get("testo");
+            $g->inviaMessaggio(new Messaggio($testo,
+                $richiesta->request->get("allenatore"),
+                $richiesta->request->get("calciatore"),"allenatore",time(),"chat"));
+            return new Response("Messaggio inviato correttamente");
+        }catch (\Exception $e){
+            return new Response($e->getMessage(), 404);
+        }
     }
 
     /**
@@ -32,7 +44,18 @@ class ControllerChatAllenatore extends Controller
      * @param $richiesta
      */
     public function inviaMessaggioVoce(Request $richiesta){
-
+        $g=new GestoreComunicazione();
+        try{
+            $ora=$richiesta->request->get("ora");
+            $luogo=$richiesta->request->get("luogo");
+            $data=$richiesta->request->get("data_appuntamento");
+            $g->inviaMessaggio(new Messaggio("ora:".$ora." luogo:".$luogo." data:".$data,
+                $richiesta->request->get("allenatore"),
+                $richiesta->request->get("calciatore"),"allenatore",time(),"voce"));
+            return new Response("messaggio inviato correttamente");
+        }catch (\Exception $e){
+            return new Response($e->getMessage(), 404);
+        }
     }
 
     /**
@@ -41,7 +64,16 @@ class ControllerChatAllenatore extends Controller
      * @param $richiesta
      */
     public function inviaRichiamoMulta(Request $richiesta){
-
+        $g=new GestoreComunicazione();
+        try{
+            $testo = "Sei stato multato per comportamenti scorretti. Per chiarimenti mi trovi nel mio ufficio.";
+            $g->inviaMessaggio(new Messaggio($testo,
+                $richiesta->request->get("allenatore"),
+                $richiesta->request->get("calciatore"),"allenatore",time(),"multa"));
+            return new Response("messaggio inviato correttamente");
+        }catch (\Exception $e){
+            return new Response($e->getMessage(), 404);
+        }
     }
 
     /**
@@ -50,7 +82,16 @@ class ControllerChatAllenatore extends Controller
      * @param $richiesta
      */
     public function inviaRichiamoAvvertimento(Request $richiesta){
-
+        $g=new GestoreComunicazione();
+        try{
+            $testo = "Volevo avvisarti che il tuo comportamento, se non modificato, potrà avere delle conseguenze";
+            $g->inviaMessaggio(new Messaggio($testo,
+                $richiesta->request->get("allenatore"),
+                $richiesta->request->get("calciatore"),"allenatore",time(),"avvertimento"));
+            return new Response("messaggio inviato correttamente");
+        }catch (\Exception $e){
+            return new Response($e->getMessage(), 404);
+        }
     }
 
     /**
@@ -59,7 +100,16 @@ class ControllerChatAllenatore extends Controller
      * @param $richiesta
      */
     public function inviaRichiamoDieta(Request $richiesta){
-
+        $g = new GestoreComunicazione();
+        try {
+            $testo = "Ti consiglio di migliorare e fare attenzione alla tua dieta.";
+            $g->inviaMessaggio(new Messaggio($testo,
+                $richiesta->request->get("allenatore"),
+                $richiesta->request->get("calciatore"), "allenatore", time(), "dieta"));
+            return new Response("messaggio inviato correttamente");
+        } catch (\Exception $e) {
+            return new Response($e->getMessage(), 404);
+        }
     }
 
     /**
@@ -68,7 +118,16 @@ class ControllerChatAllenatore extends Controller
      * @param $richiesta
      */
     public function inviaRichiamoAllenamento(Request $richiesta){
-
+        $g = new GestoreComunicazione();
+        try {
+            $testo = "Ti consiglio di migliorare il tuo regime di allenamento.";
+            $g->inviaMessaggio(new Messaggio($testo,
+                $richiesta->request->get("allenatore"),
+                $richiesta->request->get("calciatore"), "allenatore", time(), "allenamento"));
+            return new Response("messaggio inviato correttamente");
+        } catch (\Exception $e) {
+            return new Response($e->getMessage(), 404);
+        }
     }
 
     /**
@@ -120,51 +179,117 @@ class ControllerChatAllenatore extends Controller
     }
 
     /**
-     * @Route("/comunicazione/allenatore/ottieniMessaggioView")
+     * @Route("/comunicazione/allenatore/ottieniMessaggioChatView/{contratto_allenatore}")
      * @Method("GET")
      */
-    public function ottieniMessaggioView(){
-
+    public function ottieniMessaggioChatView($contratto_allenatore){
+        $g=new GestoreComunicazione();
+        try{
+            $messaggi=$g->ottieniMessaggiAllenatore($contratto_allenatore,"chat");
+            $str="";
+            foreach ($messaggi as $m){
+                $str=$str.$m;
+                $str=$str."</br >";
+            }
+            return new Response($str);
+        }catch (\Exception $e){
+            return new Response($e->getMessage(), 404);
+        }
     }
 
     /**
-     * @Route("/comunicazione/allenatore/ottieniRichiamoVoceView")
+     * @Route("/comunicazione/allenatore/ottieniMessaggioVoceView/{contratto_allenatore}")
      * @Method("GET")
      */
-    public function ottieniMessaggioVoceView(){
-
+    public function ottieniMessaggioVoceView($contratto_allenatore){
+        $g=new GestoreComunicazione();
+        try{
+            $messaggi=$g->ottieniMessaggiAllenatore($contratto_allenatore,"voce");
+            $str="";
+            foreach ($messaggi as $m){
+                $str=$str.$m;
+                $str=$str."</br >";
+            }
+            return new Response($str);
+        }catch (\Exception $e){
+            return new Response($e->getMessage(), 404);
+        }
     }
 
     /**
-     * @Route("/comunicazione/allenatore/ottieniRichiamoMultaView")
+     * @Route("/comunicazione/allenatore/ottieniRichiamoMultaView/{contratto_allenatore}")
      * @Method("GET")
      */
-    public function ottieniRichiamoMultaView(){
-
+    public function ottieniRichiamoMultaView($contratto_allenatore){
+        $g=new GestoreComunicazione();
+        try{
+            $messaggi=$g->ottieniMessaggiAllenatore($contratto_allenatore,"multa");
+            $str="";
+            foreach ($messaggi as $m){
+                $str=$str.$m;
+                $str=$str."</br >";
+            }
+            return new Response($str);
+        }catch (\Exception $e){
+            return new Response($e->getMessage(), 404);
+        }
     }
 
     /**
-     * @Route("/comunicazione/allenatore/ottieniRichiamoAvvertimentoView")
+     * @Route("/comunicazione/allenatore/ottieniRichiamoAvvertimentoView/{contratto_allenatore}")
      * @Method("GET")
      */
-    public function ottieniRichiamoAvvertimentoView(){
-
+    public function ottieniRichiamoAvvertimentoView($contratto_allenatore){
+        $g=new GestoreComunicazione();
+        try{
+            $messaggi=$g->ottieniMessaggiAllenatore($contratto_allenatore,"avvertimento");
+            $str="";
+            foreach ($messaggi as $m){
+                $str=$str.$m;
+                $str=$str."</br >";
+            }
+            return new Response($str);
+        }catch (\Exception $e){
+            return new Response($e->getMessage(), 404);
+        }
     }
 
     /**
-     * @Route("/comunicazione/allenatore/ottieniRichiamoDietaView")
+     * @Route("/comunicazione/allenatore/ottieniRichiamoDietaView/{contratto_allenatore}")
      * @Method("GET")
      */
-    public function ottieniRichiamoDietaView(){
-
+    public function ottieniRichiamoDietaView($contratto_allenatore){
+        $g=new GestoreComunicazione();
+        try{
+            $messaggi=$g->ottieniMessaggiAllenatore($contratto_allenatore,"dieta");
+            $str="";
+            foreach ($messaggi as $m){
+                $str=$str.$m;
+                $str=$str."</br >";
+            }
+            return new Response($str);
+        }catch (\Exception $e){
+            return new Response($e->getMessage(), 404);
+        }
     }
 
     /**
-     * @Route("/comunicazione/allenatore/ottieniRichiamoAllenamentoView")
+     * @Route("/comunicazione/allenatore/ottieniRichiamoAllenamentoView/{contratto_allenatore}")
      * @Method("GET")
      */
-    public function ottieniRichiamoAllenamentoView(){
-
+    public function ottieniRichiamoAllenamentoView($contratto_allenatore){
+        $g=new GestoreComunicazione();
+        try{
+            $messaggi=$g->ottieniMessaggiAllenatore($contratto_allenatore,"allenamento");
+            $str="";
+            foreach ($messaggi as $m){
+                $str=$str.$m;
+                $str=$str."</br >";
+            }
+            return new Response($str);
+        }catch (\Exception $e){
+            return new Response($e->getMessage(), 404);
+        }
     }
 
 
