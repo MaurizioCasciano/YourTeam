@@ -123,13 +123,13 @@ class ControllerAccount extends Controller
                 $ast = $g->ricercaAccount_A_T_S($username);
                 $tipo=$ast->getTipo();
                 if($tipo=="allenatore")
-                        return $this->render("allenatore/visualizzaAccountAllenatore.html.twig");
+                        return $this->render("allenatore/visualizzaAccountAllenatore.html.twig",array('allenatore'=> $ast));
                     else
                         if($tipo=="tifoso")
-                            return $this->render("tifoso/visualizzaAccountTifoso.html.twig");
+                            return $this->render("tifoso/visualizzaAccountTifoso.html.twig",array('tifoso'=> $ast));
                         else
                             if($tipo=="staff")
-                                return $this->render("staff/visualizzaAccountStaff.html.twig");
+                                return $this->render("staff/visualizzaAccountStaff.html.twig",array('staff'=> $ast));
 
 
 
@@ -141,7 +141,7 @@ class ControllerAccount extends Controller
             if($attore=="calciatore"){
                 try {
                     $ag = $g->ricercaAccount_G($username);
-                    return   $this->render("giocatore/visualizzaAccountgiocatore.html.twig");
+                    return   $this->render("giocatore/visualizzaAccountgiocatore.html.twig",array('giocatore'=> $ag));
                 }catch(\Exception $e) {
                     return new Response($e->getMessage(), 404);
                     }
