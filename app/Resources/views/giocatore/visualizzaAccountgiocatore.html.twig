@@ -11,7 +11,7 @@
             </div>
 
             <div class="name">
-                <h3 class="title">Adamo Rossi</h3>
+                <h3 class="title">{{ giocatore.getNome() }} </h3>
                 <h5>Giocatore</h5>
 
                 <form class="form-horizontal">
@@ -20,21 +20,21 @@
 
                             <label class="col-sm-2 control-label">Nome:</p></label>
                             <div class="col-sm-10">
-                                <p class="form-control-static"> Adamo </p>
+                                <p class="form-control-static"> {{ giocatore.getNome() }} </p>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">   Cognome:</label>
                             <div class="col-sm-10">
-                                <p class="form-control-static"> Rossi</p>
+                                <p class="form-control-static"> {{ giocatore.getCognome() }}</p>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Email:</label>
                             <div class="col-sm-10">
-                                <p class="form-control-static"> Adam88@gmail.com</p>
+                                <p class="form-control-static"> {{ giocatore.getEmail() }}</p>
                             </div>
                         </div>
 
@@ -42,7 +42,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">username o  numero contratto:</label>
                             <div class="col-sm-10">
-                                <p class="form-control-static"> 3456798</p>
+                                <p class="form-control-static"> {{ giocatore.getContratto() }}</p>
                             </div>
                         </div>
 
@@ -60,7 +60,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label text-center">Data di nascita</label>
                             <div class="col-sm-10">
-                                <p class="form-control-static"> 12/09/1994</p>
+                                <p class="form-control-static"> {{ giocatore.getDataDiNascita() }}</p>
                             </div>
                         </div>
 
@@ -68,28 +68,28 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label text-center">Domicilio</label>
                             <div class="col-sm-10">
-                                <p class="form-control-static"> Salerno</p>
+                                <p class="form-control-static"> {{ giocatore.getDomicilio() }}</p>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Indirizzo</label>
                             <div class="col-sm-10">
-                                <p class="form-control-static"> Via mazzini</p>
+                                <p class="form-control-static"> {{ giocatore.getIndirizzo() }}</p>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Provincia</label>
                             <div class="col-sm-10">
-                                <p class="form-control-static"> SA</p>
+                                <p class="form-control-static"> {{ giocatore.getProvincia() }}</p>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Numero</label>
                             <div class="col-sm-10">
-                                <p class="form-control-static"> 3459856774</p>
+                                <p class="form-control-static">{{ giocatore.getTelefono() }}</p>
                             </div>
                         </div>
                     </form>
