@@ -44,7 +44,9 @@ class ControllerFormazione extends Controller
                 $partita=$gestionePartita->disponibilitaConvocazione();
                 $calciatori=$gestoreRosa->visualizzaRosa();
 
-                return new Response(var_dump($calciatori)); //in attesa della view
+                $_SESSION["partita"]=$partita;
+
+                return new Response(var_dump($calciatori)." convocati per la partita: ".var_dump($partita)); //in attesa della view della lista calciatori
 
             }
             catch (PartitaNonDispException $e1)
@@ -81,6 +83,21 @@ class ControllerFormazione extends Controller
      */
     public function controlConvocazioniVista(Request $r)
     {
+        $convocazioni=$r->get("calciatori"); //elenco id calciatori convocati
+
+        if(!is_null($convocazioni))
+        {
+            $partita=$_SESSION["partita"];
+            if(!is_null($partita))
+            {
+                $gestionePartita=new GestionePartita();
+
+                $gestionePartita->diramaConvocazioni($convocazioni,$partita);
+
+                return new Response("convocazioni diramate!");
+            }
+
+        }
 
     }
 
@@ -98,18 +115,37 @@ class ControllerFormazione extends Controller
     }
 
     /**
-     * Elenco calciatori della propria rosa per ruolo selezionato.
+     * Questo controller rimanda in risposta l'elenco delle tattiche presenti nel database
      *
-     * @Route("/formazione/allenatore/elencoCalciatori/{ruolo}")
+     * @Route("/formazione/allenatore/ottieniTattiche")
      * @Method("GET")
      */
-    public function elencoCalciatoriRuolo($ruolo)
+    public function ottieniTattiche()
     {
 
     }
 
+    /**
+     * Questo controller rimanda l'elenco dei calciatori convocati per quella partita
+     *
+     * @Route("/formazione/allenatore/ottieniCalciatori")
+     * @Method("GET")
+     */
+    public function ottieniCalciatori()
+    {
 
+    }
 
+    /**
+     * Questo controller rimanda un modulo serializzato quando l'allenatore ne seleziona uno
+     *
+     * @Route("/formazione/allenatore/cambiaTattica/{tattica}")
+     * @Method("GET")
+     */
+    public function cambiaTattica($tattica)
+    {
+
+    }
 
 
 }

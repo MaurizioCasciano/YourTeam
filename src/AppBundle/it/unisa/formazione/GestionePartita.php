@@ -78,6 +78,25 @@ class GestionePartita
         }
     }
 
+    /**
+     * Metodo che prende in input i calciatori e la partita e scrive nel db le convocazioni
+     * @param $calciatori
+     * @param $partita
+     */
+    public function diramaConvocazioni($calciatori,$partita)
+    {
+        $data=$partita->getData();
+        $nomePartita=$partita->getNome();
+
+        foreach ($calciatori as $calciatore)
+        {
+            $query="INSERT INTO giocare(calciatore,partita,data) VALUES ('$calciatore', '$nomePartita','$data')";
+        }
+
+        $risultato=$this->connessione->query($query);
+        if(!$risultato) throw new Exception("errore inserimento convocazioni!");
+    }
+
     function __destruct()
     {
         // TODO: Implement __destruct() method.
