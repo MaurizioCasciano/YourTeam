@@ -9,7 +9,7 @@
 namespace AppBundle\it\unisa\statistiche;
 
 
-class FiltroStatisticheCalciatore
+class FiltroStatisticheCalciatore extends Filtro
 {
     //MIN
     private $minTiriTotali;
@@ -77,17 +77,17 @@ class FiltroStatisticheCalciatore
     }
 
 
-    public function accept(DettagliCalciatore $object)
+    public function accept(StatisticheCalciatore $stats)
     {
-        if ($object->getTiriTotali() >= $this->minTiriTotali && $object->getTiriTotali() <= $this->maxTiriTotali) {
-            if ($object->getTiriPorta() >= $this->minTiriPorta && $object->getTiriPorta() <= $this->maxTiriPorta) {
-                if ($object->getGolFatti() >= $this->minGolFatti && $object->getGolFatti() <= $this->maxTiriPorta) {
-                    if ($object->getAssist() >= $this->minAssist && $object->getAssist() <= $this->maxAssist) {
-                        if ($object->getFalliFatti() >= $this->minFalliFatti && $object->getFalliFatti() <= $this->maxFalliFatti) {
-                            if ($object->getFalliSubiti() >= $this->minFalliSubiti && $object->getFalliSubiti() <= $this->maxFalliSubiti) {
-                                if ($object->getPercentualPassaggiRiusciti() >= $this->minPercentualePassaggiRiusciti && $object->getPercentualPassaggiRiusciti() <= $this->maxPercentualePassaggiRiusciti) {
-                                    if ($object->getAmmonizioni() >= $this->minAmmonizioni && $object->getAmmonizioni() <= $this->maxAmmonizioni) {
-                                        if ($object->getEspulsioni() >= $this->minEspulsioni && $object->getEspulsioni() <= $this->maxEspulsioni) {
+        if ($stats->getTiriTotali() >= $this->minTiriTotali && $stats->getTiriTotali() <= $this->maxTiriTotali) {
+            if ($stats->getTiriPorta() >= $this->minTiriPorta && $stats->getTiriPorta() <= $this->maxTiriPorta) {
+                if ($stats->getGolFatti() >= $this->minGolFatti && $stats->getGolFatti() <= $this->maxTiriPorta) {
+                    if ($stats->getAssist() >= $this->minAssist && $stats->getAssist() <= $this->maxAssist) {
+                        if ($stats->getFalliFatti() >= $this->minFalliFatti && $stats->getFalliFatti() <= $this->maxFalliFatti) {
+                            if ($stats->getFalliSubiti() >= $this->minFalliSubiti && $stats->getFalliSubiti() <= $this->maxFalliSubiti) {
+                                if ($stats->getPercentualPassaggiRiusciti() >= $this->minPercentualePassaggiRiusciti && $stats->getPercentualPassaggiRiusciti() <= $this->maxPercentualePassaggiRiusciti) {
+                                    if ($stats->getAmmonizioni() >= $this->minAmmonizioni && $stats->getAmmonizioni() <= $this->maxAmmonizioni) {
+                                        if ($stats->getEspulsioni() >= $this->minEspulsioni && $stats->getEspulsioni() <= $this->maxEspulsioni) {
                                             /*
                                              * La condizione è soddisfatta.
                                              */
@@ -101,7 +101,7 @@ class FiltroStatisticheCalciatore
                 }
             }
         }
-        return true;//TESTING
-        //return false;
+        //return true;//TESTING
+        return false;
     }
 }

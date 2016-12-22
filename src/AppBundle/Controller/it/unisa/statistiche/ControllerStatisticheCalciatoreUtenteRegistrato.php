@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Created by PhpStorm.
@@ -31,6 +32,26 @@ class ControllerStatisticheCalciatoreUtenteRegistrato extends Controller
         return $this->render(":staff:ViewStatisticheCalciatore.html.twig", array("statistiche_calciatore" => $statistiche));
     }
 
+    /**
+     * Restituisce il form per filtrare i calciatori in base alle loro statistiche.
+     * @Route("/statistiche/user/calciatore/filter/form")
+     */
+    public function getFiltraCalciatoriForm()
+    {
+        if (isset($_SESSION)) {
+            if ($_SESSION["tipo"] == "allenatore") {
+                return $this->render("staff/FormFiltraCalciatori.html.twig");
+            } else if ($_SESSION["tipo"] == "calciatore") {
+                return $this->render("formFil");
+            } else if ($_SESSION["tipo"] == "tifoso") {
+
+            } else if ($_SESSION["tipo"] == "staff") {
+
+            }
+        } else {
+            throw new AccessDeniedException("Access Denied!!!");
+        }
+    }
 
     /**
      * @Route("/statistiche/user/calciatore/filter/submit")
