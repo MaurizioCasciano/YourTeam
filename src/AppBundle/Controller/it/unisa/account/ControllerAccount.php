@@ -40,7 +40,7 @@ class ControllerAccount extends Controller
     public function aggiungiAccountForm($attore)
     {
         if($attore=="staff_allenatore_tifoso")
-                return $this->render("account/formaggiungiAccountATS.html.twig");/*vista non completa*/
+                return $this->render("guest/registrazione.html.twig");/*vista non completa*/
         else
             return new Response("da fare");
 
