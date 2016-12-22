@@ -224,12 +224,10 @@ assist = ?, ammonizioni = ?, espulsioni = ? WHERE calciatore = ? AND nome_partit
         $ammonizioni = $statistiche->getAmmonizioni();
         $espulsioni = $statistiche->getEspulsioni();
 
-        $statement->bind_param("sssiiiiiiiiii", $username, $nomePartita, $dataPartita, $tiriTotali,
-            $tiriPorta, $falliFatti, $falliSubiti, $percentualePassaggiRiusciti, $golFatti,
-            $golSubiti, $assist, $ammonizioni, $espulsioni);
+        $statement->bind_param("iiiiiiiiiisss", $tiriTotali, $tiriPorta, $falliFatti, $falliSubiti,
+            $percentualePassaggiRiusciti, $golFatti, $golSubiti, $assist, $ammonizioni, $espulsioni, $username, $nomePartita, $dataPartita);
 
         $executed = $statement->execute();
-        $statement->close();
         return $executed;
     }
 }

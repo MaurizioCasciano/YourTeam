@@ -28,8 +28,7 @@ class ControllerStatisticheCalciatoreUtenteRegistrato extends Controller
         $gestore = new GestoreStatisticheCalciatore();
         $statistiche = $gestore->getStatisticheComplessiveCalciatore($calciatore);
 
-        //return new Response("Vierw con statistiche del callciatore " . var_dump($calciatore) . var_dump($statistiche));
-        return $this->render(":statistiche:statistichecalciatore.html.twig", array("statistiche_calciatore" => $statistiche));
+        return $this->render(":staff:ViewStatisticheCalciatore.html.twig", array("statistiche_calciatore" => $statistiche));
     }
 
 
@@ -47,6 +46,4 @@ class ControllerStatisticheCalciatoreUtenteRegistrato extends Controller
         $response = new Response(var_dump($calciatori));
         return $response;
     }
-
-
 }
