@@ -1,4 +1,3 @@
 app:
     resource: "@AppBundle/Controller/"
-    resource: "@AppBundle/Controller/it/unisa/statistiche/"
     type:     annotation
