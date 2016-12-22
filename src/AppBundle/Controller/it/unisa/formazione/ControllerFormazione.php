@@ -11,8 +11,13 @@
 
 namespace AppBundle\Controller\it\unisa\formazione;
 
+use AppBundle\it\unisa\formazione\ConvocNonDispException;
+use AppBundle\it\unisa\formazione\FormazioneNonDispException;
 use AppBundle\it\unisa\formazione\GestioneRosa;
+use AppBundle\it\unisa\formazione\GestionePartita;
+use AppBundle\it\unisa\formazione\PartitaNonDispException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -31,21 +36,36 @@ class ControllerFormazione extends Controller
      */
     public function verificaConvocazioniVista()
     {
-        /* test
-        $_SESSION["squadra"]="h";
         if(isset($_SESSION))
         {
-            $squadra=$_SESSION["squadra"];
+            $gestionePartita=new GestionePartita();
             $gestoreRosa=new GestioneRosa();
-            $calciatori=$gestoreRosa->visualizzaRosa($squadra);
+
+            try
+            {
+                $squadra=$_SESSION["squadra"];
+
+                $partita=$gestionePartita->disponibilitaConvocazione($squadra);
+                $calciatori=$gestoreRosa->visualizzaRosa($squadra);
+
+                $_SESSION["partita"]=$partita;
+
+                return new Response(var_dump($calciatori)." convocati per la partita: ".var_dump($partita)); //in attesa della view della lista calciatori
+
+            }
+            catch (PartitaNonDispException $e1)
+            {
+                return new Response($e1->messaggioDiErrore());
+            }
+            catch (ConvocNonDispException $e2)
+            {
+                return new Response($e2->messaggioDiErrore());
+            }
         }
         else
         {
-            throw new Exception("eseguire prima l'accesso");
+            return new Response("devi effettuare prima l accesso!");
         }
-
-        return new Response("test ".$calciatori[0]->getNome());
-        */
     }
 
     /**
@@ -58,6 +78,36 @@ class ControllerFormazione extends Controller
      */
     public function verificaFormazioneVista()
     {
+        if(isset($_SESSION))
+        {
+            $gestionePartita=new GestionePartita();
+
+            try
+            {
+                $squadra=$_SESSION["squadra"];
+
+                $partita=$gestionePartita->disponibilitaFormazione($squadra);
+
+                $_SESSION["partita"]=$partita;
+
+                return new Response(var_dump($partita)." per questa partita selezioneremo tattica e formazione"); //in attesa della view della selezione tattica
+
+            }
+            catch (PartitaNonDispException $e1)
+            {
+                return new Response($e1->messaggioDiErrore());
+            }
+            catch (FormazioneNonDispException $e2)
+            {
+                return new Response($e2->messaggioDiErrore());
+            }
+        }
+        else
+        {
+            return new Response("devi effettuare prima l accesso!");
+        }
+
+
 
     }
 
@@ -71,6 +121,23 @@ class ControllerFormazione extends Controller
      */
     public function controlConvocazioniVista(Request $r)
     {
+        $convocazioni=$r->get("calciatori"); //elenco id calciatori convocati
+
+        if(!is_null($convocazioni))
+        {
+            $partita=$_SESSION["partita"];
+            if(!is_null($partita))
+            {
+                $gestionePartita=new GestionePartita();
+
+                $gestionePartita->diramaConvocazioni($convocazioni,$partita);
+
+                return new Response("convocazioni diramate!");
+            }
+
+        }
+
+        return new Response("nessun calciatore trovato!");
 
     }
 
@@ -85,21 +152,67 @@ class ControllerFormazione extends Controller
     public function schieraFormazioneVista(Request  $r)
     {
 
+        $calciatori=$r->get("calciatori");
+        $tattica=$r->get("modulo");
+
+        $gestionePartita=new GestionePartita();
+
+        $gestionePartita->scritturaModulo($_SESSION["partita"],$tattica);
+
+        $calciatori=json_decode($calciatori);
+
+        $gestoreRosa=new GestioneRosa();
+
+        $gestoreRosa->inviaEmailSchieramentoFormazione($calciatori);
+
+        return new JsonResponse(array("risposta" => "ok"));
     }
 
     /**
-     * Elenco calciatori della propria rosa per ruolo selezionato.
+     * Questo controller rimanda in risposta l'elenco delle tattiche presenti nel database
      *
-     * @Route("/formazione/allenatore/elencoCalciatori/{ruolo}")
+     * @Route("/formazione/allenatore/ottieniTattiche")
      * @Method("GET")
      */
-    public function elencoCalciatoriRuolo($ruolo)
+    public function ottieniTattiche()
     {
+        $gestioneRosa=new GestioneRosa();
+
+        $tattiche=$gestioneRosa->visualizzaTattica();
+
+        $tattiche=json_encode($tattiche);
+
+        return new JsonResponse(array("tattiche" => $tattiche));
 
     }
 
+    /**
+     * Questo controller rimanda l'elenco dei calciatori convocati per quella partita
+     *
+     * @Route("/formazione/allenatore/ottieniCalciatori")
+     * @Method("GET")
+     */
+    public function ottieniCalciatori()
+    {
+        $gestioneRosa=new GestioneRosa();
 
+        $partita=$_SESSION["partita"];
 
+        $calciatori=$gestioneRosa->ottieniConvocati($partita);
+
+        return new JsonResponse(array("calciatori" => $calciatori));
+    }
+
+    /**
+     * Questo controller rimanda un modulo serializzato quando l'allenatore ne seleziona uno
+     *
+     * @Route("/formazione/allenatore/cambiaTattica/{tattica}")
+     * @Method("GET")
+     */
+    public function cambiaTattica($tattica)
+    {
+
+    }
 
 
 }

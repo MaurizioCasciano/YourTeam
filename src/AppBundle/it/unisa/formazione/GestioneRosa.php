@@ -10,7 +10,7 @@
 namespace AppBundle\it\unisa\formazione;
 
 use AppBundle\it\unisa\account\AccountCalciatore;
-use AppBundle\it\unisa\account\Calciatore;
+use AppBundle\it\unisa\account\DettagliCalciatore;
 use \AppBundle\Utility\DB;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
@@ -53,27 +53,83 @@ class GestioneRosa
      */
     public function visualizzaTattica()
     {
+        $query="SELECT * FROM modulo";
+
+        $risultato=$this->connessione->query($query);
+
+        if($risultato->num_rows<=0) throw new Exception("errore accesso alle tattiche nel db!");
+
+        while($tattica=$risultato->fetch_assoc())
+        {
+            $tattiche[]=$tattica["id"];
+        }
+
+        return $tattiche;
+
 
     }
 
     /**
-     * Metodo che prende in input un ruolo e ne restituisce tutti i calciatori che lo conoscono.
-     * @param $ruolo
+     * metodo che prende in input i contratti dei calciatori schierati in campo
+     * e li notifica con una email informativa
+     * @param $calciatori
      */
-    public function scegliCalciatore($ruolo)
+    public function inviaEmailSchieramentoFormazione($calciatori)
     {
+        foreach ($calciatori as $contratto)
+        {
+            $query="SELECT * FROM calciatore WHERE contratto='$contratto'";
+
+            $risultato=$this->connessione->query($query);
+            if($risultato->num_rows<=0) throw new Exception("nessun calciatore trovato!");
+
+            if($risultato->num_rows==1)
+            {
+                $riga=$risultato->fetch_assoc();
+                $emailCalciatore=$riga["email"];
+
+                //invio email da implementare in attesa di account email per il sistema
+            }
+        }
 
     }
 
     /**
-     * Metodo che prende in input una partita ed un modulo ed aggiorna la tabella partita nel db.
+     * Metodo che ritorna i calciatori convocati per una partita
+     * specificata in input
      * @param $partita
-     * @param $modulo
      */
-    public function scritturaModulo($partita,$modulo)
+    public function ottieniConvocati($partita)
     {
+        $nomePartita=$partita->getNome();
+        $dataPartita=$partita->getData();
+        //seleziono tutti i calciatori convocati per questa partita
+        $query="SELECT * FROM calciatore JOIN giocare ON calciatore.contratto=giocare.calciatore WHERE data='$dataPartita' AND partita='$nomePartita'";
 
+        $risultato=$this->connessione->query($query);
+
+        if($risultato->num_rows<=0) throw new Exception("nessun convocato trovato!");
+
+        while ($dettaglioCalciatore=$risultato->fetch_assoc())
+        {
+            $convocato=new DettagliCalciatore($dettaglioCalciatore["contratto"],null,null,null,$dettaglioCalciatore["nome"],$dettaglioCalciatore["cognome"],null,null,null,null,null,null,null,null,null,null,null,null,null);
+            //per ogni calciatore setto l'array di ruoli
+            $contratto=$dettaglioCalciatore["contratto"];
+            $queryRuoli="SELECT * FROM conosce WHERE calciatore='$contratto'";
+
+            $risultatoRuoli=$this->connessione->query($queryRuoli);
+
+            if($risultatoRuoli->num_rows<=0) throw new Exception("nessun ruolo trovato!");
+
+            while ($ruolo=$risultatoRuoli->fetch_assoc())
+            {
+                $convocato->aggiungiRuolo($ruolo["ruolo"]);
+            }
+            $convocati[]=$convocato;
+        }
+        return $convocati;
     }
+
 
     function __destruct()
     {
