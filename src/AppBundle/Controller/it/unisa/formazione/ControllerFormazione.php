@@ -146,13 +146,18 @@ class ControllerFormazione extends Controller
      * notifica ai calciatori via email.
      *
      * @Route("/formazione/allenatore/schieraFormazione")
-     * @Method("GET")
+     * @Method("POST")
      * @param Request $r
      */
     public function schieraFormazioneVista(Request  $r)
     {
 
         $calciatori=$r->get("calciatori");
+        $tattica=$r->get("modulo");
+
+        $gestionePartita=new GestionePartita();
+
+        $gestionePartita->scritturaModulo($_SESSION["partita"],$tattica);
 
         $calciatori=json_decode($calciatori);
 
@@ -189,7 +194,13 @@ class ControllerFormazione extends Controller
      */
     public function ottieniCalciatori()
     {
+        $gestioneRosa=new GestioneRosa();
 
+        $partita=$_SESSION["partita"];
+
+        $calciatori=$gestioneRosa->ottieniConvocati($partita);
+
+        return new JsonResponse(array("calciatori" => $calciatori));
     }
 
     /**

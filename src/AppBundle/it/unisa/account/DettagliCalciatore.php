@@ -39,6 +39,11 @@ class DettagliCalciatore extends AccountCalciatore implements \JsonSerializable
         $this->ruoli = $ruoli;
     }
 
+    public function aggiungiRuolo($ruolo)
+    {
+        $this->ruoli[]=$ruolo;
+    }
+
     /**
      * @return mixed
      */

@@ -10,7 +10,7 @@
 namespace AppBundle\it\unisa\formazione;
 
 use AppBundle\it\unisa\account\AccountCalciatore;
-use AppBundle\it\unisa\account\Calciatore;
+use AppBundle\it\unisa\account\DettagliCalciatore;
 use \AppBundle\Utility\DB;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
@@ -92,6 +92,42 @@ class GestioneRosa
             }
         }
 
+    }
+
+    /**
+     * Metodo che ritorna i calciatori convocati per una partita
+     * specificata in input
+     * @param $partita
+     */
+    public function ottieniConvocati($partita)
+    {
+        $nomePartita=$partita->getNome();
+        $dataPartita=$partita->getData();
+        //seleziono tutti i calciatori convocati per questa partita
+        $query="SELECT * FROM calciatore JOIN giocare ON calciatore.contratto=giocare.calciatore WHERE data='$dataPartita' AND partita='$nomePartita'";
+
+        $risultato=$this->connessione->query($query);
+
+        if($risultato->num_rows<=0) throw new Exception("nessun convocato trovato!");
+
+        while ($dettaglioCalciatore=$risultato->fetch_assoc())
+        {
+            $convocato=new DettagliCalciatore($dettaglioCalciatore["contratto"],null,null,null,$dettaglioCalciatore["nome"],$dettaglioCalciatore["cognome"],null,null,null,null,null,null,null,null,null,null,null,null,null);
+            //per ogni calciatore setto l'array di ruoli
+            $contratto=$dettaglioCalciatore["contratto"];
+            $queryRuoli="SELECT * FROM conosce WHERE calciatore='$contratto'";
+
+            $risultatoRuoli=$this->connessione->query($queryRuoli);
+
+            if($risultatoRuoli->num_rows<=0) throw new Exception("nessun ruolo trovato!");
+
+            while ($ruolo=$risultatoRuoli->fetch_assoc())
+            {
+                $convocato->aggiungiRuolo($ruolo["ruolo"]);
+            }
+            $convocati[]=$convocato;
+        }
+        return $convocati;
     }
 
 

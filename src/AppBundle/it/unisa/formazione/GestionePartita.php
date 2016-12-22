@@ -132,7 +132,12 @@ class GestionePartita
      */
     public function scritturaModulo($partita,$modulo)
     {
+        $data=$partita->getData();
+        $nomePartita=$partita->getNome();
 
+        $query="UPDATE partita SET modulo='$modulo' WHERE data='$data' AND nome='$nomePartita'";
+
+        $this->connessione->query($query);
     }
 
 
