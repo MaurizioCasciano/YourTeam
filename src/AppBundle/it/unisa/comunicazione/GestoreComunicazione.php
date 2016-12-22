@@ -22,11 +22,8 @@ class GestoreComunicazione
     }
 
     public function inviaMessaggio(Messaggio $msg){
-
-
         /*controlliamo che l'account non sia null(controllo piuttosto inutile)*/
         if($msg==null)throw new \Exception("valore nullo");
-
 
             $sql = "INSERT INTO messaggio (testo,allenatore,calciatore,mittente,data,tipo) 
                 VALUES ('" . $msg->getTesto() . "','"
@@ -45,9 +42,31 @@ class GestoreComunicazione
         $messaggi=array();
         $sql="SELECT * from messaggio WHERE calciatore='$calciatore' and tipo='$tipo'";
         $result = $this->conn->query($sql);
-        $res="";
         $i=0;
-        if ($result->num_rows > 0) {
+        if ($result->num_rows > 0) { //se la query ha dato risultato
+            // output data of each row
+            while($row = $result->fetch_assoc()) {
+                /*$t, $u, $c, $mitt,$data,$tipo*/
+                $m=new Messaggio($row["testo"],$row["allenatore"],$row["calciatore"],$row["mittente"],$row["data"],$row["tipo"]);
+                $m->setId($row["id"]);
+                $messaggi[$i]=$m;
+                $i++;
+            }
+            return $messaggi;
+        } else
+            throw new \Exception("non esistono messaggi");
+
+
+
+    }
+
+    public function ottieniMessaggiAllenatore($allenatore,$tipo){
+        if($allenatore==null)throw new \Exception("Messaggio non trovato");
+        $messaggi=array();
+        $sql="SELECT * from messaggio WHERE allenatore='$allenatore' and tipo='$tipo'";
+        $result = $this->conn->query($sql);
+        $i=0;
+        if ($result->num_rows > 0) { //se la query ha dato risulatato
             // output data of each row
             while($row = $result->fetch_assoc()) {
                 /*$t, $u, $c, $mitt,$data,$tipo*/
