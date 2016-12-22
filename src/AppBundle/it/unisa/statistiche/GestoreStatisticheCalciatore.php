@@ -90,7 +90,7 @@ class GestoreStatisticheCalciatore
             return $statisticheCalciatore;
         }
 
-        return null;
+        return new StatisticheCalciatore($usernameCalciatore, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     }
 
     /**

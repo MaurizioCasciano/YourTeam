@@ -26,7 +26,7 @@
 <body>
 {% block body %}
     <h1>StatisticheCalciatore complessive {{ statistiche_calciatore.usernameCalciatore }}</h1>
-
+    <h1>{{ app.request.getBaseURL() }}</h1>
     <table>
         <tr>
             <th>Statistica</th>
