@@ -121,19 +121,20 @@ class ControllerAccount extends Controller
         if($attore=="staff_allenatore_tifoso"){
             try {
                 $ast = $g->ricercaAccount_A_T_S($username);
-                return new Response("ACC:" . $ast->getUsernameCodiceContratto() . "appartiene alla squadra" . $ast->getSquadra());
+                return new Response("ACC:" . $ast->getUsernameCodiceContratto() ."PAS:".$ast->getPassword(). "appartiene alla squadra" . $ast->getSquadra());
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
         }
-        else {
-            try {
-                $ag = $g->ricercaAccount_G($username);
-                return new Response("ACC:" . $ag->getUsernameCodiceContratto() . "appartiene alla squadra" . $ag->getSquadra());
-            }catch(\Exception $e) {
-                return new Response($e->getMessage(), 404);
+        else
+            if($attore=="calciatore"){
+                try {
+                    $ag = $g->ricercaAccount_G($username);
+                    return new Response("ACC:" . $ag->getUsernameCodiceContratto() . "appartiene alla squadra" . $ag->getSquadra());
+                }catch(\Exception $e) {
+                    return new Response($e->getMessage(), 404);
+                    }
             }
-        }
     }
 
     /**

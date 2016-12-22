@@ -64,17 +64,17 @@ class GestoreAutenticazione
                     //DA IMPLEMENTARE
                     try{
                         //implementare il metodo ricerca AccountC
-                        //$acc = $g->ricercaAccount_C($username);
+                        $acc = $g->ricercaAccount_G($username);
                         $check = $this->checkPassword($password, $acc->getPassword());
                             if ($check) {
                                 $this->creaSession($acc->getUsernameCodiceContratto(),"calciatore", $acc->getSquadra());
                                 return TRUE;
                                 }
                                 else return false;
-                    }
-                    catch (\Exception $e){
+                        }
+                        catch (\Exception $e){
                         return false;
-                    }
+                        }
 
             }
 
@@ -100,7 +100,8 @@ class GestoreAutenticazione
      * @return bool
      */
     private function checkPassword($passwordInserita, $passwordSalvata){
-        if(strcmp(md5($passwordInserita),$passwordSalvata) == 0){
+        //if(strcmp(md5($passwordInserita),$passwordSalvata) == 0){
+        if(strcmp($passwordInserita,$passwordSalvata) == 0){
             return TRUE;
         } else {
             return FALSE;
