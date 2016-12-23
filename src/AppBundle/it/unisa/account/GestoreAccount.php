@@ -20,12 +20,11 @@ class GestoreAccount
     private $db;
 
     /*Aggiungere   :
-        aggiungiAccount_G
+
         eliminaAccount_G
         ricercaAcount_G
         modificaAccount_G
-        getAccount_A_T_S
-        getAccount_G
+
 
     Modificare convalida account come:
     Aggiungere il controllo che il giocatore esiste veramente nella clausola, quindi sfruttare ricerca_G*/
@@ -36,7 +35,7 @@ class GestoreAccount
         $this->db=new DB();
         $this->conn=$this->db->connect();
     }
-
+/*
     public function getAccount_G($u){
         if($u==null)throw new \Exception("valore nullo");
 
@@ -53,6 +52,7 @@ class GestoreAccount
         // se è un calciatore query cercare tutti i suoi ruoli->cra un ruolo
         return $user;
     }
+
     public function getAccount_A_T_S($u){
         if($u==null)throw new \Exception("valore nullo");
 
@@ -69,7 +69,7 @@ class GestoreAccount
         // se è un calciatore query cercare tutti i suoi ruoli->cra un ruolo
         return $user;
     }
-
+*/
     public function aggiungiAccount_A_T_S(Account $a){
 
 
@@ -105,42 +105,6 @@ class GestoreAccount
 
     }
 
-
-    public function aggiungiAccountG(Account $a){
-
-
-        /*controlliamo che l'account non sia null(controllo piuttosto inutile)*/
-        if($a==null)throw new \Exception("valore nullo");
-
-        if($a->getTipo()=="giocatore" ){
-            $sql = "INSERT INTO calciatore (username_codiceContratto, squadra, email, password, nome, cognome, 
-                  datadinascita, domicilio, indirizzo, provincia, telefono,tipo, immagine,naziolità) 
-                VALUES ('" . $a->getUsernameCodiceContratto() . "','"
-                . $a->getSquadra() . "','"
-                . $a->getEmail() . "','"
-                . $a->getPassword() . "','"
-                . $a->getNome() . "','"
-                . $a->getCognome() . "','"
-                . $a->getDataDiNascita() . "','"
-                . $a->getDomicilio() . "','"
-                . $a->getIndirizzo(). "','"
-                . $a->getProvincia() . "','"
-                . $a->getTelefono(). "','"
-                . $a->getTipo(). "','"
-                . $a->getImmagine(). "','"
-                . $a->getNazionalità(). "';";
-        }
-        else throw new \Exception("la tipologia account scelta non va bene");
-
-        $ris = $this->conn->query($sql);
-        /*il metodo query ritorna il valore false nel caso in cui la query non va a buon fine, casi:
-            - query non formattata bene(problema in fase di costruzione
-            - viola qualche vincolo(pe esempio il campo squadra dove squadra non esiste)
-          in tutti gli altri casi ritorna un oggetto con info che non ci serve
-          nota: se il cmpo prevede 10 caratteri, e passiamo una stringa di 12 caratteri, mysql la tronca -> non va in errore*/
-        if(!$ris) throw new \Exception(("errore inserimento dati nel db"));
-
-    }
 
     /*spostare altrove*/
     public function ottieniTutteLeSquadre(){
@@ -199,7 +163,8 @@ class GestoreAccount
 
 
     }
-    public function modificaAccount_G($username_codiceContratto,Account $newAccount){
+
+    public function modificaAccount_G($username_codiceContratto,AccountCalciatore $newAccount){
 
         /*controlliamo che l'account e il primo paramentro  non siano null(controllo piuttosto inutile)*/
         /*controlliamo che l'account non sia null(controllo piuttosto inutile)*/
@@ -218,8 +183,8 @@ class GestoreAccount
                 ."', provincia='".$newAccount->getProvincia()
                 ."', telefono='".$newAccount->getTelefono()
                 ."', immagine='".$newAccount->getImmagine()
-                ."', immagine='".$newAccount->getNazionalità()
-                ."' WHERE username_codiceContratto='$username_codiceContratto'";
+                ."', nazionalita='".$newAccount->getNazionalita()
+                ."' WHERE contratto='$username_codiceContratto'";
             //questo controllo non funziona se passiamo un username che non esiste perciò abbiamo
             //fatto il controllo di ricercaAccount sopra
             //if (!$this->conn->query($sql))  throw new \Exception(("errore MODIFICA dati nel db"));
@@ -254,6 +219,7 @@ class GestoreAccount
         return $user;
 
     }
+
     public function ricercaAccount_G($u){
         if($u==null)throw new \Exception("valore non settato");
 
@@ -290,13 +256,14 @@ class GestoreAccount
             throw new \Exception("l'utente da eliminare non esiste");
         }
     }
+
     public function eliminaAccount_G($u){
 
         try {
             /*forziamo il metodo e lo utilizziamo come controllo, perchè se l'account non esiste viene lanciata
             l'eccezione*/
             $this->ricercaAccount_G($u);
-            $query = "DELETE FROM calciatore WHERE  username_codiceContratto='$u'";
+            $query = "DELETE FROM calciatore WHERE  contratto='$u'";
             //questo controllo non funziona se passiamo un username che non esiste perciò abbiamo
             //fatto il controllo di ricercaAccount sopra
             //if (!$this->conn->query($sql))  throw new \Exception(("errore MODIFICA dati nel db"));

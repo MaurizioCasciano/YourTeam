@@ -2,6 +2,7 @@
 
 namespace AppBundle\it\unisa\comunicazione;
 
+use AppBundle\it\unisa\account\Account;
 use AppBundle\it\unisa\account\GestoreAccount;
 use AppBundle\Utility\DB;
 
@@ -43,10 +44,11 @@ class GestoreComunicazione
     {
         if ($calciatore == null) throw new \Exception("Messaggio non trovato");
         $messaggi = array();
-        $sql = "SELECT * from messaggio WHERE calciatore='$calciatore' and tipo='$tipo'";
+        $sql = "SELECT * from messaggio WHERE calciatore='$calciatore' and tipo='$tipo' ORDER BY data;";
+
         $result = $this->conn->query($sql);
         $i = 0;
-        if ($result->num_rows > 0) { //se la query ha dato risultato
+        if ($result->num_rows > 0) { //se la query ha dato risulatato
             // output data of each row
             while ($row = $result->fetch_assoc()) {
                 /*$t, $u, $c, $mitt,$data,$tipo*/
@@ -54,12 +56,29 @@ class GestoreComunicazione
                 $m->setId($row["id"]);
                 $messaggi[$i] = $m;
                 $i++;
+
+                $g = new GestoreAccount();
+                $accountAllenatore = $g->ricercaAccount_A_T_S($row["allenatore"]);
+                $accountCalciatore = $g->ricercaAccount_G($row["calciatore"]);
+
+                if ($row["mittente"] == "allenatore") {
+                    $m->setNomeMittente($accountAllenatore->getNome());
+                    $m->setCognomeMittente($accountAllenatore->getCognome());
+
+                    $m->setNomeDestinatario($accountCalciatore->getNome());
+                    $m->setCognomeDestinatario($accountCalciatore->getCognome());
+                } else if ($row["mittente"] == "calciatore") {
+                    $m->setNomeMittente($accountCalciatore->getNome());
+                    $m->setCognomeMittente($accountCalciatore->getCognome());
+
+                    $m->setNomeDestinatario($accountAllenatore->getNome());
+                    $m->setCognomeDestinatario($accountAllenatore->getCognome());
+                }
             }
+
             return $messaggi;
         } else
             throw new \Exception("non esistono messaggi");
-
-
     }
 
     /**
@@ -101,6 +120,41 @@ class GestoreComunicazione
             return $messaggi;
         } else
             throw new \Exception("non esistono messaggi");
+    }
+
+    public function ottieniMessaggioComportamento($allenatore, $tipo, $calciatoreDestinatario, $testo_comportamento)
+    {
+        if ($allenatore == null) throw new \Exception("Messaggio non trovato");
+        $messaggi = array();
+        $sql = "SELECT * from messaggio WHERE allenatore='$allenatore' and tipo='$tipo' AND calciatore = $calciatoreDestinatario ORDER BY data;";
+
+        $result = $this->conn->query($sql);
+        $i = 0;
+        if ($result->num_rows > 0) { //se la query ha dato risulatato
+            // output data of each row
+            while ($row = $result->fetch_assoc()) {
+                /*$t, $u, $c, $mitt,$data,$tipo*/
+                $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $row["data"], $row["tipo"]);
+                $m->setId($row["id"]);
+                $messaggi[$i] = $m;
+                $i++;
+
+                $g = new GestoreAccount();
+                $accountAllenatore = $g->ricercaAccount_A_T_S($allenatore);
+
+                $accountCalciatore = $g->ricercaAccount_G($calciatoreDestinatario);
+
+                $m->setTesto($testo_comportamento);
+
+                $m->setNomeMittente($accountAllenatore->getNome());
+                $m->setCognomeMittente($accountAllenatore->getCognome());
+
+                $m->setNomeDestinatario($accountCalciatore->getNome());
+                $m->setCognomeDestinatario($accountCalciatore->getCognome());
+            }
+            return $messaggi;
+        } else
+            throw new \Exception("non esistono messaggi");
 
 
     }
@@ -130,4 +184,28 @@ class GestoreComunicazione
         $this->db->close($this->conn);
     }
 
+
+    public function getAllenatorePerSquadra($squadra)
+    {
+        $statement = $this->conn->prepare("SELECT * FROM utente WHERE squadra = ?;");
+
+        $squadra = $_SESSION["squadra"];
+        $statement->bind_param("s", $squadra);
+        if ($statement->execute()) {
+            $result = $statement->get_result();
+
+            if ($result->num_rows <= 0) {
+                throw new \Exception("account allenatore squadra " . $squadra . "non esiste");
+            }
+
+            $row = $result->fetch_assoc();
+            $user = new Account($row["username_codiceContratto"], $row["password"],
+                $row["squadra"], $row["email"], $row["nome"],
+                $row["cognome"], $row["datadinascita"], $row["domicilio"],
+                $row["indirizzo"], $row["provincia"], $row["telefono"],
+                $row["immagine"], $row["tipo"]);
+            // se è un calciatore query cercare tutti i suoi ruoli->cra un ruolo
+            return $user;
+        }
+    }
 }
