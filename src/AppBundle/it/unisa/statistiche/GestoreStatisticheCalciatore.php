@@ -179,16 +179,16 @@ class GestoreStatisticheCalciatore
                 statistiche_calciatore
             GROUP BY (calciatore)
             HAVING
-              tiri_totali >= ? AND tiri_totali <= ? AND
-              tiri_porta >= ? AND tiri_porta <= ? AND 
-              falli_fatti >= ? AND falli_fatti <= ? AND 
-              falli_subiti >= ? AND falli_subiti <= ? AND 
-              percentuale_passaggi_riusciti >= ? AND percentuale_passaggi_riusciti <= ? AND 
-              gol_fatti >= ? AND gol_fatti <= ? AND 
-              gol_subiti >= ? AND gol_subiti <= ? AND 
-              assist >= ? AND assist <= ? AND 
-              ammonizioni >= ? AND ammonizioni <= ? AND 
-              espulsioni >= ? AND espulsioni <= ?;");
+              SUM(tiri_totali) >= ? AND SUM(tiri_totali) <= ? AND
+              SUM(tiri_porta) >= ? AND SUM(tiri_porta) <= ? AND 
+              SUM(falli_fatti) >= ? AND SUM(falli_fatti) <= ? AND 
+              SUM(falli_subiti) >= ? AND SUM(falli_subiti) <= ? AND 
+              (SUM(percentuale_passaggi_riusciti) / COUNT(calciatore)) >= ? AND (SUM(percentuale_passaggi_riusciti) / COUNT(calciatore)) <= ? AND 
+              SUM(gol_fatti) >= ? AND SUM(gol_fatti) <= ? AND 
+              SUM(gol_subiti) >= ? AND SUM(gol_subiti) <= ? AND 
+              SUM(assist) >= ? AND SUM(assist) <= ? AND 
+              SUM(ammonizioni) >= ? AND SUM(ammonizioni) <= ? AND 
+              SUM(espulsioni) >= ? AND SUM(espulsioni) <= ?;");
 
         $statement->bind_param("iiiiiiiiiiiiiiiiiiii", $minTiriTotali, $maxTiriTotali, $minTiriPorta, $maxTiriPorta, $minFalliFatti, $maxFalliFatti,
             $minFalliSubiti, $maxFalliSubiti, $minPercentualePassaggiRiusciti, $maxPercentualePassaggiRiusciti, $minGolFatti, $maxGolFatti, $minGolSubiti,
