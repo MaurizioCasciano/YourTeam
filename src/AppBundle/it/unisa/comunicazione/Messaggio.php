@@ -158,6 +158,7 @@ class Messaggio
     }
 
     /**
+     * Restituisce il tipo dell'account mittente: allenatore o calciatore.
      * @param mixed $mittente
      */
     public function setMittente($mittente)
