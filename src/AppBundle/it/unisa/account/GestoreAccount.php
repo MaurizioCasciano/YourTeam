@@ -40,16 +40,16 @@ class GestoreAccount
     public function getAccount_G($u){
         if($u==null)throw new \Exception("valore nullo");
 
-        $sql="SELECT * FROMN calciatore WHERE username_codiceCOntratto=='$u'";
+        $sql="SELECT * FROM calciatore WHERE contratto=='$u'";
         $res = $this->conn->query($sql);
 
         if($res->num_rows <= 0) throw new \Exception("account con username".$u."non esiste");
         $row = $res->fetch_assoc();
-        $user = new AccountCalciatore($row["username_codiceContratto"],$row["password"],
+        $user = new AccountCalciatore($row["contratto"],$row["password"],
             $row["squadra"],$row["email"],$row["nome"],
             $row["cognome"],$row["datadinascita"],$row["domicilio"],
             $row["indirizzo"],$row["provincia"],$row["telefono"],
-            $row["immagine"],$row["nazionalità"]);
+            $row["immagine"],$row["nazionalita"]);
         // se è un calciatore query cercare tutti i suoi ruoli->cra un ruolo
         return $user;
     }
@@ -142,7 +142,28 @@ class GestoreAccount
 
     }
 
+    /*spostare altrove*/
+    public function ottieniTutteLeSquadre(){
 
+
+        $squadre=array();
+        $sql="SELECT * from squadra";
+        $result = $this->conn->query($sql);
+        $res="";
+        $i=0;
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while($row = $result->fetch_assoc()) {
+                //$nome, $sede, $stadio, $golfatti, $golsubiti, $possessopalla, $vittorie, $sconfitte, $pareggi, $emblema, $scudetti
+                $s=new Squadra($row["nome"],$row["sede"],$row["stadio"],
+                    $row["golfatti"],$row["golsubiti"],$row["possessopalla"],
+                    $row["vittorie"],$row["sconfitte"],$row["pareggi"],$row["emblema"],$row["scudetti"]);
+                $squadre[$i]=$s;
+                $i++;
+            }
+            return $squadre;
+        } throw new \Exception("nessuna squadra");
+    }
 
     public function modificaAccount_A_T_S($username_codiceContratto,Account $newAccount){
 

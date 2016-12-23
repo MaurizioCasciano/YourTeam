@@ -8,7 +8,7 @@
 
                 <div class="avatar"> <center>
 
-                        <img src="christian.jpg" alt="Circle Image" class="img-circle img-responsive img-raised" width="160px" height="160px" >
+                        <img src="{{ asset("ImmaginiApp/account/") }}{{ allenatore.getImmagine() }}" alt="Circle Image" class="img-circle img-responsive img-raised" width="160px" height="160px" >
                     </center>
                 </div>
 
@@ -36,7 +36,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Email:</label>
                                 <div class="col-sm-10">
-                                    <p class="form-control-static"> allenatore.getEmail()</p>
+                                    <p class="form-control-static"> {{ allenatore.getEmail() }}</p>
                                 </div>
                             </div>
 
