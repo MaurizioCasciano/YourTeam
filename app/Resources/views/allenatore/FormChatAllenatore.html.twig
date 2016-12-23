@@ -9,35 +9,54 @@
                     </div>
                 </div>
                 <!--Widget body http://bootdey.com/img/Content/avatar/avatar1.png -->
-               <div id="chat-body" class="collapse in">
+                <div id="chat-body" class="collapse in">
                     <div class="nano has-scrollbar" style="height:300px">
                         <div class="nano-content pad-all" tabindex="0" style="right: -17px;">
                             <ul class="list-unstyled media-block">
 
                                 {% for messaggio in messaggi %}
 
-                                    <script>
+                                    <!--<script>
                                         alert("dfsasdsd");
-                                    </script>
-                                    <li class="mar-btm">
-                                        <div class="media-right">
-                                            <img src="" class="img-circle img-sm" alt="Profile Picture">
-                                        </div>
-                                        <div class="media-body pad-hor speech-right">
-                                            <div class="speech">
-                                                <a href="#"
-                                                   class="media-heading">{{ messaggio.getNomeMittente() }}</a>
-                                                <p>{{ messaggio.getTesto() }} </p>
-                                                <p class="speech-time">
-                                                    <i class="fa fa-clock-o fa-fw">hyujb</i>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
+                                    </script>-->
 
+                                    {% if messaggio.getMittente() == "allenatore" %}
+                                        <li class="mar-btm">
+                                            <div class="media-right">
+                                                <img src="" class="img-circle img-sm" alt="Profile Picture">
+                                            </div>
+                                            <div class="media-body pad-hor speech-right">
+                                                <div class="speech">
+                                                    <a href="#"
+                                                       class="media-heading">{{ messaggio.getNomeMittente() }}{{ messaggio.getCognomeMittente() }}</a>
+                                                    <p>{{ messaggio.getTesto() }} </p>
+                                                    <p class="speech-time">
+                                                        <i class="fa fa-clock-o fa-fw">{{ messaggio.getData() }}</i>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    {% elseif messaggio.getMittente() == "calciatore" %}
+                                        <li class="mar-btm">
+                                            <div class="media-left">
+                                                <img src="" class="img-circle img-sm" alt="Profile Picture">
+                                            </div>
+                                            <div class="media-body pad-hor speech-right">
+                                                <div class="speech">
+                                                    <a href="#"
+                                                       class="media-heading">{{ messaggio.getNomeMittente() }}{{ messaggio.getCognomeMittente() }}</a>
+                                                    <p>{{ messaggio.getTesto() }} </p>
+                                                    <p class="speech-time">
+                                                        <i class="fa fa-clock-o fa-fw">{{ messaggio.getData() }}</i>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {% endif %}
                                 {% endfor %}
                             </ul>
-                       </div>
+                        </div>
                         <div class="nano-pane">
                             <div class="nano-slider" style="height: 141px; transform: translate(0px, 0px);"></div>
                         </div>
@@ -47,7 +66,7 @@
                         <div class="panel-footer">
                             <div class="row">
                                 <div class="col-xs-9">
-                                    <input type="hidden" value="{{ d }}" name = "d">
+                                    <input type="hidden" value="{{ d }}" name="d">
 
                                     <input name="testo" type="textarea" id="testo" placeholder="Scrivi il messaggio..."
                                            class="form-control chat-input">
