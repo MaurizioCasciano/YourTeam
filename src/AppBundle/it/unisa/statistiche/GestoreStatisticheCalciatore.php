@@ -55,12 +55,11 @@ class GestoreStatisticheCalciatore
     }
 
     /**
-     * Restituisce le statistiche di un calciatore.
+     * Restituisce le statistiche di un calciatore relativamente ad una partita.
      * @param $usernameCalciatore L'ID del calciatore.
      * @return StatisticheCalciatore Le statistiche del calciatore.
-     * @deprecated
      */
-    public function getStatisticheCalciatore($usernameCalciatore)
+    public function getStatisticheCalciatore($usernameCalciatore, $nome_partita, $data_partita)
     {
         /*EXAMPLE
         // prepare and bind
@@ -74,15 +73,24 @@ class GestoreStatisticheCalciatore
             s - string
             b - BLOB*/
 
-        $statement = $this->conn->prepare("SELECT * FROM calciatore WHERE calciatore.contratto = ?");
-        $statement->bind_param("s", $usernameCalciatore);
+
+        $statement = $this->conn->prepare("SELECT * FROM statistiche_calciatore WHERE calciatore = ? AND nome_partita = ? AND data_partita = ?");
+        $statement->bind_param("sss", $usernameCalciatore, $nome_partita, $data_partita);
         $executed = $statement->execute();
         $result = $statement->get_result();
 
-        $row = $result->fetch_assoc();
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $statisticheCalciatore = new StatisticheCalciatore($usernameCalciatore,
+                $row["tiri_totali"], $row["tiri_porta"], $row["falli_fatti"],
+                $row["falli_subiti"], $row["percentuale_passaggi_riusciti"],
+                $row["gol_fatti"], $row["gol_subiti"], $row["assist"],
+                $row["ammonizioni"], $row["espulsioni"], 0);
 
-        $statisticheCalciatore = new StatisticheCalciatore($row["contratto"], $row["tiritotali"], $row["tiriporta"], $row["fallifatti"], $row["fallisubiti"], $row["percentualepassaggiriusciti"], $row["golfatti"], $row["golsubiti"], $row["assist"], $row["ammonizioni"], $row["espulsioni"]/*, $row["partitegiocate"]*/);
-        return $statisticheCalciatore;
+            return $statisticheCalciatore;
+        }
+
+        return new StatisticheCalciatore($usernameCalciatore, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     }
 
     /**
@@ -106,7 +114,7 @@ class GestoreStatisticheCalciatore
                 SUM(espulsioni) as espulsioni,
                 COUNT('calciatore') AS partite_giocate
             FROM
-                yourteam.statistiche_calciatore
+                statistiche_calciatore
             WHERE
                 calciatore = ?
             GROUP BY (calciatore);");
@@ -125,82 +133,116 @@ class GestoreStatisticheCalciatore
     }
 
     /**
-     * Restituisce i calciatori che rispettano il filtro.
-     * @param Filtro $filtro
-     * @return Account
-     * @throws \Exception
+     * Restituisce le statistiche dei calciatori che rispettano il filtro.
+     * @param $minTiriTotali int
+     * @param $minTiriPorta int
+     * @param $minGolFatti int
+     * @param $minGolSubiti int
+     * @param $minAssist int
+     * @param $minFalliFatti int
+     * @param $minFalliSubiti int
+     * @param $minPercentualePassaggiRiusciti int
+     * @param $minAmmonizioni int
+     * @param $minEspulsioni int
+     * @param $maxTiriTotali int
+     * @param $maxTiriPorta int
+     * @param $maxGolFatti int
+     * @param $maxGolSubiti int
+     * @param $maxAssist int
+     * @param $maxFalliFatti int
+     * @param $maxFalliSubiti int
+     * @param $maxPercentualePassaggiRiusciti int
+     * @param $maxAmmonizioni int
+     * @param $maxEspulsioni int
+     * @return StatisticheCalciatore|null
      */
-    public function filtraCalciatori(FiltroStatisticheCalciatore $filtroStatisticheCalciatore)
+    public function filtraCalciatori($minTiriTotali, $minTiriPorta, $minGolFatti, $minGolSubiti, $minAssist,
+                                     $minFalliFatti, $minFalliSubiti, $minPercentualePassaggiRiusciti,
+                                     $minAmmonizioni, $minEspulsioni, $maxTiriTotali, $maxTiriPorta,
+                                     $maxGolFatti, $maxGolSubiti, $maxAssist, $maxFalliFatti, $maxFalliSubiti,
+                                     $maxPercentualePassaggiRiusciti, $maxAmmonizioni, $maxEspulsioni)
     {
-        $sql = "SELECT * FROM calciatore";
-        $result = $this->conn->query($sql);
+        $statement = $this->conn->prepare(
+            "SELECT calciatore,
+                SUM(tiri_totali) AS tiri_totali,
+                SUM(tiri_porta) AS tiri_porta,
+                SUM(falli_fatti) AS falli_fatti,
+                SUM(falli_subiti) AS falli_subiti,
+                (SUM(percentuale_passaggi_riusciti) / COUNT(calciatore)) AS percentuale_passaggi_riusciti,
+                SUM(gol_fatti) AS gol_fatti,
+                SUM(gol_subiti) AS gol_subiti,
+                SUM(assist) AS assist,
+                SUM(ammonizioni) as ammonizioni,
+                SUM(espulsioni) as espulsioni,
+                COUNT('calciatore') AS partite_giocate
+            FROM
+                statistiche_calciatore
+            GROUP BY (calciatore)
+            HAVING
+              SUM(tiri_totali) >= ? AND SUM(tiri_totali) <= ? AND
+              SUM(tiri_porta) >= ? AND SUM(tiri_porta) <= ? AND 
+              SUM(falli_fatti) >= ? AND SUM(falli_fatti) <= ? AND 
+              SUM(falli_subiti) >= ? AND SUM(falli_subiti) <= ? AND 
+              (SUM(percentuale_passaggi_riusciti) / COUNT(calciatore)) >= ? AND (SUM(percentuale_passaggi_riusciti) / COUNT(calciatore)) <= ? AND 
+              SUM(gol_fatti) >= ? AND SUM(gol_fatti) <= ? AND 
+              SUM(gol_subiti) >= ? AND SUM(gol_subiti) <= ? AND 
+              SUM(assist) >= ? AND SUM(assist) <= ? AND 
+              SUM(ammonizioni) >= ? AND SUM(ammonizioni) <= ? AND 
+              SUM(espulsioni) >= ? AND SUM(espulsioni) <= ?;");
 
-        /*se la query ha successo allora la proprietà di $res è >0
-        chiaramente potremmo controllare anche se la query è ben
-        formattata(controllo solo in fase di sviluppo)
-        quindi si può evitare di fare*/
-        if ($result->num_rows <= 0) throw new \Exception("Nessun calciatore presente nel database.");
+        $statement->bind_param("iiiiiiiiiiiiiiiiiiii", $minTiriTotali, $maxTiriTotali, $minTiriPorta, $maxTiriPorta, $minFalliFatti, $maxFalliFatti,
+            $minFalliSubiti, $maxFalliSubiti, $minPercentualePassaggiRiusciti, $maxPercentualePassaggiRiusciti, $minGolFatti, $maxGolFatti, $minGolSubiti,
+            $maxGolSubiti, $minAssist, $maxAssist, $minAmmonizioni, $maxAmmonizioni, $minEspulsioni, $maxEspulsioni);
+        $statement->execute();
+        $result = $statement->get_result();
 
-        $calciatori[] = array();
-        //get data of each row
-        while ($row = $result->fetch_assoc()) {
-            //statistiche
-            $usernameCalciatore = $row["contratto"];
-            $tiriTotali = $row["tiritotali"];
-            $tiriPorta = $row["tiriporta"];
-            $falliFatti = $row["fallifatti"];
-            $falliSubiti = $row["fallisubiti"];
-            $percentualePassaggiRiusciti = $row["percentualepassaggiriusciti"];
-            $golFatti = $row["golfatti"];
-            $golSubiti = $row["golsubiti"];
-            $assist = $row["assist"];
-            $ammonizioni = $row["ammonizioni"];
-            $espulsioni = $row["espulsioni"];
-            $partiteGiocate = $row["partitegiocate"];
+        if ($result->num_rows > 0) {
+            $arrayStatistiche = array();
 
-            //dettagli
-            $numeroMaglia = $row["numeromaglia"];
-            $valore = $row["valore"];
-            $stipendio = $row["stipendio"];
-            $piedePreferito = $row["piedepreferito"];
-            $capitano = $row["capitano"];
-            $ruoli = null;
-
-
-            //accountCalciatore
-            /*usernameCalciatore*/
-            $password = $row["password"];
-            $squadra = $row["squadra"];
-            $email = $row["email"];
-            $nome = $row["nome"];
-            $cognome = $row["cognome"];
-            $dataDiNascita = $row["datadinascita"];
-            $domicilio = $row["domicilio"];
-            $indirizzo = $row["indirizzo"];
-            $provincia = $row["provincia"];
-            $telefono = $row["telefono"];
-            $immagine = $row["immagine"];
-            $nazionalita = $row["nazionalita"];
-
-            $accountCalciatore = new AccountCalciatore($usernameCalciatore, $password, $squadra, $email, $nome, $cognome, $dataDiNascita, $domicilio, $indirizzo, $provincia, $telefono, $immagine, $nazionalita);
-            $dettagliCalciatore = new DettagliCalciatore($usernameCalciatore, $tiriTotali, $tiriPorta, $falliFatti, $falliSubiti, $percentualePassaggiRiusciti, $golFatti, $golSubiti, $assist, $ammonizioni, $espulsioni, $partiteGiocate, $numeroMaglia, $valore, $stipendio, $piedePreferito, $capitano, $ruoli);
-
-            if ($filtroStatisticheCalciatore->accept($dettagliCalciatore)) {
-                $calciatori[] = array(
-                    "calciatore" => $accountCalciatore
-                );
+            for ($i = 0; $row = $result->fetch_assoc(); $i++) {
+                $arrayStatistiche[] = new StatisticheCalciatore(row["calciatore"], $row["tiri_totali"], $row["tiri_porta"],
+                    $row["falli_fatti"], $row["falli_subiti"], $row["percentuale_passaggi_riusciti"], $row["gol_fatti"],
+                    $row["gol_subiti"], $row["assist"], $row["ammonizioni"], $row["espulsioni"], $row["partite_giocate"]);
             }
+
+            return $arrayStatistiche;
+        } else {
+            return null;
         }
 
-        return $calciatori;
+        /*$arrayStatistiche = array();
+        for ($i = 0; $i < 10; $i++) {
+            $arrayStatistiche[] = "ciao";
+        }
+
+        return $arrayStatistiche;*/
     }
 
     /**
      * Modifica le statistiche del calciatore, sostituendole con quelle passate in input.
      * @param StatisticheCalciatore $statisticheCalciatore
      */
-    public function modificaStatisticheCalciatore(StatisticheCalciatore $statisticheCalciatore)
+    public function modificaStatisticheCalciatore(StatisticheCalciatore $statistiche, $nomePartita, $dataPartita)
     {
+        $statement = $this->conn->prepare("UPDATE statistiche_calciatore SET tiri_totali = ?, tiri_porta = ?, 
+falli_fatti = ?, falli_subiti = ?, percentuale_passaggi_riusciti = ?, gol_fatti = ?, gol_subiti = ?, 
+assist = ?, ammonizioni = ?, espulsioni = ? WHERE calciatore = ? AND nome_partita = ? AND data_partita = ?");
+        $username = $statistiche->getUsernameCalciatore();
+        $tiriTotali = $statistiche->getTiriTotali();
+        $tiriPorta = $statistiche->getTiriPorta();
+        $falliFatti = $statistiche->getFalliFatti();
+        $falliSubiti = $statistiche->getFalliSubiti();
+        $percentualePassaggiRiusciti = $statistiche->getPercentualePassaggiRiusciti();
+        $golFatti = $statistiche->getGolFatti();
+        $golSubiti = $statistiche->getGolSubiti();
+        $assist = $statistiche->getAssist();
+        $ammonizioni = $statistiche->getAmmonizioni();
+        $espulsioni = $statistiche->getEspulsioni();
 
+        $statement->bind_param("iiiiiiiiiisss", $tiriTotali, $tiriPorta, $falliFatti, $falliSubiti,
+            $percentualePassaggiRiusciti, $golFatti, $golSubiti, $assist, $ammonizioni, $espulsioni, $username, $nomePartita, $dataPartita);
+
+        $executed = $statement->execute();
+        return $executed;
     }
 }

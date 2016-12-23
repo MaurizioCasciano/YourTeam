@@ -1,0 +1,10 @@
+{% extends 'staff/template.html.twig' %}
+{% block contenuto %}
+    {% if array_statistiche is iterable %}
+        {% for statistiche_calciatore in array_statistiche %}
+            Hello {{ statistiche_calciatore }}!
+        {% endfor %}
+    {% else %}
+        NOT ITERABLE
+    {% endif %}
+{% endblock %}
