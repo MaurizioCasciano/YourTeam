@@ -79,6 +79,7 @@ class GestoreAutenticazione
             }
 
             }
+            else return -1;
 
     }
 

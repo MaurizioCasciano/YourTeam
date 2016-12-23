@@ -121,7 +121,18 @@ class ControllerAccount extends Controller
         if($attore=="staff_allenatore_tifoso"){
             try {
                 $ast = $g->ricercaAccount_A_T_S($username);
-                return new Response("ACC:" . $ast->getUsernameCodiceContratto() ."PAS:".$ast->getPassword(). "appartiene alla squadra" . $ast->getSquadra());
+                $tipo=$ast->getTipo();
+                if($tipo=="allenatore")
+                        return $this->render("allenatore/visualizzaAccountAllenatore.html.twig",array('allenatore'=> $ast));
+                    else
+                        if($tipo=="tifoso")
+                            return $this->render("tifoso/visualizzaAccountTifoso.html.twig",array('tifoso'=> $ast));
+                        else
+                            if($tipo=="staff")
+                                return $this->render("staff/visualizzaAccountStaff.html.twig",array('staff'=> $ast));
+
+
+
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
@@ -130,7 +141,7 @@ class ControllerAccount extends Controller
             if($attore=="calciatore"){
                 try {
                     $ag = $g->ricercaAccount_G($username);
-                    return new Response("ACC:" . $ag->getUsernameCodiceContratto() . "appartiene alla squadra" . $ag->getSquadra());
+                    return   $this->render("giocatore/visualizzaAccountgiocatore.html.twig",array('giocatore'=> $ag));
                 }catch(\Exception $e) {
                     return new Response($e->getMessage(), 404);
                     }

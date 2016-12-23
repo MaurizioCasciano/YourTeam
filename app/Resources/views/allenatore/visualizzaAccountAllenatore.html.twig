@@ -1,0 +1,106 @@
+{% extends 'allenatore/template.html.twig' %}
+{% block contenuto %}
+    <div class="profile-content">
+
+        <div class="row">
+
+            <div class="profile">
+
+                <div class="avatar"> <center>
+
+                        <img src="christian.jpg" alt="Circle Image" class="img-circle img-responsive img-raised" width="160px" height="160px" >
+                    </center>
+                </div>
+
+                <div class="name">
+                    <h3 class="title">{{ allenatore.getNome() }}</h3>
+                    <h5>Allenatore</h5>
+
+                    <form class="form-horizontal">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+
+                                <label class="col-sm-2 control-label">Nome:</p></label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> {{ allenatore.getNome() }} </p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">   Cognome:</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> {{ allenatore.getCognome() }}</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Email:</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> allenatore.getEmail()</p>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">username o  numero contratto:</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> {{ allenatore.getUsernamecodiceContratto() }}</p>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label  class="col-sm-2 control-label">password</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> *********</p>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label text-center">Data di nascita</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> {{ allenatore.getDataDiNascita() }}</p>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label text-center">Domicilio</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> {{ allenatore.getDomicilio() }}</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Indirizzo</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> {{ allenatore.getIndirizzo() }}</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Provincia</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> {{ allenatore.getProvincia() }}</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Numero</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> {{ allenatore.getTelefono() }}</p>
+                                </div>
+                            </div>
+                        </form>
+
+                        <button type="button" class="btn btn-info"> Elimina </button> &nbsp &nbsp
+                        <button type="button" class="btn btn-info"> Modifica </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

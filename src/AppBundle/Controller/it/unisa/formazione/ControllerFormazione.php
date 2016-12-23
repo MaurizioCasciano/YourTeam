@@ -50,7 +50,8 @@ class ControllerFormazione extends Controller
 
                 $_SESSION["partita"]=$partita;
 
-                return new Response(var_dump($calciatori)." convocati per la partita: ".var_dump($partita)); //in attesa della view della lista calciatori
+                return $this->render("formazione/visualizzaCalciatoriConvocazione.html.twig",array('calciatori'=> $calciatori , 'partita' => $partita));
+
 
             }
             catch (PartitaNonDispException $e1)
@@ -88,9 +89,15 @@ class ControllerFormazione extends Controller
 
                 $partita=$gestionePartita->disponibilitaFormazione($squadra);
 
+                $gestioneRosa=new GestioneRosa();
+
+                $tattiche=$gestioneRosa->visualizzaTattica();
+
                 $_SESSION["partita"]=$partita;
 
-                return new Response(var_dump($partita)." per questa partita selezioneremo tattica e formazione"); //in attesa della view della selezione tattica
+                return $this->render("formazione/visualizzaTatticaFormazione.html.twig", array('partita' => $partita , 'tattiche' => $tattiche));
+
+               // return new Response(var_dump($partita)." per questa partita selezioneremo tattica e formazione"); //in attesa della view della selezione tattica
 
             }
             catch (PartitaNonDispException $e1)
@@ -169,24 +176,6 @@ class ControllerFormazione extends Controller
     }
 
     /**
-     * Questo controller rimanda in risposta l'elenco delle tattiche presenti nel database
-     *
-     * @Route("/formazione/allenatore/ottieniTattiche")
-     * @Method("GET")
-     */
-    public function ottieniTattiche()
-    {
-        $gestioneRosa=new GestioneRosa();
-
-        $tattiche=$gestioneRosa->visualizzaTattica();
-
-        $tattiche=json_encode($tattiche);
-
-        return new JsonResponse(array("tattiche" => $tattiche));
-
-    }
-
-    /**
      * Questo controller rimanda l'elenco dei calciatori convocati per quella partita
      *
      * @Route("/formazione/allenatore/ottieniCalciatori")
@@ -206,11 +195,20 @@ class ControllerFormazione extends Controller
     /**
      * Questo controller rimanda un modulo serializzato quando l'allenatore ne seleziona uno
      *
-     * @Route("/formazione/allenatore/cambiaTattica/{tattica}")
+     * @Route("/formazione/allenatore/cambiaTattica")
      * @Method("GET")
      */
-    public function cambiaTattica($tattica)
+    public function cambiaTattica()
     {
+        $gestioneRosa=new GestioneRosa();
+
+        $moduli=$gestioneRosa->visualizzaTattica();
+        foreach ($moduli as $schieramento)
+        {
+            $modulo[]=$gestioneRosa->ottieniTattica($schieramento);
+        }
+
+        return new JsonResponse(array("modulo" => $modulo));
 
     }
 

@@ -1,0 +1,83 @@
+{% extends 'formazione/template.html.twig' %}
+
+{% block bloccoHeadCustom %}
+
+    {% block stylesheets %}
+        <link rel="stylesheet" type="text/css" href="{{ asset('./formazione/css/mainCss.css') }}"/>
+    {% endblock %}
+
+{% endblock %}
+
+{% block contenuto %}
+
+    {% block javascripts %}
+
+        <script type="text/javascript" src="{{ asset('./formazione/js/istanziaOggetti.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('./formazione/js/caricaTattiche.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('./formazione/js/modal.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('./formazione/js/caricaSelezione.js') }}"></script>
+
+        <!--carico onload le tattiche predefinite e la formazione base(4-4-2) -->
+        <script type="text/javascript">
+            window.onload=function()
+            {
+                caricaTattica();
+                caricaCalciatori();
+                caricaFormazione();
+            }
+        </script>
+
+    {% endblock %}
+
+
+
+
+
+    <div class="profile-content">
+
+        <div class="row" id="rigaPartitaTattiche">
+
+            <span id="squadreCoinvolte">{{ partita.getNome }}</span>
+
+            <select id="selezioneTattica" onchange="caricaFormazione()">
+
+                {% for tattica in tattiche %}
+
+                    <option value="{{ tattica }}">{{ tattica }}</option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+        <div class="row">
+            <!-- div caricati dinamicamente con i ruoli della formazione -->
+            <div id="divPortiere"></div>
+            <div id="divDifensori"></div>
+            <div id="divMediani"></div>
+            <div id="divCentrocampisti"></div>
+            <div id="divTrequartisti"></div>
+            <div id="divAttaccanti"></div>
+
+            <div id="bottoniSelezione">
+                <button value="selezioneFormazione" onclick="confermaSelezione()">Conferma formazione</button>
+                <button value="cancellaSelezione" onclick="cancellaSelezione()">Cancella formazione</button>
+            </div>
+            <!-- selezione confermata della formazione -->
+            <div id="selezione"></div>
+
+            <!-- Modal -->
+            <div id="modal" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span id="close" class="close">x</span>
+                    <div id="divListaCalciatoriRuolo"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
