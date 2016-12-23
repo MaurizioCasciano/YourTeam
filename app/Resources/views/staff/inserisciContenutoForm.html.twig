@@ -1,0 +1,22 @@
+{% extends 'staff/template.html.twig' %}
+{% block contenuto %}
+    <form>
+        <div class="form-group">
+            <label >Titolo:</label>
+            <input type="text" class="form-control" id="titolo">
+        </div>
+        <div class="form-group">
+            <label >Descrizione:</label>
+            <input type="text" class="form-control" id="descrizione">
+        </div>
+        <div>
+            <label >URL:</label>
+            <input type="text" class="form-control" id="url">
+        </div>
+        <div>
+            <label >Tipo:</label>
+            <input type="text" class="form-control" id="tipo">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+{% endblock %}
