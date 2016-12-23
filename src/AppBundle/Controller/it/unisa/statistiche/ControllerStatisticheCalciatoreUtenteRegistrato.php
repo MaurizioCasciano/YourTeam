@@ -94,6 +94,7 @@ class ControllerStatisticheCalciatoreUtenteRegistrato extends Controller
             $maxPercentualePassaggiRiusciti, $maxAmmonizioni, $maxEspulsioni);
 
 
-        return $this->render(":staff:ViewCalciatoriFiltrati.html.twig", array("array_statistiche" => $arrayStatistiche));
+        //return $this->render(":staff:ViewCalciatoriFiltrati.html.twig", array("array_statistiche" => $arrayStatistiche));
+        return new Response(var_dump($arrayStatistiche));
     }
 }

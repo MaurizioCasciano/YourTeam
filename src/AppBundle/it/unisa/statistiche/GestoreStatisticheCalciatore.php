@@ -168,7 +168,7 @@ class GestoreStatisticheCalciatore
                 SUM(tiri_porta) AS tiri_porta,
                 SUM(falli_fatti) AS falli_fatti,
                 SUM(falli_subiti) AS falli_subiti,
-                (SUM(percentuale_passaggi_riusciti) / COUNT('calciatore')) AS percentuale_passaggi_riusciti,
+                (SUM(percentuale_passaggi_riusciti) / COUNT(calciatore)) AS percentuale_passaggi_riusciti,
                 SUM(gol_fatti) AS gol_fatti,
                 SUM(gol_subiti) AS gol_subiti,
                 SUM(assist) AS assist,
@@ -197,7 +197,7 @@ class GestoreStatisticheCalciatore
         $result = $statement->get_result();
 
         if ($result->num_rows > 0) {
-            $arrayStatistiche[] = array();
+            $arrayStatistiche = array();
 
             for ($i = 0; $row = $result->fetch_assoc(); $i++) {
                 $arrayStatistiche[] = new StatisticheCalciatore(row["calciatore"], $row["tiri_totali"], $row["tiri_porta"],
@@ -209,6 +209,13 @@ class GestoreStatisticheCalciatore
         } else {
             return null;
         }
+
+        /*$arrayStatistiche = array();
+        for ($i = 0; $i < 10; $i++) {
+            $arrayStatistiche[] = "ciao";
+        }
+
+        return $arrayStatistiche;*/
     }
 
     /**
