@@ -163,15 +163,15 @@ class GestioneRosa
             }
             if(($riga["descrizione"])=="Centrocampista")
             {
-                $difensori[]=$riga["ruolo"];
+                $centrocampisti[]=$riga["ruolo"];
             }
             if(($riga["descrizione"])=="Trequartista")
             {
-                $difensori[]=$riga["ruolo"];
+                $trequartisti[]=$riga["ruolo"];
             }
             if(($riga["descrizione"])=="Attaccante")
             {
-                $difensori[]=$riga["ruolo"];
+                $attaccanti[]=$riga["ruolo"];
             }
         }
 
