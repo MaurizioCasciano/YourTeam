@@ -130,6 +130,61 @@ class GestioneRosa
         return $convocati;
     }
 
+    /**
+     * Metodo che prende in input una tattica
+     * e ne restituisce un model "Modulo"
+     * @param $tattica
+     */
+    public function ottieniTattica($tattica)
+    {
+        $query="SELECT * FROM composto JOIN ruolo  ON composto.ruolo=ruolo.id WHERE modulo='$tattica' ORDER BY ripetizioneRuolo";
+
+        $risultato=$this->connessione->query($query);
+
+        if($risultato->num_rows<=0) throw new Exception("nessun modulo trovato!");
+
+        $modulo=new Modulo($tattica,null);
+
+        $difensori=null;
+        $mediani=null;
+        $centrocampisti=null;
+        $trequartisti=null;
+        $attaccanti=null;
+
+        while ($riga=$risultato->fetch_assoc())
+        {
+            if(($riga["descrizione"])=="Difensore")
+            {
+                $difensori[]=$riga["ruolo"];
+            }
+            if(($riga["descrizione"])=="Mediano")
+            {
+                $mediani[]=$riga["ruolo"];
+            }
+            if(($riga["descrizione"])=="Centrocampista")
+            {
+                $difensori[]=$riga["ruolo"];
+            }
+            if(($riga["descrizione"])=="Trequartista")
+            {
+                $difensori[]=$riga["ruolo"];
+            }
+            if(($riga["descrizione"])=="Attaccante")
+            {
+                $difensori[]=$riga["ruolo"];
+            }
+        }
+
+        $modulo->setDifensori($difensori);
+        $modulo->setMediani($mediani);
+        $modulo->setCentrocampisti($centrocampisti);
+        $modulo->setTrequartisti($trequartisti);
+        $modulo->setAttaccanti($attaccanti);
+
+        return $modulo;
+
+    }
+
 
     function __destruct()
     {

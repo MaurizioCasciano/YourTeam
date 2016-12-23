@@ -181,8 +181,6 @@ class ControllerFormazione extends Controller
 
         $tattiche=$gestioneRosa->visualizzaTattica();
 
-        $tattiche=json_encode($tattiche);
-
         return new JsonResponse(array("tattiche" => $tattiche));
 
     }
@@ -212,6 +210,11 @@ class ControllerFormazione extends Controller
      */
     public function cambiaTattica($tattica)
     {
+        $gestioneRosa=new GestioneRosa();
+
+        $modulo=$gestioneRosa->ottieniTattica($tattica);
+
+        return new JsonResponse(array("modulo" => $modulo));
 
     }
 
