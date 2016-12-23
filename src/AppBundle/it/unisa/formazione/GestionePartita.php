@@ -125,6 +125,8 @@ class GestionePartita
         foreach ($calciatori as $calciatore)
         {
             $query="INSERT INTO giocare(calciatore,partita,data) VALUES ('$calciatore', '$nomePartita','$data')";
+            $risultato=$this->connessione->query($query);
+            if(!$risultato) throw new Exception("errore inserimento convocazioni!");
         }
 
         $risultato=$this->connessione->query($query);
