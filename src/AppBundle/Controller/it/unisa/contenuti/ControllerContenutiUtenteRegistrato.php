@@ -43,8 +43,15 @@ class ControllerContenutiUtenteRegistrato extends Controller
 
         try {
             $contenuto=$gestore->visualizzaContenuto($id);
-            return $this->render("tifoso/visualizzaContenuto.html.twig",
-                array('contenuto' => $contenuto));
+            if ($contenuto->getTipo()=="immagine") {
+                return $this->render("tifoso/visualizzaContenuto.html.twig",
+                    array('contenuto' => $contenuto));
+            }else{
+                if ($contenuto->getTipo()=="video") {
+                    return $this->render("tifoso/visualizzaVideo.html.twig",
+                        array('contenuto' => $contenuto));
+                }
+            }
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
@@ -58,8 +65,15 @@ class ControllerContenutiUtenteRegistrato extends Controller
         $gestore = new GestioneContenuti();
         try {
             $elenco=$gestore->visualizzaElencoContenutiPerTipo($tipo);
-            return $this->render("tifoso/visualizzaElencoContenutiPerTipo.html.twig",
-                array('elenco' => $elenco));
+            if($tipo=="immagine") {
+                return $this->render("tifoso/visualizzaElencoContenutiPerTipo.html.twig",
+                    array('elenco' => $elenco));
+            }else{
+                if ($tipo=="video"){
+                    return $this->render("tifoso/visualizzaElencoVideo.html.twig",
+                        array('video' => $elenco));
+                }
+            }
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }

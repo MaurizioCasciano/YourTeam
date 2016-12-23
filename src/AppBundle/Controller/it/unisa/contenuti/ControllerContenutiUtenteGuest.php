@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 class ControllerContenutiUtenteGuest extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/contenuti/utenteGuest/visualizzaContenuto")
      * @Method("GET")
      */
     public function visualizzaElencoContenuti()
@@ -52,13 +52,15 @@ class ControllerContenutiUtenteGuest extends Controller
     }
 
     /**
-     * @Route("/contenuti/utenteGuest/visualizzaElencoContenutiPerTipo/{tipo}")
+     * @Route("/")
      * @Method("GET")
      */
-    public function visualizzaElencoContenutiPerTipo($tipo){
+    public function visualizzaElencoContenutiPerTipo(){
         $gestore = new GestioneContenuti();
         try {
-            $gestore->visualizzaElencoContenutiPerTipo($tipo);
+            $elenco= $gestore->visualizzaElencoContenutiPerTipo("immagine");
+            return $this->render("guest/visualizzaElencoContenuti.html.twig",
+                array('elenco' => $elenco));
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
