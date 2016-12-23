@@ -234,7 +234,9 @@ class ControllerChatAllenatore extends Controller
             // return new Response(var_dump($messaggi));
             return $this->render("allenatore/FormChatAllenatore.html.twig", array("messaggi" => $messaggi, "d" => $calciatoreDestinatario));
         } catch (\Exception $e) {
-            return new Response($e->getMessage(), 404);
+            return $this->render("allenatore/FormChatAllenatore.html.twig", array("messaggi" => array(), "d" => $calciatoreDestinatario));
+
+
         }
     }
 
