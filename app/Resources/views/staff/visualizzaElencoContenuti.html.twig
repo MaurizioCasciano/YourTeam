@@ -5,13 +5,19 @@
     <div class="container">
             <div id="contenitore" class="col-md-6 col-lg-6">
 
-        {% for contenuto in elenco %}
-                <a href="visualizzaContenutoView/{{ contenuto.getId() }}"> <img class="col-md-6 col-sm-6 "src="{{ asset("ImmaginiApp/contenuti/") }}{{ contenuto.getURL() }}" class="img-rectangle img-responsive"></a>
-
+        {% for immagine in immagini %}
+                <a href="visualizzaContenutoView/{{ immagine.getId() }}"> <img class="col-md-6 col-sm-6 "src="{{ asset("ImmaginiApp/contenuti/") }}{{ immagine.getURL() }}" class="img-rectangle img-responsive"></a>
         {% endfor %}
+                {% for vid in video %}
+                    <a href="visualizzaContenutoView/{{ vid.getId() }}">
+                        <video controls>
+                            <source src="{{ asset("ImmaginiApp/contenuti/Video/") }}{{ vid.getURL() }}"  type="video/mp4">
+                        </video>
+                    </a>
 
-    </div>
+                {% endfor %}
             </div>
+    </div>
 {% endblock %}
 
 

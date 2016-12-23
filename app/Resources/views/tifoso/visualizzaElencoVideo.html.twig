@@ -1,0 +1,18 @@
+{% extends 'tifoso/template.html.twig' %}
+
+{% block contenuto %}
+
+    <div class="container">
+        <div id="contenitore" class="col-md-6 col-lg-6">
+
+            {% for vid in video %}
+                <a href="/yourteam/web/app_dev.php/contenuti/utenteRegistrato/visualizzaContenutoView/{{ vid.getId() }}">
+                    <video controls>
+                        <source src="{{ asset("ImmaginiApp/contenuti/Video/") }}{{ vid.getURL() }}"  type="video/mp4">
+                    </video>
+                </a>
+
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

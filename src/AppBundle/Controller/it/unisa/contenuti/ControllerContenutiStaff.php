@@ -38,7 +38,7 @@ class ControllerContenutiStaff extends Controller
         $titolo = $richiesta->request->get("t");
         $descrizione = $richiesta->request->get("d");
         //$URL = $richiesta->request->get("u");
-        $tipo = $richiesta->request->get("ti");
+        $tipo = $richiesta->request->get("tipo");
 
         /* per un test di prova iniziale la variabile squadra sarà inviata tramite form*/
         //$squadra = $richiesta->request->get("squadra");
@@ -46,8 +46,11 @@ class ControllerContenutiStaff extends Controller
          /*quando verrà implementata la sessione, la squadra sarà ottenuta dalla sessione*/
         $squadra= $_SESSION["squadra"];
 
-
-        $path=Utility::loadFile("file","contenuti");
+        if($tipo=="video") {
+            $path = Utility::loadFile("file", "contenuti/Video");
+        }else{
+            $path = Utility::loadFile("file", "contenuti");
+        }
         if($path!=null){
 
             $contenuto = new Contenuto($titolo,$descrizione,$path,$tipo,$squadra);
@@ -109,7 +112,12 @@ class ControllerContenutiStaff extends Controller
 
         try {
             $contenuto = $gestore->cancellaContenuto($id);
-            unlink("../web/ImmaginiApp/contenuti/".$contenuto->getURL());
+            if ($contenuto->getTipo()=="video"){
+                unlink("../web/ImmaginiApp/contenuti/Video/".$contenuto->getURL());
+            }else{
+                unlink("../web/ImmaginiApp/contenuti/".$contenuto->getURL());
+            }
+
             return $this->render("staff/alertCancellaContenuto.html.twig");
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
@@ -138,8 +146,15 @@ class ControllerContenutiStaff extends Controller
         $gestore = new GestioneContenuti();
         try {
             $contenuto=$gestore->visualizzaContenuto($id);
-            return $this->render("staff/visualizzaContenutoStaff.html.twig",
-            array("contenuto"=>$contenuto));
+            if($contenuto->getTipo()=="immagine") {
+                return $this->render("staff/visualizzaContenutoStaff.html.twig",
+                    array("contenuto" => $contenuto));
+            }else{
+                if($contenuto->getTipo()=="video"){
+                    return $this->render("staff/visualizzaVideoStaff.html.twig",
+                        array("contenuto" => $contenuto));
+                }
+            }
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
@@ -154,7 +169,29 @@ class ControllerContenutiStaff extends Controller
         $gestore = new GestioneContenuti();
         try {
             $contenuti=$gestore->visualizzaElencoContenutiSquadra($squadra);
-            return $this->render("staff/visualizzaElencoContenuti.html.twig",array("elenco"=>$contenuti));
+            $immagini= array();
+            $video = array();
+            $notizie = array();
+            $i=0;
+            $j=0;
+            $z=0;
+            foreach ($contenuti as $c) {
+                if ($c->getTipo() == ("immagine")) {
+                    $immagini[$i] = $c;
+                    $i++;
+                }else {
+                    if ($c->getTipo() == ("video")) {
+                        $video[$j] = $c;
+                        $j++;
+                    } else {
+                        if ($c->getTipo() == ("notizia")) {
+                            $notizie[$z] = $c;
+                            $z++;
+                        }
+                    }
+                }
+            }
+            return $this->render("staff/visualizzaElencoContenuti.html.twig",array("immagini"=>$immagini,"video"=>$video,"notizia"=>$notizie));
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
