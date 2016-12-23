@@ -1,4 +1,4 @@
-{% extends 'allenatore/template.html.twig' %}
+{% extends 'giocatore/template.html.twig' %}
 {% block contenuto %}
     <div class="container">
         <div class="col-md-12 col-lg-6">
@@ -20,7 +20,7 @@
                                         alert("dfsasdsd");
                                     </script>-->
 
-                                    {% if messaggio.getMittente() == "allenatore" %}
+                                    {% if messaggio.getMittente() == "calciatore" %}
                                         <li class="mar-btm">
                                             <div class="media-right">
                                                 <img src="" class="img-circle img-sm" alt="Profile Picture">
@@ -37,7 +37,7 @@
                                             </div>
                                         </li>
 
-                                    {% elseif messaggio.getMittente() == "calciatore" %}
+                                    {% elseif messaggio.getMittente() == "allenatore" %}
                                         <li class="mar-btm">
                                             <div class="media-left">
                                                 <img src="" class="img-circle img-sm" alt="Profile Picture">
