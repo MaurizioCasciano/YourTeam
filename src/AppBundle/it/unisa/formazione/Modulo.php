@@ -9,7 +9,7 @@
 namespace AppBundle\it\unisa\formazione;
 
 
-class Modulo
+class Modulo implements \JsonSerializable
 {
     private $id;
     private $descrizione;
@@ -30,6 +30,11 @@ class Modulo
         $this->id = $id;
         $this->descrizione = $descrizione;
         $this->portiere="POR";
+        $this->difensori=null;
+        $this->mediani=null;
+        $this->centrocampisti=null;
+        $this->trequartisti=null;
+        $this->attaccanti=null;
     }
 
     /**
@@ -163,5 +168,22 @@ class Modulo
     }
 
 
-
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    function jsonSerialize()
+    {
+        return [
+            'nome' => $this->id,
+            'difensori' => $this->difensori,
+            'mediani' => $this->mediani,
+            'centrocampisti' => $this->centrocampisti,
+            'trequartisti' => $this->trequartisti,
+            'attaccanti' => $this->attaccanti
+        ];
+    }
 }
