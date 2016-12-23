@@ -30,9 +30,9 @@ class ControllerChatAllenatore extends Controller
         $g = new GestoreComunicazione();
         try {
             $testo = $richiesta->request->get("testo");
-            $g->inviaMessaggio(new Messaggio($testo,
-                $richiesta->request->get("allenatore"),
-                $richiesta->request->get("calciatore"), "allenatore", time(), "chat"));
+            $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
+                $richiesta->get("d"),
+                "allenatore", time(), "chat"));
             return new Response("Messaggio inviato correttamente");
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
@@ -232,8 +232,8 @@ class ControllerChatAllenatore extends Controller
             }*/
 
 
-            //return new Response(var_dump($messaggi));
-            return $this->render(":allenatore:FormChatAllenatore.html.twig", array("messaggi" => $messaggi));
+            // return new Response(var_dump($messaggi));
+            return $this->render("allenatore/FormChatAllenatore.html.twig", array("messaggi" => $messaggi, "d" => $calciatoreDestinatario));
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }

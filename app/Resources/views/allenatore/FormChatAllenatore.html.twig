@@ -1,4 +1,4 @@
-{% extends 'staff/template.html.twig' %}
+{% extends 'allenatore/template.html.twig' %}
 {% block contenuto %}
     <div class="container">
         <div class="col-md-12 col-lg-6">
@@ -9,77 +9,47 @@
                     </div>
                 </div>
                 <!--Widget body http://bootdey.com/img/Content/avatar/avatar1.png -->
-                <div id="chat-body" class="collapse in">
+               <div id="chat-body" class="collapse in">
                     <div class="nano has-scrollbar" style="height:300px">
                         <div class="nano-content pad-all" tabindex="0" style="right: -17px;">
                             <ul class="list-unstyled media-block">
 
                                 {% for messaggio in messaggi %}
 
-                                        <li class="mar-btm">
-                                            <div class="media-right">
-                                                <img src="" class="img-circle img-sm" alt="Profile Picture">
+                                    <script>
+                                        alert("dfsasdsd");
+                                    </script>
+                                    <li class="mar-btm">
+                                        <div class="media-right">
+                                            <img src="" class="img-circle img-sm" alt="Profile Picture">
+                                        </div>
+                                        <div class="media-body pad-hor speech-right">
+                                            <div class="speech">
+                                                <a href="#"
+                                                   class="media-heading">{{ messaggio.getNomeMittente() }}</a>
+                                                <p>{{ messaggio.getTesto() }} </p>
+                                                <p class="speech-time">
+                                                    <i class="fa fa-clock-o fa-fw">hyujb</i>
+                                                </p>
                                             </div>
-                                            <div class="media-body pad-hor speech-right">
-                                                <div class="speech">
-                                                    <a href="#"
-                                                       class="media-heading">{{ messaggio.getNomeMittente() }}</a>
-                                                    <p>{{ messaggio.getTesto() }} </p>
-                                                    <p class="speech-time">
-                                                        <i class="fa fa-clock-o fa-fw">hyujb</i>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </li>
+                                        </div>
+                                    </li>
 
                                 {% endfor %}
-
-
-
-
-
-
-
-                                <li class="mar-btm">
-                                    <div class="media-left">
-                                        <img src="" class="img-circle img-sm" alt="Profile Picture">
-                                    </div>
-                                    <div id class="media-body pad-hor speech-left">
-                                        <div class="speech">
-                                            <a href="#" class="media-heading">{{messaggi[0].getTesto() }}</a>
-                                            <p>WAJU COM VA O PROGETT?!</p>
-                                            <p class="speech-time" id="ora">
-                                                <i class="fa fa-clock-o fa-fw"></i>09:23
-                                            </p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="mar-btm">
-                                    <div class="media-right">
-                                        <img src="" class="img-circle img-sm" alt="Profile Picture">
-                                    </div>
-                                    <div class="media-body pad-hor speech-right">
-                                        <div class="speech">
-                                            <a href="#" class="media-heading">Luigi Durso</a>
-                                            <p>Committ committttt t tt </p>
-                                            <p class="speech-time">
-                                                <i class="fa fa-clock-o fa-fw"></i> 09:23
-                                            </p>
-                                        </div>
-                                    </div>
-                                </li>
                             </ul>
-                        </div>
+                       </div>
                         <div class="nano-pane">
                             <div class="nano-slider" style="height: 141px; transform: translate(0px, 0px);"></div>
                         </div>
                     </div>
 
-                    <form action="/comunicazione/giocatore/inviaMessaggioChat" method="post">
+                    <form action="/comunicazione/allenatore/inviaMessaggioChat" method="post">
                         <div class="panel-footer">
                             <div class="row">
                                 <div class="col-xs-9">
-                                    <input type="textarea" id="testo" placeholder="Scrivi il messaggio..."
+                                    <input type="hidden" value="{{ d }}" name = "d">
+
+                                    <input name="testo" type="textarea" id="testo" placeholder="Scrivi il messaggio..."
                                            class="form-control chat-input">
                                 </div>
                                 <div class="col-xs-3">
@@ -91,5 +61,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>->
 {% endblock %}
