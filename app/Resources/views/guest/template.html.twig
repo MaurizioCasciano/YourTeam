@@ -22,17 +22,40 @@
     <link href="assets/css/material-kit.css" rel="stylesheet"/>
     <script type="text/javascript">
 
-        function mostraSquadre(radioButton){
+        function changeTipo(tipo){
 
-            var squadre = document.getElementById("divSceltaSquadre");
-
-            if(radioButton.value == 'staff'){
-                squadre.hidden=true;
+            var form=document.getElementById("f");
+            var t=document.getElementById("t");
+            var r=document.getElementById("rafel");
+            var s=document.getElementById("scritta");
+            if(tipo=="staff"){
+                form.action="staff_allenatore_tifoso/aggiungi";
+                t.value="staff";
+                s.innerHTML="username"
+                r.hidden=true;
             }
-            else{
-                squadre.hidden=false;
-            }
+            else
+                if(tipo=="allenatore"){
+                    form.action="staff_allenatore_tifoso/aggiungi";
+                    t.value="allenatore";
+                    s.innerHTML="codice contratto F.I.G.C";
+                    r.hidden=true;
+                }
+                else
+                if(tipo=="tifoso"){
+                    form.action="staff_allenatore_tifoso/aggiungi";
+                    t.value="tifoso";
+                    s.innerHTML="username"
+                    r.hidden=true;
+                }else
+                    if(tipo=="giocatore"){
+                    form.action="calciatore/aggiungi";
+                        t.value="giocatore";
+                        r.hidden=false;
+                        s.innerHTML="codice contratto F.I.G.C"
+                }
         }
+
 
     </script>
 
@@ -86,11 +109,11 @@
         </div>
 
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="file:///C:/Users/Vincenzo/Desktop/TEMP_NUOVO/registrazioneAccount(1).html"><i class="material-icons">person </i> Registrati</a></li>
+            <li><a href="account/registrazione"><i class="material-icons">person </i> Registrati</a></li>
         </ul>
         <form method="POST" action="login" class="navbar-form navbar-right">
             Username:  <input type="text"  name="u" class="form-control" size=5>
-            Password:  <input type="password" name="p" class="form-control"size=5>
+            Password:  <input type="password" name="p" class="form-control"size=5 >
             <button type="submit" class="btn btn-info">Login</button>
         </form>
     </div>

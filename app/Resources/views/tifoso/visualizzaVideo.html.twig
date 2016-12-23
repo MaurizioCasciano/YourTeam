@@ -1,0 +1,19 @@
+{% extends 'tifoso/template.html.twig' %}
+{% block contenuto %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label>{{  contenuto.getTitolo()}}</label>
+                </div>
+                <div class="form-group">
+                    <label>{{ contenuto.getDescrizione()}}</label>
+                </div>
+
+                <video controls>
+                    <source src="{{ asset("ImmaginiApp/contenuti/Video/") }}{{ contenuto.getURL() }}"  type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </div>
+{% endblock %}

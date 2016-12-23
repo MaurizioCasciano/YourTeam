@@ -1,0 +1,29 @@
+{% extends 'staff/template.html.twig' %}
+{% block contenuto %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label>{{  contenuto.getTitolo()}}</label>
+                </div>
+                <div class="form-group">
+                    <label>{{ contenuto.getDescrizione()}}</label>
+                </div>
+                <img class="col-md-10 col-sm-10" src="{{ asset("ImmaginiApp/contenuti/") }}{{ contenuto.getURL() }}" class="img-rounded img-responsive" alt="immagine">
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-lg-6">
+                <form>
+                    <div class="form-group">
+                         <button type="submit" class="btn btn-default">Modifica</button>
+                         <button type="submit" class="btn btn-default"><a style="color:black" href="/yourteam/web/app_dev.php/contenuti/staff/cancellaContenuto/{{ contenuto.getId() }}">Elimina</a></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

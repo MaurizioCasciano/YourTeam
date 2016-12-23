@@ -36,16 +36,16 @@ class ControllerAutenticazione extends Controller
         $r=$g->login($u,$p);
         if($r){
             if($_SESSION["tipo"]=="allenatore")
-                    return $this->redirect("account/staff_allenatore_tifoso/".$u);
+                    return $this->redirect("/yourteam/web/app_dev.php/account/staff_allenatore_tifoso/".$u);
             else
                 if($_SESSION["tipo"]=="calciatore")
-                    return $this->redirect("account/calciatore/".$u);
+                    return $this->redirect("/yourteam/web/app_dev.php/account/calciatore/".$u);
                 else
                     if($_SESSION["tipo"]=="tifoso")
-                        return $this->redirect("account/staff_allenatore_tifoso/".$u);
+                        return $this->redirect("/yourteam/web/app_dev.php/account/staff_allenatore_tifoso/".$u);
                     else
                         if($_SESSION["tipo"]=="staff")
-                            return $this->redirect("account/staff_allenatore_tifoso/".$u);
+                            return $this->redirect("/yourteam/web/app_dev.php/account/staff_allenatore_tifoso/".$u);
         }
 
         else
@@ -66,15 +66,6 @@ class ControllerAutenticazione extends Controller
         return $this->redirect("/yourteam/web/app_dev.php/");
 
     }
-    /**
-     * @Route("/",name="home")
-     * @Method("GET")
-     */
-    public function home()
-    {
 
-        return $this->render("guest/home.html.twig");
-
-    }
 
 }
