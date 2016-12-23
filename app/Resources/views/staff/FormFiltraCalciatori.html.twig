@@ -1,0 +1,75 @@
+{% extends 'staff/template.html.twig' %}
+{% block contenuto %}
+    <h1>Form filtra calciatori</h1>
+
+    <form action="/statistiche/user/calciatore/filter/submit" method="post">
+
+        <div>
+            <div>MINIMO - MASSIMO</div>
+            <input id="min_tiri_totali" type="number" name="min_tiri_totali" min="0" step="1" pattern="[0-9]">
+            <label for="tiri_totali">Tiri Totali</label>
+            <input id="max_tiri_totali" type="number" name="max_tiri_totali" min="0" step="1" pattern="[0-9]"><br/>
+        </div>
+
+        <div>
+            <input id="min_tiri_porta" type="number" name="min_tiri_porta" min="0" step="1" pattern="[0-9]">
+            <label for=" tiri_porta">Tiri in Porta</label>
+            <input id="max_tiri_porta" type="number" name="max_tiri_porta" min="0" step="1" pattern="[0-9]"><br/>
+        </div>
+
+        <div>
+            <input id=" min_falli_fatti" type="number" name="min_falli_fatti" min="0" step="1" pattern="[0-9]">
+            <label for="falli_fatti">Falli Fatti</label>
+            <input id="max_falli_fatti" type="number" name="max_falli_fatti" min="0" step="1" pattern="[0-9]"><br/>
+        </div>
+
+        <div>
+            <input id=" min_falli_subiti" type="number" name="min_falli_subiti" min="0" step="1" pattern="[0-9]">
+            <label for="falli_subiti">Falli Subiti</label>
+            <input id="max_falli_subiti" type="number" name="max_falli_subiti" min="0" step="1" pattern="[0-9]"><br/>
+        </div>
+
+        <div>
+            <input id=" min_percentuale_passagii_riusciti" type="number" name="min_percentuale_passagii_riusciti"
+                   min="0"
+                   max="100" step="1" pattern="[0-9]">
+            <label for="percentuale_passagii_riusciti">Percentuale Passaggi Riusciti</label>
+            <input id="max_percentuale_passagii_riusciti" type="number" name="max_percentuale_passagii_riusciti" min="0"
+                   max="100" step="1" pattern="[0-9]"><br/>
+        </div>
+
+        <div>
+            <input id="min_gol_fatti" type="number" name="min_gol_fatti" min="0" step="1" pattern="[0-9]">
+            <label for="gol_fatti">Gol Fatti</label>
+            <input id="max_gol_fatti" type="number" name="max_gol_fatti" min="0" step="1" pattern="[0-9]"><br/>
+        </div>
+
+        <div>
+            <input id="min_gol_subiti" type="number" name="min_gol_subiti" min="0" step="1" pattern="[0-9]">
+            <label for="gol_subiti">Gol Subiti</label>
+            <input id="max_gol_subiti" type="number" name="max_gol_subiti" min="0" step="1" pattern="[0-9]"><br/>
+        </div>
+
+        <div>
+            <input id="min_assist" type="number" name="min_assist" min="0" step="1" pattern="[0-9]">
+            <label for="assist">Assist</label>
+            <input id="max_assist" type="number" name="max_assist" min="0" step="1" pattern="[0-9]"><br/>
+        </div>
+
+        <div>
+            <input id="min_ammonizioni" type="number" name="min_ammonizioni" min="0" step="1" pattern="[0-9]">
+            <label for="ammonizioni">Ammonizioni</label>
+            <input id="max_ammonizioni" type="number" name="max_ammonizioni" min="0" step="1" pattern="[0-9]"><br/>
+        </div>
+
+        <div>
+            <input id="min_espulsioni" type="number" name="min_espulsioni" min="0" step="1" pattern="[0-9]">
+            <label for="espulsioni">Espulsioni</label>
+            <input id="max_espulsioni" type="number" name="max_espulsioni" min="0" step="1" pattern="[0-9]"><br/>
+        </div>
+
+        <div>
+            <input type="submit" value="Filtra">
+        </div>
+    </form>
+{% endblock %}
