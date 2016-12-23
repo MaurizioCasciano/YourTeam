@@ -1,20 +1,21 @@
 <?php
 namespace AppBundle\it\unisa\statistiche;
+
 /**
- * Questa classe rappresenta le statistiche di un calciatore.
  * Created by PhpStorm.
  * User: Maurizio
  * Date: 14/12/2016
  * Time: 18:45
  */
-class StatisticheCalciatore
+class DettagliCalciatore
 {
-    private $usernameCalciatore;
+    //statistiche
+    private $usernameCodiceContratto;
     private $tiriTotali;
     private $tiriPorta;
     private $falliFatti;
     private $falliSubiti;
-    private $percentualePassaggiRiusciti;
+    private $percentualPassaggiRiusciti;
     private $golFatti;
     private $golSubiti;
     private $assist;
@@ -22,8 +23,16 @@ class StatisticheCalciatore
     private $espulsioni;
     private $partiteGiocate;
 
+    //dettagli calciatore
+    private $numeroMaglia;
+    private $valore;
+    private $stipendio;
+    private $piedePreferito;
+    private $capitano;
+    private $ruoli;
+
     /**
-     * StatisticheCalciatore constructor.
+     * DettagliCalciatore constructor.
      * @param $usernameCalciatore
      * @param $tiriTotali
      * @param $tiriPorta
@@ -36,38 +45,49 @@ class StatisticheCalciatore
      * @param $ammonizioni
      * @param $espulsioni
      * @param $partiteGiocate
+     * @param $numeroMaglia
+     * @param $valore
+     * @param $stipendio
+     * @param $piedePreferito
+     * @param $capitano
+     * @param $ruoli
      */
-    public function __construct($usernameCalciatore, $tiriTotali, $tiriPorta, $falliCommessi, $falliSubiti, $percentualPassaggiRiusciti, $golFatti, $golSubiti, $assist, $ammonizioni, $espulsioni, $partiteGiocate)
+    public function __construct($usernameCalciatore, $tiriTotali, $tiriPorta, $falliFatti, $falliSubiti, $percentualPassaggiRiusciti, $golFatti, $golSubiti, $assist, $ammonizioni, $espulsioni, $partiteGiocate, $numeroMaglia, $valore, $stipendio, $piedePreferito, $capitano, $ruoli)
     {
-        $this->usernameCalciatore = $usernameCalciatore;
+        $this->usernameCodiceContratto = $usernameCalciatore;
         $this->tiriTotali = $tiriTotali;
         $this->tiriPorta = $tiriPorta;
-        $this->falliFatti = $falliCommessi;
+        $this->falliFatti = $falliFatti;
         $this->falliSubiti = $falliSubiti;
-        $this->percentualePassaggiRiusciti = $percentualPassaggiRiusciti;
+        $this->percentualPassaggiRiusciti = $percentualPassaggiRiusciti;
         $this->golFatti = $golFatti;
         $this->golSubiti = $golSubiti;
         $this->assist = $assist;
         $this->ammonizioni = $ammonizioni;
         $this->espulsioni = $espulsioni;
         $this->partiteGiocate = $partiteGiocate;
+        $this->numeroMaglia = $numeroMaglia;
+        $this->valore = $valore;
+        $this->stipendio = $stipendio;
+        $this->piedePreferito = $piedePreferito;
+        $this->capitano = $capitano;
+        $this->ruoli = $ruoli;
     }
-
 
     /**
      * @return mixed
      */
-    public function getUsernameCalciatore()
+    public function getUsernameCodiceContratto()
     {
-        return $this->usernameCalciatore;
+        return $this->usernameCodiceContratto;
     }
 
     /**
-     * @param mixed $usernameCalciatore
+     * @param mixed $usernameCodiceContratto
      */
-    public function setUsernameCalciatore($usernameCalciatore)
+    public function setUsernameCodiceContratto($usernameCodiceContratto)
     {
-        $this->usernameCalciatore = $usernameCalciatore;
+        $this->usernameCodiceContratto = $usernameCodiceContratto;
     }
 
     /**
@@ -137,17 +157,17 @@ class StatisticheCalciatore
     /**
      * @return mixed
      */
-    public function getPercentualePassaggiRiusciti()
+    public function getPercentualPassaggiRiusciti()
     {
-        return $this->percentualePassaggiRiusciti;
+        return $this->percentualPassaggiRiusciti;
     }
 
     /**
-     * @param mixed $percentualePassaggiRiusciti
+     * @param mixed $percentualPassaggiRiusciti
      */
-    public function setPercentualePassaggiRiusciti($percentualePassaggiRiusciti)
+    public function setPercentualPassaggiRiusciti($percentualPassaggiRiusciti)
     {
-        $this->percentualePassaggiRiusciti = $percentualePassaggiRiusciti;
+        $this->percentualPassaggiRiusciti = $percentualPassaggiRiusciti;
     }
 
     /**
@@ -244,5 +264,117 @@ class StatisticheCalciatore
     public function setPartiteGiocate($partiteGiocate)
     {
         $this->partiteGiocate = $partiteGiocate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNumeroMaglia()
+    {
+        return $this->numeroMaglia;
+    }
+
+    /**
+     * @param mixed $numeroMaglia
+     */
+    public function setNumeroMaglia($numeroMaglia)
+    {
+        $this->numeroMaglia = $numeroMaglia;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValore()
+    {
+        return $this->valore;
+    }
+
+    /**
+     * @param mixed $valore
+     */
+    public function setValore($valore)
+    {
+        $this->valore = $valore;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStipendio()
+    {
+        return $this->stipendio;
+    }
+
+    /**
+     * @param mixed $stipendio
+     */
+    public function setStipendio($stipendio)
+    {
+        $this->stipendio = $stipendio;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPiedePreferito()
+    {
+        return $this->piedePreferito;
+    }
+
+    /**
+     * @param mixed $piedePreferito
+     */
+    public function setPiedePreferito($piedePreferito)
+    {
+        $this->piedePreferito = $piedePreferito;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCapitano()
+    {
+        return $this->capitano;
+    }
+
+    /**
+     * @param mixed $capitano
+     */
+    public function setCapitano($capitano)
+    {
+        $this->capitano = $capitano;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatisticheCalciatore()
+    {
+        return $this->statisticheCalciatore;
+    }
+
+    /**
+     * @param mixed $statisticheCalciatore
+     */
+    public function setStatisticheCalciatore($statisticheCalciatore)
+    {
+        $this->statisticheCalciatore = $statisticheCalciatore;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRuoli()
+    {
+        return $this->ruoli;
+    }
+
+    /**
+     * @param mixed $ruoli
+     */
+    public function setRuoli($ruoli)
+    {
+        $this->ruoli = $ruoli;
     }
 }
