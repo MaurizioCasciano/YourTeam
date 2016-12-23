@@ -50,7 +50,8 @@ class ControllerFormazione extends Controller
 
                 $_SESSION["partita"]=$partita;
 
-                return new Response(var_dump($calciatori)." convocati per la partita: ".var_dump($partita)); //in attesa della view della lista calciatori
+                return $this->render("formazione/visualizzaCalciatoriConvocazione.html.twig",array('calciatori'=> $calciatori , 'partita' => $partita));
+
 
             }
             catch (PartitaNonDispException $e1)
@@ -180,8 +181,6 @@ class ControllerFormazione extends Controller
 
         $tattiche=$gestioneRosa->visualizzaTattica();
 
-        $tattiche=json_encode($tattiche);
-
         return new JsonResponse(array("tattiche" => $tattiche));
 
     }
@@ -211,6 +210,11 @@ class ControllerFormazione extends Controller
      */
     public function cambiaTattica($tattica)
     {
+        $gestioneRosa=new GestioneRosa();
+
+        $modulo=$gestioneRosa->ottieniTattica($tattica);
+
+        return new JsonResponse(array("modulo" => $modulo));
 
     }
 
