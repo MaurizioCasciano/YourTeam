@@ -88,7 +88,10 @@ class GestionePartita
         $partita=$this->disponibilitaPartita($squadra);
         if(!is_null($partita))
         {
-            $query="SELECT * FROM giocare WHERE partita='$partita'";
+            $data=$partita->getData();
+            $nomePartita=$partita->getNome();
+
+            $query="SELECT * FROM giocare WHERE partita='$nomePartita' AND data='$data'";
             $risultato=$this->connessione->query($query);
 
             if($risultato->num_rows!=0)
