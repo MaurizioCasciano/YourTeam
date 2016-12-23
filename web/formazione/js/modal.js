@@ -31,13 +31,22 @@ function caricaOnClickRuoli()
 			{
 				if(calciatori[i].selezionato==false)
 				{
-					for(var j=0;j<calciatori[i].ruolo.length;j++)
+					if (ruolo=="panchina")
 					{
-						if(calciatori[i].ruolo[j]==ruolo)
-						{
-                            stringaLista+="<button class=\"buttonRuolo\" name=\""+i+"\" value=\""+calciatori[i].contratto+"\">"+calciatori[i].nomeCognome+"</button></br>";
-                        }
+						stringaLista+="<button class=\"buttonRuolo\" name=\""+i+"\" value=\""+calciatori[i].contratto+"\">"+calciatori[i].nomeCognome+"</button></br>";
 					}
+					else
+					{
+						for(var j=0;j<calciatori[i].ruolo.length;j++)
+						{
+							if(calciatori[i].ruolo[j]==ruolo )
+							{
+								stringaLista+="<button class=\"buttonRuolo\" name=\""+i+"\" value=\""+calciatori[i].contratto+"\">"+calciatori[i].nomeCognome+"</button></br>";
+							}
+						}
+
+					}
+
 				}
 			}
 			listaCalciatori.innerHTML=stringaLista;

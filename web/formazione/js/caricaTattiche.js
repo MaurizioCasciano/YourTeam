@@ -7,9 +7,6 @@ function caricaFormazione()
 	{
 		calciatori[i].selezionato=false;
 	}
-	//cancello una precedente selezione
-	cancellaSelezione();
-
 
 	var comboBoxTattiche=document.getElementById("selezioneTattica");
 
@@ -109,6 +106,16 @@ function caricaFormazione()
 	}
 	stringaAttaccanti+="</br>"
 	attaccanti.innerHTML=stringaAttaccanti;
+
+	//carico panchina
+	var panchina=document.getElementById("panchina");
+	var panchinari="";
+	for (var i=0 ; i<7 ; i++)
+	{
+		panchinari+="<button name='' class='buttonModal' value='panchina'></button></br>";
+	}
+	panchinari+="</br>";
+	panchina.innerHTML=panchinari;
 
 	//setto gli onclick per ogni ruolo
 	caricaOnClickRuoli();

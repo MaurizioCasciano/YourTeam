@@ -36,7 +36,6 @@ function caricaCalciatori()
 			for (var i=0; i<jsonRisposta.calciatori.length; i++)
 			{
 				calciatori.push(new calciatore(jsonRisposta.calciatori[i].contratto,jsonRisposta.calciatori[i].nomeCognome,jsonRisposta.calciatori[i].ruoli,false));
-				alert(JSON.stringify(calciatori));
 			}
 		}
 

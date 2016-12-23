@@ -56,16 +56,16 @@ class ControllerFormazione extends Controller
             }
             catch (PartitaNonDispException $e1)
             {
-                return new Response($e1->messaggioDiErrore());
+                return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> $e1->messaggioDiErrore()));
             }
             catch (ConvocNonDispException $e2)
             {
-                return new Response($e2->messaggioDiErrore());
+                return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> $e2->messaggioDiErrore()));
             }
         }
         else
         {
-            return new Response("devi effettuare prima l accesso!");
+            return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> "devi effettuare prima l accesso!"));
         }
     }
 
@@ -102,16 +102,18 @@ class ControllerFormazione extends Controller
             }
             catch (PartitaNonDispException $e1)
             {
-                return new Response($e1->messaggioDiErrore());
+                return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> $e1->messaggioDiErrore()));
+
             }
             catch (FormazioneNonDispException $e2)
             {
-                return new Response($e2->messaggioDiErrore());
+                return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> $e2->messaggioDiErrore()));
+
             }
         }
         else
         {
-            return new Response("devi effettuare prima l accesso!");
+            return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> "devi effettuare prima l accesso!"));
         }
 
 
@@ -139,12 +141,13 @@ class ControllerFormazione extends Controller
 
                 $gestionePartita->diramaConvocazioni($convocazioni,$partita);
 
-                return new Response("convocazioni diramate!");
+                return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> "convocazioni diramate!"));
+
             }
 
         }
 
-        return new Response("nessun calciatore trovato!");
+        return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> "nessun calciatore convocato !"));
 
     }
 
@@ -170,9 +173,16 @@ class ControllerFormazione extends Controller
 
         $gestoreRosa=new GestioneRosa();
 
-        $gestoreRosa->inviaEmailSchieramentoFormazione($calciatori);
+        try
+        {
+            $gestoreRosa->inviaEmailSchieramentoFormazione($calciatori);
+        }
+        catch(Exception $e1)
+        {
+            return new Response("email non inviate!");
+        }
 
-        return new JsonResponse(array("risposta" => "ok"));
+        return new Response("email inviate!");
     }
 
     /**
@@ -183,11 +193,20 @@ class ControllerFormazione extends Controller
      */
     public function ottieniCalciatori()
     {
-        $gestioneRosa=new GestioneRosa();
+        try
+        {
+            $gestioneRosa=new GestioneRosa();
 
-        $partita=$_SESSION["partita"];
+            $partita=$_SESSION["partita"];
 
-        $calciatori=$gestioneRosa->ottieniConvocati($partita);
+            $calciatori=$gestioneRosa->ottieniConvocati($partita);
+
+        }
+        catch (Exception $e1)
+        {
+            return new Response($e1->getMessage());
+        }
+
 
         return new JsonResponse(array("calciatori" => $calciatori));
     }
