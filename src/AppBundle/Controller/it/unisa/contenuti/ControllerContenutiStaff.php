@@ -11,6 +11,8 @@ namespace AppBundle\Controller\it\unisa\contenuti;
 use AppBundle\Utility\DB;
 use AppBundle\it\unisa\contenuti\Contenuto;
 use AppBundle\it\unisa\contenuti\GestioneContenuti;
+use AppBundle\Utility\Utility;
+use Monolog\Handler\Curl\Util;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,28 +35,33 @@ class ControllerContenutiStaff extends Controller
      * @Method("POST")
      */
     public function inserisciContenuto(Request $richiesta){
-        $titolo = $richiesta->request->get("titolo");
-        $descrizione = $richiesta->request->get("descrizione");
-        $URL = $richiesta->request->get("URL");
-        $tipo = $richiesta->request->get("tipo");
+        $titolo = $richiesta->request->get("t");
+        $descrizione = $richiesta->request->get("d");
+        //$URL = $richiesta->request->get("u");
+        $tipo = $richiesta->request->get("ti");
 
         /* per un test di prova iniziale la variabile squadra sarà inviata tramite form*/
-        $squadra = $richiesta->request->get("squadra");
+        //$squadra = $richiesta->request->get("squadra");
 
-        /* quando verrà implementata la sessione, la squadra sarà ottenuta dalla sessione
-        $squadra= $_SESSION["squadra"];*/
+         /*quando verrà implementata la sessione, la squadra sarà ottenuta dalla sessione*/
+        $squadra= $_SESSION["squadra"];
 
-        $contenuto = new Contenuto($titolo,$descrizione,$URL,$tipo,$squadra);
 
-        $gestore = new GestioneContenuti();
-        try {
-            $gestore->inserisciContenuto($contenuto);
-            return new Response("<br/> inserimento andato a buon fine <br/>");
-        } catch (\Exception $e) {
-            return new Response($e->getMessage(), 404);
+        $path=Utility::loadFile("file","contenuti");
+        if($path!=null){
+
+            $contenuto = new Contenuto($titolo,$descrizione,$path,$tipo,$squadra);
+            $gestore = new GestioneContenuti();
+            try {
+                $gestore->inserisciContenuto($contenuto);
+                return $this->render("staff/alertInserisciContenuto.html.twig");
+            } catch (\Exception $e) {
+                return new Response($e->getMessage(), 404);
+            }
+
         }
+        return new Response("problema a caricare l'immagine");
 
-        return new Response();
     }
 
     /**
@@ -101,8 +108,9 @@ class ControllerContenutiStaff extends Controller
         $gestore = new GestioneContenuti();
 
         try {
-            $gestore->cancellaContenuto($id);
-            return new Response("<br/> cancellazione andata a buon fine <br/>");
+            $contenuto = $gestore->cancellaContenuto($id);
+            unlink("../web/ImmaginiApp/contenuti/".$contenuto->getURL());
+            return $this->render("staff/alertCancellaContenuto.html.twig");
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
@@ -128,24 +136,39 @@ class ControllerContenutiStaff extends Controller
      */
     public function visualizzaContenutoView($id){
         $gestore = new GestioneContenuti();
-
         try {
-            $gestore->visualizzaContenuto($id);
-            return new Response("<br/> visualizzazione andata a buon fine <br/>");
+            $contenuto=$gestore->visualizzaContenuto($id);
+            return $this->render("staff/visualizzaContenutoStaff.html.twig",
+            array("contenuto"=>$contenuto));
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
-        return new Response();
     }
 
     /**
-     * @Route("/contenuti/staff/visualizzaElencoContenutiSquadra/{squadra}")
+     * @Route("/contenuti/staff/visualizzaElencoContenutiSquadra")
      * @Method("GET")
      */
-    public function visualizzaElencoContenutiSquadra($squadra){
+    public function visualizzaElencoContenutiSquadra(){
+        $squadra=$_SESSION["squadra"];
         $gestore = new GestioneContenuti();
         try {
-            $gestore->visualizzaElencoContenutiSquadra($squadra);
+            $contenuti=$gestore->visualizzaElencoContenutiSquadra($squadra);
+            return $this->render("staff/visualizzaElencoContenuti.html.twig",array("elenco"=>$contenuti));
+        } catch (\Exception $e) {
+            return new Response($e->getMessage(), 404);
+        }
+
+    }
+
+    /**
+     * @Route("/contenuti/staff/visualizzaElencoContenutiPerTipo/{tipo}")
+     * @Method("GET")
+     */
+    public function visualizzaElencoContenutiPerTipo($tipo){
+        $gestore = new GestioneContenuti();
+        try {
+            $gestore->visualizzaElencoContenutiPerTipo($tipo);
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }

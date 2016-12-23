@@ -66,15 +66,6 @@ class ControllerAutenticazione extends Controller
         return $this->redirect("/yourteam/web/app_dev.php/");
 
     }
-    /**
-     * @Route("/",name="home")
-     * @Method("GET")
-     */
-    public function home()
-    {
 
-        return $this->render("guest/home.html.twig");
-
-    }
 
 }

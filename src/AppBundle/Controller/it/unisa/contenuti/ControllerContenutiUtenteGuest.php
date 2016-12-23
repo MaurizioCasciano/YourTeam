@@ -16,17 +16,35 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-class ControllerContenutiUtenteGuest
+class ControllerContenutiUtenteGuest extends Controller
 {
     /**
-     * @Route("/contenuti/utenteGuest/visualizzaElencoContenuti/")
+     * @Route("/")
      * @Method("GET")
      */
     public function visualizzaElencoContenuti()
     {
         $gestore = new GestioneContenuti();
         try {
-            $gestore->visualizzaElencoContenuti();
+            $elenco= $gestore->visualizzaElencoContenuti();
+        } catch (\Exception $e) {
+            return new Response($e->getMessage(), 404);
+        }
+        return $this->render("guest/visualizzaElencoContenuti.html.twig",
+            array('elenco' => $elenco));
+    }
+
+    /**
+     * @Route("/contenuti/utenteGuest/visualizzaContenutoView/{id}")
+     * @Method("GET")
+     */
+    public function visualizzaContenutoView($id){
+        $gestore = new GestioneContenuti();
+
+        try {
+            $contenuto = $gestore->visualizzaContenuto($id);
+            return $this->render("guest/visualizzaContenuto.html.twig",
+                array('contenuto' => $contenuto));
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
@@ -34,15 +52,13 @@ class ControllerContenutiUtenteGuest
     }
 
     /**
-     * @Route("/contenuti/utenteGuest/visualizzaContenutoView")
+     * @Route("/contenuti/utenteGuest/visualizzaElencoContenutiPerTipo/{tipo}")
      * @Method("GET")
      */
-    public function visualizzaContenutoView($id){
+    public function visualizzaElencoContenutiPerTipo($tipo){
         $gestore = new GestioneContenuti();
-
         try {
-            $gestore->visualizzaContenuto($id);
-            return new Response("<br/> visualizzazione andata a buon fine <br/>");
+            $gestore->visualizzaElencoContenutiPerTipo($tipo);
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }

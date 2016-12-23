@@ -1,22 +1,22 @@
 {% extends 'staff/template.html.twig' %}
 {% block contenuto %}
-    <form>
+    <form action="inserisciContenuto" method="post" enctype="multipart/form-data" >
         <div class="form-group">
             <label >Titolo:</label>
-            <input type="text" class="form-control" id="titolo">
+            <input type="text" name="t" class="form-control" id="titolo">
         </div>
         <div class="form-group">
             <label >Descrizione:</label>
-            <input type="text" class="form-control" id="descrizione">
+            <input type="text" name="d" class="form-control" id="descrizione">
         </div>
         <div>
             <label >URL:</label>
-            <input type="text" class="form-control" id="url">
+            <input type="file" class="waves-effect waves-light btn" name="file" />
         </div>
         <div>
             <label >Tipo:</label>
-            <input type="text" class="form-control" id="tipo">
+            <input type="text" class="form-control" name="tipo" />
         </div>
+        <br><br>
         <button type="submit" class="btn btn-default">Submit</button>
-    </form>
 {% endblock %}
