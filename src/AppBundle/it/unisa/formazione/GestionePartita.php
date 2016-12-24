@@ -60,12 +60,15 @@ class GestionePartita
         $partita=$this->disponibilitaPartita($squadra);
         if(!is_null($partita))
         {
-            $query="SELECT * FROM giocare WHERE partita='$partita'";
+            $data=$partita->getData();
+            $nomePartita=$partita->getNome();
+
+            $query="SELECT * FROM giocare WHERE partita='$nomePartita' AND data='$data'";
             $risultato=$this->connessione->query($query);
 
             if($risultato->num_rows<=0)
             {
-                throw new FormazioneNonDispException("convocazioni non ancora diramate per questa partita");
+                throw new FormazioneNonDispException("convocazioni non ancora diramate per la prossima partita");
             }
             else
             {
@@ -74,7 +77,7 @@ class GestionePartita
         }
         else
         {
-            throw new PartitaNonDispException("non esiste nessuna partita disponibile alla convocazione!");
+            throw new PartitaNonDispException("non esiste nessuna partita disponibile alla formazione!");
         }
 
     }
@@ -88,12 +91,15 @@ class GestionePartita
         $partita=$this->disponibilitaPartita($squadra);
         if(!is_null($partita))
         {
-            $query="SELECT * FROM giocare WHERE partita='$partita'";
+            $data=$partita->getData();
+            $nomePartita=$partita->getNome();
+
+            $query="SELECT * FROM giocare WHERE partita='$nomePartita' AND data='$data'";
             $risultato=$this->connessione->query($query);
 
             if($risultato->num_rows!=0)
             {
-                throw new ConvocNonDispException("convocazioni gia diramate per questa partita");
+                throw new ConvocNonDispException("convocazioni gia diramate per la prossima partita!");
             }
             else
             {
@@ -119,6 +125,7 @@ class GestionePartita
         foreach ($calciatori as $calciatore)
         {
             $query="INSERT INTO giocare(calciatore,partita,data) VALUES ('$calciatore', '$nomePartita','$data')";
+            $risultato=$this->connessione->query($query);
         }
 
         $risultato=$this->connessione->query($query);

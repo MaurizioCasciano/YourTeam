@@ -50,21 +50,22 @@ class ControllerFormazione extends Controller
 
                 $_SESSION["partita"]=$partita;
 
-                return new Response(var_dump($calciatori)." convocati per la partita: ".var_dump($partita)); //in attesa della view della lista calciatori
+                return $this->render("formazione/visualizzaCalciatoriConvocazione.html.twig",array('calciatori'=> $calciatori , 'partita' => $partita));
+
 
             }
             catch (PartitaNonDispException $e1)
             {
-                return new Response($e1->messaggioDiErrore());
+                return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> $e1->messaggioDiErrore()));
             }
             catch (ConvocNonDispException $e2)
             {
-                return new Response($e2->messaggioDiErrore());
+                return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> $e2->messaggioDiErrore()));
             }
         }
         else
         {
-            return new Response("devi effettuare prima l accesso!");
+            return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> "devi effettuare prima l accesso!"));
         }
     }
 
@@ -88,23 +89,31 @@ class ControllerFormazione extends Controller
 
                 $partita=$gestionePartita->disponibilitaFormazione($squadra);
 
+                $gestioneRosa=new GestioneRosa();
+
+                $tattiche=$gestioneRosa->visualizzaTattica();
+
                 $_SESSION["partita"]=$partita;
 
-                return new Response(var_dump($partita)." per questa partita selezioneremo tattica e formazione"); //in attesa della view della selezione tattica
+                return $this->render("formazione/visualizzaTatticaFormazione.html.twig", array('partita' => $partita , 'tattiche' => $tattiche));
+
+               // return new Response(var_dump($partita)." per questa partita selezioneremo tattica e formazione"); //in attesa della view della selezione tattica
 
             }
             catch (PartitaNonDispException $e1)
             {
-                return new Response($e1->messaggioDiErrore());
+                return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> $e1->messaggioDiErrore()));
+
             }
             catch (FormazioneNonDispException $e2)
             {
-                return new Response($e2->messaggioDiErrore());
+                return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> $e2->messaggioDiErrore()));
+
             }
         }
         else
         {
-            return new Response("devi effettuare prima l accesso!");
+            return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> "devi effettuare prima l accesso!"));
         }
 
 
@@ -132,12 +141,13 @@ class ControllerFormazione extends Controller
 
                 $gestionePartita->diramaConvocazioni($convocazioni,$partita);
 
-                return new Response("convocazioni diramate!");
+                return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> "convocazioni diramate!"));
+
             }
 
         }
 
-        return new Response("nessun calciatore trovato!");
+        return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> "nessun calciatore convocato !"));
 
     }
 
@@ -163,27 +173,16 @@ class ControllerFormazione extends Controller
 
         $gestoreRosa=new GestioneRosa();
 
-        $gestoreRosa->inviaEmailSchieramentoFormazione($calciatori);
+        try
+        {
+            $gestoreRosa->inviaEmailSchieramentoFormazione($calciatori);
+        }
+        catch(Exception $e1)
+        {
+            return new Response("email non inviate!");
+        }
 
-        return new JsonResponse(array("risposta" => "ok"));
-    }
-
-    /**
-     * Questo controller rimanda in risposta l'elenco delle tattiche presenti nel database
-     *
-     * @Route("/formazione/allenatore/ottieniTattiche")
-     * @Method("GET")
-     */
-    public function ottieniTattiche()
-    {
-        $gestioneRosa=new GestioneRosa();
-
-        $tattiche=$gestioneRosa->visualizzaTattica();
-
-        $tattiche=json_encode($tattiche);
-
-        return new JsonResponse(array("tattiche" => $tattiche));
-
+        return new Response("email inviate!");
     }
 
     /**
@@ -194,11 +193,20 @@ class ControllerFormazione extends Controller
      */
     public function ottieniCalciatori()
     {
-        $gestioneRosa=new GestioneRosa();
+        try
+        {
+            $gestioneRosa=new GestioneRosa();
 
-        $partita=$_SESSION["partita"];
+            $partita=$_SESSION["partita"];
 
-        $calciatori=$gestioneRosa->ottieniConvocati($partita);
+            $calciatori=$gestioneRosa->ottieniConvocati($partita);
+
+        }
+        catch (Exception $e1)
+        {
+            return new Response($e1->getMessage());
+        }
+
 
         return new JsonResponse(array("calciatori" => $calciatori));
     }
@@ -206,11 +214,20 @@ class ControllerFormazione extends Controller
     /**
      * Questo controller rimanda un modulo serializzato quando l'allenatore ne seleziona uno
      *
-     * @Route("/formazione/allenatore/cambiaTattica/{tattica}")
+     * @Route("/formazione/allenatore/cambiaTattica")
      * @Method("GET")
      */
-    public function cambiaTattica($tattica)
+    public function cambiaTattica()
     {
+        $gestioneRosa=new GestioneRosa();
+
+        $moduli=$gestioneRosa->visualizzaTattica();
+        foreach ($moduli as $schieramento)
+        {
+            $modulo[]=$gestioneRosa->ottieniTattica($schieramento);
+        }
+
+        return new JsonResponse(array("modulo" => $modulo));
 
     }
 

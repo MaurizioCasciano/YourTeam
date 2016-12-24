@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciatoreUtenteRegistrato
 {
@@ -33,7 +34,15 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
         $request->getSession()->set("nome_partita", $nome_partita);
         $request->getSession()->set("data_partita", $data_partita);
 
-        return $this->render("FormInserisciStatisticheCalciatore.html.twig", array());
+        /*TO-DO
+         * Controllare che il calciatore e la partita esistano.
+         */
+
+        if (!isset($_SESSION) || $_SESSION["tipo"] != "staff") {
+            throw new AccessDeniedException("Access Denied!!!");
+        } else {
+            return $this->render("staff/FormInserisciStatisticheCalciatore.html.twig");
+        }
     }
 
     /**
@@ -80,19 +89,55 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
      * @Route("/statistiche/staff/calciatore/edit/form/{calciatore}/{nome_partita}/{data_partita}")
      * @Method("GET")
      */
-    public function getModificaStatisticheForm($calciatore)
+    public function getModificaStatisticheForm(Request $request, $calciatore, $nome_partita, $data_partita)
     {
+        if (!isset($_SESSION) || $_SESSION["tipo"] != "staff") {
+            throw new AccessDeniedException("Access Denied!!!");
+        } else {//E' un account STAFF
+            $request->getSession()->set("calciatore", $calciatore);
+            $request->getSession()->set("nome_partita", $nome_partita);
+            $request->getSession()->set("data_partita", $data_partita);
 
-        return $this->render("FormInserisciStatisticheCalciatore.html.twig", array());
+            $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
+            $statisticheCalciatore = $gestoreStatisticheCalciatore->getStatisticheCalciatore($calciatore, $nome_partita, $data_partita);
+            return $this->render(":staff:FormModificaStatisticheCalciatore.html.twig", array("statistiche_calciatore" => $statisticheCalciatore));
+        }
     }
 
     /**
      * @param Request $request
-     * @Route("/statistiche/staff/{calciatore}/edit/submit")
+     * @Route("/statistiche/staff/calciatore/edit/submit")
      * @Method("POST")
      */
-    public function modificaStatistiche(Request $request, $calciatore)
+    public function modificaStatistiche(Request $request)
     {
+        /*
+         * Le informazioni riguardanti il calciatore è la partita vengono settate al momento della richiesta del form per l'inserimento delle statistiche.
+         */
+        //inizio chiave statistiche_calciatore
+        $calciatore = $request->getSession()->get("calciatore");
+        $nomePartita = $request->getSession()->get("nome_partita");
+        $dataPartita = $request->getSession()->get("data_partita");
+        //fine chiave statistiche calciatore
 
+        //statistiche
+        $tiriTotali = $request->get("tiri_totali");
+        $tiriPorta = $request->get("tiri_porta");
+        $falliFatti = $request->get("falli_fatti");
+        $falliSubiti = $request->get("falli_subiti");
+        $percentualePassaggiriusciti = $request->get("percentuale_passagii_riusciti");
+        $golFatti = $request->get("gol_fatti");
+        $golSubiti = $request->get("gol_subiti");
+        $assist = $request->get("assist");
+        $ammonizioni = $request->get("ammonizioni");
+        $espulsioni = $request->get("espulsioni");
+
+
+        //inserisco i dati nel DataBase
+        $statisticheCalciatore = new StatisticheCalciatore($calciatore, $tiriTotali, $tiriPorta, $falliFatti, $falliSubiti, $percentualePassaggiriusciti, $golFatti, $golSubiti, $assist, $ammonizioni, $espulsioni, 0);
+        $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
+        $executed = $gestoreStatisticheCalciatore->modificaStatisticheCalciatore($statisticheCalciatore, $nomePartita, $dataPartita);
+
+        return new Response(($executed ? "Modifiche effettuate" : "Modifiche non effettuate") . "Modifica statistiche calciatore: " . $calciatore . " partita: " . $nomePartita . " " . $dataPartita);
     }
 }

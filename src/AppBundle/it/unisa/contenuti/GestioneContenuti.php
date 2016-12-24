@@ -73,6 +73,7 @@ class GestioneContenuti
         for ($i=0;$i<count($elenco);$i++){
             echo $elenco[$i]."<br/>";
         }
+        return $elenco;
     }
 
     public function visualizzaElencoContenutiSquadra($squadra){
