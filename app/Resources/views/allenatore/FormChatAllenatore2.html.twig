@@ -10,25 +10,6 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <span class="glyphicon glyphicon-comment"></span> Chat
-                        <div class="btn-group pull-right">
-                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                <span class="glyphicon glyphicon-chevron-down"></span>
-                            </button>
-                            <ul class="dropdown-menu slidedown">
-                                <li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-refresh">
-                            </span>Refresh</a></li>
-                                <li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-ok-sign">
-                            </span>Available</a></li>
-                                <li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-remove">
-                            </span>Busy</a></li>
-                                <li><a href="http://www.jquery2dotnet.com"><span
-                                                class="glyphicon glyphicon-time"></span>
-                                        Away</a></li>
-                                <li class="divider"></li>
-                                <li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-off"></span>
-                                        Sign Out</a></li>
-                            </ul>
-                        </div>
                     </div>
                     <div class="panel-body">
                         <ul class="chat">
@@ -43,7 +24,7 @@
                                             <div class="header">
                                                 <small class=" text-muted">
                                                     <span class="glyphicon glyphicon-time"></span>
-                                                    13 mins ago
+                                                    {{ messaggio.getData() }}
                                                 </small>
                                                 <strong class="pull-right primary-font">{{ messaggio.getNomeMittente() }}
                                                     &nbsp;{{ messaggio.getCognomeMittente() }}</strong>
@@ -65,7 +46,7 @@
                                                 <strong class="primary-font">{{ messaggio.getNomeMittente() }}
                                                     &nbsp;{{ messaggio.getCognomeMittente() }}</strong>
                                                 <small class="pull-right text-muted">
-                                                    <span class="glyphicon glyphicon-time"></span>12 mins ago
+                                                    <span class="glyphicon glyphicon-time"></span>{{ messaggio.getData() }}
                                                 </small>
                                             </div>
                                             <p>
@@ -79,12 +60,13 @@
                     </div>
                     <div class="panel-footer">
                         <div class="input-group">
-                            <input id="btn-input" type="text" class="form-control input-sm"
-                                   placeholder="Type your message here..."/>
+                            <!--<input id="message_target" type="hidden" value="{{ destinatario }}" name="destinatario">-->
+                            <input id="chatInput" name="testo" type="text"
+                                   placeholder="Scrivi un messaggio..."
+                                   class="form-control chat-input">
                             <span class="input-group-btn">
-                            <button class="btn btn-warning btn-sm" id="btn-chat">
-                                Invio</button>
-                        </span>
+                                <button class="btn btn-warning btn-sm" id="send">Invio</button>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -92,4 +74,70 @@
         </div>
     </div>
 
+
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+
+    <script>
+        var lastTimeID = 0;
+
+        $(document).ready(function () {
+            $('#send').click(function () {
+                sendChatText();
+                $('#chatInput').val("");
+            });
+            startChat();
+        });
+
+        function startChat() {
+            setInterval(function () {
+                //getChatText();
+            }, 2000);
+        }
+
+        function getChatText() {
+            $.ajax({
+                type: "GET",
+                url: "/refresh.php?lastTimeID=" + lastTimeID
+            }).done(function (data) {
+                var jsonData = JSON.parse(data);
+                var jsonLength = jsonData.results.length;
+                var html = "";
+                for (var i = 0; i < jsonLength; i++) {
+                    var result = jsonData.results[i];
+                    html += '<div style="color:#' + result.color + '">(' + result.chattime + ') <b>' + result.usrname + '</b>: ' + result.chattext + '</div>';
+                    lastTimeID = result.id;
+                }
+                $('#view_ajax').append(html);
+            });
+        }
+
+        function sendChatText() {
+            var chatInput = $('#chatInput').val();
+            if (chatInput != "") {
+                $.ajax({
+                    url: "{{ path('allenatoreInviaMessaggioChat') }}",
+                    type: "POST",
+                    dataType: 'json',
+                    data: {
+                        "destinatario": "{{ destinatario }}",
+                        "testo": $("#chatInput").val()
+                    },
+                    cache: false,
+                    success: function (data, textStatus, jqXHR) {
+                        alert("nomeMittente: " + data.nomeMittente);
+                        alert("cognomeMittente: " + data.cognomeMittente);
+                        alert("testo: " + data.testo);
+                        alert("data: " + data.data);
+                        alert("mittente: " + data.mittente);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+
+                    }
+                });
+            }
+        }
+    </script>
 {% endblock %}

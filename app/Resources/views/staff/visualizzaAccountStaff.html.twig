@@ -1,105 +1,86 @@
 {% extends 'staff/template.html.twig' %}
+{% block utente %}
+    <form method="post">
+        <button type="submit" style=" background: transparent; border: transparent">{{ staff.getNome() }}  {{ staff.getCognome() }}</button></form>
+{% endblock %}
 {% block contenuto %}
-    <div class="profile-content">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ staff.getNome() }} {{ staff.getCognome() }} <b>Staff</b></h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="{{ asset("ImmaginiApp/account/") }}{{ staff.getImmagine() }}" class="img-circle img-responsive"> </div>
 
-        <div class="row">
+                <!--<div class="col-xs-10 col-sm-10 hidden-md hidden-lg"> <br>
+                  <dl>
+                    <dt>DEPARTMENT:</dt>
+                    <dd>Administrator</dd>
+                    <dt>HIRE DATE</dt>
+                    <dd>11/12/2013</dd>
+                    <dt>DATE OF BIRTH</dt>
+                       <dd>11/12/2013</dd>
+                    <dt>GENDER</dt>
+                    <dd>Male</dd>
+                  </dl>
+                </div>-->
+                <div class=" col-md-9 col-lg-9 ">
+                    <table class="table table-user-information">
+                        <tbody>
+                        <tr>
+                            <td><b>Email:</b></td>
+                            <td>{{staff.getEmail() }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>username</b></td>
+                            <td>{{ staff.getUsernamecodiceContratto() }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Data di Nascita</b></td>
+                            <td>{{ staff.getDataDiNascita() }}</td>
+                        </tr>
 
-            <div class="profile">
-
-                <div class="avatar"> <center>
-
-                        <img src="{{ asset("ImmaginiApp/account/") }}{{ staff.getImmagine() }}" alt="Circle Image" class="img-circle img-responsive img-raised" width="160px" height="160px" >
-                    </center>
-                </div>
-
-                <div class="name">
-                    <h3 class="title">{{ staff.getNome() }}</h3>
-                    <h5>staff</h5>
-
-                    <form class="form-horizontal">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-
-                                <label class="col-sm-2 control-label">Nome:</p></label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-static"> {{ staff.getNome() }} </p>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">   Cognome:</label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-static"> {{ staff.getCognome() }}</p>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Email:</label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-static"> {{ staff.getEmail() }}</p>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">username o  numero contratto:</label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-static"> {{ staff.getUsernameCodiceContratto() }}</p>
-                                </div>
-                            </div>
+                        <tr>
+                        <tr>
+                            <td><b>Domicilio</b></td>
+                            <td>{{ staff.getDomicilio() }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Indirizzo</b></td>
+                            <td>{{ staff.getIndirizzo() }}</td>
+                        </tr>
 
 
+                        <tr>
+                            <td><b>Provincia</b></td>
+                            <td>{{ staff.getProvincia() }}
+                        </tr>
+                        <tr>
 
-                            <div class="form-group">
-                                <label  class="col-sm-2 control-label">password</label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-static"> *********</p>
-                                </div>
-                            </div>
+                            <td><b>Telefono</b></td>
+                            <td>   {{ staff.getTelefono() }}
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+
+                                <button type="button" class="btn btn-info"> Elimina </button> &nbsp &nbsp
+
+                            </td>
+                            <td> <button type="button" class="btn btn-info"> Modifica </button></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
 
 
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label text-center">Data di nascita</label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-static"> {{ staff.getDataDiNascita() }}</p>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label text-center">Domicilio</label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-static"> {{ staff.getDomicilio() }}</p>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Indirizzo</label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-static"> {{ staff.getIndirizzo() }}</p>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Provincia</label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-static"> {{ staff.getProvincia() }}</p>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Numero</label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-static"> {{ staff.getTelefono() }}</p>
-                                </div>
-                            </div>
-                        </form>
-
-                        <button type="button" class="btn btn-info"> Elimina </button> &nbsp &nbsp
-                        <button type="button" class="btn btn-info"> Modifica </button>
                 </div>
             </div>
         </div>
+        <div class="panel-footer">
+
+        </div>
+
     </div>
 {% endblock %}
