@@ -2,7 +2,7 @@
 {% block contenuto %}
 <div class="container">
 
-    <div class="col-md-12 col-lg-12">
+    <div class="col-md-6 col-lg-6">
         <div class="panel">
             <!--Heading-->
             <div class="panel-heading">
@@ -13,6 +13,7 @@
 
 
             <div class="container">
+                <div class="col-md-6 col-lg-6">
                 <div id="richiamo">
                     <h1>Richiamo comportamentale:</h1>
                 </div>
@@ -20,18 +21,20 @@
                 <div class="row">
 
                 </div>
+                </div>
             </div>
             <div class="row">
                 <div class='col-lg-6'>
                     <div class="form-group">
-                        <form action="/comunicazione/allenatore/inviaRichiamoMulta" method="post">
+                        <form action="/yourteam/web/app_dev.php/comunicazione/allenatore/inviaRichiamoMulta" method="post">
                             <fieldset>
                                 <legend>Multa:</legend>
                                 <label id="multa">
                                     Sei stato multato per comportamenti scorretti. Per chiarimenti mi trovi nel mio ufficio.
                                 </label>
                                 <br>
-                                <input type="hidden" value="{{ d }}" name = "d">
+                                <input type="hidden" value="{{ d }}" name="d">
+
                                 <input name ="multa" type="hidden" value="Sei stato multato per comportamenti scorretti. Per chiarimenti mi trovi nel mio ufficio." readonly="readonly">
 
                                 <input type="submit" class="btn btn-default" value="Invia">
@@ -41,15 +44,16 @@
                 </div>
                 <div class='col-lg-6'>
                     <div class="form-group">
-                        <form action="/comunicazione/allenatore/inviaRichiamoAvvertimento" method="post">
+                        <form action="/yourteam/web/app_dev.php/comunicazione/allenatore/inviaRichiamoAvvertimento" method="post">
                             <fieldset>
                                 <legend>Avvertimento:</legend>
                                 <label id="avvertimento">
                                     Volevo avvisarti che il tuo comportamento, se non modificato, potrà avere delle conseguenze
                                 </label>
                                 <br>
-                                <input type="hidden" value="{{ d }}" name = "d">
-                                <input name ="avvertimento" type="hidden" value="Sei stato multato per comportamenti scorretti. Per chiarimenti mi trovi nel mio ufficio." readonly="readonly">
+                                <input type="hidden" value="{{ d }}" name="d">
+
+                                <input name ="avvertimento" type="hidden" value="Volevo avvisarti che il tuo comportamento portà portare a delle conseguenze." readonly="readonly">
                                 <input type="submit" class="btn btn-default" value="Invia">
                             </fieldset>
                         </form>
