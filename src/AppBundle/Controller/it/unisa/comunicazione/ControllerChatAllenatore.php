@@ -225,13 +225,7 @@ class ControllerChatAllenatore extends Controller
         try {
             $messaggi = $g->ottieniMessaggiAllenatore($allenatoreMittente, "chat", $calciatoreDestinatario);
 
-            /*$str = "";
-            foreach ($messaggi as $m) {
-                $str = $str . $m;
-                $str = $str . "</br >";
-            }*/
-
-            // return new Response(var_dump($messaggi));
+            //return new Response(var_dump($messaggi));
             return $this->render("allenatore/FormChatAllenatore.html.twig", array("messaggi" => $messaggi, "d" => $calciatoreDestinatario));
         } catch (\Exception $e) {
             return $this->render("allenatore/FormChatAllenatore.html.twig", array("messaggi" => array(), "d" => $calciatoreDestinatario));
@@ -264,7 +258,8 @@ class ControllerChatAllenatore extends Controller
      * @Route("/comunicazione/allenatore/ottieniRichiamoMultaView")
      * @Method("GET")
      */
-    public function ottieniRichiamoMultaView(Request $request){
+    public function ottieniRichiamoMultaView(Request $request)
+    {
         if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "allenatore") {
             throw new \Exception("Allenatore non loggato");
         }
