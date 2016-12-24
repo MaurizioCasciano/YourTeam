@@ -1,13 +1,41 @@
 {% extends 'guest/template.html.twig' %}
 {% block contenuto %}
-    <div class="container">
-        <div id="contenitore" class="col-md-6 col-lg-6">
+    <div class="container-fluid">
 
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="{{ 0 }}" class="active"></li>
+            {% set counter = 1%}
             {% for contenuto in elenco %}
-                <a href="contenuti/utenteGuest/visualizzaContenutoView/{{ contenuto.getId() }}"> <img class="col-md-6 col-sm-6 "src="{{ asset("ImmaginiApp/contenuti/") }}{{ contenuto.getURL() }}" class="img-rectangle img-responsive"></a>
-
+                {% if loop.first== false %}
+                    <li data-target="#myCarousel" data-slide-to="{{ counter }}" ></li>
+                    {% set counter = counter + 1 %}
+                {% endif %}
             {% endfor %}
-
+        </ol>
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+        <div class="item active">
+            <img class="col-md-12 col-sm-12"src="{{ asset("ImmaginiApp/contenuti/") }}{{ elenco[0].getURL() }}" >
         </div>
+        {% for contenuto in elenco %}
+            {% if loop.first== false %}
+        <div class="item">
+            <img class="col-md-12 col-sm-12"src="{{ asset("ImmaginiApp/contenuti/") }}{{ contenuto.getURL() }}" >
+        </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
     </div>
 {% endblock %}

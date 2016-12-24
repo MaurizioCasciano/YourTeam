@@ -93,6 +93,7 @@ class GestioneContenuti
         }
         return $elenco;
     }
+
     public function visualizzaElencoContenutiSquadra($squadra){
         $sql="SELECT * FROM contenuto WHERE squadra='$squadra'";
         $elenco = array();
