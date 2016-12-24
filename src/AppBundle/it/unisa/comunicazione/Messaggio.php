@@ -75,12 +75,12 @@ class Messaggio
     }
 
 
-    public function __construct($t, $u, $c, $mitt, $data, $tipo)
+    public function __construct($testo, $allenatore, $calciatore, $mittente, $data, $tipo)
     {
-        $this->testo = $t;
-        $this->allenatore = $u;
-        $this->calciatore = $c;
-        $this->mittente = $mitt;
+        $this->testo = $testo;
+        $this->allenatore = $allenatore;
+        $this->calciatore = $calciatore;
+        $this->mittente = $mittente;
         $this->data = $data;
         $this->tipo = $tipo;
     }
