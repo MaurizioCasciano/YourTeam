@@ -1,135 +1,140 @@
 {% extends 'guest/template.html.twig' %}
 {% block contenuto %}
 <h1> Registrazione </h1>
-<form class="form-horizontal"> <!--apro la form-->
-          
 
-            <div class="form-group"> 
-            <label class="control-label col-sm-2" for="username">Username o codice contratto</label>
-              <div class="col-sm-10">
-                <input type="text" id ="username" class="form-control" placeholder="username">
-              </div>
-            </div>
+<form class="form-horizontal" method="POST" action="" id="f" enctype="multipart/form-data">
+	<!--apro la form-->
 
-            <div class="form-group"> 
-              <label class="control-label col-sm-2" for="scegli">Scegli foto profilo</label>
+	<input type="text" name="tipo" value="x" class="form-control" id="t">
 
-              <div class="col-sm-10">
-                <label class="btn btn-default btn-file" style="background-color:#182a3f;"> FOTO <input type="file" style="display: none;"  onchange="$('#upload-file-info').html($(this).val());">
-                </label>
-                <span class='label label-info' id="upload-file-info"></span>
-              </div>
-            </div>
-	    	
-	    	<form class="form-horizontal"> <!--apro la form-->
-    			
-    			<div class="form-group"> <!-- mi serve per inserire label e campo in una riga ben formattata-->
-    				    <label class="control-label col-sm-2" for="nome">Nome</label> <!--control-label mi inserisce il testo vicino al campo, col-sm-2 mi fa una colonna di grandezza 2-->
-      					<div class="col-sm-10"> <!--colonna di grandezza 10 -->
-        					<input type="text" id="nome" class="form-control" placeholder="Adamo">
-      					</div>
-      			</div>
 
-      			<div class="form-group"> 
-    				<label class="control-label col-sm-2" for="cognome">Cognome</label>
-      				<div class="col-sm-10">
-        				<input type="text" id ="cognome" class="form-control" placeholder="Rossi">
-      				</div>
-      			</div>
+	<div class="form-group">
+		<label class="control-label col-sm-2" for="username">tipo</label>
+		<div class="col-sm-10">
+			staff<input type="radio"  name="tipo" class="form-control" value="staff" onclick="changeTipo('staff')">
+			allenatore<input type="radio"  name="tipo" class="form-control" value="allenatore" onclick="changeTipo('allenatore')">
+			tifoso<input type="radio"  name="tipo" class="form-control" value="tifoso" onclick="changeTipo('tifoso')">
+			giocatore<input type="radio"  name="tipo" class="form-control" value="giocatore" onclick="changeTipo('giocatore')">
+		</div>
+	</div>
 
-      			<div class="form-group"> 
-    				<label class="control-label col-sm-2" for="nascita">Data di nascita</label>
-      				<div class="col-sm-10">
-        				<input type="date" id="nascita" placeholder="Data di nascita.." class="form-control" />
-      				</div>
-      			</div>
-
-      			<div class="form-group"> 
-    				<label class="control-label col-sm-2" for="domicilio">Domicilio</label>
-      				<div class="col-sm-10">
-        				<input type="text" id="domicilio" placeholder="Salerno" class="form-control" />
-      				</div>
-      			</div>
-
-      			<div class="form-group"> 
-    				<label class="control-label col-sm-2" for="indirizzo">Indirizzo</label>
-      				<div class="col-sm-10">
-        				<input type="text" id="indirizzo" placeholder="Via mazzini" class="form-control" />
-      				</div>
-      			</div>
-
-      			<div class="form-group"> 
-    				<label class="control-label col-sm-2" for="provincia">Provincia</label>
-      				<div class="col-sm-10">
-        				<input type="text" id="provincia"placeholder="SA" class="form-control" />
-      				</div>
-      			</div>
-
-      			<div class="form-group"> 
-    				<label class="control-label col-sm-2" for="telefono">Telefono</label>
-      				<div class="col-sm-10">
-        				<input type="number" id="telefono" class="form-control" placeholder="123456789">
-      				</div>
-      			</div>
-
-      			<div class="form-group"> 
-    				<label class="control-label col-sm-2" for="email">email</label>
-      				<div class="col-sm-10">
-        				<input type="email" id="email" class="form-control" placeholder="Adam88@gmail.com">
-      				</div>
-      			</div>
-
-      			<div class="form-group"> 
-    				<label class="control-label col-sm-2" for="pwd">Password</label>
-      				<div class="col-sm-10">
-        				<input type="password" id="pwd" class="form-control">
-      				</div>
-      			</div>
-
-      			<div class="form-group"> 
-    				<label class="control-label col-sm-2" for="pwd2">Conferma password</label>
-      				<div class="col-sm-10">
-        				<input type="password" id="pwd2" class="form-control">
-      				</div>
-      			</div>
-
-      			<div class="form-group">
-					<label class="control-label col-sm-2" >Scelta account</label>
-					<div class="col-sm-1">
-						<label><input type="radio" value="staff" onclick="mostraSquadre(this)" name="optradio">account staff</label>
-					</div>
-					<div class="col-sm-1">
-						<label><input type="radio" value="tifoso" onclick="mostraSquadre(this)" name="optradio">account tifoso</label>
-					</div>
-					<div class="col-sm-1">
-						<label><input type="radio" value="allenatore" onclick="mostraSquadre(this)" name="optradio">account allentatore</label>
-					</div>
-					<div class="col-sm-1">
-						<label><input type="radio" value="giocatore" onclick="mostraSquadre(this)" name="optradio">account giocatore</label>
-					</div>
+		    <div class="form-group">
+			<label class="control-label col-sm-2" for="username" id="scritta">contratto F.I.G.C.</label>
+			<div class="col-sm-10">
+				<input type="text" id ="username" name="u" class="form-control" placeholder="username">
+			</div>
+		</div>
+			<div class="form-group"> <!-- mi serve per inserire label e campo in una riga ben formattata-->
+				<label class="control-label col-sm-2" for="nome">Nome</label> <!--control-label mi inserisce il testo vicino al campo, col-sm-2 mi fa una colonna di grandezza 2-->
+				<div class="col-sm-10"> <!--colonna di grandezza 10 -->
+					<input type="text" id="nome" name="n" class="form-control" placeholder="Adamo">
 				</div>
+			</div>
 
-				<div class="form-group" id="divSceltaSquadre" hidden>
-					<label class="control-label col-sm-2">Scegli squadra</label>
-					<div class="col-sm-1">
-  						<label><input type="checkbox" value="">Napoli</label>
-					</div>
-					<div class="col-sm-1">
-  						<label><input type="checkbox" value="">Palermo</label>
-					</div>
-					<div class="col-sm-1">
-  						<label><input type="checkbox" value="">Roma</label>
-					</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="cognome">Cognome</label>
+				<div class="col-sm-10">
+					<input type="text" id ="cognome" name="c" class="form-control" placeholder="Rossi">
 				</div>
+			</div>
 
-				<div class="form-group">        
-				      <div class="col-sm-offset-2 col-sm-10">
-				          <button type="submit" class="btn btn-info">Conferma</button>
-				      </div>
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="nascita">Data di nascita</label>
+				<div class="col-sm-10">
+					<input type="date" id="nascita" name="d" placeholder="Data di nascita.." class="form-control" />
 				</div>
+			</div>
 
-      		</form>
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="domicilio">Domicilio</label>
+				<div class="col-sm-10">
+					<input type="text" id="domicilio" name="do" placeholder="Salerno" class="form-control" />
+				</div>
+			</div>
 
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="indirizzo">Indirizzo</label>
+				<div class="col-sm-10">
+					<input type="text" id="indirizzo" name="i" placeholder="Via mazzini" class="form-control" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="provincia">Provincia</label>
+				<div class="col-sm-10">
+					<input type="text" name="pr" id="provincia"placeholder="SA" class="form-control" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="telefono">Telefono</label>
+				<div class="col-sm-10">
+					<input type="text"  name="t" id="telefono" class="form-control" placeholder="123456789">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="email">email</label>
+				<div class="col-sm-10">
+					<input type="email" id="email" name="e" class="form-control" placeholder="Adam88@gmail.com">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="pwd">Password</label>
+				<div class="col-sm-10">
+					<input type="password" name="p" id="pwd" class="form-control">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="pwd2">Conferma password(da fare)</label>
+				<div class="col-sm-10">
+					<input type="password" id="pwd2" class="form-control">
+				</div>
+			</div>
+
+			<div class="form-group" id="divSceltaSquadre">
+				<label class="control-label col-sm-2">Scegli squadra</label>
+				<div class="row">
+				{% for s in squadre %}
+					<div class="col-sm-1 col-md-offset-2">
+						<label><input type="radio" name="s" value="{{s.getNome()}}">{{ s.getNome() }}</label>
+					</div>
+				{% endfor %}
+				</div>
+			</div>
+
+		   <div class="form-group" id="rafel" hidden> <!-- mi serve per inserire label e campo in una riga ben formattata-->
+			<label class="control-label col-sm-2" for="nome">Nazionalità</label> <!--control-label mi inserisce il testo vicino al campo, col-sm-2 mi fa una colonna di grandezza 2-->
+			<div class="col-sm-10"> <!--colonna di grandezza 10 -->
+				<input type="text" id="nazionalita" name="nazionalita" class="form-control" placeholder="italiana">
+			</div>
+
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="scegli">Scegli foto profilo</label>
+
+				<div class="col-sm-10">
+					<!--<label class="btn btn-default btn-file" style="background-color:#182a3f;"> FOTO <input type="file" style="display: none;"  onchange="$('#upload-file-info').html($(this).val());">
+					</label>
+					<span class='label label-info' id="upload-file-info"></span>-->
+					immagine<input type="file" class="waves-effect waves-light btn" name="file" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="btn btn-info">Conferma</button>
+				</div>
+			</div>
+
+
+	</div>
+
+
+<form>
 
 
 {% endblock %}
