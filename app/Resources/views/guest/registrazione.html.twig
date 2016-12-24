@@ -1,20 +1,28 @@
 {% extends 'guest/template.html.twig' %}
 {% block contenuto %}
-<h1> Registrazione </h1>
 
 <form class="form-horizontal" method="POST" action="" id="f" enctype="multipart/form-data">
 	<!--apro la form-->
 
-	<input type="text" name="tipo" value="x" class="form-control" id="t">
+	<input type="text" name="tipo" value="x" class="form-control" id="t" style="visibility: hidden">
 
 
 	<div class="form-group">
+		<label class="control-label col-sm-2" for="username" id="scritta"><h1>Registrazione</h1></label>
+
+	</div>
+
+
+
+	<hr>
+	<div class="form-group">
+
 		<label class="control-label col-sm-2" for="username">tipo</label>
 		<div class="col-sm-10">
-			staff<input type="radio"  name="tipo" class="form-control" value="staff" onclick="changeTipo('staff')">
-			allenatore<input type="radio"  name="tipo" class="form-control" value="allenatore" onclick="changeTipo('allenatore')">
-			tifoso<input type="radio"  name="tipo" class="form-control" value="tifoso" onclick="changeTipo('tifoso')">
-			giocatore<input type="radio"  name="tipo" class="form-control" value="giocatore" onclick="changeTipo('giocatore')">
+			staff  <input type="radio"  name="tipo"  value="staff" onclick="changeTipo('staff')"><br>
+			allenatore  <input type="radio"  name="tipo"  value="allenatore" onclick="changeTipo('allenatore')"><br>
+			tifoso  <input type="radio"  name="tipo"  value="tifoso" onclick="changeTipo('tifoso')" checked><br>
+			giocatore  <input type="radio"  name="tipo"  value="giocatore" onclick="changeTipo('giocatore')"><br><br><hr>
 		</div>
 	</div>
 
@@ -120,7 +128,7 @@
 					<!--<label class="btn btn-default btn-file" style="background-color:#182a3f;"> FOTO <input type="file" style="display: none;"  onchange="$('#upload-file-info').html($(this).val());">
 					</label>
 					<span class='label label-info' id="upload-file-info"></span>-->
-					immagine<input type="file" class="waves-effect waves-light btn" name="file" />
+					<input type="file" class="waves-effect waves-light btn" name="file" />
 				</div>
 			</div>
 
@@ -131,10 +139,9 @@
 			</div>
 
 
-	</div>
 
 
-<form>
+</form>
 
 
 {% endblock %}
