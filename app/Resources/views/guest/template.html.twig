@@ -1,161 +1,140 @@
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<head>
+		<script type="text/javascript">
+
+			function changeTipo(tipo){
+
+				var form=document.getElementById("f");
+				var t=document.getElementById("t");
+				var r=document.getElementById("rafel");
+				var s=document.getElementById("scritta");
+				if(tipo=="staff"){
+					form.action="staff_allenatore_tifoso/aggiungi";
+					t.value="staff";
+					s.innerHTML="username"
+					r.hidden=true;
+				}
+				else
+				if(tipo=="allenatore"){
+					form.action="staff_allenatore_tifoso/aggiungi";
+					t.value="allenatore";
+					s.innerHTML="codice contratto F.I.G.C";
+					r.hidden=true;
+				}
+				else
+				if(tipo=="tifoso"){
+					form.action="staff_allenatore_tifoso/aggiungi";
+					t.value="tifoso";
+					s.innerHTML="username"
+					r.hidden=true;
+				}else
+				if(tipo=="giocatore"){
+					form.action="calciatore/aggiungi";
+					t.value="giocatore";
+					r.hidden=false;
+					s.innerHTML="codice contratto F.I.G.C"
+				}
+			}
 
 
-    <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="assets/img/favicon.png">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Your Team</title>
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-    <!--     Fonts and icons     -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
-    <!-- CSS Files -->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="assets/css/material-kit.css" rel="stylesheet"/>
-    <script type="text/javascript">
+		</script>
+		<style type="text/css">
 
-        function changeTipo(tipo){
+			/* Remove the navbar's default margin-bottom and rounded borders */
+			.navbar {
+				margin-bottom: 0;
+				border-radius: 0;
+			}
 
-            var form=document.getElementById("f");
-            var t=document.getElementById("t");
-            var r=document.getElementById("rafel");
-            var s=document.getElementById("scritta");
-            if(tipo=="staff"){
-                form.action="staff_allenatore_tifoso/aggiungi";
-                t.value="staff";
-                s.innerHTML="username"
-                r.hidden=true;
-            }
-            else
-                if(tipo=="allenatore"){
-                    form.action="staff_allenatore_tifoso/aggiungi";
-                    t.value="allenatore";
-                    s.innerHTML="codice contratto F.I.G.C";
-                    r.hidden=true;
-                }
-                else
-                if(tipo=="tifoso"){
-                    form.action="staff_allenatore_tifoso/aggiungi";
-                    t.value="tifoso";
-                    s.innerHTML="username"
-                    r.hidden=true;
-                }else
-                    if(tipo=="giocatore"){
-                    form.action="calciatore/aggiungi";
-                        t.value="giocatore";
-                        r.hidden=false;
-                        s.innerHTML="codice contratto F.I.G.C"
-                }
-        }
+			/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+			.row.content {height: 450px}
 
+			/* Set gray background color and 100% height */
+			.sidenav {
+				padding-top: 20px;
+				background-color: #f1f1f1;
+				height: 100%;
+			}
 
-    </script>
+			/* Set black background color, white text and some padding */
+			footer {
+				background-color: #182a3f;
+				color: white;
+				padding: 15px;
+				text-align:center;
+			}
 
-    <style type="text/css">
-
-        /* Remove the navbar's default margin-bottom and rounded borders */
-        .navbar {
-            margin-bottom: 0;
-            border-radius: 0;
-        }
-
-        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-        .row.content {height: 450px}
-
-        /* Set gray background color and 100% height */
-        .sidenav {
-            padding-top: 20px;
-            background-color: #f1f1f1;
-            height: 100%;
-        }
-
-        /* Set black background color, white text and some padding */
-        footer {
-            background-color: #182a3f;
-            color: white;
-            padding: 15px;
-            text-align:center;
-        }
-
-        /* On small screens, set height to 'auto' for sidenav and grid */
-        @media screen and (max-width: 767px) {
-            .sidenav {
-                height: auto;
-                padding: 15px;
-            }
-            .row.content {height:auto;}
-        }
-    </style>
-</head>
+			/* On small screens, set height to 'auto' for sidenav and grid */
+			@media screen and (max-width: 767px) {
+				.sidenav {
+					height: auto;
+					padding: 15px;
+				}
+				.row.content {height:auto;}
+			}
+		</style>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>Your Team</title>
+		<meta name="generator" content="Bootply" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link href="{{ asset("assetTemplate/css/bootstrap.min.css") }}" rel="stylesheet">
+		<!--[if lt IE 9]>
+			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<link href="{{ asset("assetTemplate/css/styles.css")}}" rel="stylesheet">
+		<link href="{{ asset("css/chat.css") }}"/>
+	</head>
+	<body>
+	<nav id="top-nav" class="navbar navbar-inverse navbar-static-top">
+	  <div class="container-fluid">
+		<div class="navbar-header">
+		  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			  <span class="icon-toggle"></span>
+		  </button>
+		  <a class="navbar-brand" href="/yourteam/web/app_dev.php/"><img src="{{ asset('immaginiStatiche/Logo.png') }}" width="30" height="30">Your Team</a>
+		</div>
+		<div class="navbar-collapse collapse">
+		  <ul class="nav navbar-nav navbar-right">
+			
 
 
-
-<body>
-
-<!-- Navbar will come here -->
-<nav class="navbar navbar-inverse" style="background-color:#182a3f">
-    <div class="container-fluid" >
-        <div class="navbar-header" >
-            <a href="file:///C:/Users/Vincenzo/Desktop/TEMP_NUOVO/homeM.html">   <img src="{{ asset('immaginiStatiche/Logo.png')}}" style="width:40pt;height:40pt"></a>
-
-        </div>
-
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="account/registrazione"><i class="material-icons">person </i> Registrati</a></li>
-        </ul>
-        <form method="POST" action="login" class="navbar-form navbar-right">
-            Username:  <input type="text"  name="u" class="form-control" size=5>
-            Password:  <input type="password" name="p" class="form-control"size=5 >
-            <button type="submit" class="btn btn-info">Login</button>
-        </form>
-    </div>
-</nav>
-<!-- end navbar -->
-<!--container-fluid vuol dire che si prende tutta la larghezza della pagina-->
-<div class="container-fluid">
-    <div class="row content"> <!--apro una riga in cui inserisco 3 colonne-->
-        <div class="col-sm-2 sidenav"> <!--una colonna è nella forma col-*-* dove sm è indice per tablet,2 è la larghezza della colonna-->
-            <button type="button" class="btn btn-primary"style="background-color:#182a3f;">home</button>
-            <!-- <p><a href="file:///C:/Users/Vincenzo/Desktop/TEMP_NUOVO/homeM.html">Home</a></p>-->
-            <!-- <p><a href="#">Link</a></p>-->
-            <!--<p><a href="#">Link</a></p>-->
-        </div>
-        <div class="col-sm-8">
+					  <li><form method="POST" action="login" class="navbar-form navbar-right">
+							  <label style="color: white">Username:</label>  <input type="text"  name="u" class="form-control" size=5>
+							  <label style="color: white">Password:</label>  <input type="password" name="p" class="form-control"size=5 >
+							  <button type="submit" class="btn btn-info">Login</button>
+						  </form></li>
+					  <li> <a href="/yourteam/web/app_dev.php/account/registrazione"><i class="material-icons">Registrati </i> </a></li>
 
 
-            <div class="well"> <!-- mi crea un div con ombreggiatura e bordi arrotondati-->
-            {% block contenuto %}
+		  </ul>
+		</div>
+	  </div><!-- /container -->
+	</nav>
 
-            {% endblock %}
+	<!-- Main -->
+	<div class="container-fluid">
+	  
 
-            </div>
+
+		   <div class="row">
+			   {% block contenuto %}
+
+			   {% endblock %}
+
+		   </div><!--/row-->
+
+		</div><!--/col-span-9-->
 
 
 
+	<footer class="text-center" style="background-color: black"><strong>Your Team</strong></footer>
 
 
-        </div>
-        <div class="col-sm-2 sidenav">
-            <div class="well">
-                <p><a href=""></a></p>
-            </div>
-            <div class="well">
-                <p><a href=""></a></p>
 
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-<footer >
-    <p>@Your Team</p>
-</footer>
-</body>
+	<!-- script references -->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+		<script src="{{ asset("assetTemplate/js/bootstrap.min.js")}}"></script>
+	</body>
 </html>
-<!-- end navbar -->
