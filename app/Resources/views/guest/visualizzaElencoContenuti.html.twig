@@ -5,22 +5,24 @@
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
         <!-- Indicators -->
         <ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="{{ elenco[0].getId() }}" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="{{ 0 }}" class="active"></li>
+            {% set counter = 1%}
             {% for contenuto in elenco %}
                 {% if loop.first== false %}
-                    <li data-target="#myCarousel" data-slide-to="{{ contenuto.getId() }}" ></li>
+                    <li data-target="#myCarousel" data-slide-to="{{ counter }}" ></li>
+                    {% set counter = counter + 1 %}
                 {% endif %}
             {% endfor %}
         </ol>
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
         <div class="item active">
-            <a href="contenuti/utenteGuest/visualizzaContenutoView/{{ elenco[0].getId() }}"> <img class="col-md-12 col-sm-12"src="{{ asset("ImmaginiApp/contenuti/") }}{{ elenco[0].getURL() }}" ></a>
+            <img class="col-md-12 col-sm-12"src="{{ asset("ImmaginiApp/contenuti/") }}{{ elenco[0].getURL() }}" >
         </div>
         {% for contenuto in elenco %}
             {% if loop.first== false %}
         <div class="item">
-                <a href="contenuti/utenteGuest/visualizzaContenutoView/{{ contenuto.getId() }}"> <img class="col-md-12 col-sm-12"src="{{ asset("ImmaginiApp/contenuti/") }}{{ contenuto.getURL() }}" ></a>
+            <img class="col-md-12 col-sm-12"src="{{ asset("ImmaginiApp/contenuti/") }}{{ contenuto.getURL() }}" >
         </div>
             {% endif %}
         {% endfor %}
