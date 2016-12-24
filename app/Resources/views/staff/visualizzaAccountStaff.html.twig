@@ -1,0 +1,105 @@
+{% extends 'staff/template.html.twig' %}
+{% block contenuto %}
+    <div class="profile-content">
+
+        <div class="row">
+
+            <div class="profile">
+
+                <div class="avatar"> <center>
+
+                        <img src="{{ asset("ImmaginiApp/account/") }}{{ staff.getImmagine() }}" alt="Circle Image" class="img-circle img-responsive img-raised" width="160px" height="160px" >
+                    </center>
+                </div>
+
+                <div class="name">
+                    <h3 class="title">{{ staff.getNome() }}</h3>
+                    <h5>staff</h5>
+
+                    <form class="form-horizontal">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+
+                                <label class="col-sm-2 control-label">Nome:</p></label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> {{ staff.getNome() }} </p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">   Cognome:</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> {{ staff.getCognome() }}</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Email:</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> {{ staff.getEmail() }}</p>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">username o  numero contratto:</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> {{ staff.getUsernameCodiceContratto() }}</p>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label  class="col-sm-2 control-label">password</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> *********</p>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label text-center">Data di nascita</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> {{ staff.getDataDiNascita() }}</p>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label text-center">Domicilio</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> {{ staff.getDomicilio() }}</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Indirizzo</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> {{ staff.getIndirizzo() }}</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Provincia</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> {{ staff.getProvincia() }}</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Numero</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> {{ staff.getTelefono() }}</p>
+                                </div>
+                            </div>
+                        </form>
+
+                        <button type="button" class="btn btn-info"> Elimina </button> &nbsp &nbsp
+                        <button type="button" class="btn btn-info"> Modifica </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

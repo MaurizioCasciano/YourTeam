@@ -11,6 +11,8 @@ namespace AppBundle\Controller\it\unisa\contenuti;
 use AppBundle\Utility\DB;
 use AppBundle\it\unisa\contenuti\Contenuto;
 use AppBundle\it\unisa\contenuti\GestioneContenuti;
+use AppBundle\Utility\Utility;
+use Monolog\Handler\Curl\Util;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +26,7 @@ class ControllerContenutiStaff extends Controller
      * @Method("GET")
      */
     public function inserisciContenutoForm(){
-
+        return $this->render("staff/inserisciContenutoForm.html.twig");
     }
 
     /**
@@ -32,28 +34,35 @@ class ControllerContenutiStaff extends Controller
      * @Method("POST")
      */
     public function inserisciContenuto(Request $richiesta){
-        $titolo = $richiesta->request->get("titolo");
-        $descrizione = $richiesta->request->get("descrizione");
-        $URL = $richiesta->request->get("URL");
+        $titolo = $richiesta->request->get("t");
+        $descrizione = $richiesta->request->get("d");
+        //$URL = $richiesta->request->get("u");
         $tipo = $richiesta->request->get("tipo");
 
         /* per un test di prova iniziale la variabile squadra sarà inviata tramite form*/
-        $squadra = $richiesta->request->get("squadra");
+        //$squadra = $richiesta->request->get("squadra");
 
-        /* quando verrà implementata la sessione, la squadra sarà ottenuta dalla sessione
-        $squadra= $_SESSION["squadra"];*/
+         /*quando verrà implementata la sessione, la squadra sarà ottenuta dalla sessione*/
+        $squadra= $_SESSION["squadra"];
 
-        $contenuto = new Contenuto($titolo,$descrizione,$URL,$tipo,$squadra);
-
-        $gestore = new GestioneContenuti();
-        try {
-            $gestore->inserisciContenuto($contenuto);
-            return new Response("<br/> inserimento andato a buon fine <br/>");
-        } catch (\Exception $e) {
-            return new Response($e->getMessage(), 404);
+        if($tipo=="video") {
+            $path = Utility::loadFile("file", "contenuti/Video");
+        }else{
+            $path = Utility::loadFile("file", "contenuti");
         }
+        if($path!=null){
 
-        return new Response();
+            $contenuto = new Contenuto($titolo,$descrizione,$path,$tipo,$squadra);
+            $gestore = new GestioneContenuti();
+            try {
+                $gestore->inserisciContenuto($contenuto);
+                return $this->render("staff/alertInserisciContenuto.html.twig");
+            } catch (\Exception $e) {
+                return new Response($e->getMessage(), 404);
+            }
+
+        }
+        return new Response("problema a caricare l'immagine");
     }
 
     /**
@@ -100,8 +109,14 @@ class ControllerContenutiStaff extends Controller
         $gestore = new GestioneContenuti();
 
         try {
-            $gestore->cancellaContenuto($id);
-            return new Response("<br/> cancellazione andata a buon fine <br/>");
+            $contenuto = $gestore->cancellaContenuto($id);
+            if ($contenuto->getTipo()=="video"){
+                unlink("../web/ImmaginiApp/contenuti/Video/".$contenuto->getURL());
+            }else{
+                unlink("../web/ImmaginiApp/contenuti/".$contenuto->getURL());
+            }
+
+            return $this->render("staff/alertCancellaContenuto.html.twig");
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
@@ -127,24 +142,68 @@ class ControllerContenutiStaff extends Controller
      */
     public function visualizzaContenutoView($id){
         $gestore = new GestioneContenuti();
-
         try {
-            $gestore->visualizzaContenuto($id);
-            return new Response("<br/> visualizzazione andata a buon fine <br/>");
+            $contenuto=$gestore->visualizzaContenuto($id);
+            if($contenuto->getTipo()=="immagine") {
+                return $this->render("staff/visualizzaContenutoStaff.html.twig",
+                    array("contenuto" => $contenuto));
+            }else{
+                if($contenuto->getTipo()=="video"){
+                    return $this->render("staff/visualizzaVideoStaff.html.twig",
+                        array("contenuto" => $contenuto));
+                }
+            }
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
-        return new Response();
     }
 
     /**
-     * @Route("/contenuti/staff/visualizzaElencoContenutiSquadra/{squadra}")
+     * @Route("/contenuti/staff/visualizzaElencoContenutiSquadra")
      * @Method("GET")
      */
-    public function visualizzaElencoContenutiSquadra($squadra){
+    public function visualizzaElencoContenutiSquadra(){
+        $squadra=$_SESSION["squadra"];
         $gestore = new GestioneContenuti();
         try {
-            $gestore->visualizzaElencoContenutiSquadra($squadra);
+            $contenuti=$gestore->visualizzaElencoContenutiSquadra($squadra);
+            $immagini= array();
+            $video = array();
+            $notizie = array();
+            $i=0;
+            $j=0;
+            $z=0;
+            foreach ($contenuti as $c) {
+                if ($c->getTipo() == ("immagine")) {
+                    $immagini[$i] = $c;
+                    $i++;
+                }else {
+                    if ($c->getTipo() == ("video")) {
+                        $video[$j] = $c;
+                        $j++;
+                    } else {
+                        if ($c->getTipo() == ("notizia")) {
+                            $notizie[$z] = $c;
+                            $z++;
+                        }
+                    }
+                }
+            }
+            return $this->render("staff/visualizzaElencoContenuti.html.twig",array("immagini"=>$immagini,"video"=>$video,"notizia"=>$notizie));
+        } catch (\Exception $e) {
+            return new Response($e->getMessage(), 404);
+        }
+
+    }
+
+    /**
+     * @Route("/contenuti/staff/visualizzaElencoContenutiPerTipo/{tipo}")
+     * @Method("GET")
+     */
+    public function visualizzaElencoContenutiPerTipo($tipo){
+        $gestore = new GestioneContenuti();
+        try {
+            $gestore->visualizzaElencoContenutiPerTipo($tipo);
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }

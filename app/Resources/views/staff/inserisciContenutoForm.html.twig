@@ -1,0 +1,24 @@
+{% extends 'staff/template.html.twig' %}
+{% block contenuto %}
+    <form action="inserisciContenuto" method="post" enctype="multipart/form-data" >
+        <div class="form-group">
+            <label >Titolo:</label>
+            <input type="text" name="t" class="form-control" id="titolo">
+        </div>
+        <div class="form-group">
+            <label >Descrizione:</label>
+            <input type="text" name="d" class="form-control" id="descrizione">
+        </div>
+        <div>
+            <label >URL:</label>
+            <input type="file" class="waves-effect waves-light btn" name="file" />
+        </div>
+        <div class="form-group">
+            <label >Tipo:</label>
+        </div>
+        <input type="radio" name="tipo" value="immagine" checked> Immagine
+        <input type="radio" name="tipo" value="video"> Video
+        <input type="radio" name="tipo" value="notizia"> Notizia
+        <br><br>
+        <button type="submit" class="btn btn-default">Submit</button>
+{% endblock %}

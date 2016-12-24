@@ -16,39 +16,66 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-class ControllerContenutiUtenteRegistrato
+class ControllerContenutiUtenteRegistrato extends Controller
 {
     /**
-     * @Route("/contenuti/staff/visualizzaElencoContenuti/utenteRegistrato/{squadra}")
+     * @Route("/contenuti/utenteRegistrato/visualizzaElencoContenuti")
      * @Method("GET")
      */
-    public function visualizzaElencoContenuti($squadra)
-    {
-        /* quando verrà implementata la sessione, la squadra sarà ottenuta dalla sessione
-        $squadra= $_SESSION["squadra"];*/
-
+    public function visualizzaElencoContenuti(){
+        $squadra=$_SESSION["squadra"];
         $gestore = new GestioneContenuti();
         try {
-            $gestore->visualizzaElencoContenutiSquadra($squadra);
+            $contenuti=$gestore->visualizzaElencoContenutiSquadra($squadra);
+            return $this->render("tifoso/visualizzaElencoContenuti.html.twig",array("elenco"=>$contenuti));
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
-        return new Response();
+
     }
 
     /**
-     * @Route("/contenuti/staff/visualizzaContenutoView/utenteRegistrato/{id}")
+     * @Route("/contenuti/utenteRegistrato/visualizzaContenutoView/{id}")
      * @Method("GET")
      */
     public function visualizzaContenutoView($id){
         $gestore = new GestioneContenuti();
 
         try {
-            $gestore->visualizzaContenuto($id);
-            return new Response("<br/> visualizzazione andata a buon fine <br/>");
+            $contenuto=$gestore->visualizzaContenuto($id);
+            if ($contenuto->getTipo()=="immagine") {
+                return $this->render("tifoso/visualizzaContenuto.html.twig",
+                    array('contenuto' => $contenuto));
+            }else{
+                if ($contenuto->getTipo()=="video") {
+                    return $this->render("tifoso/visualizzaVideo.html.twig",
+                        array('contenuto' => $contenuto));
+                }
+            }
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
-        return new Response();
+    }
+
+    /**
+     * @Route("/contenuti/utenteRegistrato/visualizzaElencoContenutiPerTipo/{tipo}")
+     * @Method("GET")
+     */
+    public function visualizzaElencoContenutiPerTipo($tipo){
+        $gestore = new GestioneContenuti();
+        try {
+            $elenco=$gestore->visualizzaElencoContenutiPerTipo($tipo);
+            if($tipo=="immagine") {
+                return $this->render("tifoso/visualizzaElencoContenutiPerTipo.html.twig",
+                    array('elenco' => $elenco));
+            }else{
+                if ($tipo=="video"){
+                    return $this->render("tifoso/visualizzaElencoVideo.html.twig",
+                        array('video' => $elenco));
+                }
+            }
+        } catch (\Exception $e) {
+            return new Response($e->getMessage(), 404);
+        }
     }
 }

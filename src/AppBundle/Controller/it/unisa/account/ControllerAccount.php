@@ -12,6 +12,7 @@ use AppBundle\it\unisa\account\AccountCalciatore;
 use AppBundle\it\unisa\account\Calciatore;
 use \AppBundle\it\unisa\account\GestoreAccount;
 use \AppBundle\it\unisa\account\Account;
+use AppBundle\Utility\Utility;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -30,19 +31,22 @@ class ControllerAccount extends Controller
 
 
     /**
-     * @Route("/account/{attore}/formaggiungi",name="formAggiungiAccount")
+     * @Route("/account/registrazione",name="formAggiungiAccount")
      * @Method("GET")
      */
-    /*attore potrà essere:
-       -calciatore
-       -staff_allenatore_tifoso
-   */
     public function aggiungiAccountForm($attore)
     {
-        if($attore=="staff_allenatore_tifoso")
-                return $this->render("guest/registrazione.html.twig");/*vista non completa*/
-        else
-            return $this->render("account/formAggiungiAccounGiocatore.html.twig");/*vista non completa*/
+
+        $g=new GestoreAccount();
+        try{
+            $squadre=$g->ottieniTutteLeSquadre();
+            return $this->render("guest/registrazione.html.twig",array("squadre"=>$squadre));/*vista non completa*/
+        }catch(\Exception $e)
+        {
+            //DA IMPLEMENTARE
+        }
+
+
 
     }
     /**
@@ -55,51 +59,63 @@ class ControllerAccount extends Controller
     */
     public function aggiungiAccount(Request $r,$attore)
     {
+
         if($attore=="staff_allenatore_tifoso"){
+            $data= str_replace("/","-",$r->request->get("d"));
 
-            $a = new Account($r->request->get("u"),
-                $r->request->get("p"),
-                $r->request->get("s"),
-                $r->request->get("e"), $r->request->get("n"),
-                $r->request->get("c"), $r->request->get("d"),
-                $r->request->get("do"), $r->request->get("i"),
-                $r->request->get("pr"), $r->request->get("t"),
-                $r->request->get("im"), $r->request->get("tipo"));
-            try {
-                $g = new GestoreAccount();
-                $g->aggiungiAccount_A_T_S($a);
-                return new Response("inserimento andato a buon fine");
-            } catch (\Exception $e) {
-                return new Response($e->getMessage(), 404);
-            }
-        }
-        else
-            if($attore=="calciatore") {
 
-                $a = new AccountCalciatore($r->request->get("u"),
+
+                $a = new Account($r->request->get("u"),
                     $r->request->get("p"),
                     $r->request->get("s"),
                     $r->request->get("e"), $r->request->get("n"),
-                    $r->request->get("c"), $r->request->get("d"),
+                    $r->request->get("c"), $data,
                     $r->request->get("do"), $r->request->get("i"),
                     $r->request->get("pr"), $r->request->get("t"),
-                    $r->request->get("im"), $r->request->get("nazionalita"));
+                    "", $r->request->get("tipo"));
                 try {
+
                     $g = new GestoreAccount();
-                    $g->aggiungiAccount_C($a);
-                    return new Response("inserimento andato a buon fine");
-                } catch (\Exception $e) {
-                    return new Response($e->getMessage(), 404);
+                    $path=Utility::loadFile("file","account");
+                    if($path!=null){
+                        $a->setImmagine($path);
+                        $g->aggiungiAccount_A_T_S($a);
+                        return new Response("inserimento andato a buon fine");
+                        }
+                        else return new Response("NON RIESCO A CARICARE LA FOTO");
+
+                    } catch (\Exception $e) {
+                        return new Response($e->getMessage(), 404);
                 }
             }
-            else return new Response("la rotta non esiste",404);
+            else
+                if($attore=="calciatore") {
 
-    }
+                    $data= str_replace("/","-",$r->request->get("d"));
+                    $a = new AccountCalciatore($r->request->get("u"),
+                        $r->request->get("p"),
+                        $r->request->get("s"),
+                        $r->request->get("e"), $r->request->get("n"),
+                        $r->request->get("c"), $data,
+                        $r->request->get("do"), $r->request->get("i"),
+                        $r->request->get("pr"), $r->request->get("t"),
+                        $r->request->get("im"), $r->request->get("nazionalita"));
+                    try {
+                        $g = new GestoreAccount();
+                        $g->aggiungiAccount_C($a);
+                        return new Response("inserimento andato a buon fine");
+                    } catch (\Exception $e) {
+                        return new Response($e->getMessage(), 404);
+                    }
+                }
+                else return new Response("la rotta non esiste",404);
 
-    /**
-     * @Route("/account/all/ricerca",name="ricercaAccountForm")
-     * @Method("GET")
-     */
+        }
+
+        /**
+         * @Route("/account/all/ricerca",name="ricercaAccountForm")
+         * @Method("GET")
+         */
     public function ricercaAccountVista($attore)
     {
 
@@ -121,7 +137,18 @@ class ControllerAccount extends Controller
         if($attore=="staff_allenatore_tifoso"){
             try {
                 $ast = $g->ricercaAccount_A_T_S($username);
-                return new Response("ACC:" . $ast->getUsernameCodiceContratto() ."PAS:".$ast->getPassword(). "appartiene alla squadra" . $ast->getSquadra());
+                $tipo=$ast->getTipo();
+                if($tipo=="allenatore")
+                        return $this->render("allenatore/visualizzaAccountAllenatore.html.twig",array('allenatore'=> $ast));
+                    else
+                        if($tipo=="tifoso")
+                            return $this->render("tifoso/visualizzaAccountTifoso.html.twig",array('tifoso'=> $ast));
+                        else
+                            if($tipo=="staff")
+                                return $this->render("staff/visualizzaAccountStaff.html.twig",array('staff'=> $ast));
+
+
+
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
@@ -130,7 +157,7 @@ class ControllerAccount extends Controller
             if($attore=="calciatore"){
                 try {
                     $ag = $g->ricercaAccount_G($username);
-                    return new Response("ACC:" . $ag->getUsernameCodiceContratto() . "appartiene alla squadra" . $ag->getSquadra());
+                    return   $this->render("giocatore/visualizzaAccountgiocatore.html.twig",array('giocatore'=> $ag));
                 }catch(\Exception $e) {
                     return new Response($e->getMessage(), 404);
                     }

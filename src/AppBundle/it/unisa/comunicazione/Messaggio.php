@@ -20,6 +20,12 @@ class Messaggio
     private $tipo;
     private $id;
 
+    //nome cognome
+    private $nomeMittente;
+    private $cognomeMittente;
+    private $nomeDestinatario;
+    private $cognomeDestinatario;
+
     /**
      * @return mixed
      */
@@ -69,14 +75,78 @@ class Messaggio
     }
 
 
-    public function __construct($t, $u, $c, $mitt,$data,$tipo)
+    public function __construct($t, $u, $c, $mitt, $data, $tipo)
     {
         $this->testo = $t;
         $this->allenatore = $u;
         $this->calciatore = $c;
         $this->mittente = $mitt;
-        $this->data=$data;
-        $this->tipo=$tipo;
+        $this->data = $data;
+        $this->tipo = $tipo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNomeMittente()
+    {
+        return $this->nomeMittente;
+    }
+
+    /**
+     * @param mixed $nomeMittente
+     */
+    public function setNomeMittente($nomeMittente)
+    {
+        $this->nomeMittente = $nomeMittente;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCognomeMittente()
+    {
+        return $this->cognomeMittente;
+    }
+
+    /**
+     * @param mixed $cognomeMittente
+     */
+    public function setCognomeMittente($cognomeMittente)
+    {
+        $this->cognomeMittente = $cognomeMittente;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNomeDestinatario()
+    {
+        return $this->nomeDestinatario;
+    }
+
+    /**
+     * @param mixed $nomeDestinatario
+     */
+    public function setNomeDestinatario($nomeDestinatario)
+    {
+        $this->nomeDestinatario = $nomeDestinatario;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCognomeDestinatario()
+    {
+        return $this->cognomeDestinatario;
+    }
+
+    /**
+     * @param mixed $cognomeDestinatario
+     */
+    public function setCognomeDestinatario($cognomeDestinatario)
+    {
+        $this->cognomeDestinatario = $cognomeDestinatario;
     }
 
     /**
@@ -88,6 +158,7 @@ class Messaggio
     }
 
     /**
+     * Restituisce il tipo dell'account mittente: allenatore o calciatore.
      * @param mixed $mittente
      */
     public function setMittente($mittente)
@@ -143,17 +214,17 @@ class Messaggio
         $this->testo = $testo;
     }
 
-   /*
-    ;
-    private $testo;
-    private $data;
-    private $tipo;
-    */
+    /*
+     ;
+     private $testo;
+     private $data;
+     private $tipo;
+     */
     public function __toString()
     {
-       return "id:".$this->getId()." mittente:".$this->getMittente().
-       " calciatore:".$this->getCalciatore()." allenatore:".$this->getAllenatore().
-       " testo:".$this->getTesto()." data:".$this->getData()." tipo:".$this->getTipo();
+        return "id:" . $this->getId() . " mittente:" . $this->getMittente() .
+            " calciatore:" . $this->getCalciatore() . " allenatore:" . $this->getAllenatore() .
+            " testo:" . $this->getTesto() . " data:" . $this->getData() . " tipo:" . $this->getTipo();
     }
 
 }

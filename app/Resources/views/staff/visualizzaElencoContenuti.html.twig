@@ -1,0 +1,99 @@
+{% extends 'staff/template.html.twig' %}
+
+{% block contenuto %}
+    <label>Foto</label>
+    <br>
+    <div class="container-fluid">
+
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                {% set counter = 1%}
+                {% for immagine in immagini %}
+                    {% if loop.first== false %}
+                        <li data-target="#myCarousel" data-slide-to="{{ counter}}" ></li>
+                        {% set counter = counter + 1 %}
+                    {% endif %}
+                {% endfor %}
+            </ol>
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                    <a href="visualizzaContenutoView/{{ immagini[0].getId() }}"> <img class="col-md-12 col-sm-12"src="{{ asset("ImmaginiApp/contenuti/") }}{{ immagini[0].getURL() }}" ></a>
+                </div>
+                {% for immagine in immagini %}
+                    {% if loop.first== false %}
+                        <div class="item">
+                            <a href="visualizzaContenutoView/{{ immagine.getId() }}"> <img class="col-md-12 col-sm-12"src="{{ asset("ImmaginiApp/contenuti/") }}{{ immagine.getURL() }}" ></a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+
+    </div>
+    <br><br>
+    <label>Video</label>
+    <br>
+    <div class="container-fluid">
+
+        <div id="myCarousel2" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel2" data-slide-to="0" class="active"></li>
+                {% set counter = 1%}
+                {% for vid in video %}
+                    {% if loop.first== false %}
+                        <li data-target="#myCarousel2" data-slide-to="{{ counter }}" ></li>
+                        {% set counter = counter + 1 %}
+                    {% endif %}
+                {% endfor %}
+            </ol>
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                    <a href="visualizzaContenutoView/{{ video[0].getId() }}">
+                        <video controls>
+                            <source src="{{ asset("ImmaginiApp/contenuti/Video/") }}{{ video[0].getURL() }}"  type="video/mp4">
+                        </video>
+                    </a>
+                </div>
+                {% for vid in video %}
+                    {% if loop.first== false %}
+                        <div class="item">
+                            <a href="visualizzaContenutoView/{{ vid.getId() }}">
+                                <video controls>
+                                    <source src="{{ asset("ImmaginiApp/contenuti/Video/") }}{{ vid.getURL() }}"  type="video/mp4">
+                                </video>
+                            </a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <a class="left carousel-control" href="#myCarousel2" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel2" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+
+    </div>
+{% endblock %}
+
+
+
+
+
+

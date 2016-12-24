@@ -1,0 +1,81 @@
+{% extends 'allenatore/template.html.twig' %}
+
+{% block contenuto %}
+    <!--Da spostare nel tag HEAD-->
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        th {
+            background-color: #0088CC;
+        }
+
+        table, th, td {
+            margin: 0 auto;
+            text-align: center;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+
+    <h1>StatisticheCalciatore complessive {{ statistiche_calciatore.usernameCalciatore }}</h1>
+    <h1>{{ app.request.getBaseURL() }}</h1>
+    <table>
+        <tr>
+            <th>Statistica</th>
+            <th>Valore</th>
+        </tr>
+
+        <tr>
+            <td>Tiri Totali</td>
+            <td>{{ statistiche_calciatore.tiriTotali }}</td>
+        </tr>
+
+        <tr>
+            <td>Tiri in Porta</td>
+            <td>{{ statistiche_calciatore.tiriPorta }}</td>
+        </tr>
+
+        <tr>
+            <td>Falli Fatti</td>
+            <td>{{ statistiche_calciatore.falliFatti }}</td>
+        </tr>
+
+        <tr>
+            <td>Falli Subiti</td>
+            <td>{{ statistiche_calciatore.falliSubiti }}</td>
+        </tr>
+
+        <tr>
+            <td>% Passaggi Riusciti</td>
+            <td>{{ statistiche_calciatore.percentualePassaggiRiusciti }}</td>
+        </tr>
+
+        <tr>
+            <td>Gol Fatti</td>
+            <td>{{ statistiche_calciatore.golFatti }}</td>
+        </tr>
+
+        <tr>
+            <td>Gol Subiti</td>
+            <td>{{ statistiche_calciatore.golSubiti }}</td>
+        </tr>
+
+        <tr>
+            <td>Assist</td>
+            <td>{{ statistiche_calciatore.assist }}</td>
+        </tr>
+
+        <tr>
+            <td>Ammonizioni</td>
+            <td>{{ statistiche_calciatore.ammonizioni }}</td>
+        </tr>
+
+        <tr>
+            <td>Espulsioni</td>
+            <td>{{ statistiche_calciatore.espulsioni }}</td>
+        </tr>
+    </table>
+{% endblock %}
+

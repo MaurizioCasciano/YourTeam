@@ -8,7 +8,7 @@ namespace AppBundle\it\unisa\contenuti;
  * Time: 11:48
  */
 use AppBundle\Utility\DB;
-
+use AppBundle\it\unisa\contenuti\Contenuto;
 class GestioneContenuti
 {
 
@@ -35,9 +35,10 @@ class GestioneContenuti
 
     public function cancellaContenuto($id){
         try{
-            $this->visualizzaContenuto($id);
+            $contenuto = $this->visualizzaContenuto($id);
             $sql = "DELETE FROM contenuto WHERE id='$id'";
             $this->conn->query($sql);
+            return $contenuto;
         }catch (\Exception $e) {
             throw new \Exception("il contenuto da eliminare non esiste");
         }
@@ -67,12 +68,30 @@ class GestioneContenuti
         if($res->num_rows <= 0) throw new \Exception("Elenco contenuti vuoto");
             while($row = $res->fetch_assoc()){
                 $contenuto = new Contenuto($row["titolo"],$row["descrizione"], $row["url"],$row["tipo"],$row["squadra"]);
+                $contenuto->setId($row{"id"});
                 $elenco[$i]=$contenuto;
                 $i++;
             }
+        /*
         for ($i=0;$i<count($elenco);$i++){
             echo $elenco[$i]."<br/>";
+        }*/
+        return $elenco;
+    }
+
+    public function visualizzaElencoContenutiPerTipo($tipo){
+        $sql="SELECT * FROM contenuto WHERE tipo='$tipo'";
+        $elenco = array();
+        $res = $this->conn->query($sql);
+        $i=0;
+        if($res->num_rows <= 0) throw new \Exception("Elenco contenuti vuoto per il tipo selezionato");
+        while($row = $res->fetch_assoc()){
+            $contenuto = new Contenuto($row["titolo"],$row["descrizione"], $row["url"],$row["tipo"],$row["squadra"]);
+            $contenuto->setId($row["id"]);
+            $elenco[$i]=$contenuto;
+            $i++;
         }
+        return $elenco;
     }
 
     public function visualizzaElencoContenutiSquadra($squadra){
@@ -83,12 +102,12 @@ class GestioneContenuti
         if($res->num_rows <= 0) throw new \Exception("Elenco contenuti vuoto per la squadra selezionata");
         while($row = $res->fetch_assoc()){
             $contenuto = new Contenuto($row["titolo"],$row["descrizione"], $row["url"],$row["tipo"],$row["squadra"]);
+            $contenuto->setId($row{"id"});
             $elenco[$i]=$contenuto;
+
             $i++;
         }
-        for ($i=0;$i<count($elenco);$i++){
-            echo $elenco[$i]."<br/>";
-        }
+       return $elenco;
     }
 
     public function visualizzaContenuto($id){
@@ -99,7 +118,7 @@ class GestioneContenuti
 
         $contenuto = new Contenuto($row["titolo"],$row["descrizione"], $row["url"],$row["tipo"],$row["squadra"]);
         $contenuto->setId($row["id"]);
-        echo $contenuto;
+
         return $contenuto;
     }
 }
