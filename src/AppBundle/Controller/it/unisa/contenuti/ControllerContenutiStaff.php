@@ -26,7 +26,6 @@ class ControllerContenutiStaff extends Controller
      * @Method("GET")
      */
     public function inserisciContenutoForm(){
-
         return $this->render("staff/inserisciContenutoForm.html.twig");
     }
 
@@ -64,7 +63,6 @@ class ControllerContenutiStaff extends Controller
 
         }
         return new Response("problema a caricare l'immagine");
-
     }
 
     /**
