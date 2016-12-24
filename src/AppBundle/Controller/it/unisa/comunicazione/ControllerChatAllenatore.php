@@ -209,7 +209,7 @@ class ControllerChatAllenatore extends Controller
     }
 
     /**
-     * @Route("/comunicazione/allenatore/ottieniMessaggioChatView")
+     * @Route("/comunicazione/allenatore/ottieniMessaggioChatView", name="allenatore_chat_view")
      * @Method("POST")
      */
     public function ottieniMessaggioChatView(Request $request)
@@ -226,9 +226,9 @@ class ControllerChatAllenatore extends Controller
             $messaggi = $g->ottieniMessaggiAllenatore($allenatoreMittente, "chat", $calciatoreDestinatario);
 
             //return new Response(var_dump($messaggi));
-            return $this->render("allenatore/FormChatAllenatore.html.twig", array("messaggi" => $messaggi, "d" => $calciatoreDestinatario));
+            return $this->render("allenatore/FormChatAllenatore2.html.twig", array("messaggi" => $messaggi, "d" => $calciatoreDestinatario));
         } catch (\Exception $e) {
-            return $this->render("allenatore/FormChatAllenatore.html.twig", array("messaggi" => array(), "d" => $calciatoreDestinatario));
+            return $this->render("allenatore/FormChatAllenatore2.html.twig", array("messaggi" => array(), "d" => $calciatoreDestinatario));
 
 
         }
