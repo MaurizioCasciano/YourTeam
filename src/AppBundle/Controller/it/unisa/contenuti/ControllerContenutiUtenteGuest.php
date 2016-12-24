@@ -8,11 +8,18 @@
 
 namespace AppBundle\Controller\it\unisa\contenuti;
 
-
+use AppBundle\Utility\DB;
+use AppBundle\it\unisa\contenuti\Contenuto;
+use AppBundle\it\unisa\contenuti\GestioneContenuti;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 class ControllerContenutiUtenteGuest
 {
     /**
-     * @Route("/contenuti/staff/visualizzaElencoContenuti/utenteGuest/")
+     * @Route("/contenuti/utenteGuest/visualizzaElencoContenuti/")
      * @Method("GET")
      */
     public function visualizzaElencoContenuti()
@@ -27,7 +34,7 @@ class ControllerContenutiUtenteGuest
     }
 
     /**
-     * @Route("/contenuti/staff/visualizzaContenutoView/utenteGuest{id}")
+     * @Route("/contenuti/utenteGuest/visualizzaContenutoView")
      * @Method("GET")
      */
     public function visualizzaContenutoView($id){
