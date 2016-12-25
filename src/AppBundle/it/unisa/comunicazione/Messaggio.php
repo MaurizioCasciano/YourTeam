@@ -49,7 +49,8 @@ class Messaggio
      */
     public function getData()
     {
-        return $this->data;
+        //return $this->data;
+        return date('d/m/Y H:i:s', $this->data);
     }
 
     /**

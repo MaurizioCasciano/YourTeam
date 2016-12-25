@@ -11,8 +11,8 @@
                     <div class="panel-heading">
                         <span class="glyphicon glyphicon-comment"></span> Chat
                     </div>
-                    <div class="panel-body">
-                        <ul id="chat" class="chat">
+                    <div id="chat_viewport">
+                        <ul id="chat" class="list-unstyled">
                             {% for messaggio in messaggi %}
                                 {% if messaggio.getMittente() == "allenatore" %}
                                     <li class="right clearfix">
@@ -22,10 +22,7 @@
                                         </span>
                                         <div class="chat-body clearfix">
                                             <div class="header">
-                                                <small class=" text-muted">
-                                                    <span class="glyphicon glyphicon-time"></span>
-                                                    {{ messaggio.getData() }}
-                                                </small>
+                                                <span class="glyphicon glyphicon-time">{{ messaggio.getData() }}</span>
                                                 <strong class="pull-right primary-font">{{ messaggio.getNomeMittente() }}
                                                     &nbsp;{{ messaggio.getCognomeMittente() }}</strong>
                                             </div>
@@ -45,11 +42,9 @@
                                             <div class="header">
                                                 <strong class="primary-font">{{ messaggio.getNomeMittente() }}
                                                     &nbsp;{{ messaggio.getCognomeMittente() }}</strong>
-                                                <small class="pull-right text-muted">
-                                                    <span class="glyphicon glyphicon-time"></span>{{ messaggio.getData() }}
-                                                </small>
+                                                <span class="glyphicon glyphicon-time pull-right">{{ messaggio.getData() }}</span>
                                             </div>
-                                            <p>
+                                            <p class="pull-right">
                                                 {{ messaggio.getTesto() }}
                                             </p>
                                         </div>
@@ -84,11 +79,20 @@
         var lastTimeID = 0;
 
         $(document).ready(function () {
+            $("#chat_viewport").scrollTop($("#chat").outerHeight());
+
             $('#send').click(function () {
                 sendChatText();
                 $('#chatInput').val("");
             });
             startChat();
+
+            $("#chatInput").keypress(function (event) {
+                var keycode = event.keyCode || event.which;
+                if (keycode == '13') {
+
+                }
+            });
         });
 
         function startChat() {
@@ -98,6 +102,8 @@
         }
 
         function getChatText() {
+            alert("GettingChatText...");
+
             $.ajax({
                 type: "GET",
                 url: "/refresh.php?lastTimeID=" + lastTimeID
@@ -118,38 +124,72 @@
             var chatInput = $('#chatInput').val();
             if (chatInput != "") {
                 $.ajax({
-                    url: "{{ path('allenatoreInviaMessaggioChat') }}",
-                    type: "POST",
-                    dataType: 'json',
-                    data: {
-                        "destinatario": "{{ destinatario }}",
-                        "testo": $("#chatInput").val()
-                    },
-                    cache: false,
-                    success: function (data, textStatus, jqXHR) {
-                        alert("nomeMittente: " + data.nomeMittente);
-                        alert("cognomeMittente: " + data.cognomeMittente);
-                        alert("testo: " + data.testo);
-                        alert("data: " + data.data);
-                        alert("mittente: " + data.mittente);
+                        url: "{{ path('allenatoreInviaMessaggioChat') }}",
+                        type: "POST",
+                        dataType: 'json',
+                        data: {
+                            "destinatario": "{{ destinatario }}",
+                            "testo": $("#chatInput").val()
+                        },
+                        cache: false,
+                        success: function (data, textStatus, jqXHR) {
+                            //senderImgSpan BEGIN
+                            //L'immagine del mittente
+                            var senderImg = document.createElement("img");
+                            senderImg.setAttribute("src", "http://placehold.it/50/FA6F57/fff&text=ME");
+                            senderImg.setAttribute("alt", "User Avatar");
+                            senderImg.setAttribute("class", "img-circle");
+                            var senderImgSpan = document.createElement("span");
+                            senderImgSpan.setAttribute("class", "chat-img pull-right");
+                            senderImgSpan.appendChild(senderImg);
+                            //senderImgSpan END
 
-                        $("#chat").append('<li class="right clearfix">' +
-                            '< span class = "chat-img pull-right" >' +
-                            '< img src = "http://placehold.it/50/FA6F57/fff&text=ME" alt = "User Avatar" class = "img-circle" / >' +
-                            '< / span >' +
-                            '< div class = "chat-body clearfix" >' +
-                            '< div class = "header" >' +
-                            '< small class = " text-muted" >' +
-                            '< span class = "glyphicon glyphicon-time" > < / span >{{ messaggio.getData() }}</ small>' +
-                            '<strong class = "pull-right primary-font" >{{ messaggio.getNomeMittente() }}' +
-                            '& nbsp;{{ messaggio.getCognomeMittente() }}</strong >< / div >' +
-                            '< p >{{ messaggio.getTesto() }}< / p > < / div >' +
-                            '< / li > ');
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
+                            //chatHeaderDiv BEGIN
+                            var timeTextNode = document.createTextNode(data.data);
+                            var timeSpan = document.createElement("span");
+                            timeSpan.setAttribute("class", "glyphicon glyphicon-time");
+                            timeSpan.appendChild(timeTextNode);
 
+                            var senderNameSurnameTextNode = document.createTextNode(data.nomeMittente + " " + data.cognomeMittente);
+                            var senderStrong = document.createElement("strong");
+                            senderStrong.setAttribute("class", "pull-right primary-font");
+                            senderStrong.appendChild(senderNameSurnameTextNode);
+
+                            var chatHeaderDiv = document.createElement("div");
+                            chatHeaderDiv.setAttribute("class", "header");
+                            chatHeaderDiv.appendChild(timeSpan);
+                            chatHeaderDiv.appendChild(senderStrong);
+                            //chatHeaderDiv END
+
+                            //chatBodyDiv BEGIN
+                            var chatBodyDiv = document.createElement("div");
+                            chatBodyDiv.setAttribute("class", "chat-body clearfix");
+                            chatBodyDiv.appendChild(chatHeaderDiv);
+
+                            var messageTextParagraph = document.createElement("p");
+                            var messageTextNode = document.createTextNode(data.testo);
+                            messageTextParagraph.appendChild(messageTextNode);
+                            chatBodyDiv.appendChild(messageTextParagraph);
+                            //chatBodyDiv END
+
+                            //messageListItem BEGIN
+                            var listItem = document.createElement("li");
+                            listItem.setAttribute("class", "right clearfix");
+                            listItem.appendChild(senderImgSpan);
+                            listItem.appendChild(chatBodyDiv);
+                            var chat = document.getElementById("chat");
+                            chat.appendChild(listItem);
+                            //messageListItem END
+
+                            $("#chat_viewport").scrollTop($("#chat").outerHeight());
+                        }
+                        ,
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            alert("Errore nell'invio del messaggio.\nStato: " + textStatus + "\nError: " + errorThrown);
+                        }
                     }
-                });
+                )
+                ;
             }
         }
     </script>
