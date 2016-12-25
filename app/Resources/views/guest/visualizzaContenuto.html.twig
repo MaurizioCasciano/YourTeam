@@ -1,0 +1,16 @@
+{% extends 'guest/template.html.twig' %}
+{% block contenuto %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-lg-6">
+            <div class="form-group">
+                <label>{{  contenuto.getTitolo()}}</label>
+            </div>
+            <div class="form-group">
+                <label>{{ contenuto.getDescrizione()}}</label>
+            </div>
+            <img class="col-md-10 col-sm-10" src="{{ asset("ImmaginiApp/contenuti/") }}{{ contenuto.getURL() }}" class="img-rounded img-responsive" alt="immagine">
+        </div>
+    </div>
+</div>
+{% endblock %}

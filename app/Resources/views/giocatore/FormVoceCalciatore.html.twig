@@ -1,0 +1,40 @@
+{% extends 'giocatore/template.html.twig' %}
+{% block contenuto %}
+    <div class="container">
+        <div class="col-md-12 col-lg-12">
+            <div class="panel">
+                <!--Heading-->
+                <div class="panel-heading">
+                    <div class="panel-control">
+                    </div>
+                </div>
+
+
+                <form action="/comunicazione/giocatore/inviaMessaggioVoce" method="post">
+                    <div class="container">
+                        <div id="form">
+                            <h1>Messaggio a voce: Allenatore</h1>
+                        </div>
+                        <br><br>
+                        <div class="row">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col-sm-12'>
+                            <div class="form-group">
+                                </br>
+                                Data: <input type='date' maxlength="10" class="form-control" name="data"/>
+                                Ora: <input type='time' maxlength="10" class="form-control" name="ora"/>
+                                Luogo:<input type='text' maxlength="10" class="form-control" name="luogo"/
+                                <input type="submit" class="btn btn-default">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
