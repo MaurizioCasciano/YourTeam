@@ -12,7 +12,7 @@
                         <span class="glyphicon glyphicon-comment"></span> Chat
                     </div>
                     <div class="panel-body">
-                        <ul class="chat">
+                        <ul id="chat" class="chat">
                             {% for messaggio in messaggi %}
                                 {% if messaggio.getMittente() == "allenatore" %}
                                     <li class="right clearfix">
@@ -132,6 +132,19 @@
                         alert("testo: " + data.testo);
                         alert("data: " + data.data);
                         alert("mittente: " + data.mittente);
+
+                        $("#chat").append('<li class="right clearfix">' +
+                            '< span class = "chat-img pull-right" >' +
+                            '< img src = "http://placehold.it/50/FA6F57/fff&text=ME" alt = "User Avatar" class = "img-circle" / >' +
+                            '< / span >' +
+                            '< div class = "chat-body clearfix" >' +
+                            '< div class = "header" >' +
+                            '< small class = " text-muted" >' +
+                            '< span class = "glyphicon glyphicon-time" > < / span >{{ messaggio.getData() }}</ small>' +
+                            '<strong class = "pull-right primary-font" >{{ messaggio.getNomeMittente() }}' +
+                            '& nbsp;{{ messaggio.getCognomeMittente() }}</strong >< / div >' +
+                            '< p >{{ messaggio.getTesto() }}< / p > < / div >' +
+                            '< / li > ');
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
 
