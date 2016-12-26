@@ -87,14 +87,28 @@ class ControllerStatisticheCalciatoreUtenteRegistrato extends Controller
         $maxEspulsioni = $request->get("max_espulsioni");
 
         $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
-        $arrayStatistiche = $gestoreStatisticheCalciatore->filtraCalciatori($minTiriTotali, $minTiriPorta, $minGolFatti, $minGolSubiti, $minAssist,
+        $calciatori = $gestoreStatisticheCalciatore->filtraCalciatori($minTiriTotali, $minTiriPorta, $minGolFatti, $minGolSubiti, $minAssist,
             $minFalliFatti, $minFalliSubiti, $minPercentualePassaggiRiusciti,
             $minAmmonizioni, $minEspulsioni, $maxTiriTotali, $maxTiriPorta,
             $maxGolFatti, $maxGolSubiti, $maxAssist, $maxFalliFatti, $maxFalliSubiti,
             $maxPercentualePassaggiRiusciti, $maxAmmonizioni, $maxEspulsioni);
 
 
-        //return $this->render(":staff:ViewCalciatoriFiltrati.html.twig", array("array_statistiche" => $arrayStatistiche));
+        return $this->render(":staff:ViewCalciatoriFiltrati.html.twig", array("calciatori" => $calciatori));
+    }
+
+    /**
+     * @Route("/test")
+     */
+    public function filtra(Request $request)
+    {
+        $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
+        $arrayStatistiche = $gestoreStatisticheCalciatore->filtraCalciatori(0, 0, 0, 0, 0,
+            0, 0, 0,
+            0, 0, 999, 999,
+            999, 999, 999, 999, 999,
+            999, 999, 999);
+
         return new Response(var_dump($arrayStatistiche));
     }
 }
