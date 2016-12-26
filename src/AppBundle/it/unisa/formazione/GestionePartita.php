@@ -63,7 +63,7 @@ class GestionePartita
             $data=$partita->getData();
             $nomePartita=$partita->getNome();
 
-            $query="SELECT * FROM giocare WHERE partita='$nomePartita' AND data='$data'";
+            $query="SELECT * FROM giocare WHERE partita='$nomePartita' AND data='$data' AND squadra='$squadra'";
             $risultato=$this->connessione->query($query);
 
             if($risultato->num_rows<=0)
@@ -94,7 +94,7 @@ class GestionePartita
             $data=$partita->getData();
             $nomePartita=$partita->getNome();
 
-            $query="SELECT * FROM giocare WHERE partita='$nomePartita' AND data='$data'";
+            $query="SELECT * FROM giocare WHERE partita='$nomePartita' AND data='$data' AND squadra='$squadra'";
             $risultato=$this->connessione->query($query);
 
             if($risultato->num_rows!=0)
@@ -121,10 +121,11 @@ class GestionePartita
     {
         $data=$partita->getData();
         $nomePartita=$partita->getNome();
+        $squadra=$partita->getSquadra();
 
         foreach ($calciatori as $calciatore)
         {
-            $query="INSERT INTO giocare(calciatore,partita,data) VALUES ('$calciatore', '$nomePartita','$data')";
+            $query="INSERT INTO giocare(calciatore,partita,data,squadra) VALUES ('$calciatore', '$nomePartita','$data','$squadra')";
             $risultato=$this->connessione->query($query);
         }
 
@@ -141,8 +142,9 @@ class GestionePartita
     {
         $data=$partita->getData();
         $nomePartita=$partita->getNome();
+        $squadra=$partita->getSquadra();
 
-        $query="UPDATE partita SET modulo='$modulo' WHERE data='$data' AND nome='$nomePartita'";
+        $query="UPDATE partita SET modulo='$modulo' WHERE data='$data' AND nome='$nomePartita' AND squadra='$squadra'";
 
         $this->connessione->query($query);
     }
