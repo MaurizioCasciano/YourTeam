@@ -42,7 +42,7 @@ class GestionePartita
         if($risultato->num_rows==1)
         {
             $partita=$risultato->fetch_assoc();
-            $modelPartita=new Partita($partita["nome"],$partita["data"],$partita["squadra"],$partita["stadio"]);
+            $modelPartita=new Partita($partita["nome"],$partita["data"],$partita["squadra"],$partita["stadio"],$partita["modulo"]);
             return $modelPartita;
         }
 
@@ -70,10 +70,11 @@ class GestionePartita
             {
                 throw new FormazioneNonDispException("convocazioni non ancora diramate per la prossima partita");
             }
-            else
+            if($partita->getModulo()!= null)
             {
-                return $partita;
+                throw new FormazioneNonDispException("formazione gia schierata per la prossima partita");
             }
+            return $partita;
         }
         else
         {
@@ -126,11 +127,10 @@ class GestionePartita
         foreach ($calciatori as $calciatore)
         {
             $query="INSERT INTO giocare(calciatore,partita,data,squadra) VALUES ('$calciatore', '$nomePartita','$data','$squadra')";
-            $risultato=$this->connessione->query($query);
+            $this->connessione->query($query);
         }
 
-        $risultato=$this->connessione->query($query);
-        if(!$risultato) throw new Exception("errore inserimento convocazioni!");
+
     }
 
     /**

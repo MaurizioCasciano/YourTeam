@@ -97,7 +97,6 @@ class ControllerFormazione extends Controller
 
                 return $this->render("allenatore/visualizzaTatticaFormazione.html.twig", array('partita' => $partita , 'tattiche' => $tattiche));
 
-               // return new Response(var_dump($partita)." per questa partita selezioneremo tattica e formazione"); //in attesa della view della selezione tattica
 
             }
             catch (PartitaNonDispException $e1)
@@ -110,14 +109,17 @@ class ControllerFormazione extends Controller
                 return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> $e2->messaggioDiErrore()));
 
             }
+            catch (Exception $e)
+            {
+                return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> $e->getMessage()));
+
+            }
+
         }
         else
         {
             return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> "devi effettuare prima l accesso!"));
         }
-
-
-
     }
 
     /**
