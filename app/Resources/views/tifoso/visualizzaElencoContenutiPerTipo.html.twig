@@ -1,0 +1,13 @@
+{% extends 'tifoso/template.html.twig' %}
+{% block contenuto %}
+    <div class="container">
+        <div id="contenitore" class="col-md-6 col-lg-6">
+
+            {% for contenuto in elenco %}
+                <a href="/yourteam/web/app_dev.php/contenuti/utenteRegistrato/visualizzaContenutoView/{{ contenuto.getId() }}"> <img class="col-md-6 col-sm-6 "src="{{ asset("ImmaginiApp/contenuti/") }}{{ contenuto.getURL() }}" class="img-rectangle img-responsive"></a>
+
+            {% endfor %}
+
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'formazione/template.html.twig' %}
+{% block contenuto %}
+
+    <div class="profile-content">
+
+        <div class="row">
+
+            <div>Convocazioni per la partita {{ partita.getNome }} </div>
+
+            <form action="http://localhost/yourteam/web/app_dev.php/formazione/allenatore/controlConvocazioni" method="post">
+
+                {% for calciatore in calciatori %}
+
+                    <input type="checkbox" name="calciatori[]" value="{{ calciatore.getUsernameCodiceContratto }}">{{ calciatore.getNome }} {{ calciatore.getCognome }}<br>
+
+                {% endfor %}
+
+                <input type="submit" value="Submit">
+
+            </form>
+
+
+        </div>
+    </div>
+{% endblock %}
+

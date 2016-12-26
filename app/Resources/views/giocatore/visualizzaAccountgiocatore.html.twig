@@ -1,134 +1,95 @@
 {% extends 'giocatore/template.html.twig' %}
+{% block utente %}
+    <form method="post">
+        <button type="submit" style=" background: transparent; border: transparent">{{giocatore.getNome() }}  {{ giocatore.getCognome() }}</button></form>
+
+{% endblock %}
 {% block contenuto %}
-    <div class="row">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ giocatore.getNome() }} {{giocatore.getCognome() }} <b>Giocatore</b></h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="{{ asset("ImmaginiApp/account/") }}{{ giocatore.getImmagine() }}" class="img-circle img-responsive"> </div>
 
-        <div class="profile">
+                <!--<div class="col-xs-10 col-sm-10 hidden-md hidden-lg"> <br>
+                  <dl>
+                    <dt>DEPARTMENT:</dt>
+                    <dd>Administrator</dd>
+                    <dt>HIRE DATE</dt>
+                    <dd>11/12/2013</dd>
+                    <dt>DATE OF BIRTH</dt>
+                       <dd>11/12/2013</dd>
+                    <dt>GENDER</dt>
+                    <dd>Male</dd>
+                  </dl>
+                </div>-->
+                <div class=" col-md-9 col-lg-9 ">
+                    <table class="table table-user-information">
+                        <tbody>
+                        <tr>
+                            <td><b>Email:</b></td>
+                            <td>{{ giocatore.getEmail() }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Numero Contratto</b></td>
+                            <td>{{ giocatore.getUsernamecodiceContratto() }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Data di Nascita</b></td>
+                            <td>{{ giocatore.getDataDiNascita() }}</td>
+                        </tr>
 
-<<<<<<< HEAD
-            <div class="avatar"> <center>
-
-                    <img src="christian.jpg" alt="Circle Image" class="img-circle img-responsive img-raised" width="160px" height="160px" >
-=======
-            <div class="avatar">
-                <center>
-
-                    <img src="christian.jpg" alt="Circle Image" class="img-circle img-responsive img-raised"
-                         width="160px" height="160px">
->>>>>>> comunicazione
-                </center>
-            </div>
-
-            <div class="name">
-                <h3 class="title">{{ giocatore.getNome() }} </h3>
-                <h5>Giocatore</h5>
-
-                <form class="form-horizontal">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-
-                            <label class="col-sm-2 control-label">Nome:</p></label>
-                            <div class="col-sm-10">
-                                <p class="form-control-static"> {{ giocatore.getNome() }} </p>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-<<<<<<< HEAD
-                            <label class="col-sm-2 control-label">   Cognome:</label>
-=======
-                            <label class="col-sm-2 control-label"> Cognome:</label>
->>>>>>> comunicazione
-                            <div class="col-sm-10">
-                                <p class="form-control-static"> {{ giocatore.getCognome() }}</p>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Email:</label>
-                            <div class="col-sm-10">
-                                <p class="form-control-static"> {{ giocatore.getEmail() }}</p>
-                            </div>
-                        </div>
+                        <tr>
+                        <tr>
+                            <td><b>Domicilio</b></td>
+                            <td>{{ giocatore.getDomicilio() }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Indirizzo</b></td>
+                            <td>{{ giocatore.getIndirizzo() }}</td>
+                        </tr>
 
 
-                        <div class="form-group">
-<<<<<<< HEAD
-                            <label class="col-sm-2 control-label">username o  numero contratto:</label>
-                            <div class="col-sm-10">
-                                <p class="form-control-static"> {{ giocatore.getContratto() }}</p>
-=======
-                            <label class="col-sm-2 control-label">username o numero contratto:</label>
-                            <div class="col-sm-10">
-                                <p class="form-control-static"> {{ giocatore.usernameCodiceContratto }}</p>
->>>>>>> comunicazione
-                            </div>
-                        </div>
+                        <tr>
+                            <td><b>Provincia</b></td>
+                            <td>{{ giocatore.getProvincia() }}
+                        </tr>
+                        <tr>
+
+                            <td><b>Telefono</b></td>
+                            <td>   {{ giocatore.getTelefono() }}
+                            </td>
+                        </tr>
+                            <tr>
+                            <td><b>nazionalità</b></td>
+                            <td>   {{ giocatore.getNazionalita() }}
+                            </td>
+                            </tr>
 
 
-<<<<<<< HEAD
+                        <tr>
+                            <td>
 
-                        <div class="form-group">
-                            <label  class="col-sm-2 control-label">password</label>
-=======
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">password</label>
->>>>>>> comunicazione
-                            <div class="col-sm-10">
-                                <p class="form-control-static"> *********</p>
-                            </div>
-                        </div>
+                                <button type="button" class="btn btn-info"> Elimina </button> &nbsp &nbsp
 
+                            </td>
+                            <td> <button type="button" class="btn btn-info"> Modifica </button></td>
+                        </tr>
 
-<<<<<<< HEAD
-
-=======
->>>>>>> comunicazione
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label text-center">Data di nascita</label>
-                            <div class="col-sm-10">
-                                <p class="form-control-static"> {{ giocatore.getDataDiNascita() }}</p>
-                            </div>
-                        </div>
+                        </tbody>
+                    </table>
 
 
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label text-center">Domicilio</label>
-                            <div class="col-sm-10">
-                                <p class="form-control-static"> {{ giocatore.getDomicilio() }}</p>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Indirizzo</label>
-                            <div class="col-sm-10">
-                                <p class="form-control-static"> {{ giocatore.getIndirizzo() }}</p>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Provincia</label>
-                            <div class="col-sm-10">
-                                <p class="form-control-static"> {{ giocatore.getProvincia() }}</p>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Numero</label>
-                            <div class="col-sm-10">
-                                <p class="form-control-static">{{ giocatore.getTelefono() }}</p>
-                            </div>
-                        </div>
-                    </form>
-
-<<<<<<< HEAD
-                    <button type="button" class="btn btn-info"> Elimina </button> &nbsp &nbsp
-                    <button type="button" class="btn btn-info"> Modifica </button>
-=======
-                    <button type="button" class="btn btn-info"> Elimina</button>
-                    &nbsp &nbsp
-                    <button type="button" class="btn btn-info"> Modifica</button>
->>>>>>> comunicazione
+                </div>
             </div>
         </div>
+        <div class="panel-footer">
+
+        </div>
+
     </div>
-{% endblock %}
+    {% endblock %}
+
+
