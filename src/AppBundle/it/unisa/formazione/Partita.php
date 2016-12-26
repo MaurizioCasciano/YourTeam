@@ -17,12 +17,13 @@ class Partita
     private $stadio;
     private $modulo;
 
-    public function __construct($nome,$data,$squadra,$stadio)
+    public function __construct($nome,$data,$squadra,$stadio,$modulo)
     {
         $this->data=$data;
         $this->nome=$nome;
         $this->squadra=$squadra;
         $this->stadio=$stadio;
+        $this->modulo=$modulo;
 
     }
 

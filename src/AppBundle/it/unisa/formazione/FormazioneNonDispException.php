@@ -15,7 +15,7 @@ class FormazioneNonDispException extends Exception
 {
     public function messaggioDiErrore()
     {
-        $this->getMessage();
+       return $this->message;
     }
 
 }

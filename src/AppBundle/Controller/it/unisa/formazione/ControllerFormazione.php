@@ -50,22 +50,22 @@ class ControllerFormazione extends Controller
 
                 $_SESSION["partita"]=$partita;
 
-                return $this->render("formazione/visualizzaCalciatoriConvocazione.html.twig",array('calciatori'=> $calciatori , 'partita' => $partita));
+                return $this->render("allenatore/visualizzaCalciatoriConvocazione.html.twig",array('calciatori'=> $calciatori , 'partita' => $partita));
 
 
             }
             catch (PartitaNonDispException $e1)
             {
-                return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> $e1->messaggioDiErrore()));
+                return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> $e1->messaggioDiErrore()));
             }
             catch (ConvocNonDispException $e2)
             {
-                return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> $e2->messaggioDiErrore()));
+                return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> $e2->messaggioDiErrore()));
             }
         }
         else
         {
-            return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> "devi effettuare prima l accesso!"));
+            return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> "devi effettuare prima l accesso!"));
         }
     }
 
@@ -95,29 +95,31 @@ class ControllerFormazione extends Controller
 
                 $_SESSION["partita"]=$partita;
 
-                return $this->render("formazione/visualizzaTatticaFormazione.html.twig", array('partita' => $partita , 'tattiche' => $tattiche));
+                return $this->render("allenatore/visualizzaTatticaFormazione.html.twig", array('partita' => $partita , 'tattiche' => $tattiche));
 
-               // return new Response(var_dump($partita)." per questa partita selezioneremo tattica e formazione"); //in attesa della view della selezione tattica
 
             }
             catch (PartitaNonDispException $e1)
             {
-                return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> $e1->messaggioDiErrore()));
+                return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> $e1->messaggioDiErrore()));
 
             }
             catch (FormazioneNonDispException $e2)
             {
-                return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> $e2->messaggioDiErrore()));
+                return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> $e2->messaggioDiErrore()));
 
             }
+            catch (Exception $e)
+            {
+                return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> $e->getMessage()));
+
+            }
+
         }
         else
         {
-            return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> "devi effettuare prima l accesso!"));
+            return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> "devi effettuare prima l accesso!"));
         }
-
-
-
     }
 
     /**
@@ -141,13 +143,13 @@ class ControllerFormazione extends Controller
 
                 $gestionePartita->diramaConvocazioni($convocazioni,$partita);
 
-                return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> "convocazioni diramate!"));
+                return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> "convocazioni diramate!"));
 
             }
 
         }
 
-        return $this->render("formazione/visualizzaRisposta.html.twig",array('messaggio'=> "nessun calciatore convocato !"));
+        return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> "nessun calciatore convocato !"));
 
     }
 

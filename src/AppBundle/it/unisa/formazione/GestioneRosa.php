@@ -103,8 +103,9 @@ class GestioneRosa
     {
         $nomePartita=$partita->getNome();
         $dataPartita=$partita->getData();
+        $squadra=$partita->getSquadra();
         //seleziono tutti i calciatori convocati per questa partita
-        $query="SELECT * FROM calciatore JOIN giocare ON calciatore.contratto=giocare.calciatore WHERE data='$dataPartita' AND partita='$nomePartita'";
+        $query="SELECT * FROM calciatore JOIN giocare ON calciatore.contratto=giocare.calciatore WHERE data='$dataPartita' AND partita='$nomePartita' AND giocare.squadra='$squadra'";
 
         $risultato=$this->connessione->query($query);
 
