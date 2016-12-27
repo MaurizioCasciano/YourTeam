@@ -1,4 +1,9 @@
 {% extends 'allenatore/template.html.twig' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ asset('css/chat.css') }}"/>
+{% endblock %}
+
 {% block contenuto %}
     <div class="container">
         <div class="col-md-12 col-lg-6">
@@ -15,24 +20,20 @@
                             <ul class="list-unstyled media-block">
 
                                 {% for messaggio in messaggi %}
-
-                                    <!--<script>
-                                        alert("dfsasdsd");
-                                    </script>-->
-
                                     {% if messaggio.getMittente() == "allenatore" %}
                                         <li class="mar-btm">
                                             <div class="media-right">
                                                 <img src="" class="img-circle img-sm" alt="Profile Picture">
-                                            </div>
-                                            <div class="media-body pad-hor speech-right">
-                                                <div class="speech">
-                                                    <a href="#"
-                                                       class="media-heading">{{ messaggio.getNomeMittente() }}{{ messaggio.getCognomeMittente() }}</a>
-                                                    <p>{{ messaggio.getTesto() }} </p>
-                                                    <p class="speech-time">
-                                                        <i class="fa fa-clock-o fa-fw">{{ messaggio.getData() }}</i>
-                                                    </p>
+
+                                                <div class="media-body pad-hor speech-right">
+                                                    <div class="speech">
+                                                        <a href="#"
+                                                           class="media-heading">{{ messaggio.getNomeMittente() }}{{ messaggio.getCognomeMittente() }}</a>
+                                                        <p>{{ messaggio.getTesto() }} </p>
+                                                        <p class="speech-time">
+                                                            <i class="fa fa-clock-o fa-fw">{{ messaggio.getData() }}</i>
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </li>
@@ -80,5 +81,5 @@
                 </div>
             </div>
         </div>
-    </div>->
+    </div>
 {% endblock %}

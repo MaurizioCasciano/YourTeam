@@ -26,7 +26,6 @@ class ControllerContenutiStaff extends Controller
      * @Method("GET")
      */
     public function inserisciContenutoForm(){
-
         return $this->render("staff/inserisciContenutoForm.html.twig");
     }
 
@@ -39,7 +38,7 @@ class ControllerContenutiStaff extends Controller
         $descrizione = $richiesta->request->get("d");
         //$URL = $richiesta->request->get("u");
         $tipo = $richiesta->request->get("tipo");
-
+        $data = date("Y-m-d");
         /* per un test di prova iniziale la variabile squadra sarà inviata tramite form*/
         //$squadra = $richiesta->request->get("squadra");
 
@@ -53,7 +52,7 @@ class ControllerContenutiStaff extends Controller
         }
         if($path!=null){
 
-            $contenuto = new Contenuto($titolo,$descrizione,$path,$tipo,$squadra);
+            $contenuto = new Contenuto($titolo,$descrizione,$path,$tipo,$data,$squadra);
             $gestore = new GestioneContenuti();
             try {
                 $gestore->inserisciContenuto($contenuto);
@@ -64,7 +63,6 @@ class ControllerContenutiStaff extends Controller
 
         }
         return new Response("problema a caricare l'immagine");
-
     }
 
     /**
@@ -85,14 +83,14 @@ class ControllerContenutiStaff extends Controller
         $descrizione = $richiesta->request->get("descrizione");
         $URL = $richiesta->request->get("URL");
         $tipo = $richiesta->request->get("tipo");
-
+        $data = date("Y-m-d");
         /* per un test di prova iniziale la variabile squadra sarà inviata tramite form*/
         $squadra = $richiesta->request->get("squadra");
 
         /* quando verrà implementata la sessione, la squadra sarà ottenuta dalla sessione
         $squadra= $_SESSION["squadra"];*/
 
-        $contenuto = new Contenuto($titolo,$descrizione,$URL,$tipo,$squadra);
+        $contenuto = new Contenuto($titolo,$descrizione,$URL,$tipo,$data,$squadra);
         $gestore = new GestioneContenuti();
         try {
             $gestore->modificaContenuto($id,$contenuto);

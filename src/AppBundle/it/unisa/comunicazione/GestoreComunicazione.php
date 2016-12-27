@@ -36,7 +36,7 @@ class GestoreComunicazione
             . $msg->getData() . "','"
             . $msg->getTipo() . "');";
         $ris = $this->conn->query($sql);
-        if (!$ris) throw new \Exception(("errore inserimento dati nel db"));
+        if (!$ris) throw new \Exception(("errore inserimento dati nel db " . $this->conn->error));
     }
 
 
@@ -52,27 +52,27 @@ class GestoreComunicazione
             // output data of each row
             while ($row = $result->fetch_assoc()) {
                 /*$t, $u, $c, $mitt,$data,$tipo*/
-                $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $row["data"], $row["tipo"]);
-                $m->setId($row["id"]);
-                $messaggi[$i] = $m;
+                $messaggio = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $row["data"], $row["tipo"]);
+                $messaggio->setId($row["id"]);
+                $messaggi[$i] = $messaggio;
                 $i++;
 
-                $g = new GestoreAccount();
-                $accountAllenatore = $g->ricercaAccount_A_T_S($row["allenatore"]);
-                $accountCalciatore = $g->ricercaAccount_G($row["calciatore"]);
+                $gestoreAccount = new GestoreAccount();
+                $accountAllenatore = $gestoreAccount->ricercaAccount_A_T_S($row["allenatore"]);
+                $accountCalciatore = $gestoreAccount->ricercaAccount_G($row["calciatore"]);
 
-                if ($row["mittente"] == "allenatore") {
-                    $m->setNomeMittente($accountAllenatore->getNome());
-                    $m->setCognomeMittente($accountAllenatore->getCognome());
+                if ($messaggio->getMittente() == "allenatore") {
+                    $messaggio->setNomeMittente($accountAllenatore->getNome());
+                    $messaggio->setCognomeMittente($accountAllenatore->getCognome());
 
-                    $m->setNomeDestinatario($accountCalciatore->getNome());
-                    $m->setCognomeDestinatario($accountCalciatore->getCognome());
-                } else if ($row["mittente"] == "calciatore") {
-                    $m->setNomeMittente($accountCalciatore->getNome());
-                    $m->setCognomeMittente($accountCalciatore->getCognome());
+                    $messaggio->setNomeDestinatario($accountCalciatore->getNome());
+                    $messaggio->setCognomeDestinatario($accountCalciatore->getCognome());
+                } else if ($messaggio->getMittente() == "calciatore") {
+                    $messaggio->setNomeMittente($accountCalciatore->getNome());
+                    $messaggio->setCognomeMittente($accountCalciatore->getCognome());
 
-                    $m->setNomeDestinatario($accountAllenatore->getNome());
-                    $m->setCognomeDestinatario($accountAllenatore->getCognome());
+                    $messaggio->setNomeDestinatario($accountAllenatore->getNome());
+                    $messaggio->setCognomeDestinatario($accountAllenatore->getCognome());
                 }
             }
 
@@ -111,11 +111,20 @@ class GestoreComunicazione
 
                 $accountCalciatore = $g->ricercaAccount_G($calciatoreDestinatario);
 
-                $m->setNomeMittente($accountAllenatore->getNome());
-                $m->setCognomeMittente($accountAllenatore->getCognome());
+                if ($m->getMittente() == "allenatore") {
+                    $m->setNomeMittente($accountAllenatore->getNome());
+                    $m->setCognomeMittente($accountAllenatore->getCognome());
 
-                $m->setNomeDestinatario($accountCalciatore->getNome());
-                $m->setCognomeDestinatario($accountCalciatore->getCognome());
+                    $m->setNomeDestinatario($accountCalciatore->getNome());
+                    $m->setCognomeDestinatario($accountCalciatore->getCognome());
+                } else if ($m->getMittente() == "calciatore") {
+                    $m->setNomeMittente($accountCalciatore->getNome());
+                    $m->setCognomeMittente($accountCalciatore->getCognome());
+
+                    $m->setNomeDestinatario($accountAllenatore->getNome());
+                    $m->setCognomeDestinatario($accountAllenatore->getCognome());
+                }
+
             }
             return $messaggi;
         } else
