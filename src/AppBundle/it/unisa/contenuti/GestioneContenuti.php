@@ -22,12 +22,13 @@ class GestioneContenuti
     }
 
     public function inserisciContenuto(Contenuto $contenuto){
-        $sql = "INSERT INTO contenuto(squadra,titolo,descrizione,URL,tipo)
+        $sql = "INSERT INTO contenuto(squadra,titolo,descrizione,URL,tipo,data)
         VALUES ('".$contenuto->getSquadra()."','"
             .$contenuto->getTitolo()."','"
             .$contenuto->getDescrizione()."','"
             .$contenuto->getURL()."','"
-            .$contenuto->getTipo()."');";
+            .$contenuto->getTipo()."','"
+            .$contenuto->getData()."');";
 
         $res = $this->conn->query($sql);
         if(!$res) throw new \Exception(("errore inserimento dati nel db"));
@@ -52,7 +53,8 @@ class GestioneContenuti
                ."', descrizione='".$contenuto->getDescrizione()
                ."', url='".$contenuto->getURL()
                ."', tipo='".$contenuto->getTipo()
-               ."' WHERE id='$id'";
+               ."', data='".date("Y-m-d")
+                ."' WHERE id='$id'";
             $this->conn->query($sql);
 
         }catch (\Exception $e) {
@@ -61,13 +63,13 @@ class GestioneContenuti
     }
 
     public function visualizzaElencoContenuti(){
-        $sql="SELECT * FROM contenuto";
+        $sql="SELECT * FROM contenuto ORDER BY data DESC";
         $elenco = array();
         $res = $this->conn->query($sql);
         $i=0;
         if($res->num_rows <= 0) throw new \Exception("Elenco contenuti vuoto");
             while($row = $res->fetch_assoc()){
-                $contenuto = new Contenuto($row["titolo"],$row["descrizione"], $row["url"],$row["tipo"],$row["squadra"]);
+                $contenuto = new Contenuto($row["titolo"],$row["descrizione"], $row["url"],$row["tipo"],$row["data"],$row["squadra"]);
                 $contenuto->setId($row{"id"});
                 $elenco[$i]=$contenuto;
                 $i++;
@@ -80,13 +82,13 @@ class GestioneContenuti
     }
 
     public function visualizzaElencoContenutiPerTipo($tipo){
-        $sql="SELECT * FROM contenuto WHERE tipo='$tipo'";
+        $sql="SELECT * FROM contenuto WHERE tipo='$tipo' ORDER BY data DESC";
         $elenco = array();
         $res = $this->conn->query($sql);
         $i=0;
         if($res->num_rows <= 0) throw new \Exception("Elenco contenuti vuoto per il tipo selezionato");
         while($row = $res->fetch_assoc()){
-            $contenuto = new Contenuto($row["titolo"],$row["descrizione"], $row["url"],$row["tipo"],$row["squadra"]);
+            $contenuto = new Contenuto($row["titolo"],$row["descrizione"], $row["url"],$row["tipo"],$row["data"],$row["squadra"]);
             $contenuto->setId($row["id"]);
             $elenco[$i]=$contenuto;
             $i++;
@@ -95,13 +97,13 @@ class GestioneContenuti
     }
 
     public function visualizzaElencoContenutiSquadra($squadra){
-        $sql="SELECT * FROM contenuto WHERE squadra='$squadra'";
+        $sql="SELECT * FROM contenuto WHERE squadra='$squadra'ORDER BY data DESC ";
         $elenco = array();
         $res = $this->conn->query($sql);
         $i=0;
         if($res->num_rows <= 0) throw new \Exception("Elenco contenuti vuoto per la squadra selezionata");
         while($row = $res->fetch_assoc()){
-            $contenuto = new Contenuto($row["titolo"],$row["descrizione"], $row["url"],$row["tipo"],$row["squadra"]);
+            $contenuto = new Contenuto($row["titolo"],$row["descrizione"], $row["url"],$row["tipo"],$row["data"],$row["squadra"]);
             $contenuto->setId($row{"id"});
             $elenco[$i]=$contenuto;
 
@@ -111,12 +113,12 @@ class GestioneContenuti
     }
 
     public function visualizzaContenuto($id){
-        $sql = "SELECT * FROM contenuto WHERE id='$id'";
+        $sql = "SELECT * FROM contenuto WHERE id='$id' ";
         $res = $this->conn->query($sql);
         if($res->num_rows <= 0) throw new \Exception("contenuto non disponibile");
         $row = $res->fetch_assoc();
 
-        $contenuto = new Contenuto($row["titolo"],$row["descrizione"], $row["url"],$row["tipo"],$row["squadra"]);
+        $contenuto = new Contenuto($row["titolo"],$row["descrizione"], $row["url"],$row["tipo"],$row["data"],$row["squadra"]);
         $contenuto->setId($row["id"]);
 
         return $contenuto;
