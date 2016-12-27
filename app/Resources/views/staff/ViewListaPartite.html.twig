@@ -1,14 +1,46 @@
 {% extends 'staff/template.html.twig' %}
 {% block head %}
-    {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>#}
-
+    <style>
+        .panel-title button {
+            width: 100%;
+        }
+    </style>
 {% endblock %}
 
 {% block contenuto %}
 
-    {% for partita in partite %}
-    {% endfor %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="text-right">
+                <button class="btn btn-default">Aggiungi</button>
+            </div>
+        </div>
+    </div>
 
+    <div id="accordion" class="panel-group" role="tablist">
+        {% for partita in partite %}
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab">
+                    <h4 class="panel-title">
+                        <button class="collapsed" data-toggle="collapse" data-parent="#accordion"
+                                data-target="#{{ loop.index }}">
+                            <span class="pull-left">{{ partita.getNome() }}</span><span class="pull-right">{{ partita.getData() }}</span>
+                        </button>
+                    </h4>
+                </div>
+
+                <div id="{{ loop.index }}" class="panel-collapse collapse" role="tabpanel">
+                    <div class="panel-body">
+                        <button>Modifica</button>
+                        <button>Info</button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+    <scrip>
+
+    </scrip>
 {% endblock %}
