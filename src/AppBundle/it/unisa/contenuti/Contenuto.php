@@ -15,6 +15,7 @@ class Contenuto
     private $URL;
     private $tipo;
     private $squadra;
+    private $data;
 
     /**
      * Contenuto constructor.
@@ -24,13 +25,30 @@ class Contenuto
      * @param $tipo
      * @param $squadra
      */
-    public function __construct($titolo, $descrizione, $URL, $tipo,$squadra)
+    public function __construct($titolo, $descrizione, $URL, $tipo,$data,$squadra)
     {
         $this->titolo = $titolo;
         $this->descrizione = $descrizione;
         $this->URL = $URL;
         $this->tipo = $tipo;
+        $this->data = $data;
         $this->squadra=$squadra;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param mixed $data
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
     }
 
     /**
@@ -134,6 +152,6 @@ class Contenuto
 
     public function __toString()
     {
-        return "Titolo: ".$this->titolo."<br/> Descrizione: ".$this->descrizione."<br/> URL: ".$this->URL." <br/> Tipo: ".$this->tipo." <br/> Squadra: ".$this->squadra;
+        return "Titolo: ".$this->titolo."<br/> Descrizione: ".$this->descrizione."<br/> URL: ".$this->URL." <br/> Tipo: ".$this->tipo." <br/> Data: ".$this->data." <br/> Squadra: ".$this->squadra;
     }
 }
