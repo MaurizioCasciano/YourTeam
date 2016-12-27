@@ -12,6 +12,9 @@
     <![endif]-->
     <link href="{{ asset("assetTemplate/css/styles.css") }}" rel="stylesheet">
 
+    {% block head %}
+
+    {% endblock %}
 </head>
 <body>
 <nav id="top-nav" class="navbar navbar-inverse navbar-static-top">
@@ -50,6 +53,7 @@
             <ul class="nav nav-stacked">
 
                 <li><a href="javascript:;"><i class="glyphicon glyphicon-flash"></i> Home</a></li>
+                <li><a href="{{ path('lista_partite') }}"><i class="glyphicon glyphicon-link"></i>Partite</a></li>
                 <li><a href="javascript:;"><i class="glyphicon glyphicon-link"></i>convalida</a></li>
                 <li><a href="javascript:;"><i class="glyphicon glyphicon-list-alt"></i> ricerca account</a></li>
                 <li><a href="javascript:;"><i class="glyphicon glyphicon-book"></i> statistiche partite</a></li>

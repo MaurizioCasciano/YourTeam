@@ -11,21 +11,23 @@ namespace AppBundle\it\unisa\partite;
 
 class Partita implements PartitaInterface
 {
-    private $nome;
+    private $casa;
+    private $trasferta;
     private $data;
     private $squadra;
     private $stadio;
 
     /**
      * Partita constructor.
-     * @param $nome
-     * @param $data
-     * @param $squadra
-     * @param $stadio
+     * @param $nome string Il nome della partita. Es. : Casa - Trasferta
+     * @param $data \DateTime La data e l'ora della partita. Es. : 2016-12-20 20:45
+     * @param $squadra string La squadra a cui si riferiscono le informazioni della partita.
+     * @param $stadio string Lo stadio in cui si disputa l'incontro.
      */
-    public function __construct($nome, $data, $squadra, $stadio)
+    public function __construct($casa, $trasferta, $data, $squadra, $stadio)
     {
-        $this->nome = $nome;
+        $this->casa = $casa;
+        $this->trasferta = $trasferta;
         $this->data = $data;
         $this->squadra = $squadra;
         $this->stadio = $stadio;
@@ -36,15 +38,23 @@ class Partita implements PartitaInterface
      */
     public function getNome()
     {
-        return $this->nome;
+        return $this->casa . " - " . $this->trasferta;
     }
 
     /**
-     * @param mixed $nome
+     * @return mixed
      */
-    public function setNome($nome)
+    public function getCasa()
     {
-        $this->nome = $nome;
+        return $this->casa;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTrasferta()
+    {
+        return $this->trasferta;
     }
 
     /**
@@ -94,4 +104,11 @@ class Partita implements PartitaInterface
     {
         $this->stadio = $stadio;
     }
+
+    function __toString()
+    {
+        return "Partita[nome: " . $this->nome . ", data: " . $this->data . ", squadra: " . $this->getSquadra() . ", stadio: " . $this->getStadio() . "]";
+    }
+
+
 }

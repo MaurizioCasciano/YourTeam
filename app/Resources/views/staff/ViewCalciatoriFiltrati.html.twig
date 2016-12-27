@@ -1,7 +1,7 @@
 {% extends 'staff/template.html.twig' %}
 {% block contenuto %}
     {% for calciatore in calciatori %}
-        <div>{{ calciatore }}</div>
+        <div>{{ calciatore.getGolFatti() }}</div>
     {% endfor %}
 {% endblock %}
 

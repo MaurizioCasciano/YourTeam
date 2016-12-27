@@ -15,35 +15,16 @@ class GestorePartite
 {
     private $conn;
     private $db;
-    private static $instance = null;
 
     /**
      * GestionePartite constructor.
      * @param $conn
      */
-    protected function __construct()
+    public function __construct()
     {
         $this->db = new DB();
         $this->conn = $this->db->connect();
     }
-
-    private function __clone()
-    {
-        //Prevent any object or instance of this class to be cloned
-    }
-
-    /**
-     * @return null
-     */
-    public static function getInstance()
-    {
-        if (self::$instance === null) {
-            selef::$instance = new static();
-        }
-
-        return self::$instance;
-    }
-
 
     function __destruct()
     {
@@ -66,7 +47,11 @@ class GestorePartite
             $arrayPartite = array();
 
             while ($row = $result->fetch_assoc()) {
-                $arrayPartite[] = new Partita($row["nome"], $row["data"], $row["squadra"], $row["stadio"]);
+                $squadre = explode('-', $row["nome"]);
+                $casa = trim($squadre[0]);
+                $trasferta = trim($squadre[1]);
+
+                $arrayPartite[] = new Partita($casa, $trasferta, $row["data"], $row["squadra"], $row["stadio"]);
             }
 
             return $arrayPartite;
@@ -75,6 +60,11 @@ class GestorePartite
         }
     }
 
+    /**
+     * Inserisce la partita in input nel DataBase.
+     * @param PartitaInterface $partita La partita de inserire nel DataBase.
+     * @return bool true on success or false on failure.
+     */
     public function inserisciPartita(PartitaInterface $partita)
     {
         $statement = $this->conn->prepare("INSERT INTO partita
@@ -91,10 +81,7 @@ class GestorePartite
         $stadio = $partita->getStadio();
 
         $statement->bind_param("ssss", $nome, $data, $squadra, $stadio);
-        $executed = $statement->execute();
 
-        if (!$executed) {
-            throw  new \Exception("Error: " . $this->conn->error);
-        }
+        return $statement->execute();
     }
 }
