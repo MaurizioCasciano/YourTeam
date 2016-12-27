@@ -1,21 +1,20 @@
-{% extends ":staff:template.html.twig" %}
 {% block contenuto %}
-    <form action="{{ path("inserisciPartita") }}" method="post">
-        <label for="squadra_casa">Casa</label>
-        <input id="squadra_casa" type="text" name="squadra_casa">
+    <form id="form_new_partita">
+        <label for="casa">Casa</label>
+        <input id="casa" type="text" name="casa" required="required">
 
-        <label for="squadra_trasferta">Trasferta</label>
-        <input id="squadra_trasferta" type="text" name="squadra_trasferta">
+        <label for="trasferta">Trasferta</label>
+        <input id="trasferta" type="text" name="trasferta" required="required">
 
         <label for="stadio">Stadio</label>
-        <input id="stadio" type="text" name="stadio">
+        <input id="stadio" type="text" name="stadio" required="required">
 
         <label for="data">Data</label>
-        <input id="data" type="date" name="data">
+        <input id="data" type="date" name="data" required="required">
 
         <label for="ora">Ora</label>
-        <input id="ora" type="time" name="ora">
+        <input id="ora" type="time" name="ora" required="required">
 
-        <input type="submit" value="Salva">
+        <input id="salva_partita" type="button" value="Salva">
     </form>
 {% endblock %}

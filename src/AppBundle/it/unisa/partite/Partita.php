@@ -9,7 +9,7 @@
 namespace AppBundle\it\unisa\partite;
 
 
-class Partita implements PartitaInterface
+class Partita implements PartitaInterface, \JsonSerializable
 {
     private $casa;
     private $trasferta;
@@ -38,7 +38,7 @@ class Partita implements PartitaInterface
      */
     public function getNome()
     {
-        return $this->casa . " - " . $this->trasferta;
+        return $this->getCasa() . " - " . $this->getTrasferta();
     }
 
     /**
@@ -107,8 +107,19 @@ class Partita implements PartitaInterface
 
     function __toString()
     {
-        return "Partita[nome: " . $this->nome . ", data: " . $this->data . ", squadra: " . $this->getSquadra() . ", stadio: " . $this->getStadio() . "]";
+        return "Partita[nome: " . $this->getNome() . ", data: " . $this->data . ", squadra: " . $this->getSquadra() . ", stadio: " . $this->getStadio() . "]";
     }
 
 
+    function jsonSerialize()
+    {
+        return [
+            "casa" => $this->getCasa(),
+            "trasferta" => $this->getTrasferta(),
+            "nome" => $this->getNome(),
+            "data" => $this->getData(),
+            "squadra" => $this->getSquadra(),
+            "stadio" => $this->getStadio()
+        ];
+    }
 }

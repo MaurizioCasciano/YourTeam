@@ -33,24 +33,28 @@ class ControllerPartiteStaff extends Controller
      */
     public function inserisciPartita(Request $request)
     {
-        $squadra_casa = $request->get("squadra_casa");
-        $squadra_trasferta = $request->get("squdara_trasferta");
+        $casa = $request->get("casa");
+        $trasferta = $request->get("trasferta");
         $stadio = $request->get("stadio");
         $data = $request->get("data");
         $ora = $request->get("ora");
 
-        //return new Response("casa: " . $squadra_casa . " trasferta: " . $squadra_trasferta . " stadio: " . $stadio . " data: " . $data . " opa: " . $ora);
+        //return new Response("casa: " . $casa . " trasferta: " . $trasferta . " stadio: " . $stadio . " data: " . $data . " opa: " . $ora);
 
-        $nome = $squadra_casa . "-" . $squadra_trasferta;
+        $nome = $casa . "-" . $trasferta;
         $dateTime = $data . " " . $ora;
         //($nome, $data, $squadra, $stadio)
-        $partita = new Partita($squadra_casa, $squadra_trasferta, $dateTime, $_SESSION["squadra"], $stadio);
+        $partita = new Partita($casa, $trasferta, $dateTime, $_SESSION["squadra"], $stadio);
 
         $gestorePartite = new GestorePartite();
 
         $success = $gestorePartite->inserisciPartita($partita);
 
-        return new Response("Partita inserita: " . $success);
+        if ($success) {
+            return new Response(json_encode(array("partita" => $partita, "success" => $success)));
+        } else {
+
+        }
     }
 
     /**

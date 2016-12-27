@@ -1,8 +1,18 @@
 {% extends 'staff/template.html.twig' %}
 {% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <style>
         .panel-title button {
             width: 100%;
+        }
+
+        #add {
+            margin-bottom: 3%;
+        }
+
+        #new {
+            display: none;
         }
     </style>
 {% endblock %}
@@ -12,19 +22,38 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="text-right">
-                <button class="btn btn-default">Aggiungi</button>
+                <button id="add" class="btn btn-primary fa fa-plus">Aggiungi</button>
             </div>
         </div>
     </div>
 
     <div id="accordion" class="panel-group" role="tablist">
+        <div id="new" class="panel panel-default">
+            <div class="panel-heading" role="tab">
+                <h4 class="panel-title">
+                    <button class="collapsed" data-toggle="collapse" data-parent="#accordion"
+                            data-target="#collapse">
+                        <span class="pull-left">Nuova - Partita</span>
+                    </button>
+                </h4>
+            </div>
+
+            <div id="collapse" class="panel-collapse collapse-in" role="tabpanel">
+                <div class="panel-body">
+                    {% include ":staff:FormInserisciPartita.html.twig" %}
+                </div>
+            </div>
+        </div>
+
+
         {% for partita in partite %}
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab">
                     <h4 class="panel-title">
                         <button class="collapsed" data-toggle="collapse" data-parent="#accordion"
                                 data-target="#{{ loop.index }}">
-                            <span class="pull-left">{{ partita.getNome() }}</span><span class="pull-right">{{ partita.getData() }}</span>
+                            <span class="pull-left">{{ partita.getNome() }}</span><span
+                                    class="pull-right">{{ partita.getData() }}</span>
                         </button>
                     </h4>
                 </div>
@@ -40,7 +69,60 @@
     </div>
 
 
-    <scrip>
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
 
-    </scrip>
+    <script>
+        $(function () {
+            $("#add").click(function () {
+                $("#new").toggle();
+            });
+
+            $("#salva_partita").click(function () {
+                var casa = $("input[name='casa']").val();
+                var trasferta = $("input[name='trasferta']").val();
+                var stadio = $("input[name='stadio']").val();
+                var data = $("input[name='data']").val();
+                var ora = $("input[name='ora']").val();
+
+                alert("casa: " + casa);
+                alert("trasferta: " + trasferta);
+                alert("stadio: " + stadio);
+                alert("data: " + data);
+                alert("ora: " + ora);
+
+                $.ajax({
+                    url: "{{ path("inserisciPartita") }}",
+                    type: "POST",
+                    dataType: 'json',
+                    data: {
+                        "casa": casa,
+                        "trasferta": trasferta,
+                        "stadio": stadio,
+                        "data": data,
+                        "ora": ora
+                    },
+                    cache: false,
+                    success: function (response, textStatus, jqXHR) {
+                        alert("Success: " + response.success);
+
+                        alert("Casa: " + response.partita.casa);
+                        alert("Trasferta: " + response.partita.trasferta);
+                        alert("Nome: " + response.partita.nome);
+                        alert("Data: " + response.partita.data);
+                        alert("Squadra: " + response.partita.squadra);
+                        alert("Stadio: " + response.partita.stadio);
+                    }
+                    ,
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert("Errore nell'invio del messaggio.\nStato: " + textStatus + "\nError: " + errorThrown);
+                    }
+                });
+
+                $('#form_new_partita')[0].reset();
+            });
+        });
+    </script>
 {% endblock %}
