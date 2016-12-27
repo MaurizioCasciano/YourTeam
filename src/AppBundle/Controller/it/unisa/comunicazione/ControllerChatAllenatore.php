@@ -20,8 +20,8 @@ class ControllerChatAllenatore extends Controller
 {
 
     /**
-     * @Route("/comunicazione/allenatore/inviaMessaggioChat")
-     * @Method("POST")
+     * @Route("/comunicazione/allenatore/inviaMessaggioChat", name="allenatoreInviaMessaggioChat")
+     *
      * @param $richiesta
      */
 
@@ -30,10 +30,21 @@ class ControllerChatAllenatore extends Controller
         $g = new GestoreComunicazione();
         try {
             $testo = $richiesta->request->get("testo");
-            $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
-                $richiesta->get("d"),
-                "allenatore", time(), "chat"));
-            return new Response("Messaggio inviato correttamente");
+            $messaggio = new Messaggio($testo, $_SESSION["username"],
+                $richiesta->get("destinatario"),
+                "allenatore", time(), "chat");
+
+            $g->inviaMessaggio($messaggio);
+            return new Response(json_encode(array("testo" => $messaggio->getTesto(),
+                "nomeMittente" => $messaggio->getNomeMittente(),
+                "cognomeMittente" => $messaggio->getCognomeMittente(),
+                "mittente" => $messaggio->getMittente(),
+                "data" => $messaggio->getData()), JSON_PRETTY_PRINT));
+
+
+            //return new Response("Messaggio inviato correttamente");
+
+
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
@@ -209,7 +220,7 @@ class ControllerChatAllenatore extends Controller
     }
 
     /**
-     * @Route("/comunicazione/allenatore/ottieniMessaggioChatView")
+     * @Route("/comunicazione/allenatore/ottieniMessaggioChatView", name="allenatore_chat_view")
      * @Method("POST")
      */
     public function ottieniMessaggioChatView(Request $request)
@@ -225,16 +236,10 @@ class ControllerChatAllenatore extends Controller
         try {
             $messaggi = $g->ottieniMessaggiAllenatore($allenatoreMittente, "chat", $calciatoreDestinatario);
 
-            /*$str = "";
-            foreach ($messaggi as $m) {
-                $str = $str . $m;
-                $str = $str . "</br >";
-            }*/
-
-            // return new Response(var_dump($messaggi));
-            return $this->render("allenatore/FormChatAllenatore.html.twig", array("messaggi" => $messaggi, "d" => $calciatoreDestinatario));
+            //return new Response(var_dump($messaggi));
+            return $this->render("allenatore/FormChatAllenatore2.html.twig", array("messaggi" => $messaggi, "destinatario" => $calciatoreDestinatario));
         } catch (\Exception $e) {
-            return $this->render("allenatore/FormChatAllenatore.html.twig", array("messaggi" => array(), "d" => $calciatoreDestinatario));
+            return $this->render("allenatore/FormChatAllenatore2.html.twig", array("messaggi" => array(), "destinatario" => $calciatoreDestinatario));
 
 
         }
@@ -264,7 +269,8 @@ class ControllerChatAllenatore extends Controller
      * @Route("/comunicazione/allenatore/ottieniRichiamoMultaView")
      * @Method("GET")
      */
-    public function ottieniRichiamoMultaView(Request $request){
+    public function ottieniRichiamoMultaView(Request $request)
+    {
         if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "allenatore") {
             throw new \Exception("Allenatore non loggato");
         }

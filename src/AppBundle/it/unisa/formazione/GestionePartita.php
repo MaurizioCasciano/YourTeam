@@ -42,7 +42,7 @@ class GestionePartita
         if($risultato->num_rows==1)
         {
             $partita=$risultato->fetch_assoc();
-            $modelPartita=new Partita($partita["nome"],$partita["data"],$partita["squadra"],$partita["stadio"]);
+            $modelPartita=new Partita($partita["nome"],$partita["data"],$partita["squadra"],$partita["stadio"],$partita["modulo"]);
             return $modelPartita;
         }
 
@@ -60,21 +60,25 @@ class GestionePartita
         $partita=$this->disponibilitaPartita($squadra);
         if(!is_null($partita))
         {
-            $query="SELECT * FROM giocare WHERE partita='$partita'";
+            $data=$partita->getData();
+            $nomePartita=$partita->getNome();
+
+            $query="SELECT * FROM giocare WHERE partita='$nomePartita' AND data='$data' AND squadra='$squadra'";
             $risultato=$this->connessione->query($query);
 
             if($risultato->num_rows<=0)
             {
-                throw new FormazioneNonDispException("convocazioni non ancora diramate per questa partita");
+                throw new FormazioneNonDispException("convocazioni non ancora diramate per la prossima partita");
             }
-            else
+            if($partita->getModulo()!= null)
             {
-                return $partita;
+                throw new FormazioneNonDispException("formazione gia schierata per la prossima partita");
             }
+            return $partita;
         }
         else
         {
-            throw new PartitaNonDispException("non esiste nessuna partita disponibile alla convocazione!");
+            throw new PartitaNonDispException("non esiste nessuna partita disponibile alla formazione!");
         }
 
     }
@@ -88,12 +92,15 @@ class GestionePartita
         $partita=$this->disponibilitaPartita($squadra);
         if(!is_null($partita))
         {
-            $query="SELECT * FROM giocare WHERE partita='$partita'";
+            $data=$partita->getData();
+            $nomePartita=$partita->getNome();
+
+            $query="SELECT * FROM giocare WHERE partita='$nomePartita' AND data='$data' AND squadra='$squadra'";
             $risultato=$this->connessione->query($query);
 
             if($risultato->num_rows!=0)
             {
-                throw new ConvocNonDispException("convocazioni gia diramate per questa partita");
+                throw new ConvocNonDispException("convocazioni gia diramate per la prossima partita!");
             }
             else
             {
@@ -115,14 +122,15 @@ class GestionePartita
     {
         $data=$partita->getData();
         $nomePartita=$partita->getNome();
+        $squadra=$partita->getSquadra();
 
         foreach ($calciatori as $calciatore)
         {
-            $query="INSERT INTO giocare(calciatore,partita,data) VALUES ('$calciatore', '$nomePartita','$data')";
+            $query="INSERT INTO giocare(calciatore,partita,data,squadra) VALUES ('$calciatore', '$nomePartita','$data','$squadra')";
+            $this->connessione->query($query);
         }
 
-        $risultato=$this->connessione->query($query);
-        if(!$risultato) throw new Exception("errore inserimento convocazioni!");
+
     }
 
     /**
@@ -134,8 +142,9 @@ class GestionePartita
     {
         $data=$partita->getData();
         $nomePartita=$partita->getNome();
+        $squadra=$partita->getSquadra();
 
-        $query="UPDATE partita SET modulo='$modulo' WHERE data='$data' AND nome='$nomePartita'";
+        $query="UPDATE partita SET modulo='$modulo' WHERE data='$data' AND nome='$nomePartita' AND squadra='$squadra'";
 
         $this->connessione->query($query);
     }

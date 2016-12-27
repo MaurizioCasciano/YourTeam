@@ -9,6 +9,7 @@
 namespace AppBundle\it\unisa\statistiche;
 
 use AppBundle\it\unisa\account\AccountCalciatore;
+use AppBundle\it\unisa\account\GestoreAccount;
 use AppBundle\Utility\DB;
 
 class GestoreStatisticheCalciatore
@@ -133,7 +134,7 @@ class GestoreStatisticheCalciatore
     }
 
     /**
-     * Restituisce le statistiche dei calciatori che rispettano il filtro.
+     * Restituisce la lista dei calciatori che rispettano i requisiti statistici indicati.
      * @param $minTiriTotali int
      * @param $minTiriPorta int
      * @param $minGolFatti int
@@ -193,29 +194,32 @@ class GestoreStatisticheCalciatore
         $statement->bind_param("iiiiiiiiiiiiiiiiiiii", $minTiriTotali, $maxTiriTotali, $minTiriPorta, $maxTiriPorta, $minFalliFatti, $maxFalliFatti,
             $minFalliSubiti, $maxFalliSubiti, $minPercentualePassaggiRiusciti, $maxPercentualePassaggiRiusciti, $minGolFatti, $maxGolFatti, $minGolSubiti,
             $maxGolSubiti, $minAssist, $maxAssist, $minAmmonizioni, $maxAmmonizioni, $minEspulsioni, $maxEspulsioni);
-        $statement->execute();
+        $executed = $statement->execute();
         $result = $statement->get_result();
 
         if ($result->num_rows > 0) {
-            $arrayStatistiche = array();
+            /*$arrayStatistiche = array();
 
             for ($i = 0; $row = $result->fetch_assoc(); $i++) {
-                $arrayStatistiche[] = new StatisticheCalciatore(row["calciatore"], $row["tiri_totali"], $row["tiri_porta"],
+                $arrayStatistiche[] = new StatisticheCalciatore($row["calciatore"], $row["tiri_totali"], $row["tiri_porta"],
                     $row["falli_fatti"], $row["falli_subiti"], $row["percentuale_passaggi_riusciti"], $row["gol_fatti"],
                     $row["gol_subiti"], $row["assist"], $row["ammonizioni"], $row["espulsioni"], $row["partite_giocate"]);
             }
 
-            return $arrayStatistiche;
+            return $arrayStatistiche;*/
+
+            $arrayCalciatori = array();
+            $gestoreAccount = new GestoreAccount();
+
+            while ($row = $result->fetch_assoc()) {
+                //$arrayCalciatori[] = $gestoreAccount->ricercaAccount_G($row["calciatore"]);
+                $arrayCalciatori[] = "ciao";
+            }
+
+            return $arrayCalciatori;
         } else {
-            return null;
+            return "Error, num_rows: " + $result->num_rows + " executed: " + $executed + " error: " + $this->conn->error;
         }
-
-        /*$arrayStatistiche = array();
-        for ($i = 0; $i < 10; $i++) {
-            $arrayStatistiche[] = "ciao";
-        }
-
-        return $arrayStatistiche;*/
     }
 
     /**
