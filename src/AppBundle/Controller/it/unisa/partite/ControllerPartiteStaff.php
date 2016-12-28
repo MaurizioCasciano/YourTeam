@@ -62,15 +62,38 @@ class ControllerPartiteStaff extends Controller
      */
     public function getListaPartiteView()
     {
-        if (isset($_SESSION["squadra"])) {
+        if (isset($_SESSION) && isset($_SESSION["squadra"])) {
             $gestorePartite = new GestorePartite();
 
             $partite = $gestorePartite->getPartite($_SESSION["squadra"]);
             return $this->render("staff/ViewListaPartite.html.twig", array("partite" => $partite));
         } else {
-            throw new \Exception("$_SESSION[squadra] not set");
+            throw new \Exception("SESSION squadra not set");
         }
     }
+
+
+    public function getModificaPartitaForm()
+    {
+
+    }
+
+    /**
+     * Permette di modificare le informazioni base di una partita.
+     * @Route("/partite/staff/edit/submit");
+     * @Method("POST");
+     */
+    public function modificaPartita(Request $request)
+    {
+        $squadra = $_SESSION["squadra"];
+
+        $old = new Partita();
+        $new = new Partita();
+
+        $gestorePartite = new GestorePartite();
+        $gestorePartite->modificaPartita($old, $new);
+    }
+
 
     /**
      * @Route("/test123")

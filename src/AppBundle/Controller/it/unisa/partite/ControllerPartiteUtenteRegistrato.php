@@ -21,8 +21,14 @@ class ControllerPartiteUtenteRegistrato extends Controller
      */
     public function getListaPartiteView()
     {
-
-
         return $this->render();
+    }
+
+    /**
+     * @Route("/partite/user/info/{nome}/{data}")
+     */
+    public function getInfoPartitaView($nome, $data)
+    {
+        
     }
 }

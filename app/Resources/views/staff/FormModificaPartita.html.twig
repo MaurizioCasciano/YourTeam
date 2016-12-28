@@ -1,0 +1,27 @@
+{% block contenuto %}
+    <h3 style="text-align: center;">Modifica</h3>
+
+    <form class="modifica-partita">
+        <label for="casa">Casa</label>
+        <input id="casa" type="text" name="casa" required="required" value="{{ partita.getCasa() }}"
+               data-original-value="{{ partita.getCasa() }}">
+
+        <label for="trasferta">Trasferta</label>
+        <input id="trasferta" type="text" name="trasferta" required="required" value="{{ partita.getTrasferta() }}"
+               data-original-value="{{ partita.getTrasferta() }}">
+
+        <label for="stadio">Stadio</label>
+        <input id="stadio" type="text" name="stadio" required="required" value="{{ partita.getStadio() }}"
+               data-original-value="{{ partita.getStadio() }}">
+
+        <label for="data">Data</label>
+        <input id="data" type="date" name="data" required="required" value="{{ partita.getDataNoTime() }}"
+               data-original-value="{{ partita.getDataNoTime() }}">
+
+        <label for="ora">Ora</label>
+        <input id="ora" type="time" name="ora" required="required" value="{{ partita.getOra() }}"
+               data-original-value="{{ partita.getOra() }}">
+
+        <input type="submit" value="Salva">
+    </form>
+{% endblock %}

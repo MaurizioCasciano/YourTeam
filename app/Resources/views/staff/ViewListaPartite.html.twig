@@ -60,8 +60,16 @@
 
                 <div id="{{ loop.index }}" class="panel-collapse collapse" role="tabpanel">
                     <div class="panel-body">
-                        <button>Modifica</button>
-                        <button>Info</button>
+                        <button class="modifica-btn">Modifica</button>
+                        <button class="info-btn">Info</button>
+                    </div>
+
+                    <div class="info" style="display:none;">
+                        {% include ":staff:ViewInfoPartita.html.twig" with {"partita" : partita} only %}
+                    </div>
+
+                    <div class="modifica" style="display: none;">
+                        {% include ":staff:FormModificaPartita.html.twig" with {"partita" : partita} only %}
                     </div>
                 </div>
             </div>
@@ -78,6 +86,14 @@
         $(function () {
             $("#add").click(function () {
                 $("#new").toggle();
+            });
+
+            $(".modifica-btn").click(function () {
+                $(this).parent().siblings(".modifica").toggle();
+            });
+
+            $(".info-btn").click(function () {
+                $(this).parent().siblings(".info").toggle();
             });
 
             $("#salva_partita").click(function () {
@@ -180,5 +196,47 @@
 
             });
         });
+    </script>
+
+
+    <script>
+        $(function () {//document.ready()
+            /* attach a submit handler to the form */
+            $(".modifica-partita").submit(function (event) {
+                /* stop form from submitting normally */
+                event.preventDefault();
+                alert("Ajax Modifica Partita...");
+                alert("serialized_data: " + $(this).serialize());
+
+                // get all the inputs into an array.
+                var $inputs = $('this:input');
+                alert("inputs: " + JSON.stringify($inputs));
+
+                // not sure if you wanted this, but I thought I'd add it.
+                // get an associative array of just the values.
+                var values = {};
+                $inputs.each(function () {
+                    values[this.name] = $(this).val();
+
+                    alert(this.name + ": " + $(this).val());
+                });
+
+
+                $.ajax({
+                    url: "{{ path("inserisciPartita") }}",
+                    type: "POST",
+                    dataType: 'json',
+                    data: {
+                        "casa": casa,
+                        "trasferta": trasferta,
+                        "stadio": stadio,
+                        "data": data,
+                        "ora": ora
+                    },
+                    cache: false
+                });
+            });
+        });
+
     </script>
 {% endblock %}

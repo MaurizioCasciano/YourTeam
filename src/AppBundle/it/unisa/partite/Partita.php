@@ -50,6 +50,14 @@ class Partita implements PartitaInterface, \JsonSerializable
     }
 
     /**
+     * @param mixed $casa
+     */
+    public function setCasa($casa)
+    {
+        $this->casa = $casa;
+    }
+
+    /**
      * @return mixed
      */
     public function getTrasferta()
@@ -58,11 +66,40 @@ class Partita implements PartitaInterface, \JsonSerializable
     }
 
     /**
+     * @param mixed $trasferta
+     */
+    public function setTrasferta($trasferta)
+    {
+        $this->trasferta = $trasferta;
+    }
+
+    /**Restituisce la data completa in cui si disputa l'incontro.
+     * Es. 2016-12-12 20:45:00
      * @return mixed
      */
     public function getData()
     {
         return $this->data;
+    }
+
+    /**
+     * Restituisce la data, a meno dell'ora,  in cui si disputa l'incontro.
+     * @return mixed
+     */
+    public function getDataNoTime()
+    {
+        $dataNoTime = date("Y-m-d", strtotime($this->data));
+        return $dataNoTime;
+    }
+
+    /**
+     * Restituisce l'ora in cui si disputa l'incontro.
+     * @return false|string
+     */
+    public function getOra()
+    {
+        $time = date("H:i:s", strtotime($this->data));
+        return $time;
     }
 
     /**

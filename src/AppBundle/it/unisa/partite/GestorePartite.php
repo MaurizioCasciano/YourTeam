@@ -84,4 +84,61 @@ class GestorePartite
 
         return $statement->execute();
     }
+
+
+    /**
+     * Restituisce la partita corrispondente ai parametri passati in input.
+     * @param $nome Il nome della partita. Es. Milan-Inter
+     * @param $data La data e l'ora in cui si disputa l'incontro. Es. 2016-12-12 20:45:00
+     * @param $squadra La squadra a cui si riferiscono le informazioni della partita.
+     */
+    public function getPartita($nome, $data, $squadra)
+    {
+        $statement = $this->conn->prepare("SELECT * FROM partita WHERE nome = ? AND data = ? AND squadra = ?;");
+        $statement->bind_param("sss", $nome, $data, $squadra);
+
+        $executed = $statement->execute();
+        $result = $statement->get_result();
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $squadre = explode('-', $row["nome"]);
+                $casa = trim($squadre[0]);
+                $trasferta = trim($squadre[1]);
+
+                $partita = new Partita($casa, $trasferta, $row["data"], $row["squadra"], $row["stadio"]);
+            }
+
+            return $partita;
+        } else {
+            return array();
+        }
+    }
+
+    /**
+     * Modifica i dati della vecchia partita con quelli della nuova.
+     * @param PartitaInterface $old La vecchia partita.
+     * @param PartitaInterface $new La nuova partita.
+     */
+    public function modificaPartita(PartitaInterface $old, PartitaInterface $new)
+    {
+        //ogni squadra può modificare solo le proprie partite.
+        $statement = $this->conn->prepare(
+            "UPDATE partita
+                SET
+                `nome` = ?,
+                `data` = ?,
+                `stadio` = ?
+                WHERE `nome` = ? AND `data` = ? AND `squadra` = ?;");
+
+        $newNomw = $new->getNome();
+        $newData = $new->getData();
+        $newStadio = $new->getStadio();
+
+        $oldNome = $old->getNome();
+        $oldData = $old->getData();
+        $oldSquadra = $old->getSquadra();
+
+        $statement->bind_param("sssssss");
+    }
 }

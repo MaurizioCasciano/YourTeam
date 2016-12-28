@@ -1,0 +1,23 @@
+{% block contenuto %}
+    <h3 style="text-align: center;">Info</h3>
+
+    <label for="casa{{ partita.getNome() }}{{ partita.getData() }}">Casa</label>
+    <input id="casa{{ partita.getNome() }}{{ partita.getData() }}" type="text" name="casa"
+           readonly="readonly" value="{{ partita.getCasa() }}">
+
+    <label for="trasferta{{ partita.getNome() }}{{ partita.getData() }}">Trasferta</label>
+    <input id="trasferta{{ partita.getNome() }}{{ partita.getData() }}" type="text" name="trasferta"
+           readonly="readonly" value="{{ partita.getTrasferta() }}">
+
+    <label for="stadio{{ partita.getNome() }}{{ partita.getData() }}">Stadio</label>
+    <input id="stadio{{ partita.getNome() }}{{ partita.getData() }}" type="text" name="stadio"
+           readonly="readonly" value="{{ partita.getStadio() }}">
+
+    <label for="data{{ partita.getNome() }}{{ partita.getData() }}">Data</label>
+    <input id="data{{ partita.getNome() }}{{ partita.getData() }}" type="date" name="data"
+           readonly="readonly" value="{{ partita.getDataNoTime() }}">
+
+    <label for="ora{{ partita.getNome() }}{{ partita.getData() }}">Ora</label>
+    <input id="ora{{ partita.getNome() }}{{ partita.getData() }}" type="time" name="ora"
+           readonly="readonly" value="{{ partita.getOra() }}">
+{% endblock %}
