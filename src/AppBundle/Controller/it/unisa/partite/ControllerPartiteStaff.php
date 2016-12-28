@@ -51,7 +51,7 @@ class ControllerPartiteStaff extends Controller
         $success = $gestorePartite->inserisciPartita($partita);
 
         if ($success) {
-            return new Response(json_encode(array("partita" => $partita, "success" => $success)));
+            return new Response(json_encode(array("partita" => $partita, "success" => $success), JSON_PRETTY_PRINT));
         } else {
 
         }

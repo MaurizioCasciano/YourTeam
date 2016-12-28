@@ -106,14 +106,70 @@
                     },
                     cache: false,
                     success: function (response, textStatus, jqXHR) {
-                        alert("Success: " + response.success);
+                        var success = response.success;
 
-                        alert("Casa: " + response.partita.casa);
-                        alert("Trasferta: " + response.partita.trasferta);
-                        alert("Nome: " + response.partita.nome);
-                        alert("Data: " + response.partita.data);
-                        alert("Squadra: " + response.partita.squadra);
-                        alert("Stadio: " + response.partita.stadio);
+                        alert("Response: " + JSON.stringify(response));
+
+                        if (success === true) {
+                            var casa = response.partita.casa;
+                            var trasferta = response.partita.trasferta;
+                            var nome = response.partita.nome;
+                            var data = response.partita.data;
+                            var squadra = response.partita.squadra;
+                            var stadio = response.partita.stadio;
+
+                            var container = document.createElement("div");
+                            container.setAttribute("class", "panel panel-default");
+
+                            var heading = document.createElement("div");
+                            heading.setAttribute("class", "panel-heading");
+                            heading.setAttribute("role", "tab");
+                            container.appendChild(heading);
+
+                            var title = document.createElement("h4");
+                            title.setAttribute("class", "panel-title");
+                            heading.appendChild(title);
+
+                            var button = document.createElement("button");
+                            button.setAttribute("class", "collapsed");
+                            button.setAttribute("data-toggle", "collapse");
+                            button.setAttribute("data-parent", "#accordion");
+                            var nowID = "ID" + $.now().toString();
+                            button.setAttribute("data-target", "#" + nowID);
+                            title.appendChild(button);
+
+                            var spanNome = document.createElement("span");
+                            spanNome.setAttribute("class", "pull-left");
+                            spanNome.appendChild(document.createTextNode(nome));
+                            button.appendChild(spanNome);
+
+                            var spanData = document.createElement("span");
+                            spanData.setAttribute("class", "pull-right");
+                            spanData.appendChild(document.createTextNode(data));
+                            button.appendChild(spanData);
+
+                            var content = document.createElement("div");
+                            content.setAttribute("id", nowID);
+                            content.setAttribute("class", "panel-collapse collapse");
+                            content.setAttribute("role", "tabpanel");
+                            container.appendChild(content);
+
+                            var body = document.createElement("div");
+                            body.setAttribute("class", "panel-body");
+                            content.appendChild(body);
+
+
+                            var modifica = document.createElement("button");
+                            modifica.appendChild(document.createTextNode("Modifica"));
+                            var info = document.createElement("button");
+                            info.appendChild(document.createTextNode("Info"));
+                            body.appendChild(modifica);
+                            body.appendChild(info);
+
+                            $("#accordion").append(container);
+                            $('#form_new_partita')[0].reset();
+                            $("#new").hide();
+                        }
                     }
                     ,
                     error: function (jqXHR, textStatus, errorThrown) {
@@ -121,7 +177,7 @@
                     }
                 });
 
-                $('#form_new_partita')[0].reset();
+
             });
         });
     </script>
