@@ -15,6 +15,8 @@ interface PartitaInterface
 
     public function getData();
 
+    public function getDataString();
+
     public function getSquadra();
 
     public function getStadio();

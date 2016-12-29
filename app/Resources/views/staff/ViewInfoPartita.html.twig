@@ -1,23 +1,24 @@
 {% block contenuto %}
     <h3 style="text-align: center;">Info</h3>
 
-    <label for="casa{{ partita.getNome() }}{{ partita.getData() }}">Casa</label>
-    <input id="casa{{ partita.getNome() }}{{ partita.getData() }}" type="text" name="casa"
+    <label for="casa{{ partita.getNome() }}{{ partita.getData() | date('d-m-Y H:i:s') }}">Casa</label>
+    <input id="casa{{ partita.getNome() }}{{ partita.getData() | date('d-m-Y H:i:s') }}" type="text" name="casa"
            readonly="readonly" value="{{ partita.getCasa() }}">
 
-    <label for="trasferta{{ partita.getNome() }}{{ partita.getData() }}">Trasferta</label>
-    <input id="trasferta{{ partita.getNome() }}{{ partita.getData() }}" type="text" name="trasferta"
+    <label for="trasferta{{ partita.getNome() }}{{ partita.getData()| date('d-m-Y H:i:s') }}">Trasferta</label>
+    <input id="trasferta{{ partita.getNome() }}{{ partita.getData() | date('d-m-Y H:i:s') }}" type="text"
+           name="trasferta"
            readonly="readonly" value="{{ partita.getTrasferta() }}">
 
-    <label for="stadio{{ partita.getNome() }}{{ partita.getData() }}">Stadio</label>
-    <input id="stadio{{ partita.getNome() }}{{ partita.getData() }}" type="text" name="stadio"
+    <label for="stadio{{ partita.getNome() }}{{ partita.getData() | date('d-m-Y H:i:s') }}">Stadio</label>
+    <input id="stadio{{ partita.getNome() }}{{ partita.getData() | date('d-m-Y H:i:s') }}" type="text" name="stadio"
            readonly="readonly" value="{{ partita.getStadio() }}">
 
-    <label for="data{{ partita.getNome() }}{{ partita.getData() }}">Data</label>
-    <input id="data{{ partita.getNome() }}{{ partita.getData() }}" type="date" name="data"
-           readonly="readonly" value="{{ partita.getDataNoTime() }}">
+    <label for="data{{ partita.getNome() }}{{ partita.getData()| date('d-m-Y H:i:s') }}">Data</label>
+    <input id="data{{ partita.getNome() }}{{ partita.getData()| date('d-m-Y H:i:s') }}" type="date" name="data"
+           readonly="readonly" value="{{ partita.getDataSenzaOra() | date('Y-m-d') }}">
 
-    <label for="ora{{ partita.getNome() }}{{ partita.getData() }}">Ora</label>
-    <input id="ora{{ partita.getNome() }}{{ partita.getData() }}" type="time" name="ora"
-           readonly="readonly" value="{{ partita.getOra() }}">
+    <label for="ora{{ partita.getNome() }}{{ partita.getData() | date('d-m-Y H:i:s') }}">Ora</label>
+    <input id="ora{{ partita.getNome() }}{{ partita.getData()| date('d-m-Y H:i:s') }}" type="time" name="ora"
+           readonly="readonly" value="{{ partita.getOra() | date('H:i:s') }}">
 {% endblock %}

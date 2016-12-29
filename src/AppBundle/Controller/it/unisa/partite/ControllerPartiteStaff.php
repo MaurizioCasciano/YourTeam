@@ -4,6 +4,7 @@ namespace AppBundle\Controller\it\unisa\partite;
 use AppBundle\it\unisa\partite\GestorePartite;
 use AppBundle\it\unisa\partite\Partita;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -27,7 +28,7 @@ class ControllerPartiteStaff extends Controller
     }
 
     /**
-     * @Route("/partite/staff/insert/submit/", name = "inserisciPartita")
+     * @Route("/partite/staff/insert/submit", name = "inserisciPartita")
      * @Method("POST")
      *
      */
@@ -42,7 +43,7 @@ class ControllerPartiteStaff extends Controller
         //return new Response("casa: " . $casa . " trasferta: " . $trasferta . " stadio: " . $stadio . " data: " . $data . " opa: " . $ora);
 
         $nome = $casa . "-" . $trasferta;
-        $dateTime = $data . " " . $ora;
+        $dateTime = new \DateTime($data . " " . $ora);
         //($nome, $data, $squadra, $stadio)
         $partita = new Partita($casa, $trasferta, $dateTime, $_SESSION["squadra"], $stadio);
 
@@ -51,7 +52,8 @@ class ControllerPartiteStaff extends Controller
         $success = $gestorePartite->inserisciPartita($partita);
 
         if ($success) {
-            return new Response(json_encode(array("partita" => $partita, "success" => $success), JSON_PRETTY_PRINT));
+            //return new Response(json_encode(array("partita" => $partita, "success" => $success), JSON_PRETTY_PRINT));
+            return new JsonResponse(array("partita" => $partita, "success" => $success), Response::HTTP_OK);
         } else {
 
         }
@@ -59,6 +61,7 @@ class ControllerPartiteStaff extends Controller
 
     /**
      * @Route("/partite/staff", name = "lista_partite")
+     * @Method("GET")
      */
     public function getListaPartiteView()
     {
@@ -80,18 +83,49 @@ class ControllerPartiteStaff extends Controller
 
     /**
      * Permette di modificare le informazioni base di una partita.
-     * @Route("/partite/staff/edit/submit");
+     * @Route("/partite/staff/edit/submit", name = "modificaPartita");
      * @Method("POST");
      */
     public function modificaPartita(Request $request)
     {
         $squadra = $_SESSION["squadra"];
+        $JSON_values = $request->get("values");
+        //var_dump($JSON_values);
 
-        $old = new Partita();
-        $new = new Partita();
+        // Convert JSON string to AssocArray
+        $values = json_decode($JSON_values, true);
+
+        //var_dump($values);
+
+        $oldCasa = $values["casa"]["old"];
+        $oldTrasferta = $values["trasferta"]["old"];
+        $oldData = $values["data"]["old"];
+        $oldOra = $values["ora"]["old"];
+        $oldDateTime = new \DateTime($oldData . " " . $oldOra);
+        $oldStadio = $values["stadio"]["old"];
+
+        //XDEBUG
+        //var_dump($oldCasa);
+        //var_dump($oldTrasferta);
+        //var_dump($oldDateTime);
+        //var_dump($oldStadio);
+        //var_dump($_SESSION["squadra"]);
+
+        //__construct($casa, $trasferta, $data, $squadra, $stadio)
+        $old = new Partita($oldCasa, $oldTrasferta, $oldDateTime, $_SESSION["squadra"], $oldStadio);
+
+        $newCasa = $values["casa"]["new"];
+        $newTrasferta = $values["trasferta"]["new"];
+        $newData = $values["data"]["new"];
+        $newOra = $values["ora"]["new"];
+        $newDateTime = new \DateTime($newData . " " . $newOra);
+        $newStadio = $values["stadio"]["new"];
+        $new = new Partita($newCasa, $newTrasferta, $newDateTime, $_SESSION["squadra"], $newStadio);
 
         $gestorePartite = new GestorePartite();
-        $gestorePartite->modificaPartita($old, $new);
+        $success = $gestorePartite->modificaPartita($old, $new);
+
+        return new JsonResponse(array("old" => $old, "new" => $new, "success" => $success), Response::HTTP_OK);
     }
 
 
@@ -104,5 +138,71 @@ class ControllerPartiteStaff extends Controller
         $gestorePartite = new GestorePartite();
 
         return new Response("Error: " . $gestorePartite->inserisciPartita($partita));
+    }
+
+    /**
+     * Testa la funzionalità di modifica di una partita.
+     * @Route("/test/modifica/partita")
+     * @return Response
+     */
+    public function testModifica()
+    {
+        $squadra = "Napoli";
+
+        $oldCasa = "Napoli";
+        $oldTrasferta = "Test";
+        $oldDateTime = new \DateTime("2016-12-30 20:45:00");
+        $oldStadio = "San Paolo";
+
+        //__construct($casa, $trasferta, $data, $squadra, $stadio)
+        $old = new Partita($oldCasa, $oldTrasferta, $oldDateTime, "Napoli", $oldStadio);
+
+        //var_dump($old);
+
+        $newCasa = "Napoli2";
+        $newTrasferta = "Test2";
+        $newDateTime = new \DateTime("2016-12-30 20:45:00");
+        $newStadio = "San Paolo2";
+        $new = new Partita($newCasa, $newTrasferta, $newDateTime, $_SESSION["squadra"], $newStadio);
+
+        //var_dump($new);
+
+        $gestorePartite = new GestorePartite();
+        $success = $gestorePartite->modificaPartita($old, $new);
+
+        return new JsonResponse(array("old" => $old, "new" => $new, "success" => $success), Response::HTTP_OK);
+    }
+
+    /**
+     * Testa la funzionalità di modifica di una partita.
+     * @Route("/test/modifica/partita/revert")
+     * @return Response
+     */
+    public function testModificaRevert()
+    {
+        $squadra = "Napoli";
+
+        $oldCasa = "Napoli2";
+        $oldTrasferta = "Test2";
+        $oldDateTime = new \DateTime("2016-12-30 20:45:00");
+        $oldStadio = "San Paolo2";
+
+        //__construct($casa, $trasferta, $data, $squadra, $stadio)
+        $old = new Partita($oldCasa, $oldTrasferta, $oldDateTime, "Napoli", $oldStadio);
+
+        //var_dump($old);
+
+        $newCasa = "Napoli";
+        $newTrasferta = "Test";
+        $newDateTime = new \DateTime("2016-12-30 20:45:00");
+        $newStadio = "San Paolo";
+        $new = new Partita($newCasa, $newTrasferta, $newDateTime, $_SESSION["squadra"], $newStadio);
+
+        //var_dump($new);
+
+        $gestorePartite = new GestorePartite();
+        $success = $gestorePartite->modificaPartita($old, $new);
+
+        return new JsonResponse(array("old" => $old, "new" => $new, "success" => $success), Response::HTTP_OK);
     }
 }

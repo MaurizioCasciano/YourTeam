@@ -15,13 +15,14 @@
                data-original-value="{{ partita.getStadio() }}">
 
         <label for="data">Data</label>
-        <input id="data" type="date" name="data" required="required" value="{{ partita.getDataNoTime() }}"
-               data-original-value="{{ partita.getDataNoTime() }}">
+        <input id="data" type="date" name="data" required="required"
+               value="{{ partita.getDataSenzaOra() | date('Y-m-d') }}"
+               data-original-value="{{ partita.getDataSenzaOra() | date('Y-m-d') }}">
 
         <label for="ora">Ora</label>
         <input id="ora" type="time" name="ora" required="required" value="{{ partita.getOra() }}"
                data-original-value="{{ partita.getOra() }}">
 
-        <input type="submit" value="Salva">
+        <input type="submit" value="salva">
     </form>
 {% endblock %}

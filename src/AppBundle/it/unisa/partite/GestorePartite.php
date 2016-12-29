@@ -48,10 +48,11 @@ class GestorePartite
 
             while ($row = $result->fetch_assoc()) {
                 $squadre = explode('-', $row["nome"]);
-                $casa = trim($squadre[0]);
-                $trasferta = trim($squadre[1]);
+                $casa = $squadre[0];
+                $trasferta = $squadre[1];
+                $dateTime = new \DateTime($row["data"]);
 
-                $arrayPartite[] = new Partita($casa, $trasferta, $row["data"], $row["squadra"], $row["stadio"]);
+                $arrayPartite[] = new Partita($casa, $trasferta, $dateTime, $row["squadra"], $row["stadio"]);
             }
 
             return $arrayPartite;
@@ -76,7 +77,7 @@ class GestorePartite
             (?, ?, ?, ?);");
 
         $nome = $partita->getNome();
-        $data = $partita->getData();
+        $data = $partita->getDataString();
         $squadra = $partita->getSquadra();
         $stadio = $partita->getStadio();
 
@@ -103,10 +104,11 @@ class GestorePartite
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $squadre = explode('-', $row["nome"]);
-                $casa = trim($squadre[0]);
-                $trasferta = trim($squadre[1]);
+                $casa = $squadre[0];
+                $trasferta = $squadre[1];
+                $dateTime = new \DateTime($row["data"]);
 
-                $partita = new Partita($casa, $trasferta, $row["data"], $row["squadra"], $row["stadio"]);
+                $partita = new Partita($casa, $trasferta, $dateTime, $row["squadra"], $row["stadio"]);
             }
 
             return $partita;
@@ -126,19 +128,22 @@ class GestorePartite
         $statement = $this->conn->prepare(
             "UPDATE partita
                 SET
-                `nome` = ?,
-                `data` = ?,
-                `stadio` = ?
-                WHERE `nome` = ? AND `data` = ? AND `squadra` = ?;");
+                nome = ?,
+                data = ?,
+                stadio = ?
+                WHERE nome = ? AND data = ? AND squadra = ?");
 
-        $newNomw = $new->getNome();
-        $newData = $new->getData();
+        $newNome = $new->getNome();
+        $newData = $new->getDataString();
         $newStadio = $new->getStadio();
 
         $oldNome = $old->getNome();
-        $oldData = $old->getData();
+        $oldData = $old->getDataString();
         $oldSquadra = $old->getSquadra();
 
-        $statement->bind_param("sssssss");
+        $statement->bind_param("ssssss", $newNome, $newData, $newStadio, $oldNome, $oldData, $oldSquadra);
+
+        $success = $statement->execute();
+        return $success;
     }
 }

@@ -53,7 +53,7 @@
                         <button class="collapsed" data-toggle="collapse" data-parent="#accordion"
                                 data-target="#{{ loop.index }}">
                             <span class="pull-left">{{ partita.getNome() }}</span><span
-                                    class="pull-right">{{ partita.getData() }}</span>
+                                    class="pull-right">{{ partita.getData() | date('Y-m-d H:i:s') }}</span>
                         </button>
                     </h4>
                 </div>
@@ -110,9 +110,13 @@
                 alert("ora: " + ora);
 
                 $.ajax({
+                    //url Specifies the URL to send the request to. Default is the current page.
                     url: "{{ path("inserisciPartita") }}",
+                    //type	Specifies the type of request. (GET or POST)
                     type: "POST",
+                    //dataType	The data type expected of the server response.
                     dataType: 'json',
+                    //data	Specifies data to be sent to the server.
                     data: {
                         "casa": casa,
                         "trasferta": trasferta,
@@ -120,11 +124,11 @@
                         "data": data,
                         "ora": ora
                     },
+                    //cache	A Boolean value indicating whether the browser should cache the requested pages. Default is true.
                     cache: false,
                     success: function (response, textStatus, jqXHR) {
                         var success = response.success;
-
-                        alert("Response: " + JSON.stringify(response));
+                        console.log(response);
 
                         if (success === true) {
                             var casa = response.partita.casa;
@@ -203,37 +207,51 @@
         $(function () {//document.ready()
             /* attach a submit handler to the form */
             $(".modifica-partita").submit(function (event) {
+                var $form = $(this);
+                var $divModifica = $(this).parent();
+                var $divCollapsible = $(this).parent().parent();
+
                 /* stop form from submitting normally */
                 event.preventDefault();
                 alert("Ajax Modifica Partita...");
-                alert("serialized_data: " + $(this).serialize());
 
                 // get all the inputs into an array.
-                var $inputs = $('this:input');
-                alert("inputs: " + JSON.stringify($inputs));
-
-                // not sure if you wanted this, but I thought I'd add it.
-                // get an associative array of just the values.
+                var $inputs = $(this).find(":input:not([type = 'submit'])");
                 var values = {};
-                $inputs.each(function () {
-                    values[this.name] = $(this).val();
 
-                    alert(this.name + ": " + $(this).val());
+                $inputs.each(function () {
+                    var name = this.name;
+                    var value = $(this).val();
+                    var originalValue = $(this).attr("data-original-value");
+
+                    values[this.name] = {"old": $(this).attr("data-original-value"), "new": $(this).val()};
+                    alert("values[" + this.name + "] = " + JSON.stringify(values[this.name]));
                 });
 
+                console.log("AJAX Values: ");
+                console.log(JSON.stringify(values));
 
                 $.ajax({
-                    url: "{{ path("inserisciPartita") }}",
+                    url: "{{ path("modificaPartita") }}",
                     type: "POST",
                     dataType: 'json',
-                    data: {
-                        "casa": casa,
-                        "trasferta": trasferta,
-                        "stadio": stadio,
-                        "data": data,
-                        "ora": ora
-                    },
-                    cache: false
+                    data: {"values": JSON.stringify(values)},
+                    cache: false,
+                    success: function (response, textStatus, jqXHR) {
+                        console.log(response);
+
+                        $($divModifica).hide();
+                        if ($($divCollapsible).hasClass("in")) {
+                            $($divCollapsible).collapse("toggle");
+                        }
+                    }
+                    ,
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert("Errore.\nStato: " + textStatus + "\nError: " + errorThrown);
+                        console.log(jqXHR.status);
+                        console.log(jqXHR.responseText);
+                        console.log(errorThrown);
+                    }
                 });
             });
         });

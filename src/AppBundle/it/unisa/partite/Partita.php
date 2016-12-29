@@ -19,12 +19,13 @@ class Partita implements PartitaInterface, \JsonSerializable
 
     /**
      * Partita constructor.
-     * @param $nome string Il nome della partita. Es. : Casa - Trasferta
-     * @param $data \DateTime La data e l'ora della partita. Es. : 2016-12-20 20:45
-     * @param $squadra string La squadra a cui si riferiscono le informazioni della partita.
-     * @param $stadio string Lo stadio in cui si disputa l'incontro.
+     * @param string $casa Il nome della squadra che gioca in casa.
+     * @param string $trasferta Il nome della squadra che gioca in trasferta.
+     * @param \DateTime $data La data e l'ora in cui si disputa l'incontro.
+     * @param string $squadra La squadra a cui si riferiscono le informazioni dell'incontro.
+     * @param string $stadio Lo stadio in cui si disputa l'incontro.
      */
-    public function __construct($casa, $trasferta, $data, $squadra, $stadio)
+    public function __construct(string $casa, string $trasferta, \DateTime $data, string $squadra, string $stadio)
     {
         $this->casa = $casa;
         $this->trasferta = $trasferta;
@@ -38,7 +39,7 @@ class Partita implements PartitaInterface, \JsonSerializable
      */
     public function getNome()
     {
-        return $this->getCasa() . " - " . $this->getTrasferta();
+        return $this->getCasa() . "-" . $this->getTrasferta();
     }
 
     /**
@@ -83,22 +84,31 @@ class Partita implements PartitaInterface, \JsonSerializable
     }
 
     /**
-     * Restituisce la data, a meno dell'ora,  in cui si disputa l'incontro.
-     * @return mixed
+     * Restituisce la data completa in cui si disputa l'incontro, come stringa.
+     * @return string La data della partita come stringa.
      */
-    public function getDataNoTime()
+    public function getDataString()
     {
-        $dataNoTime = date("Y-m-d", strtotime($this->data));
-        return $dataNoTime;
+        return $this->data->format("Y-m-d H:i:s");
+    }
+
+    /**
+     * Restituisce la data, a meno dell'ora,  in cui si disputa l'incontro.
+     * @return string La data, a meno dell'ora.
+     */
+    public function getDataSenzaOra()
+    {
+        $dataSenzaOra = $this->data->format('Y-m-d');
+        return $dataSenzaOra;
     }
 
     /**
      * Restituisce l'ora in cui si disputa l'incontro.
-     * @return false|string
+     * @return string L'ora in cui si disputa l'incontro.
      */
     public function getOra()
     {
-        $time = date("H:i:s", strtotime($this->data));
+        $time = $this->data->format("H:i:s");
         return $time;
     }
 
@@ -154,7 +164,9 @@ class Partita implements PartitaInterface, \JsonSerializable
             "casa" => $this->getCasa(),
             "trasferta" => $this->getTrasferta(),
             "nome" => $this->getNome(),
-            "data" => $this->getData(),
+            "data" => $this->getDataString(),
+            "data_senza_ora" => $this->getDataSenzaOra(),
+            "ora" => $this->getOra(),
             "squadra" => $this->getSquadra(),
             "stadio" => $this->getStadio()
         ];
