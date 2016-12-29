@@ -14,10 +14,34 @@
         #new {
             display: none;
         }
+
+        .alert {
+            display: none;
+        }
     </style>
 {% endblock %}
 
 {% block contenuto %}
+
+    <div class="alert alert-success alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Success!</strong>
+    </div>
+
+    <div class="alert alert-info alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Info!</strong>
+    </div>
+
+    <div class="alert alert-warning alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Warning!</strong>
+    </div>
+
+    <div class="alert alert-danger alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Danger!</strong>
+    </div>
 
     <div class="row">
         <div class="col-xs-12">
@@ -103,11 +127,12 @@
                 var data = $("input[name='data']").val();
                 var ora = $("input[name='ora']").val();
 
-                alert("casa: " + casa);
-                alert("trasferta: " + trasferta);
-                alert("stadio: " + stadio);
-                alert("data: " + data);
-                alert("ora: " + ora);
+                console.log("Salva Partita");
+                console.log("Casa: " + casa);
+                console.log("Trasferta: " + trasferta);
+                console.log("Stadio: " + stadio);
+                console.log("Data: " + data);
+                console.log("Ora: " + ora);
 
                 $.ajax({
                     //url Specifies the URL to send the request to. Default is the current page.
@@ -189,11 +214,17 @@
                             $("#accordion").append(container);
                             $('#form_new_partita')[0].reset();
                             $("#new").hide();
+
+                            //Success feedback
+                            $(".alert-success").show().delay(1000).fadeOut();
                         }
                     }
                     ,
                     error: function (jqXHR, textStatus, errorThrown) {
-                        alert("Errore nell'invio del messaggio.\nStato: " + textStatus + "\nError: " + errorThrown);
+                        console.log("TextStatus: " + textStatus)
+                        console.log("Status: " + jqXHR.status);
+                        console.log("ResponseText: " + jqXHR.responseText);
+                        console.log("Error: " + errorThrown);
                     }
                 });
 
@@ -209,11 +240,19 @@
             $(".modifica-partita").submit(function (event) {
                 var $form = $(this);
                 var $divModifica = $(this).parent();
+                var $divInfo = $(this).parent().siblings(".info")[0];
                 var $divCollapsible = $(this).parent().parent();
+
+                var $divHeadingPartita = $(this).parent().parent().siblings(".panel-heading")[0];
+                var $spanNome = $($divHeadingPartita).find("span.pull-left")[0];
+                var $spanData = $($divHeadingPartita).find("span.pull-right")[0];
+
+                console.log("$spanNome: " + $spanNome);
+                console.log("$spanData: " + $spanData);
 
                 /* stop form from submitting normally */
                 event.preventDefault();
-                alert("Ajax Modifica Partita...");
+                console.log("Ajax Modifica Partita...");
 
                 // get all the inputs into an array.
                 var $inputs = $(this).find(":input:not([type = 'submit'])");
@@ -225,7 +264,7 @@
                     var originalValue = $(this).attr("data-original-value");
 
                     values[this.name] = {"old": $(this).attr("data-original-value"), "new": $(this).val()};
-                    alert("values[" + this.name + "] = " + JSON.stringify(values[this.name]));
+                    console.log("values[" + this.name + "] = " + JSON.stringify(values[this.name]));
                 });
 
                 console.log("AJAX Values: ");
@@ -238,16 +277,43 @@
                     data: {"values": JSON.stringify(values)},
                     cache: false,
                     success: function (response, textStatus, jqXHR) {
+                        console.log("AJAX JSON Response");
                         console.log(response);
+
+                        console.log("PARTITA old: ");
+                        console.log(response.old);
+                        var oldPartita = response.old;
+
+                        console.log("PARTITA new: ");
+                        console.log(response.new);
+                        var newPartita = response.new;
+
+                        //Aggiorno i dati visualizzati con quelli appena inseriti.
+                        $($spanNome).html(newPartita.nome);
+                        $($spanData).html(newPartita.data);
+
+                        //Aggiorno le info della partita con quelli appena inseriti.
+                        // get all the inputs into an array.
+                        var $infoInputs = $($divInfo).find(":input:not([type = 'submit'])");
+
+                        console.log("Info update");
+                        $infoInputs.each(function () {
+                            var name = this.name;
+                            $(this).val(newPartita[this.name]);
+                            console.log("info[" + this.name + "] = " + $(this).val());
+                        });
 
                         $($divModifica).hide();
                         if ($($divCollapsible).hasClass("in")) {
                             $($divCollapsible).collapse("toggle");
                         }
+
+                        //Success feedback
+                        $(".alert-success").show().delay(1000).fadeOut();
                     }
                     ,
                     error: function (jqXHR, textStatus, errorThrown) {
-                        alert("Errore.\nStato: " + textStatus + "\nError: " + errorThrown);
+                        console.log(textStatus)
                         console.log(jqXHR.status);
                         console.log(jqXHR.responseText);
                         console.log(errorThrown);
