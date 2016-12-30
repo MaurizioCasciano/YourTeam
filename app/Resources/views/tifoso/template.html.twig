@@ -12,6 +12,8 @@
     <![endif]-->
     <link href="{{ asset("assetTemplate/css/styles.css") }}" rel="stylesheet">
 
+    {% block head %}
+    {% endblock %}
 </head>
 <body>
 <nav id="top-nav" class="navbar navbar-inverse navbar-static-top">
@@ -49,6 +51,7 @@
 
             <ul class="nav nav-stacked">
 
+                <li><a href="{{ path('lista_partite') }}"><i class="glyphicon glyphicon-link"></i>Partite</a></li>
                 <li><a href="javascript:;"><i class="glyphicon glyphicon-flash"></i> rosa squadra preferita</a></li>
                 <li><a href="/yourteam/web/app_dev.php/contenuti/utenteRegistrato/visualizzaElencoContenuti"><i
                                 class="glyphicon glyphicon-link"></i> home</a></li>

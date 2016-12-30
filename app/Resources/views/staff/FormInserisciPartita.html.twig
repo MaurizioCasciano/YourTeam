@@ -1,0 +1,20 @@
+{% block contenuto %}
+    <form class="inserisci-partita">
+        <label for="casa">Casa</label>
+        <input id="casa" type="text" name="casa" required="required">
+
+        <label for="trasferta">Trasferta</label>
+        <input id="trasferta" type="text" name="trasferta" required="required">
+
+        <label for="stadio">Stadio</label>
+        <input id="stadio" type="text" name="stadio" required="required">
+
+        <label for="data">Data</label>
+        <input id="data" type="date" name="data" required="required">
+
+        <label for="ora">Ora</label>
+        <input id="ora" type="time" name="ora" required="required">
+
+        <input id="salva_partita" type="submit" value="Salva">
+    </form>
+{% endblock %}

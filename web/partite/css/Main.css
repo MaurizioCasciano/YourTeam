@@ -1,0 +1,15 @@
+.panel-title button {
+    width: 100%;
+}
+
+#add {
+    margin-bottom: 3%;
+}
+
+#new {
+    display: none;
+}
+
+.alert {
+    display: none;
+}
