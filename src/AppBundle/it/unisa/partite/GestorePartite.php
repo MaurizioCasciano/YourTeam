@@ -113,7 +113,7 @@ class GestorePartite
 
             return $partita;
         } else {
-            return array();
+            throw new \Exception("La partita cercata non esiste.");
         }
     }
 

@@ -1,24 +1,7 @@
 {% extends 'staff/template.html.twig' %}
 {% block head %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <style>
-        .panel-title button {
-            width: 100%;
-        }
-
-        #add {
-            margin-bottom: 3%;
-        }
-
-        #new {
-            display: none;
-        }
-
-        .alert {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset("partite/css/Main.css") }}">
 {% endblock %}
 
 {% block contenuto %}
@@ -106,221 +89,291 @@
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
             crossorigin="anonymous"></script>
 
-    <script>
-        $(function () {
-            $("#add").click(function () {
-                $("#new").toggle();
-            });
+    <script src="{{ asset("partite/js/InserisciPartita.js") }}"></script>
+    <script src="{{ asset("partite/js/ModificaPartita.js") }}"></script>
 
-            $(".modifica-btn").click(function () {
-                $(this).parent().siblings(".modifica").toggle();
-            });
+    <!-- <script>
+         $(function () {
+             $("#add").click(function () {
+                 $("#new").toggle();
+             });
 
-            $(".info-btn").click(function () {
-                $(this).parent().siblings(".info").toggle();
-            });
+             $(".modifica-btn").click(function () {
+                 $(this).parent().siblings(".modifica").toggle();
+             });
 
-            $("#salva_partita").click(function () {
-                var casa = $("input[name='casa']").val();
-                var trasferta = $("input[name='trasferta']").val();
-                var stadio = $("input[name='stadio']").val();
-                var data = $("input[name='data']").val();
-                var ora = $("input[name='ora']").val();
+             $(".info-btn").click(function () {
+                 $(this).parent().siblings(".info").toggle();
+             });
 
-                console.log("Salva Partita");
-                console.log("Casa: " + casa);
-                console.log("Trasferta: " + trasferta);
-                console.log("Stadio: " + stadio);
-                console.log("Data: " + data);
-                console.log("Ora: " + ora);
+             $("#salva_partita").click(function () {
+                 var casa = $("input[name='casa']").val();
+                 var trasferta = $("input[name='trasferta']").val();
+                 var stadio = $("input[name='stadio']").val();
+                 var data = $("input[name='data']").val();
+                 var ora = $("input[name='ora']").val();
 
-                $.ajax({
-                    //url Specifies the URL to send the request to. Default is the current page.
-                    url: "{{ path("inserisciPartita") }}",
-                    //type	Specifies the type of request. (GET or POST)
-                    type: "POST",
-                    //dataType	The data type expected of the server response.
-                    dataType: 'json',
-                    //data	Specifies data to be sent to the server.
-                    data: {
-                        "casa": casa,
-                        "trasferta": trasferta,
-                        "stadio": stadio,
-                        "data": data,
-                        "ora": ora
-                    },
-                    //cache	A Boolean value indicating whether the browser should cache the requested pages. Default is true.
-                    cache: false,
-                    success: function (response, textStatus, jqXHR) {
-                        var success = response.success;
-                        console.log(response);
+                 console.log("Salva Partita");
+                 console.log("Casa: " + casa);
+                 console.log("Trasferta: " + trasferta);
+                 console.log("Stadio: " + stadio);
+                 console.log("Data: " + data);
+                 console.log("Ora: " + ora);
 
-                        if (success === true) {
-                            var casa = response.partita.casa;
-                            var trasferta = response.partita.trasferta;
-                            var nome = response.partita.nome;
-                            var data = response.partita.data;
-                            var squadra = response.partita.squadra;
-                            var stadio = response.partita.stadio;
+                 $.ajax({
+                     //url Specifies the URL to send the request to. Default is the current page.
+                     url: "/partite/staff/insert/submit",
+                     //type	Specifies the type of request. (GET or POST)
+                     type: "POST",
+                     //dataType	The data type expected of the server response.
+                     dataType: 'json',
+                     //data	Specifies data to be sent to the server.
+                     data: {
+                         "casa": casa,
+                         "trasferta": trasferta,
+                         "stadio": stadio,
+                         "data": data,
+                         "ora": ora
+                     },
+                     //cache	A Boolean value indicating whether the browser should cache the requested pages. Default is true.
+                     cache: false,
+                     success: function (response, textStatus, jqXHR) {
+                         var success = response.success;
+                         console.log(response);
 
-                            var container = document.createElement("div");
-                            container.setAttribute("class", "panel panel-default");
+                         if (success === true) {
+                             var partita = response.partita;
+                             var casa = response.partita.casa;
+                             var trasferta = response.partita.trasferta;
+                             var nome = response.partita.nome;
+                             var data = response.partita.data;
+                             var squadra = response.partita.squadra;
+                             var stadio = response.partita.stadio;
 
-                            var heading = document.createElement("div");
-                            heading.setAttribute("class", "panel-heading");
-                            heading.setAttribute("role", "tab");
-                            container.appendChild(heading);
+                             var container = document.createElement("div");
+                             container.setAttribute("class", "panel panel-default");
 
-                            var title = document.createElement("h4");
-                            title.setAttribute("class", "panel-title");
-                            heading.appendChild(title);
+                             var heading = document.createElement("div");
+                             heading.setAttribute("class", "panel-heading");
+                             heading.setAttribute("role", "tab");
+                             container.appendChild(heading);
 
-                            var button = document.createElement("button");
-                            button.setAttribute("class", "collapsed");
-                            button.setAttribute("data-toggle", "collapse");
-                            button.setAttribute("data-parent", "#accordion");
-                            var nowID = "ID" + $.now().toString();
-                            button.setAttribute("data-target", "#" + nowID);
-                            title.appendChild(button);
+                             var title = document.createElement("h4");
+                             title.setAttribute("class", "panel-title");
+                             heading.appendChild(title);
 
-                            var spanNome = document.createElement("span");
-                            spanNome.setAttribute("class", "pull-left");
-                            spanNome.appendChild(document.createTextNode(nome));
-                            button.appendChild(spanNome);
+                             var button = document.createElement("button");
+                             button.setAttribute("class", "collapsed");
+                             button.setAttribute("data-toggle", "collapse");
+                             button.setAttribute("data-parent", "#accordion");
+                             var nowID = "ID" + $.now().toString();
+                             button.setAttribute("data-target", "#" + nowID);
+                             title.appendChild(button);
 
-                            var spanData = document.createElement("span");
-                            spanData.setAttribute("class", "pull-right");
-                            spanData.appendChild(document.createTextNode(data));
-                            button.appendChild(spanData);
+                             var spanNome = document.createElement("span");
+                             spanNome.setAttribute("class", "pull-left");
+                             spanNome.appendChild(document.createTextNode(nome));
+                             button.appendChild(spanNome);
 
-                            var content = document.createElement("div");
-                            content.setAttribute("id", nowID);
-                            content.setAttribute("class", "panel-collapse collapse");
-                            content.setAttribute("role", "tabpanel");
-                            container.appendChild(content);
+                             var spanData = document.createElement("span");
+                             spanData.setAttribute("class", "pull-right");
+                             spanData.appendChild(document.createTextNode(data));
+                             button.appendChild(spanData);
 
-                            var body = document.createElement("div");
-                            body.setAttribute("class", "panel-body");
-                            content.appendChild(body);
+                             var content = document.createElement("div");
+                             content.setAttribute("id", nowID);
+                             content.setAttribute("class", "panel-collapse collapse");
+                             content.setAttribute("role", "tabpanel");
+                             container.appendChild(content);
+
+                             var body = document.createElement("div");
+                             body.setAttribute("class", "panel-body");
+                             content.appendChild(body);
+
+                             var modifica_btn = document.createElement("button");
+                             modifica_btn.setAttribute("class", "modifica-btn");
+                             modifica_btn.appendChild(document.createTextNode("Modifica"));
+                             var info_btn = document.createElement("button");
+                             info_btn.setAttribute("class", "info-btn");
+                             info_btn.appendChild(document.createTextNode("Info"));
+                             body.appendChild(modifica_btn);
+                             body.appendChild(info_btn);
+
+                             var divInfo = document.createElement("div");
+                             divInfo.setAttribute("style", "display:none;");
+                             divInfo.setAttribute("class", "info");
+
+                             console.log("Partita: " + partita);
+
+                             $.ajax({
+                                 url: "/partite/user/info",
+                                 //type	Specifies the type of request. (GET or POST)
+                                 type: "POST",
+                                 //data	Specifies data to be sent to the server.
+                                 data: {
+                                     "nome": nome,
+                                     "data": data
+                                 },
+                                 cache: false,
+                                 success: function (response, textStatus, jqXHR) {
+                                     console.log("Response info partita");
+                                     console.log(response);
+                                     $(divInfo).html(response);
+                                 }, error: function (jqXHR, textStatus, errorThrown) {
+                                     console.log("TextStatus: " + textStatus);
+                                     console.log("Status: " + jqXHR.status);
+                                     console.log("ResponseText: " + jqXHR.responseText);
+                                     console.log("Error: " + errorThrown);
+                                 }
+                             });
+
+                             var divModifica = document.createElement("div");
+                             divModifica.setAttribute("style", "display:none;");
+                             divModifica.setAttribute("class", "modifica");
+
+                             $.ajax({
+                                 url: "/partite/staff/edit/form",
+                                 //type	Specifies the type of request. (GET or POST)
+                                 type: "POST",
+                                 //data	Specifies data to be sent to the server.
+                                 data: {
+                                     "nome": nome,
+                                     "data": data
+                                 },
+                                 cache: false,
+                                 success: function (response, textStatus, jqXHR) {
+                                     console.log("Response modifica partita");
+                                     console.log(response);
+                                     $(divModifica).html(response);
+                                 }, error: function (jqXHR, textStatus, errorThrown) {
+                                     console.log("TextStatus: " + textStatus);
+                                     console.log("Status: " + jqXHR.status);
+                                     console.log("ResponseText: " + jqXHR.responseText);
+                                     console.log("Error: " + errorThrown);
+                                 }
+                             });
 
 
-                            var modifica = document.createElement("button");
-                            modifica.appendChild(document.createTextNode("Modifica"));
-                            var info = document.createElement("button");
-                            info.appendChild(document.createTextNode("Info"));
-                            body.appendChild(modifica);
-                            body.appendChild(info);
+                             content.appendChild(divInfo);
+                             content.appendChild(divModifica);
+                             $("#accordion").append(container);
 
-                            $("#accordion").append(container);
-                            $('#form_new_partita')[0].reset();
-                            $("#new").hide();
+                             $(".modifica-btn").click(function () {
+                                 $(this).parent().siblings(".modifica").toggle();
+                             });
 
-                            //Success feedback
-                            $(".alert-success").show().delay(1000).fadeOut();
-                        }
-                    }
-                    ,
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log("TextStatus: " + textStatus)
-                        console.log("Status: " + jqXHR.status);
-                        console.log("ResponseText: " + jqXHR.responseText);
-                        console.log("Error: " + errorThrown);
-                    }
-                });
+                             $(".info-btn").click(function () {
+                                 $(this).parent().siblings(".info").toggle();
+                             });
+
+                             $('#form_new_partita')[0].reset();
+                             $("#new").hide();
+
+                             //Success feedback
+                             $(".alert-success").show().delay(1000).fadeOut();
+                         }
+                     }
+                     ,
+                     error: function (jqXHR, textStatus, errorThrown) {
+                         console.log("TextStatus: " + textStatus);
+                         console.log("Status: " + jqXHR.status);
+                         console.log("ResponseText: " + jqXHR.responseText);
+                         console.log("Error: " + errorThrown);
+                     }
+                 });
 
 
-            });
-        });
-    </script>
+             });
+         });
+     </script>
 
+     <script>
+         $(function () {//document.ready()
+             /* attach a submit handler to the form */
+             $(".modifica-partita").submit(function (event) {
+                 var $form = $(this);
+                 var $divModifica = $(this).parent();
+                 var $divInfo = $(this).parent().siblings(".info")[0];
+                 var $divCollapsible = $(this).parent().parent();
 
-    <script>
-        $(function () {//document.ready()
-            /* attach a submit handler to the form */
-            $(".modifica-partita").submit(function (event) {
-                var $form = $(this);
-                var $divModifica = $(this).parent();
-                var $divInfo = $(this).parent().siblings(".info")[0];
-                var $divCollapsible = $(this).parent().parent();
+                 var $divHeadingPartita = $(this).parent().parent().siblings(".panel-heading")[0];
+                 var $spanNome = $($divHeadingPartita).find("span.pull-left")[0];
+                 var $spanData = $($divHeadingPartita).find("span.pull-right")[0];
 
-                var $divHeadingPartita = $(this).parent().parent().siblings(".panel-heading")[0];
-                var $spanNome = $($divHeadingPartita).find("span.pull-left")[0];
-                var $spanData = $($divHeadingPartita).find("span.pull-right")[0];
+                 console.log("$spanNome: " + $spanNome);
+                 console.log("$spanData: " + $spanData);
 
-                console.log("$spanNome: " + $spanNome);
-                console.log("$spanData: " + $spanData);
+                 /* stop form from submitting normally */
+                 event.preventDefault();
+                 console.log("Ajax Modifica Partita...");
 
-                /* stop form from submitting normally */
-                event.preventDefault();
-                console.log("Ajax Modifica Partita...");
+                 // get all the inputs into an array.
+                 var $inputs = $(this).find(":input:not([type = 'submit'])");
+                 var values = {};
 
-                // get all the inputs into an array.
-                var $inputs = $(this).find(":input:not([type = 'submit'])");
-                var values = {};
+                 $inputs.each(function () {
+                     var name = this.name;
+                     var value = $(this).val();
+                     var originalValue = $(this).attr("data-original-value");
 
-                $inputs.each(function () {
-                    var name = this.name;
-                    var value = $(this).val();
-                    var originalValue = $(this).attr("data-original-value");
+                     values[this.name] = {"old": $(this).attr("data-original-value"), "new": $(this).val()};
+                     console.log("values[" + this.name + "] = " + JSON.stringify(values[this.name]));
+                 });
 
-                    values[this.name] = {"old": $(this).attr("data-original-value"), "new": $(this).val()};
-                    console.log("values[" + this.name + "] = " + JSON.stringify(values[this.name]));
-                });
+                 console.log("AJAX Values: ");
+                 console.log(JSON.stringify(values));
 
-                console.log("AJAX Values: ");
-                console.log(JSON.stringify(values));
+                 $.ajax({
+                     url: "/partite/staff/edit/submit",
+                     type: "POST",
+                     dataType: 'json',
+                     data: {"values": JSON.stringify(values)},
+                     cache: false,
+                     success: function (response, textStatus, jqXHR) {
+                         console.log("AJAX JSON Response");
+                         console.log(response);
 
-                $.ajax({
-                    url: "{{ path("modificaPartita") }}",
-                    type: "POST",
-                    dataType: 'json',
-                    data: {"values": JSON.stringify(values)},
-                    cache: false,
-                    success: function (response, textStatus, jqXHR) {
-                        console.log("AJAX JSON Response");
-                        console.log(response);
+                         console.log("PARTITA old: ");
+                         console.log(response.old);
+                         var oldPartita = response.old;
 
-                        console.log("PARTITA old: ");
-                        console.log(response.old);
-                        var oldPartita = response.old;
+                         console.log("PARTITA new: ");
+                         console.log(response.new);
+                         var newPartita = response.new;
 
-                        console.log("PARTITA new: ");
-                        console.log(response.new);
-                        var newPartita = response.new;
+                         //Aggiorno i dati visualizzati con quelli appena inseriti.
+                         $($spanNome).html(newPartita.nome);
+                         $($spanData).html(newPartita.data);
 
-                        //Aggiorno i dati visualizzati con quelli appena inseriti.
-                        $($spanNome).html(newPartita.nome);
-                        $($spanData).html(newPartita.data);
+                         //Aggiorno le info della partita con quelli appena inseriti.
+                         // get all the inputs into an array.
+                         var $infoInputs = $($divInfo).find(":input:not([type = 'submit'])");
 
-                        //Aggiorno le info della partita con quelli appena inseriti.
-                        // get all the inputs into an array.
-                        var $infoInputs = $($divInfo).find(":input:not([type = 'submit'])");
+                         console.log("Info update");
+                         $infoInputs.each(function () {
+                             var name = this.name;
+                             $(this).val(newPartita[this.name]);
+                             console.log("info[" + this.name + "] = " + $(this).val());
+                         });
 
-                        console.log("Info update");
-                        $infoInputs.each(function () {
-                            var name = this.name;
-                            $(this).val(newPartita[this.name]);
-                            console.log("info[" + this.name + "] = " + $(this).val());
-                        });
+                         $($divModifica).hide();
+                         if ($($divCollapsible).hasClass("in")) {
+                             $($divCollapsible).collapse("toggle");
+                         }
 
-                        $($divModifica).hide();
-                        if ($($divCollapsible).hasClass("in")) {
-                            $($divCollapsible).collapse("toggle");
-                        }
+                         //Success feedback
+                         $(".alert-success").show().delay(1000).fadeOut();
+                     }
+                     ,
+                     error: function (jqXHR, textStatus, errorThrown) {
+                         console.log(textStatus)
+                         console.log(jqXHR.status);
+                         console.log(jqXHR.responseText);
+                         console.log(errorThrown);
+                     }
+                 });
+             });
+         });
 
-                        //Success feedback
-                        $(".alert-success").show().delay(1000).fadeOut();
-                    }
-                    ,
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log(textStatus)
-                        console.log(jqXHR.status);
-                        console.log(jqXHR.responseText);
-                        console.log(errorThrown);
-                    }
-                });
-            });
-        });
-
-    </script>
+     </script>-->
 {% endblock %}

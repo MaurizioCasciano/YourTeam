@@ -60,25 +60,22 @@ class ControllerPartiteStaff extends Controller
     }
 
     /**
-     * @Route("/partite/staff", name = "lista_partite")
-     * @Method("GET")
+     * @Route("/partite/staff/edit/form", name ="Form_modifica_partita")
+     * @Method("POST")
      */
-    public function getListaPartiteView()
+    public function getModificaPartitaForm(Request $request)
     {
-        if (isset($_SESSION) && isset($_SESSION["squadra"])) {
-            $gestorePartite = new GestorePartite();
+        $nome = $request->get("nome");
+        $data = $request->get("data");
+        $squadra = $_SESSION["squadra"];
+        $gestorePartite = new GestorePartite();
 
-            $partite = $gestorePartite->getPartite($_SESSION["squadra"]);
-            return $this->render("staff/ViewListaPartite.html.twig", array("partite" => $partite));
-        } else {
-            throw new \Exception("SESSION squadra not set");
+        try {
+            $partita = $gestorePartite->getPartita($nome, $data, $squadra);
+            return $this->render("staff/FormModificaPartita.html.twig", array("partita" => $partita));
+        } catch (\Exception $ex) {
+            return new Response($ex->getMessage(), 404);
         }
-    }
-
-
-    public function getModificaPartitaForm()
-    {
-
     }
 
     /**
