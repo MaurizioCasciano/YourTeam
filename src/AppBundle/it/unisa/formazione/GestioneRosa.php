@@ -120,13 +120,18 @@ class GestioneRosa
 
             $risultatoRuoli=$this->connessione->query($queryRuoli);
 
-            if($risultatoRuoli->num_rows<=0) throw new Exception("nessun ruolo trovato!");
+            //if($risultatoRuoli->num_rows<=0) throw new Exception("nessun ruolo trovato!");
 
-            while ($ruolo=$risultatoRuoli->fetch_assoc())
+            if($risultatoRuoli->num_rows>0)
             {
-                $convocato->aggiungiRuolo($ruolo["ruolo"]);
+                while ($ruolo=$risultatoRuoli->fetch_assoc())
+                {
+                    $convocato->aggiungiRuolo($ruolo["ruolo"]);
+                }
+                $convocati[]=$convocato;
             }
-            $convocati[]=$convocato;
+
+
         }
         return $convocati;
     }
