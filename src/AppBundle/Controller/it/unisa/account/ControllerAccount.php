@@ -9,7 +9,7 @@
 namespace AppBundle\Controller\it\unisa\account;
 
 use AppBundle\it\unisa\account\AccountCalciatore;
-use AppBundle\it\unisa\account\Calciatore;
+use \AppBundle\it\unisa\account\Calciatore;
 use \AppBundle\it\unisa\account\GestoreAccount;
 use \AppBundle\it\unisa\account\Account;
 use AppBundle\Utility\Utility;
@@ -47,7 +47,7 @@ class ControllerAccount extends Controller
         }
 
 
-
+return new Response("error");
     }
     /**
      * @Route("/account/{attore}/aggiungi",name="aggiungiAccount")
@@ -133,6 +133,7 @@ class ControllerAccount extends Controller
     */
     public function ricercaAccount($attore,$username)
     {
+
         $g = new GestoreAccount();
         if($attore=="staff_allenatore_tifoso"){
             try {
@@ -162,22 +163,60 @@ class ControllerAccount extends Controller
                     return new Response($e->getMessage(), 404);
                     }
             }
+            return new Response("tipo erratoo");
+    }
+    /**
+     * @Route("/account/modificaForm/{tipo}/{u}/modifica")
+     * @Method("GET")
+     */
+    public function modificaForm($tipo,$u)
+    {
+
+     //  $tipo = $_SESSION["tipo"];
+      //  $u = $_SESSION["username"];
+        $g = new GestoreAccount();
+
+        $s = $g->ottieniTutteLeSquadre();
+        try{
+        if ($tipo == "allenatore") {
+            $ag = $g->ricercaAccount_A_T_S($u);
+            return $this->render("allenatore/modificaAllenatore.html.twig", array('g' => $ag, 'squadre' => $s));
+        }
+        if ($tipo == "tifoso") {
+            $ag = $g->ricercaAccount_A_T_S($u);
+            return $this->render("tifoso/modificaTifoso.html.twig", array('g' => $ag, 'squadre' => $s));
+        }
+        if ($tipo == "staff") {
+            $ag = $g->ricercaAccount_A_T_S($u);
+            return $this->render("staff/modificaStaff.html.twig", array('g' => $ag, 'squadre' => $s));
+        }
+        if ($tipo == "calciatore") {
+            $ag = $g->ricercaAccount_G($u);
+            return $this->render("giocatore/modificaCalciatore.html.twig", array('g' => $ag, 'squadre' => $s));
+        }
+    } catch
+        (\Exception $e) {
+        return new Response($e->getMessage(), 404);
+    }
+    return new Response("nessun tipo");
+
     }
 
+
     /**
-     * @Route("/account/{attore}/modifica",name="modificaUtente")
+     * @Route("/account/{attore}/{tipo}/modificaAccount",name="modificaUtente")
      * @Method("POST")
      */
     /*attore potrà essere:
        -calciatore
        -staff_allenatore_tifoso
    */
-    public function modificaAccount(Request $r,$attore)
+    public function modificaAccount(Request $r,$attore,$tipo)
     {
         if($attore=="staff_allenatore_tifoso"){
             /*il tipo e la squadra non possono essere modificati quindi non glieli inviamo proprio non devono */
             $gats = new GestoreAccount();
-            $a = new Account($r->request->get("u"),
+            $a = new Account("",
                 $r->request->get("p"), "",
                 $r->request->get("e"), $r->request->get("n"),
                 $r->request->get("c"), $r->request->get("d"),
@@ -186,8 +225,11 @@ class ControllerAccount extends Controller
                 $r->request->get("im"), "");
 
             try {
-                $gats->modificaAccount_A_T_S($r->request->get("u"), $a);
-                return new Response("modifica andata a buon fine");
+                $gats->modificaAccount_A_T_S($_SESSION["username"], $a);
+                if($tipo=="allenatore"){ return $this->render("allenatore/allenatoreModificato.html.twig", array("g"=> $a));}
+                if($tipo=="tifoso"){ return $this->render("tifoso/tifosoModificato.html.twig", array("g"=> $a));}
+                if($tipo=="staff"){ return $this->render("staff/staffModificato.html.twig", array("g"=> $a));}
+
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
@@ -199,7 +241,7 @@ class ControllerAccount extends Controller
 
             /*il tipo e la squadra non possono essere modificati quindi non glieli inviamo proprio non devono */
 
-            $a = new AccountCalciatore($r->request->get("u"),
+            $a = new AccountCalciatore("",
                 $r->request->get("p"), "",
                 $r->request->get("e"), $r->request->get("n"),
                 $r->request->get("c"), $r->request->get("d"),
@@ -208,30 +250,34 @@ class ControllerAccount extends Controller
                 $r->request->get("im"), $r->request->get("nazionalità"));
 
             try {
-                $gg->modificaAccount_G($r->request->get("u"), $a);
-                return new Response("modifica andata a buon fine");
+                $gg->modificaAccount_G($_SESSION["username"], $a);
+               return $this->render("giocatore/giocatoreModificato.html.twig", array("g"=> $a));
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
         }
-
+return new Response("nessun tipo");
     }
 
     /**
-     * @Route("/account/{attore}/elimina/{username}",name="eliminaAccount")
+     * @Route("/account/elimina/{attore}/eliminaAccount/{username}")
      * @Method("GET")
      */
     /*attore potrà essere:
         -calciatore
         -staff_allenatore_tifoso
     */
-    public function eliminaAccount($username,$attore)
+    public function eliminaAccount($attore,$username)
     {
+
+
+         //  $username=$_SESSION["username"];
+
         if($attore=="staff_allenatore_tifoso"){
             $g = new GestoreAccount();
             try {
-                $g->eliminaAccount_A_T_S($username);
-                return new Response("ACC:" . $username . "eliminato");
+              $g->eliminaAccount_A_T_S($username);
+                return $this->render("guest/eliminato.html.twig");
             } catch (\Exception $e){
                 return new Response($e->getMessage(), 404);
             }
@@ -239,13 +285,14 @@ class ControllerAccount extends Controller
         else if($attore=="calciatore") {
             $g = new GestoreAccount();
             try {
-                $g->eliminaAccount_G($username);
-                return new Response("ACC:" . $username . "eliminato");
+                 $g->eliminaAccount_G($username);
+                return $this->render("guest/eliminato.html.twig");
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
         }
 
+        return new Response("tipo non esiste");
 
 
     }

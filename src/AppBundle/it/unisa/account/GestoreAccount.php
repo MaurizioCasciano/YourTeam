@@ -255,6 +255,7 @@ class GestoreAccount
         catch (\Exception $e){
             throw new \Exception("l'utente da eliminare non esiste");
         }
+        return "Andato a buon fine";
     }
 
     public function eliminaAccount_G($u){
@@ -272,6 +273,7 @@ class GestoreAccount
         catch (\Exception $e){
             throw new \Exception("l'utente da eliminare non esiste");
         }
+        return "Andato a buon fine";
     }
 
     public function aggiungiAccount_C(AccountCalciatore $c){
