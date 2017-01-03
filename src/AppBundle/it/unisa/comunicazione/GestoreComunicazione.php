@@ -25,7 +25,6 @@ class GestoreComunicazione
 
     public function inviaMessaggio(Messaggio $msg)
     {
-        /*controlliamo che l'account non sia null(controllo piuttosto inutile)*/
         if ($msg == null) throw new \Exception("valore nullo");
 
         $sql = "INSERT INTO messaggio (testo,allenatore,calciatore,mittente,data,tipo) 
@@ -93,7 +92,7 @@ class GestoreComunicazione
     {
         if ($allenatore == null) throw new \Exception("Messaggio non trovato");
         $messaggi = array();
-        $sql = "SELECT * from messaggio WHERE allenatore='$allenatore' and tipo='$tipo' AND calciatore = $calciatoreDestinatario ORDER BY data;";
+        $sql = "SELECT * from messaggio WHERE allenatore='$allenatore' and tipo='$tipo' ORDER BY data;";
 
         $result = $this->conn->query($sql);
         $i = 0;
@@ -131,11 +130,19 @@ class GestoreComunicazione
             throw new \Exception("non esistono messaggi");
     }
 
-    public function ottieniMessaggioComportamento($allenatore, $tipo, $calciatoreDestinatario, $testo_comportamento)
+    /**
+     * Restituisce l'array di oggetti Messaggio inviati dall'allenatore al calciatore, ordinati per data.
+     * @param $allenatore
+     * @param $tipo
+     * @param $calciatoreDestinatario
+     * @return array
+     * @throws \Exception
+     */
+    public function ottieniMessaggi($allenatore, $tipo, $calciatoreDestinatario)
     {
         if ($allenatore == null) throw new \Exception("Messaggio non trovato");
         $messaggi = array();
-        $sql = "SELECT * from messaggio WHERE allenatore='$allenatore' and tipo='$tipo' AND calciatore = $calciatoreDestinatario ORDER BY data;";
+        $sql = "SELECT * from calciatore WHERE allenatore.squadra=calciatore.squadra;";
 
         $result = $this->conn->query($sql);
         $i = 0;
@@ -153,19 +160,91 @@ class GestoreComunicazione
 
                 $accountCalciatore = $g->ricercaAccount_G($calciatoreDestinatario);
 
-                $m->setTesto($testo_comportamento);
+                if ($m->getMittente() == "allenatore") {
+                    $m->setNomeMittente($accountAllenatore->getNome());
+                    $m->setCognomeMittente($accountAllenatore->getCognome());
 
-                $m->setNomeMittente($accountAllenatore->getNome());
-                $m->setCognomeMittente($accountAllenatore->getCognome());
+                    $m->setNomeDestinatario($accountCalciatore->getNome());
+                    $m->setCognomeDestinatario($accountCalciatore->getCognome());
+                } else if ($m->getMittente() == "calciatore") {
+                    $m->setNomeMittente($accountCalciatore->getNome());
+                    $m->setCognomeMittente($accountCalciatore->getCognome());
 
-                $m->setNomeDestinatario($accountCalciatore->getNome());
-                $m->setCognomeDestinatario($accountCalciatore->getCognome());
+                    $m->setNomeDestinatario($accountAllenatore->getNome());
+                    $m->setCognomeDestinatario($accountAllenatore->getCognome());
+                }
+
             }
             return $messaggi;
         } else
             throw new \Exception("non esistono messaggi");
+    }
 
+    public function ottieniMessaggioComportamento($allenatore, $calciatoreDestinatario, $testo_comportamento){
+        if ($allenatore == null) throw new \Exception("Messaggio non trovato");
+        $messaggi = array();
+        $sql = "SELECT * from calciatore WHERE allenatore.squadra=calciatore.squadra;";
 
+        $result = $this->conn->query($sql);
+        $i = 0;
+           //if ($result->num_rows > 0) {
+           //    while ($row = $result->fetch_assoc()) {
+           //    /*$t, $u, $c, $mitt,$data,$tipo*/
+           //        $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $row["data"], $row["tipo"]);
+          //       $m->setId($row["id"]);
+          //       $messaggi[$i] = $m;
+          //        $i++;
+
+        //       $g = new GestoreAccount();
+        //       $accountAllenatore = $g->ricercaAccount_A_T_S($allenatore);
+
+        //         $accountCalciatore = $g->ricercaAccount_G($calciatoreDestinatario);
+
+        //      $m->setTesto($testo_comportamento);
+
+        //       $m->setNomeMittente($accountAllenatore->getNome());
+        //     $m->setCognomeMittente($accountAllenatore->getCognome());
+
+        //     $m->setNomeDestinatario($accountCalciatore->getNome());
+        //       $m->setCognomeDestinatario($accountCalciatore->getCognome());
+        //    }
+        //    return $messaggi;
+        // } else
+        //     throw new \Exception("non esistono messaggi");
+    }
+
+    public function ottieniMessaggioSalute($allenatore, $calciatoreDestinatario, $testo_comportamento)
+    {
+        if ($allenatore == null) throw new \Exception("Messaggio non trovato");
+        $messaggi = array();
+        $sql = "SELECT * from calciatore WHERE allenatore.squadra=calciatore.squadra;";
+
+        $result = $this->conn->query($sql);
+        $i = 0;
+        //if ($result->num_rows > 0) {
+        //    while ($row = $result->fetch_assoc()) {
+        //        /*$t, $u, $c, $mitt,$data,$tipo*/
+        //        $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $row["data"], $row["tipo"]);
+         //       $m->setId($row["id"]);
+         //       $messaggi[$i] = $m;
+        //        $i++;
+
+         //       $g = new GestoreAccount();
+         //       $accountAllenatore = $g->ricercaAccount_A_T_S($allenatore);
+
+       //         $accountCalciatore = $g->ricercaAccount_G($calciatoreDestinatario);
+
+          //      $m->setTesto($testo_comportamento);
+
+         //       $m->setNomeMittente($accountAllenatore->getNome());
+           //     $m->setCognomeMittente($accountAllenatore->getCognome());
+
+           //     $m->setNomeDestinatario($accountCalciatore->getNome());
+         //       $m->setCognomeDestinatario($accountCalciatore->getCognome());
+        //    }
+        //    return $messaggi;
+       // } else
+       //     throw new \Exception("non esistono messaggi");
     }
 
     /**
@@ -187,12 +266,6 @@ class GestoreComunicazione
 
         return $calciatori;
     }
-
-    public function __destruct()
-    {
-        $this->db->close($this->conn);
-    }
-
 
     public function getAllenatorePerSquadra($squadra)
     {
@@ -216,5 +289,10 @@ class GestoreComunicazione
             // se è un calciatore query cercare tutti i suoi ruoli->cra un ruolo
             return $user;
         }
+    }
+
+    public function __destruct()
+    {
+        $this->db->close($this->conn);
     }
 }

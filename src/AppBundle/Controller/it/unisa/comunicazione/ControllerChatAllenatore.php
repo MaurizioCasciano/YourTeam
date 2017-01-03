@@ -40,11 +40,6 @@ class ControllerChatAllenatore extends Controller
                 "cognomeMittente" => $messaggio->getCognomeMittente(),
                 "mittente" => $messaggio->getMittente(),
                 "data" => $messaggio->getData()), JSON_PRETTY_PRINT));
-
-
-            //return new Response("Messaggio inviato correttamente");
-
-
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
@@ -61,11 +56,13 @@ class ControllerChatAllenatore extends Controller
         try {
             $ora = $richiesta->request->get("ora");
             $luogo = $richiesta->request->get("luogo");
-            $data = $richiesta->request->get("data_appuntamento");
-            $g->inviaMessaggio(new Messaggio("ora:" . $ora . " luogo:" . $luogo . " data:" . $data,
-                $richiesta->request->get("allenatore"),
-                $richiesta->request->get("calciatore"), "allenatore", time(), "voce"));
-            return new Response("messaggio inviato correttamente");
+            $data = $richiesta->request->get("data");
+            $messaggio = new Messaggio("ora:" . $ora . " luogo:" . $luogo . " data:" . $data,
+                $_SESSION["username"],
+                $richiesta->get("d"), "allenatore", time(), "voce");
+
+            $g -> inviaMessaggio($messaggio);
+            return $this->scegliCalciatoreVoce($richiesta);
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
@@ -84,7 +81,7 @@ class ControllerChatAllenatore extends Controller
             $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
                 $richiesta->get("d"),
                 "allenatore", time(), "multa"));
-            return new Response("Messaggio inviato correttamente");
+            return $this->scegliCalciatoreComportamento($richiesta);
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
@@ -103,7 +100,7 @@ class ControllerChatAllenatore extends Controller
             $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
                 $richiesta->get("d"),
                 "allenatore", time(), "avvertimento"));
-            return new Response("Messaggio inviato correttamente");
+            return $this->scegliCalciatoreComportamento($richiesta);
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
@@ -122,7 +119,7 @@ class ControllerChatAllenatore extends Controller
             $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
                 $richiesta->get("d"),
                 "allenatore", time(), "dieta"));
-            return new Response("Messaggio inviato correttamente");
+            return $this->scegliCalciatoreSalute($richiesta);
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
@@ -141,64 +138,10 @@ class ControllerChatAllenatore extends Controller
             $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
                 $richiesta->get("d"),
                 "allenatore", time(), "allenamento"));
-            return new Response("Messaggio inviato correttamente");
+            return $this->scegliCalciatoreSalute($richiesta);
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
-    }
-
-    /**
-     * @Route("/comunicazione/allenatore/ottieniMessaggioForm")
-     * @Method("GET")
-     */
-    public function ottieniMessaggioForm()
-    {
-
-    }
-
-    /**
-     * @Route("/comunicazione/allenatore/ottieniMessaggioVoceForm")
-     * @Method("GET")
-     */
-    public function ottieniMessaggioVoceForm()
-    {
-
-    }
-
-    /**
-     * @Route("/comunicazione/allenatore/ottieniRichiamoMultaForm")
-     * @Method("GET")
-     */
-    public function ottieniRichiamoMultaForm()
-    {
-
-    }
-
-    /**
-     * @Route("/comunicazione/allenatore/ottieniRichiamoAvvertimentoForm")
-     * @Method("GET")
-     */
-    public function ottieniRichiamoAvvertimentoForm()
-    {
-
-    }
-
-    /**
-     * @Route("/comunicazione/allenatore/ottieniRichiamoDietaForm")
-     * @Method("GET")
-     */
-    public function ottieniRichiamoDietaForm()
-    {
-
-    }
-
-    /**
-     * @Route("/comunicazione/allenatore/ottieniRichiamoAllenamentoForm")
-     * @Method("GET")
-     */
-    public function ottieniRichiamoAllenamentoForm()
-    {
-
     }
 
     /**
@@ -211,12 +154,54 @@ class ControllerChatAllenatore extends Controller
         if (!isset($_SESSION["squadra"])) {
             throw new \RuntimeException("Squadra is null");
         }
-
         $calciatori = $g->getCalciatoriPerSquadra($_SESSION["squadra"]);
 
         return $this->render(":allenatore:FormScegliCalciatore.html.twig", array("calciatori" => $calciatori));
+    }
 
-        //return new Response(var_dump($calciatori));
+    /**
+     * @Route("/comunicazione/allenatore/sceglicalciatorevoce")
+     * @Method("GET")
+     */
+    public function scegliCalciatoreVoce(Request $request)
+    {
+        $g = new GestoreComunicazione();
+        if (!isset($_SESSION["squadra"])) {
+            throw new \RuntimeException("Squadra is null");
+        }
+        $calciatori = $g->getCalciatoriPerSquadra($_SESSION["squadra"]);
+
+        return $this->render(":allenatore:FormScegliCalciatoreVoce.html.twig", array("calciatori" => $calciatori));
+    }
+
+    /**
+    * @Route("/comunicazione/allenatore/sceglicalciatorecomportamento")
+    * @Method("GET")
+    */
+    public function scegliCalciatoreComportamento(Request $request)
+    {
+        $g = new GestoreComunicazione();
+        if (!isset($_SESSION["squadra"])) {
+            throw new \RuntimeException("Squadra is null");
+        }
+        $calciatori = $g->getCalciatoriPerSquadra($_SESSION["squadra"]);
+
+        return $this->render(":allenatore:FormScegliCalciatoreComportamento.html.twig", array("calciatori" => $calciatori));
+    }
+
+    /**
+     * @Route("/comunicazione/allenatore/sceglicalciatoresalute")
+     * @Method("GET")
+     */
+    public function scegliCalciatoreSalute(Request $request)
+    {
+        $g = new GestoreComunicazione();
+        if (!isset($_SESSION["squadra"])) {
+            throw new \RuntimeException("Squadra is null");
+        }
+        $calciatori = $g->getCalciatoriPerSquadra($_SESSION["squadra"]);
+
+        return $this->render(":allenatore:FormScegliCalciatoreSalute.html.twig", array("calciatori" => $calciatori));
     }
 
     /**
@@ -228,40 +213,37 @@ class ControllerChatAllenatore extends Controller
         if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "allenatore") {
             throw new \Exception("Allenatore non loggato");
         }
-
         $allenatoreMittente = $_SESSION["username"];
         $calciatoreDestinatario = $request->get("calciatore_destinatario");
 
         $g = new GestoreComunicazione();
         try {
-            $messaggi = $g->ottieniMessaggiAllenatore($allenatoreMittente, "chat", $calciatoreDestinatario);
+            $messaggi = $g->ottieniMessaggi($allenatoreMittente, "chat", $calciatoreDestinatario);
 
-            //return new Response(var_dump($messaggi));
             return $this->render("allenatore/FormChatAllenatore2.html.twig", array("messaggi" => $messaggi, "destinatario" => $calciatoreDestinatario));
         } catch (\Exception $e) {
             return $this->render("allenatore/FormChatAllenatore2.html.twig", array("messaggi" => array(), "destinatario" => $calciatoreDestinatario));
-
-
         }
     }
 
     /**
-     * @Route("/comunicazione/allenatore/ottieniMessaggioVoceView/{contratto_allenatore}")
-     * @Method("GET")
+     * @Route("/comunicazione/allenatore/ottieniMessaggioVoceView")
+     * @Method("POST")
      */
-    public function ottieniMessaggioVoceView($contratto_allenatore)
+    public function ottieniMessaggioVoceView(Request $request)
     {
+        if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "allenatore") {
+            throw new \Exception("Allenatore non loggato");
+        }
+        $allenatoreMittente = $_SESSION["username"];
+        $calciatoreDestinatario = $request->get("calciatore_destinatario");
         $g = new GestoreComunicazione();
         try {
-            $messaggi = $g->ottieniMessaggiAllenatore($contratto_allenatore, "voce");
-            $str = "";
-            foreach ($messaggi as $m) {
-                $str = $str . $m;
-                $str = $str . "</br >";
-            }
-            return new Response($str);
+            $messaggi = $g->ottieniMessaggi($allenatoreMittente, "chat", $calciatoreDestinatario);
+
+            return $this->render("allenatore/FormVoceAllenatore.html.twig", array("messaggi" => $messaggi, "d" => $calciatoreDestinatario));
         } catch (\Exception $e) {
-            return new Response($e->getMessage(), 404);
+            return $this->render("allenatore/FormVoceAllenatore.html.twig", array("messaggi" => array(), "d" => $calciatoreDestinatario));
         }
     }
 
@@ -281,7 +263,7 @@ class ControllerChatAllenatore extends Controller
         $g = new GestoreComunicazione();
 
         try {
-            $messaggi = $g->ottieniMessaggioComportamento($allenatoreMittente, "multa", $calciatoreDestinatario, $testomulta);
+            $messaggi = $g->ottieniMessaggioComportamento($allenatoreMittente, $calciatoreDestinatario, $testomulta);
             $str = "";
 
             return $this->render("allenatore/FormRichiamoComportamento.html.twig", array("messaggi" => $messaggi, "d" => $calciatoreDestinatario));
@@ -304,7 +286,7 @@ class ControllerChatAllenatore extends Controller
         $testomulta = $request->get("avvertimento");
         $g = new GestoreComunicazione();
         try {
-            $messaggi = $g->ottieniMessaggioComportamento($allenatoreMittente, "avvertimento", $calciatoreDestinatario, $testomulta);
+            $messaggi = $g->ottieniMessaggioComportamento($allenatoreMittente, $calciatoreDestinatario, $testomulta);
             $str = "";
 
             return $this->render("allenatore/FormRichiamoComportamento.html.twig", array("messaggi" => $messaggi, "d" => $calciatoreDestinatario));
@@ -327,7 +309,7 @@ class ControllerChatAllenatore extends Controller
         $testorichiamo = $request->get("avvertimento");
         $g = new GestoreComunicazione();
         try {
-            $messaggi = $g->ottieniMessaggioComportamento($allenatoreMittente, "dieta", $calciatoreDestinatario, $testorichiamo);
+            $messaggi = $g->ottieniMessaggioSalute($allenatoreMittente, $calciatoreDestinatario, $testorichiamo);
             $str = "";
 
             return $this->render("allenatore/FormRichiamoSalute.html.twig", array("messaggi" => $messaggi, "d" => $calciatoreDestinatario));
@@ -349,7 +331,7 @@ class ControllerChatAllenatore extends Controller
         $testorichiamo = $request->get("avvertimento");
         $g = new GestoreComunicazione();
         try {
-            $messaggi = $g->ottieniMessaggioComportamento($allenatoreMittente, "allenamento", $calciatoreDestinatario, $testorichiamo);
+            $messaggi = $g->ottieniMessaggioSalute($allenatoreMittente, $calciatoreDestinatario, $testorichiamo);
             $str = "";
 
             return $this->render("allenatore/FormRichiamoSalute.html.twig", array("messaggi" => $messaggi, "d" => $calciatoreDestinatario));
