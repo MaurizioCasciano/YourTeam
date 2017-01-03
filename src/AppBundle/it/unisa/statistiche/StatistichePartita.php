@@ -1,5 +1,5 @@
 <?php
-
+namespace AppBundle\it\unisa\statistiche;
 /**
  * Created by PhpStorm.
  * User: Maurizio
@@ -9,190 +9,164 @@
 class StatistichePartita
 {
     /**
-     * @var $golFatti Il numero di gol fatti.
+     * @var $golFatti int numero di gol fatti dalla squadra.
      */
     private $golFatti;
     /**
-     * @var $golSubiti Il numero di gol subiti.
+     * @var $golSubiti int numero di gol subiti dalla squadra.
      */
     private $golSubiti;
+    /**
+     * @var $possessoPalla int possesso palla della squadra.
+     */
     private $possessoPalla;
+    /**
+     * @var $marcatori array calciatori che hanno segnato per la squadra.
+     */
     private $marcatori;
+    /**
+     * @var $assistMen array calciatori che hanno effettuato un assist durante l'incontro.
+     */
     private $assistMen;
+    /**
+     * @var $ammonizioni array calciatori che sono stati ammoniti durante l'incontro.
+     */
     private $ammonizioni;
+    /**
+     * @var $espulsioni array calciatori che sono stati espulsi durante l'incontro.
+     */
     private $espulsioni;
-    /**
-     * @var $nome Il nome della partita.
-     */
-    private $nome;
-    /**
-     * @var $data La data della partita.
-     */
-    private $data;
 
     /**
-     * @var $squadra La squdra a cui si riferiscono le statistiche della partita.
+     * StatistichePartita constructor.
+     * @param int $golFatti
+     * @param int $golSubiti
+     * @param int $possessoPalla
+     * @param array $marcatori
+     * @param array $assistMen
+     * @param array $ammonizioni
+     * @param array $espulsioni
      */
-    private $squadra;
+    public function __construct($golFatti, $golSubiti, $possessoPalla, array $marcatori, array $assistMen, array $ammonizioni, array $espulsioni)
+    {
+        $this->golFatti = $golFatti;
+        $this->golSubiti = $golSubiti;
+        $this->possessoPalla = $possessoPalla;
+        $this->marcatori = $marcatori;
+        $this->assistMen = $assistMen;
+        $this->ammonizioni = $ammonizioni;
+        $this->espulsioni = $espulsioni;
+    }
 
     /**
-     * Restituisce il numero di gol fatti dalla squdra.
-     * @return Il numero di gol fatti dalla squadra.
+     * @return int
      */
-    public function getGolFatti()
+    public function getGolFatti(): int
     {
         return $this->golFatti;
     }
 
     /**
-     * @param $golFatti Il numero di gol fatti dalla squadra.
+     * @param int $golFatti
      */
-    public function setGolFatti($golFatti)
+    public function setGolFatti(int $golFatti)
     {
         $this->golFatti = $golFatti;
     }
 
     /**
-     * @return Il numero di gol subiti dalla squadra.
+     * @return int
      */
-    public function getGolSubiti()
+    public function getGolSubiti(): int
     {
         return $this->golSubiti;
     }
 
     /**
-     * @param $golSubiti Il numero di gol subiti dalla squadra.
+     * @param int $golSubiti
      */
-    public function setGolSubiti($golSubiti)
+    public function setGolSubiti(int $golSubiti)
     {
         $this->golSubiti = $golSubiti;
     }
 
     /**
-     * @return Il possesso palla della squadra nell'arco della partita.
+     * @return int
      */
-    public function getPossessoPalla()
+    public function getPossessoPalla(): int
     {
         return $this->possessoPalla;
     }
 
     /**
-     * @param mixed $possessoPalla
+     * @param int $possessoPalla
      */
-    public function setPossessoPalla($possessoPalla)
+    public function setPossessoPalla(int $possessoPalla)
     {
         $this->possessoPalla = $possessoPalla;
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getMarcatori()
+    public function getMarcatori(): array
     {
         return $this->marcatori;
     }
 
     /**
-     * @param mixed $marcatori
+     * @param array $marcatori
      */
-    public function setMarcatori($marcatori)
+    public function setMarcatori(array $marcatori)
     {
         $this->marcatori = $marcatori;
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getAssistMen()
+    public function getAssistMen(): array
     {
         return $this->assistMen;
     }
 
     /**
-     * @param mixed $assistMen
+     * @param array $assistMen
      */
-    public function setAssistMen($assistMen)
+    public function setAssistMen(array $assistMen)
     {
         $this->assistMen = $assistMen;
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getAmmonizioni()
+    public function getAmmonizioni(): array
     {
         return $this->ammonizioni;
     }
 
     /**
-     * @param mixed $ammonizioni
+     * @param array $ammonizioni
      */
-    public function setAmmonizioni($ammonizioni)
+    public function setAmmonizioni(array $ammonizioni)
     {
         $this->ammonizioni = $ammonizioni;
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getEspulsioni()
+    public function getEspulsioni(): array
     {
         return $this->espulsioni;
     }
 
     /**
-     * @param mixed $espulsioni
+     * @param array $espulsioni
      */
-    public function setEspulsioni($espulsioni)
+    public function setEspulsioni(array $espulsioni)
     {
         $this->espulsioni = $espulsioni;
-    }
-
-    /**
-     * @return Il
-     */
-    public function getNome()
-    {
-        return $this->nome;
-    }
-
-    /**
-     * @param Il $nome
-     */
-    public function setNome($nome)
-    {
-        $this->nome = $nome;
-    }
-
-    /**
-     * @return La
-     */
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    /**
-     * @param La $data
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSquadra()
-    {
-        return $this->squadra;
-    }
-
-    /**
-     * @param mixed $squadra
-     */
-    public function setSquadra($squadra)
-    {
-        $this->squadra = $squadra;
     }
 }

@@ -51,8 +51,16 @@ class GestorePartite
                 $casa = $squadre[0];
                 $trasferta = $squadre[1];
                 $dateTime = new \DateTime($row["data"]);
+                $squadra = $row["squadra"];
+                $stadio = $row["stadio"];
 
-                $arrayPartite[] = new Partita($casa, $trasferta, $dateTime, $row["squadra"], $row["stadio"]);
+                $partita = new Partita($casa, $trasferta, $dateTime, $squadra, $stadio);
+
+                $golFatti = $row["golfatti"];
+                $golSubiti = $row["golsubiti"];
+
+
+                $arrayPartite[] = $partita;
             }
 
             return $arrayPartite;

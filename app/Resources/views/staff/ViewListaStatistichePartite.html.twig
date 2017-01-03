@@ -1,0 +1,90 @@
+{% extends 'staff/template.html.twig' %}
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ asset("partite/css/Main.css") }}">
+{% endblock %}
+
+{% block contenuto %}
+
+    <h2>Statistiche Partite</h2>
+    <div class="alert alert-success alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Success!</strong>
+    </div>
+
+    <div class="alert alert-info alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Info!</strong>
+    </div>
+
+    <div class="alert alert-warning alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Warning!</strong>
+    </div>
+
+    <div class="alert alert-danger alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Danger!</strong>
+    </div>
+
+    <div id="accordion" class="panel-group" role="tablist">
+
+        {% for partita in partite %}
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab">
+                    <h4 class="panel-title">
+                        <button class="collapsed" data-toggle="collapse" data-parent="#accordion"
+                                data-target="#{{ loop.index }}">
+                            <span class="pull-left">{{ partita.getNome() }}</span><span
+                                    class="pull-right">{{ partita.getData() | date('Y-m-d H:i:s') }}</span>
+                        </button>
+                    </h4>
+                </div>
+
+                <div id="{{ loop.index }}" class="panel-collapse collapse" role="tabpanel">
+                    <div class="panel-body">
+                        {% if partita.hasStatistiche() %}
+                            <button class="modifica-btn">Modifica</button>
+                            <button class="visualizza-btn">Visualizza</button>
+                        {% else %}
+                            <button class="inserisci-btn">Inserisci</button>
+                        {% endif %}
+                    </div>
+
+                    {% if partita.hasStatistiche() %}
+                        <div class="modifica" style="display: none;">
+                            {#{% include ":staff:FormModificaStatistichePartita.html.twig" with {"partita" : partita} only %}#}
+                        </div>
+
+                        <div class="visualizza" style="display:none;">
+                            {#{% include ":staff:ViewInfoPartita.html.twig" with {"partita" : partita} only %}#}
+                        </div>
+                    {% else %}
+                        <div class="inserisci" style="display: none;">
+                            {% include ":staff:FormInserisciStatistichePartita.html.twig" with {"partita" : partita} only %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="{{ asset("statistiche/js/InserisciStatistichePartita.js") }}"></script>
+
+    <script>
+        $(function () {
+            $(".inserisci-btn").click(function () {
+                $(this).parent().siblings(".inserisci").toggle();
+            });
+
+            $(".modifica-btn").click(function () {
+                $(this).parent().siblings(".modifica").toggle();
+            });
+        });
+    </script>
+{% endblock %}

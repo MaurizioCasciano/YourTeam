@@ -78,7 +78,7 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
         //inserisco i dati nel DataBase
         $statisticheCalciatore = new StatisticheCalciatore($calciatore, $tiriTotali, $tiriPorta, $falliFatti, $falliSubiti, $percentualePassaggiriusciti, $golFatti, $golSubiti, $assist, $ammonizioni, $espulsioni, 0);
         $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
-        $executed = $gestoreStatisticheCalciatore->inserisciStatistiche($statisticheCalciatore, $nomePartita, $dataPartita);
+        $executed = $gestoreStatisticheCalciatore->inserisciStatistiche($statisticheCalciatore, $nomePartita, $dataPartita, $_SESSION["squadra"]);
 
         return new Response("Statistiche " . ($executed ? " inserite " : "non inserite ") . "per il calciatore: " . $calciatore . " - " . $nomePartita . " - " . $dataPartita);
     }

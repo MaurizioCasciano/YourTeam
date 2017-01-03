@@ -29,24 +29,46 @@ class GestoreStatisticheCalciatore
      * L'effetto dell'esecuzione di questo metodo è l'inserimento nel DB delle statistiche date in input, che andranno a sommarsi a quelle già presenti.
      * @param StatisticheCalciatore $statistiche
      */
-    public function inserisciStatistiche(StatisticheCalciatore $statistiche, $nomePartita, $dataPartita)
+    public function inserisciStatistiche(StatisticheCalciatore $statistiche, $nomePartita, $dataPartita, $squadra)
     {
-        $statement = $this->conn->prepare("INSERT INTO " . "statistiche_calciatore" .
-            "(`calciatore`,`nome_partita`,`data_partita`,`tiri_totali`,`tiri_porta`,`falli_fatti`,`falli_subiti`,
-            `percentuale_passaggi_riusciti`,`gol_fatti`,`gol_subiti`,`assist`,`ammonizioni`,`espulsioni`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $username = $statistiche->getUsernameCalciatore();
-        $tiriTotali = $statistiche->getTiriTotali();
-        $tiriPorta = $statistiche->getTiriPorta();
-        $falliFatti = $statistiche->getFalliFatti();
-        $falliSubiti = $statistiche->getFalliSubiti();
-        $percentuaòlePassaggiRiusciti = $statistiche->getPercentualePassaggiRiusciti();
-        $golFatti = $statistiche->getGolFatti();
-        $golSubiti = $statistiche->getGolSubiti();
-        $assist = $statistiche->getAssist();
-        $ammonizioni = $statistiche->getAmmonizioni();
-        $espulsioni = $statistiche->getEspulsioni();
+        $statement = $this->conn->prepare(
+            "INSERT INTO " . "statistiche_calciatore" .
+            "(calciatore,nome_partita,data_partita,squadra,tiri_totali,tiri_porta,falli_fatti,falli_subiti,
+            percentuale_passaggi_riusciti,gol_fatti,gol_subiti,assist,ammonizioni,espulsioni) 
+            VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?) 
+            ON DUPLICATE KEY UPDATE
+                calciatore = VALUES(calciatore),
+                nome_partita = VALUES(nome_partita),
+                data_partita = VALUES(data_partita),
+                squadra = VALUES(squadra),
+                tiri_totali = VALUES(tiri_totali),
+                tiri_porta = VALUES(tiri_porta),
+                falli_fatti = VALUES(falli_fatti),
+                falli_subiti = VALUES(falli_subiti),
+                percentuale_passaggi_riusciti = VALUES(percentuale_passaggi_riusciti),
+                gol_fatti = VALUES(gol_fatti),
+                gol_subiti = VALUES(gol_subiti),
+                assist = VALUES(assist),
+                ammonizioni = VALUES(ammonizioni),
+                espulsioni = VALUES(espulsioni)");
 
-        $statement->bind_param("sssiiiiiiiiii", $username, $nomePartita, $dataPartita, $tiriTotali,
+        if (!$statement) {
+            throw  new \Exception("Prepare failed: (" . $this->conn->errno . ") " . $this->conn->error);
+        }
+
+        $username = $statistiche->getUsernameCalciatore();
+        $tiriTotali = (int)$statistiche->getTiriTotali();
+        $tiriPorta = (int)$statistiche->getTiriPorta();
+        $falliFatti = (int)$statistiche->getFalliFatti();
+        $falliSubiti = (int)$statistiche->getFalliSubiti();
+        $percentuaòlePassaggiRiusciti = (int)$statistiche->getPercentualePassaggiRiusciti();
+        $golFatti = (int)$statistiche->getGolFatti();
+        $golSubiti = (int)$statistiche->getGolSubiti();
+        $assist = (int)$statistiche->getAssist();
+        $ammonizioni = (int)$statistiche->getAmmonizioni();
+        $espulsioni = (int)$statistiche->getEspulsioni();
+
+        $statement->bind_param("ssssiiiiiiiiii", $username, $nomePartita, $dataPartita, $squadra, $tiriTotali,
             $tiriPorta, $falliFatti, $falliSubiti, $percentuaòlePassaggiRiusciti, $golFatti,
             $golSubiti, $assist, $ammonizioni, $espulsioni);
 
@@ -111,8 +133,8 @@ class GestoreStatisticheCalciatore
                 SUM(gol_fatti) AS gol_fatti,
                 SUM(gol_subiti) AS gol_subiti,
                 SUM(assist) AS assist,
-                SUM(ammonizioni) as ammonizioni,
-                SUM(espulsioni) as espulsioni,
+                SUM(ammonizioni) AS ammonizioni,
+                SUM(espulsioni) AS espulsioni,
                 COUNT('calciatore') AS partite_giocate
             FROM
                 statistiche_calciatore
@@ -173,8 +195,8 @@ class GestoreStatisticheCalciatore
                 SUM(gol_fatti) AS gol_fatti,
                 SUM(gol_subiti) AS gol_subiti,
                 SUM(assist) AS assist,
-                SUM(ammonizioni) as ammonizioni,
-                SUM(espulsioni) as espulsioni,
+                SUM(ammonizioni) AS ammonizioni,
+                SUM(espulsioni) AS espulsioni,
                 COUNT('calciatore') AS partite_giocate
             FROM
                 statistiche_calciatore
