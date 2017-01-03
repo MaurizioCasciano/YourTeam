@@ -39,13 +39,12 @@ class ControllerPartiteStaff extends Controller
         $stadio = $request->get("stadio");
         $data = $request->get("data");
         $ora = $request->get("ora");
-
-        //return new Response("casa: " . $casa . " trasferta: " . $trasferta . " stadio: " . $stadio . " data: " . $data . " opa: " . $ora);
+        $squadra = $_SESSION["squadra"];
 
         $nome = $casa . "-" . $trasferta;
         $dateTime = new \DateTime($data . " " . $ora);
         //($nome, $data, $squadra, $stadio)
-        $partita = new Partita($casa, $trasferta, $dateTime, $_SESSION["squadra"], $stadio);
+        $partita = new Partita($casa, $trasferta, $dateTime, $squadra, $stadio);
 
         $gestorePartite = new GestorePartite();
 

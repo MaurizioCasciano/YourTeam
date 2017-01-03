@@ -23,16 +23,18 @@
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="icon-toggle"></span>
             </button>
-            <a class="navbar-brand" href="{{ path("home") }}"><img src="{{ asset('immaginiStatiche/Logo.png') }}"
-                                                                   width="30"
-                                                                   height="30">Your Team</a>
+            <a class="navbar-brand" href="http://localhost/yourteam/web/app_dev.php"><img
+                        src="{{ asset('immaginiStatiche/Logo.png') }}"
+                        width="30"
+                        height="30">Your Team</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
 
 
                 <li><a href="#">{% block utente %} {% endblock %}</a></li>
-                <li><a href="{{ path('logout') }}" )><i class="glyphicon glyphicon-lock"></i> Logout</a></li>
+                <li><a href="http://localhost/yourteam/web/app_dev.php/logout" )><i
+                                class="glyphicon glyphicon-lock"></i> Logout</a></li>
 
 
             </ul>
@@ -53,10 +55,12 @@
             <ul class="nav nav-stacked">
 
                 <li><a href="javascript:;"><i class="glyphicon glyphicon-flash"></i> Home</a></li>
-                <li><a href="{{ path('lista_partite') }}"><i class="glyphicon glyphicon-link"></i>Partite</a></li>
+                <li><a href="/yourteam/web/app_dev.php/partite/user"><i class="glyphicon glyphicon-link"></i>Partite</a>
+                </li>
                 <li><a href="javascript:;"><i class="glyphicon glyphicon-link"></i>convalida</a></li>
                 <li><a href="javascript:;"><i class="glyphicon glyphicon-list-alt"></i> ricerca account</a></li>
-                <li><a href="{{ path("lista_statistiche_partite") }}"><i class="glyphicon glyphicon-book"></i>
+                <li><a href="/yourteam/web/app_dev.php/statistiche/staff/partita/all"><i
+                                class="glyphicon glyphicon-book"></i>
                         statistiche partite</a></li>
                 <li><a href="javascript:;"><i class="glyphicon glyphicon-briefcase"></i> statistiche giocatore </a></li>
 

@@ -68,9 +68,6 @@ class ControllerAutenticazione extends Controller
     {
         $g = new GestoreAutenticazione();
         $g->logout();
-        //return $this->redirect("/yourteam/web/app_dev.php/");
-        return $this->redirect("/");
+        return $this->redirect("/yourteam/web/app_dev.php/");
     }
-
-
 }
