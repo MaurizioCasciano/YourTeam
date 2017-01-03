@@ -9,6 +9,8 @@
 namespace AppBundle\it\unisa\partite;
 
 
+use AppBundle\it\unisa\statistiche\StatistichePartita;
+
 class Partita implements PartitaInterface, \JsonSerializable
 {
     private $casa;
@@ -16,6 +18,7 @@ class Partita implements PartitaInterface, \JsonSerializable
     private $data;
     private $squadra;
     private $stadio;
+    private $statistiche;
 
     /**
      * Partita constructor.
@@ -32,6 +35,7 @@ class Partita implements PartitaInterface, \JsonSerializable
         $this->data = $data;
         $this->squadra = $squadra;
         $this->stadio = $stadio;
+        $this->statistiche = null;
     }
 
     /**
@@ -80,7 +84,7 @@ class Partita implements PartitaInterface, \JsonSerializable
      */
     public function getData()
     {
-        return $this->data;
+        return $this->data->format("Y-m-d H:i:s");
     }
 
     /**
@@ -150,6 +154,34 @@ class Partita implements PartitaInterface, \JsonSerializable
     public function setStadio($stadio)
     {
         $this->stadio = $stadio;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasStatistiche()
+    {
+        return $this->statistiche != null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatistiche(): StatistichePartita
+    {
+        if ($this->hasStatistiche()) {
+            return $this->statistiche;
+        } else {
+            throw new \Exception("Non ci sono ancora statistiche per questa partita.");
+        }
+    }
+
+    /**
+     * @param mixed $statistiche
+     */
+    public function setStatistiche(StatistichePartita $statistiche)
+    {
+        $this->statistiche = $statistiche;
     }
 
     function __toString()
