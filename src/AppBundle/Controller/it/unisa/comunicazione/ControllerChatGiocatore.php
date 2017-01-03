@@ -79,7 +79,7 @@ class ControllerChatGiocatore extends Controller
                 "chat");
 
             return $this->render("giocatore/FormChatCalciatore.html.twig",
-                array("messaggi" => $messaggi, "d" => $allenatoreDestinatario->getUsernameCodiceContratto()));
+                array("messaggi" => $messaggi, "destinatario" => $allenatoreDestinatario->getUsernameCodiceContratto()));
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
