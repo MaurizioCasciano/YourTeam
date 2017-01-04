@@ -1,6 +1,6 @@
 {% extends "allenatore/template.html.twig" %}
 {% block contenuto %}
-        <span>
+    <span>
 
         <div class="container">
             <div class="row">
@@ -11,9 +11,11 @@
                         </div>
                         <ul id="chat" class="list-group">
                             {% for messaggio in messaggi %}
+                                {{ dump(messaggio) }}
+
                                 <li class="list-group-item"> <span>{{ messaggio.getTesto() }}</span>
                                 <h6>  {{ messaggio.getData() }} </h6>
-                                <strong> {{ messaggio.getNomeDestinatario()}} {{ messaggio.getCognomeDestinatario() }}</strong></li></li>
+                                <strong> {{ messaggio.getNomeDestinatario() }} {{ messaggio.getCognomeDestinatario() }}</strong></li></li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -32,7 +34,7 @@
                             {% for messaggio in messaggi %}
                                 <li class="list-group-item"> <span>{{ messaggio.getTesto() }}</span>
                                 <h6>  {{ messaggio.getData() }} </h6>
-                                {#<strong> {{ messaggio.getNomeDestinatario()}} {{ messaggio.getCognomeDestinatario() }}</strong> #}</li>
+                                    {#<strong> {{ messaggio.getNomeDestinatario()}} {{ messaggio.getCognomeDestinatario() }}</strong> #}</li>
                             {% endfor %}
                         </ul>
                     </div>

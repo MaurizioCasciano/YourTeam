@@ -88,7 +88,6 @@ class Messaggio
     }
 
 
-
     /**
      * @return mixed
      */
@@ -157,11 +156,11 @@ class Messaggio
             $gestoreAccount = new GestoreAccount();
 
             if ($this->mittente == "allenatore") {
-                $accountCalciatore = $gestoreAccount->ricercaAccount_G($this->allenatore);
+                $accountCalciatore = $gestoreAccount->ricercaAccount_G($this->calciatore);
                 $this->nomeDestinatario = $accountCalciatore->getNome();
                 $this->cognomeDestinatario = $accountCalciatore->getCognome();
             } else if ($this->mittente == "calciatore") {
-                $accountAllenatore = $gestoreAccount->ricercaAccount_A_T_S($this->calciatore);
+                $accountAllenatore = $gestoreAccount->ricercaAccount_A_T_S($this->allenatore);
                 $this->nomeDestinatario = $accountAllenatore->getNome();
                 $this->cognomeDestinatario = $accountAllenatore->getCognome();
             }
@@ -187,11 +186,11 @@ class Messaggio
             $gestoreAccount = new GestoreAccount();
 
             if ($this->mittente == "allenatore") {
-                $accountCalciatore = $gestoreAccount->ricercaAccount_G($this->allenatore);
+                $accountCalciatore = $gestoreAccount->ricercaAccount_G($this->calciatore);
                 $this->nomeDestinatario = $accountCalciatore->getNome();
                 $this->cognomeDestinatario = $accountCalciatore->getCognome();
             } else if ($this->mittente == "calciatore") {
-                $accountAllenatore = $gestoreAccount->ricercaAccount_A_T_S($this->calciatore);
+                $accountAllenatore = $gestoreAccount->ricercaAccount_A_T_S($this->allenatore);
                 $this->nomeDestinatario = $accountAllenatore->getNome();
                 $this->cognomeDestinatario = $accountAllenatore->getCognome();
             }
