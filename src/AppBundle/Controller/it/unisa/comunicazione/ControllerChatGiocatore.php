@@ -20,12 +20,22 @@ class ControllerChatGiocatore extends Controller
      */
     public function inviaMessaggioChat(Request $richiesta)
     {
+        var_dump("InviaMessaggioCHAT");
+
         $g = new GestoreComunicazione();
         try {
             $testo = $richiesta->request->get("testo");
-            $messaggio = new Messaggio($testo, $_SESSION["username"],
-                $richiesta->get("destinatario"),
-                "calciatore", time(), "chat");
+            $allenatore = $richiesta->get("destinatario");
+            $calciatore = $_SESSION["username"];
+            $mittente = "calciatore";
+            $data = time();
+            $tipo = "chat";
+
+
+            //__construct($testo, $allenatore, $calciatore, $mittente, $data, $tipo)
+            $messaggio = new Messaggio($testo, $allenatore, $calciatore, $mittente, $data, $tipo);
+            var_dump($messaggio);
+
 
             $g->inviaMessaggio($messaggio);
             return new Response(json_encode(array("testo" => $messaggio->getTesto(),
@@ -34,7 +44,7 @@ class ControllerChatGiocatore extends Controller
                 "mittente" => $messaggio->getMittente(),
                 "data" => $messaggio->getData()), JSON_PRETTY_PRINT));
         } catch (\Exception $e) {
-            return new Response($e->getMessage(), 404);
+            return new Response($e->getMessage());
         }
     }
 
@@ -73,27 +83,21 @@ class ControllerChatGiocatore extends Controller
         $squadra = $_SESSION["squadra"];
         $allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
 
+        //XDebug
+        var_dump($allenatoreDestinatario); //OK
+
+
         $g = new GestoreComunicazione();
         try {
             $messaggi = $g->ottieniMessaggiCalciatore($calciatoreMittente,
                 "chat");
 
+            var_dump($messaggi);
+
             return $this->render("giocatore/FormChatCalciatore.html.twig",
                 array("messaggi" => $messaggi, "destinatario" => $allenatoreDestinatario->getUsernameCodiceContratto()));
         } catch (\Exception $e) {
-            return new Response($e->getMessage(), 404);
-        }
-        $g = new GestoreComunicazione();
-        try {
-            $messaggi = $g->ottieniMessaggiCalciatore($contratto_giocatore, "chat");
-            $str = "";
-            foreach ($messaggi as $m) {
-                $str = $str . $m;
-                $str = $str . "</br >";
-            }
-            return new Response($str);
-        } catch (\Exception $e) {
-            return new Response($e->getMessage(), 404);
+            return new Response($e->getMessage());
         }
     }
 
