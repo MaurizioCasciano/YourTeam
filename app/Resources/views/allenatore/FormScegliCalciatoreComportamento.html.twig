@@ -13,7 +13,7 @@
                             {% for messaggio in messaggi %}
                                 <li class="list-group-item"> <span>{{ messaggio.getTesto() }}</span>
                                 <h6>  {{ messaggio.getData() }} </h6>
-                                {#<strong> {{ messaggio.getNomeDestinatario()}} {{ messaggio.getCognomeDestinatario() }}</strong></li> #}</li>
+                                <strong> {{ messaggio.getNomeDestinatario()}} {{ messaggio.getCognomeDestinatario() }}</strong></li></li>
                             {% endfor %}
                         </ul>
                     </div>
