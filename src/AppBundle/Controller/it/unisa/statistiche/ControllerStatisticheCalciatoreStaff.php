@@ -140,4 +140,24 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
 
         return new Response(($executed ? "Modifiche effettuate" : "Modifiche non effettuate") . "Modifica statistiche calciatore: " . $calciatore . " partita: " . $nomePartita . " " . $dataPartita);
     }
+
+    /**
+     * Restituisce la view con la lista delle statistiche dei calciatori della squadra dell'utente.
+     * @Route("/statistiche/staff/calciatore/all")
+     * @Method("GET")
+     */
+    public function getStatisticheCalciatoriView()
+    {
+        $squadra = $_SESSION["squadra"];
+
+        $gestore = new GestoreStatisticheCalciatore();
+        $calciatori = $gestore->getCalciatori($squadra);
+
+        //XDebug
+        //var_dump($calciatori);
+
+        //return new Response("Statistiche calciatori: ");
+
+        return $this->render("staff/ViewListaStatisticheCalciatori.html.twig", array("calciatori" => $calciatori));
+    }
 }

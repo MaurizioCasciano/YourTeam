@@ -24,6 +24,12 @@ class GestoreStatisticheCalciatore
         $this->conn = $this->db->connect();
     }
 
+    function __destruct()
+    {
+        $this->db->close($this->conn);
+    }
+
+
     /**
      * Inserisce la statistiche nel database.
      * L'effetto dell'esecuzione di questo metodo è l'inserimento nel DB delle statistiche date in input, che andranno a sommarsi a quelle già presenti.
@@ -270,5 +276,52 @@ assist = ?, ammonizioni = ?, espulsioni = ? WHERE calciatore = ? AND nome_partit
 
         $executed = $statement->execute();
         return $executed;
+    }
+
+    /**
+     *Restituisce l'elenco dei calciatori della squadra, con le loro statistiche complessive.
+     * @param $squadra string La squadra dei calciatori.
+     */
+    public function getCalciatori($squadra)
+    {
+        $calciatori = array();
+
+        if ($statement = $this->conn->prepare("
+            SELECT * FROM calciatore
+            WHERE squadra = ?")
+        ) {
+            $statement->bind_param("s", $squadra);
+            if ($statement->execute()) {
+                $result = $statement->get_result();
+
+                while ($row = $result->fetch_assoc()) {
+                    $contratto = $row["contratto"];
+                    $password = $row["password"];
+                    $squadra = $row["squadra"];
+                    $email = $row["email"];
+                    $nome = $row["nome"];
+                    $cognome = $row["cognome"];
+                    $dataDiNascita = $row["datadinascita"];
+                    $numeroMaglia = $row["numeromaglia"];
+                    $domicilio = $row["domicilio"];
+                    $indirizzo = $row["indirizzo"];
+                    $provincia = $row["provincia"];
+                    $telefono = $row["telefono"];
+                    $immagine = $row["immagine"];
+
+                    $calciatore = new Calciatore($contratto, $password, $squadra, $email, $nome, $cognome, $dataDiNascita, $numeroMaglia, $domicilio, $indirizzo, $provincia, $telefono, $immagine);
+                    $statisticheCalciatore = $this->getStatisticheComplessiveCalciatore($contratto);
+                    $calciatore->setStatistiche($statisticheCalciatore);
+
+                    $calciatori[] = $calciatore;
+                }
+
+                return $calciatori;
+            } else {
+                throw new \Exception("Statement not executed.");
+            }
+        } else {
+            throw new \Exception("Statement not prepared.");
+        }
     }
 }

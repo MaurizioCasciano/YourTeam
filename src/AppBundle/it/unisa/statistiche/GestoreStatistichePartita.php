@@ -135,23 +135,6 @@ class GestoreStatistichePartita
         $statement1->bind_param("iiisss", $golFatti, $golSubiti, $possessoPalla, $nome, $data, $squadra);
         $executed1 = $statement1->execute();
 
-
-        foreach ($marcatori as $marcatore) {
-            //var_dump("Marcatore: " . $marcatore);
-        }
-
-        foreach ($assistmen as $assitMan) {
-            //var_dump("AssistMan: " . $assitMan);
-        }
-
-        foreach ($ammonizioni as $ammonizione) {
-            //var_dump("Ammonizione: " . $ammonizione);
-        }
-
-        foreach ($espulsioni as $espulsione) {
-            //var_dump("Espulsione: " . $espulsione);
-        }
-
         return $executed && $executed1;
     }
 
@@ -197,4 +180,6 @@ class GestoreStatistichePartita
             throw  new \Exception("Prepare failed: (" . $this->conn->errno . ") " . $this->conn->error);
         }
     }
+
+
 }

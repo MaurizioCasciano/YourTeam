@@ -70,6 +70,9 @@ class ControllerStatistichePartitaStaff extends Controller
         $gestoreStatistichePartita = new GestoreStatistichePartita();
         $executed = $gestoreStatistichePartita->inserisciStatistiche($partita);
 
+
+
+
         return new Response("OK Response\nExecuted: " . $executed);
     }
 
@@ -99,27 +102,5 @@ class ControllerStatistichePartitaStaff extends Controller
         $marcatori = $gestoreStatistichePartita->getMarcatori($nome, $data, $squadra);
 
         return new JsonResponse($marcatori);
-    }
-
-
-    /**
-     * @Route("/test/hello/{nome}")
-     * @Method("GET")
-     */
-    public function hello($nome)
-    {
-        return new Response("Hello dear " . $nome);
-    }
-
-    /**
-     * @Route("/test/echo/{a}/{b}/{c}")
-     * @Method("GET")
-     * @param $a
-     * @param $b
-     * @param $c
-     */
-    public function echo ($a, $b, $c)
-    {
-        return new Response($a . "\n" . $b . "\n" . $c);
     }
 }

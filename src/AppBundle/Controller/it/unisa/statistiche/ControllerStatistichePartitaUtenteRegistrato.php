@@ -20,33 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
 class ControllerStatistichePartitaUtenteRegistrato extends Controller
 {
     /**
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
-     */
-    public function getStatisticheView()
-    {
-        if (isset($_SESSION) && isset($_SESSION["squadra"]) && isset($_SESSION["tipo"])) {
-            $gestorePartite = new GestorePartite();
-            $partite = $gestorePartite->getPartite($_SESSION["squadra"]);
-
-            switch ($_SESSION["tipo"]) {
-                case "allenatore" :
-                    return $this->render(":staff:ViewListaStatistichePartite.html.twig", array("partite" => $partite));
-                case "calciatore" :
-                    return $this->render(":staff:ViewListaStatistichePartite.html.twig", array("partite" => $partite));
-                case "tifoso" :
-                    return $this->render(":staff:ViewListaStatistichePartite.html.twig", array("partite" => $partite));
-                case "staff":
-                    return $this->render(":staff:ViewListaStatistichePartite.html.twig", array("partite" => $partite));
-                default :
-                    throw new \Exception("Tipo account sconosciuto.");
-            }
-        } else {
-            throw new \Exception("SESSION not set");
-        }
-    }
-
-    /**
      * @Route("/statistiche/staff/partita/all", name = "lista_statistiche_partite")
      * @Method("GET")
      */
@@ -71,25 +44,5 @@ class ControllerStatistichePartitaUtenteRegistrato extends Controller
         } else {
             throw new \Exception("SESSION not set");
         }
-    }
-
-    /**
-     * Restituisce i convocati per la partita.
-     * @Route("/statistiche/convocati/{nome}/{data}")
-     */
-    public function getConvocati($nome, $data)
-    {
-        try {
-            $gestorePartite = new GestorePartite();
-            $partita = $gestorePartite->getPartita($nome, $data, $_SESSION["squadra"]);
-
-            $gestioneRosa = new GestioneRosa();
-            $calciatori = $gestioneRosa->ottieniConvocati($partita);
-
-        } catch (\Exception $e1) {
-            return new Response($e1->getMessage());
-        }
-
-        return new JsonResponse(array("calciatori" => $calciatori));
     }
 }

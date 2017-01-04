@@ -1,3 +1,4 @@
+var ROOT_DIR = "/yourteam/web/app_dev.php";
 /**
  * Created by Maurizio on 31/12/2016.
  */
@@ -57,7 +58,7 @@ function inserisciStatistichePartitaHandler(event) {
     //console.log(values);
 
     $.ajax({
-        url: "/statistiche/staff/partita/insert/submit",
+        url: ROOT_DIR + "/statistiche/staff/partita/insert/submit",
         type: "POST",
         data: {"values": JSON.stringify(values)},
         cache: false,
@@ -275,7 +276,7 @@ function getConvocati(nome, data, handler, target) {
         handler(CONVOCATI, target);
     } else {
         $.ajax({
-            url: "/statistiche/convocati/" + nome + "/" + data,
+            url: ROOT_DIR + "/statistiche/convocati/" + nome + "/" + data,
             type: "GET",
             cache: false,
             success: function (response, textStatus, jqXHR) {

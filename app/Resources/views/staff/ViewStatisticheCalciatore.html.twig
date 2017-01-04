@@ -1,5 +1,3 @@
-{% extends 'allenatore/template.html.twig' %}
-
 {% block contenuto %}
     <!--Da spostare nel tag HEAD-->
     <style>
@@ -17,10 +15,14 @@
             border: 1px solid black;
             border-collapse: collapse;
         }
+
+        th, td {
+            padding: 5%;
+        }
     </style>
 
-    <h1>StatisticheCalciatore complessive {{ statistiche_calciatore.usernameCalciatore }}</h1>
-    <h1>{{ app.request.getBaseURL() }}</h1>
+    <h1>Statistiche Complessive {{ calciatore.getNome() |capitalize }}
+        &nbsp;{{ calciatore.getCognome() |capitalize }}</h1>
     <table>
         <tr>
             <th>Statistica</th>
@@ -29,52 +31,52 @@
 
         <tr>
             <td>Tiri Totali</td>
-            <td>{{ statistiche_calciatore.tiriTotali }}</td>
+            <td>{{ calciatore.getStatistiche().getTiriTotali() }}</td>
         </tr>
 
         <tr>
             <td>Tiri in Porta</td>
-            <td>{{ statistiche_calciatore.tiriPorta }}</td>
+            <td>{{ calciatore.getStatistiche().getTiriPorta() }}</td>
         </tr>
 
         <tr>
             <td>Falli Fatti</td>
-            <td>{{ statistiche_calciatore.falliFatti }}</td>
+            <td>{{ calciatore.getStatistiche().falliFatti }}</td>
         </tr>
 
         <tr>
             <td>Falli Subiti</td>
-            <td>{{ statistiche_calciatore.falliSubiti }}</td>
+            <td>{{ calciatore.getStatistiche().falliSubiti }}</td>
         </tr>
 
         <tr>
             <td>% Passaggi Riusciti</td>
-            <td>{{ statistiche_calciatore.percentualePassaggiRiusciti }}</td>
+            <td>{{ calciatore.getStatistiche().percentualePassaggiRiusciti }}</td>
         </tr>
 
         <tr>
             <td>Gol Fatti</td>
-            <td>{{ statistiche_calciatore.golFatti }}</td>
+            <td>{{ calciatore.getStatistiche().golFatti }}</td>
         </tr>
 
         <tr>
             <td>Gol Subiti</td>
-            <td>{{ statistiche_calciatore.golSubiti }}</td>
+            <td>{{ calciatore.getStatistiche().golSubiti }}</td>
         </tr>
 
         <tr>
             <td>Assist</td>
-            <td>{{ statistiche_calciatore.assist }}</td>
+            <td>{{ calciatore.getStatistiche().assist }}</td>
         </tr>
 
         <tr>
             <td>Ammonizioni</td>
-            <td>{{ statistiche_calciatore.ammonizioni }}</td>
+            <td>{{ calciatore.getStatistiche().ammonizioni }}</td>
         </tr>
 
         <tr>
             <td>Espulsioni</td>
-            <td>{{ statistiche_calciatore.espulsioni }}</td>
+            <td>{{ calciatore.getStatistiche().espulsioni }}</td>
         </tr>
     </table>
 {% endblock %}
