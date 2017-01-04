@@ -7,12 +7,37 @@
                 <div class="col-md-5">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
+                            <span class="glyphicon glyphicon-search"></span> Scegli Calciatore Comportamento
+                        </div>
+                        <form action="/yourteam/web/app_dev.php/comunicazione/allenatore/ottieniRichiamoMultaView" method="post">
+            <select name="calciatore_destinatario">
+                {% for calciatore in calciatori %}
+                    <option>
+                        {{ calciatore }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <input type="submit" value="Invia"/>
+        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <br>
+        <br>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
                             <span class="glyphicon glyphicon-exclamation-sign"></span> Richiami Multa
                         </div>
                         <ul id="chat" class="list-group">
                             {% for messaggio in messaggi %}
-                                {{ dump(messaggio) }}
-
                                 <li class="list-group-item"> <span>{{ messaggio.getTesto() }}</span>
                                 <h6>  {{ messaggio.getData() }} </h6>
                                 <strong> {{ messaggio.getNomeDestinatario() }} {{ messaggio.getCognomeDestinatario() }}</strong></li></li>
@@ -34,34 +59,13 @@
                             {% for messaggio in messaggi %}
                                 <li class="list-group-item"> <span>{{ messaggio.getTesto() }}</span>
                                 <h6>  {{ messaggio.getData() }} </h6>
-                                    {#<strong> {{ messaggio.getNomeDestinatario()}} {{ messaggio.getCognomeDestinatario() }}</strong> #}</li>
+                                    <strong> {{ messaggio.getNomeDestinatario()}} {{ messaggio.getCognomeDestinatario() }}</strong></li>
                             {% endfor %}
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-
-
-        <br>
-        <br>
-        <br>
-            <h1>Scegli Calciatore</h1>
-        <form action="/yourteam/web/app_dev.php/comunicazione/allenatore/ottieniRichiamoMultaView" method="post">
-            <select name="calciatore_destinatario">
-                {% for calciatore in calciatori %}
-                    <option>
-                        {{ calciatore }}
-                    </option>
-                {% endfor %}
-            </select>
-
-            <input type="submit" value="Invia"/>
-        </form>
-
-
-
-
 
     </span>
 

@@ -8,6 +8,7 @@
 
 namespace AppBundle\Controller\it\unisa\comunicazione;
 
+use AppBundle\it\unisa\account\GestoreAccount;
 use AppBundle\it\unisa\comunicazione\GestoreComunicazione;
 use AppBundle\it\unisa\comunicazione\Messaggio;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
