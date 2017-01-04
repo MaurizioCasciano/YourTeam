@@ -200,11 +200,61 @@
                         "destinatario": "{{ destinatario }}",
                         "testo": $("#chatInput").val()
                     },
+                    cache: false,
                     success: function (response, textStatus, jqXHR) {
                         console.log("Response invia messaggio chat.");
                         console.log(response);
 
                         alert("Messaggio inviato con successo: " + response);
+
+                        //senderImgSpan BEGIN
+                        //L'immagine del mittente
+                        var senderImg = document.createElement("img");
+                        senderImg.setAttribute("src", "http://placehold.it/50/FA6F57/fff&text=ME");
+                        senderImg.setAttribute("alt", "User Avatar");
+                        senderImg.setAttribute("class", "img-circle");
+                        var senderImgSpan = document.createElement("span");
+                        senderImgSpan.setAttribute("class", "chat-img pull-right");
+                        senderImgSpan.appendChild(senderImg);
+                        //senderImgSpan END
+                        //chatHeaderDiv BEGIN
+                        var timeTextNode = document.createTextNode(response.data);
+                        var timeSpan = document.createElement("span");
+                        timeSpan.setAttribute("class", "glyphicon glyphicon-time");
+                        timeSpan.appendChild(timeTextNode);
+
+                        var senderNameSurnameTextNode = document.createTextNode(response.nomeMittente + " " + response.cognomeMittente);
+                        var senderStrong = document.createElement("strong");
+                        senderStrong.setAttribute("class", "pull-right primary-font");
+                        senderStrong.appendChild(senderNameSurnameTextNode);
+
+                        var chatHeaderDiv = document.createElement("div");
+                        chatHeaderDiv.setAttribute("class", "header");
+                        chatHeaderDiv.appendChild(timeSpan);
+                        chatHeaderDiv.appendChild(senderStrong);
+                        //chatHeaderDiv END
+
+                        //chatBodyDiv BEGIN
+                        var chatBodyDiv = document.createElement("div");
+                        chatBodyDiv.setAttribute("class", "chat-body clearfix");
+                        chatBodyDiv.appendChild(chatHeaderDiv);
+
+                        var messageTextParagraph = document.createElement("p");
+                        var messageTextNode = document.createTextNode(response.testo);
+                        messageTextParagraph.appendChild(messageTextNode);
+                        chatBodyDiv.appendChild(messageTextParagraph);
+                        //chatBodyDiv END
+
+                        //messageListItem BEGIN
+                        var listItem = document.createElement("li");
+                        listItem.setAttribute("class", "right clearfix");
+                        listItem.appendChild(senderImgSpan);
+                        listItem.appendChild(chatBodyDiv);
+                        var chat = document.getElementById("chat");
+                        chat.appendChild(listItem);
+                        //messageListItem END
+
+                        $("#chat_viewport").scrollTop($("#chat").outerHeight());
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log("TextStatus: " + textStatus);
