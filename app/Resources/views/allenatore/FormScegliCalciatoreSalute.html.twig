@@ -1,8 +1,53 @@
 {% extends "allenatore/template.html.twig" %}
 {% block contenuto %}
-    <h1>Scegli Calciatore</h1>
+
 
     <div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <span class="glyphicon glyphicon-cutlery"></span> Richiami Dieta
+                        </div>
+                        <ul id="chat" class="list-group">
+                            {% for messaggio in messaggi %}
+                                <li class="list-group-item"> <span>{{ messaggio.getTesto() }}</span>
+                                    <h6>  {{ messaggio.getData() }} </h6>
+                                    {#<strong> {{ messaggio.getNomeDestinatario()}} {{ messaggio.getCognomeDestinatario() }}</strong> #}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <span class="glyphicon glyphicon-fire"></span> Richiami Allenamento
+                        </div>
+                        <ul id="chat" class="list-group">
+                            {% for messaggio in messaggi %}
+                                <li class="list-group-item"> <span>{{ messaggio.getTesto() }}</span>
+                                    <h6>  {{ messaggio.getData() }} </h6>
+                                    {#<strong> {{ messaggio.getNomeDestinatario()}} {{ messaggio.getCognomeDestinatario() }}</strong> #}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <br>
+        <br>
+        <br>
+
+        <h1>Scegli Calciatore</h1>
         <form action="/yourteam/web/app_dev.php/comunicazione/allenatore/ottieniRichiamoDietaView" method="post">
             <select name="calciatore_destinatario">
                 {% for calciatore in calciatori %}
@@ -14,8 +59,6 @@
 
             <input type="submit" value="Invia"/>
         </form>
-
-
     </div>
 
 {% endblock %}

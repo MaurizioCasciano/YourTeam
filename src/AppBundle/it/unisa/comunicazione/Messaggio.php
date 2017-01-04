@@ -13,7 +13,6 @@ use AppBundle\it\unisa\account\GestoreAccount;
  */
 class Messaggio
 {
-
     private $mittente;
     private $calciatore;
     private $allenatore;
@@ -88,6 +87,8 @@ class Messaggio
         $this->tipo = $tipo;
     }
 
+
+
     /**
      * @return mixed
      */
@@ -106,7 +107,6 @@ class Messaggio
                 $this->cognomeMittente = $accountCalciatore->getCognome();
             }
         }
-
         return $this->nomeMittente;
     }
 

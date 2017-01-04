@@ -69,6 +69,8 @@ class ControllerChatGiocatore extends Controller
         }
         $gestoreComunicazione = new GestoreComunicazione();
 
+        $g = new GestoreAccount();
+        // = $g->ricercaAccount_G($_SESSION["username"]);
         $calciatoreMittente = $_SESSION["username"];
         $squadra = $_SESSION["squadra"];
         $allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
@@ -79,7 +81,9 @@ class ControllerChatGiocatore extends Controller
                 "chat");
 
             return $this->render("giocatore/FormChatCalciatore.html.twig",
-                array("messaggi" => $messaggi, "destinatario" => $allenatoreDestinatario->getUsernameCodiceContratto()));
+                array("messaggi" => $messaggi,
+                       "destinatario" => $allenatoreDestinatario->getUsernameCodiceContratto()));
+                     // "calciatore" => $calciatoreMittente));
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
@@ -132,6 +136,94 @@ class ControllerChatGiocatore extends Controller
             }
             return new Response($str);
         } catch (\Exception $e) {
+            return new Response($e->getMessage(), 404);
+        }
+    }
+
+    /**
+     * @Route("/comunicazione/giocatore/ottieniVistaRichiamoMulta")
+     * @Method("GET")
+     */
+    public function ottieniVistaRichiamoMulta(Request $request){
+        if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "calciatore") {
+            throw new \Exception("Calciatore non loggato");
+        }
+        $gestoreComunicazione = new GestoreComunicazione();
+
+        $calciatoreMittente = $_SESSION["username"];
+        $squadra = $_SESSION["squadra"];
+        //$allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
+        try{
+            $messaggi = $gestoreComunicazione->ottieniMessaggiRichiamoMulta($calciatoreMittente);
+
+            return $this->render("giocatore/VistaRichiamoMulta.html.twig", array("messaggi" => $messaggi));
+        }catch (\Exception $e) {
+            return new Response($e->getMessage(), 404);
+        }
+    }
+
+    /**
+     * @Route("/comunicazione/giocatore/ottieniVistaRichiamoAvvertimento")
+     * @Method("GET")
+     */
+    public function ottieniVistaRichiamoAvvertimento(Request $request){
+        if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "calciatore") {
+            throw new \Exception("Calciatore non loggato");
+        }
+        $gestoreComunicazione = new GestoreComunicazione();
+
+        $calciatoreMittente = $_SESSION["username"];
+        $squadra = $_SESSION["squadra"];
+        //$allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
+        try{
+            $messaggi = $gestoreComunicazione->ottieniMessaggioRichiamoAvvertimento($calciatoreMittente);
+
+            return $this->render("giocatore/VistaRichiamoAvvertimento.html.twig", array("messaggi" => $messaggi));
+        }catch (\Exception $e) {
+            return new Response($e->getMessage(), 404);
+        }
+    }
+
+    /**
+     * @Route("/comunicazione/giocatore/ottieniVistaRichiamoDieta")
+     * @Method("GET")
+     */
+    public function ottieniVistaRichiamoDieta(Request $request){
+        if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "calciatore") {
+            throw new \Exception("Calciatore non loggato");
+        }
+        $gestoreComunicazione = new GestoreComunicazione();
+
+        $calciatoreMittente = $_SESSION["username"];
+        $squadra = $_SESSION["squadra"];
+        //$allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
+        try{
+            $messaggi = $gestoreComunicazione->ottieniMessaggioRichiamoDieta($calciatoreMittente);
+
+            return $this->render("giocatore/VistaRichiamoDieta.html.twig", array("messaggi" => $messaggi));
+        }catch (\Exception $e) {
+            return new Response($e->getMessage(), 404);
+        }
+    }
+
+    /**
+     * @Route("/comunicazione/giocatore/ottieniVistaRichiamoAllenamento")
+     * @Method("GET")
+     */
+    public function ottieniVistaRichiamoAllenamento(Request $request){
+        if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "calciatore") {
+            throw new \Exception("Calciatore non loggato");
+        }
+        $gestoreComunicazione = new GestoreComunicazione();
+
+        $calciatoreMittente = $_SESSION["username"];
+        $squadra = $_SESSION["squadra"];
+        //$allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
+        try{
+            $messaggi = $gestoreComunicazione->ottieniMessaggioRichiamoAllenamento($calciatoreMittente);
+
+            return $this->render("giocatore/VistaRichiamoAllenamento.html.twig", array("messaggi" => $messaggi));
+        }catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
     }

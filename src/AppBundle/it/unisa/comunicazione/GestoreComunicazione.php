@@ -295,4 +295,163 @@ class GestoreComunicazione
     {
         $this->db->close($this->conn);
     }
+
+    public function ottieniMessaggiRichiamoMulta($calciatore){
+        if ($calciatore == null) throw new \Exception("Messaggio non trovato");
+        $messaggi = array();
+        $sql = "SELECT * from messaggio WHERE messaggio.tipo = 'multa' ORDER BY data;";
+
+        $result = $this->conn->query($sql);
+        $i = 0;
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $row["data"], $row["tipo"]);
+                $m->setId($row["id"]);
+                $messaggi[$i] = $m;
+                $i++;
+
+                $g = new GestoreAccount();
+                //$accountAllenatore = $g->ricercaAccount_A_T_S($allenatore);
+
+                //$accountCalciatore = $g->ricercaAccount_G($calciatoreDestinatario);
+
+                /*if ($m->getMittente() == "allenatore") {
+                    $m->setNomeMittente($accountAllenatore->getNome());
+                    $m->setCognomeMittente($accountAllenatore->getCognome());
+
+                    $m->setNomeDestinatario($accountCalciatore->getNome());
+                    $m->setCognomeDestinatario($accountCalciatore->getCognome());
+                } else if ($m->getMittente() == "calciatore") {
+                    $m->setNomeMittente($accountCalciatore->getNome());
+                    $m->setCognomeMittente($accountCalciatore->getCognome());
+
+                    $m->setNomeDestinatario($accountAllenatore->getNome());
+                    $m->setCognomeDestinatario($accountAllenatore->getCognome());
+                }*/
+
+            }
+            return $messaggi;
+        } else
+            throw new \Exception("non esistono messaggi");
+    }
+
+    public function ottieniMessaggioRichiamoAvvertimento($calciatore){
+        if ($calciatore == null) throw new \Exception("Messaggio non trovato");
+        $messaggi = array();
+        $sql = "SELECT * from messaggio WHERE messaggio.tipo = 'avvertimento' ORDER BY data;";
+
+        $result = $this->conn->query($sql);
+        $i = 0;
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                /*$t, $u, $c, $mitt,$data,$tipo*/
+                $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $row["data"], $row["tipo"]);
+                $m->setId($row["id"]);
+                $messaggi[$i] = $m;
+                $i++;
+
+                $g = new GestoreAccount();
+                //$accountAllenatore = $g->ricercaAccount_A_T_S($allenatore);
+
+                //$accountCalciatore = $g->ricercaAccount_G($calciatoreDestinatario);
+
+                /*if ($m->getMittente() == "allenatore") {
+                    $m->setNomeMittente($accountAllenatore->getNome());
+                    $m->setCognomeMittente($accountAllenatore->getCognome());
+
+                    $m->setNomeDestinatario($accountCalciatore->getNome());
+                    $m->setCognomeDestinatario($accountCalciatore->getCognome());
+                } else if ($m->getMittente() == "calciatore") {
+                    $m->setNomeMittente($accountCalciatore->getNome());
+                    $m->setCognomeMittente($accountCalciatore->getCognome());
+
+                    $m->setNomeDestinatario($accountAllenatore->getNome());
+                    $m->setCognomeDestinatario($accountAllenatore->getCognome());
+                }*/
+
+            }
+            return $messaggi;
+        } else
+            throw new \Exception("non esistono messaggi");
+    }
+
+    public function ottieniMessaggioRichiamoDieta($calciatore){
+        if ($calciatore == null) throw new \Exception("Messaggio non trovato");
+        $messaggi = array();
+        $sql = "SELECT * from messaggio WHERE messaggio.tipo = 'dieta'  ORDER BY data;";
+
+        $result = $this->conn->query($sql);
+        $i = 0;
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                /*$t, $u, $c, $mitt,$data,$tipo*/
+                $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $row["data"], $row["tipo"]);
+                $m->setId($row["id"]);
+                $messaggi[$i] = $m;
+                $i++;
+
+                $g = new GestoreAccount();
+                //$accountAllenatore = $g->ricercaAccount_A_T_S($allenatore);
+
+                //$accountCalciatore = $g->ricercaAccount_G($calciatoreDestinatario);
+
+                /*if ($m->getMittente() == "allenatore") {
+                    $m->setNomeMittente($accountAllenatore->getNome());
+                    $m->setCognomeMittente($accountAllenatore->getCognome());
+
+                    $m->setNomeDestinatario($accountCalciatore->getNome());
+                    $m->setCognomeDestinatario($accountCalciatore->getCognome());
+                } else if ($m->getMittente() == "calciatore") {
+                    $m->setNomeMittente($accountCalciatore->getNome());
+                    $m->setCognomeMittente($accountCalciatore->getCognome());
+
+                    $m->setNomeDestinatario($accountAllenatore->getNome());
+                    $m->setCognomeDestinatario($accountAllenatore->getCognome());
+                }*/
+
+            }
+            return $messaggi;
+        } else
+            throw new \Exception("non esistono messaggi");
+    }
+
+    public function ottieniMessaggioRichiamoAllenamento($calciatore){
+        if ($calciatore == null) throw new \Exception("Messaggio non trovato");
+        $messaggi = array();
+        $sql = "SELECT * from messaggio WHERE messaggio.tipo = 'allenamento'  ORDER BY data;";
+
+        $result = $this->conn->query($sql);
+        $i = 0;
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                /*$t, $u, $c, $mitt,$data,$tipo*/
+                $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $row["data"], $row["tipo"]);
+                $m->setId($row["id"]);
+                $messaggi[$i] = $m;
+                $i++;
+
+                $g = new GestoreAccount();
+                //$accountAllenatore = $g->ricercaAccount_A_T_S($allenatore);
+
+                //$accountCalciatore = $g->ricercaAccount_G($calciatoreDestinatario);
+
+                /*if ($m->getMittente() == "allenatore") {
+                    $m->setNomeMittente($accountAllenatore->getNome());
+                    $m->setCognomeMittente($accountAllenatore->getCognome());
+
+                    $m->setNomeDestinatario($accountCalciatore->getNome());
+                    $m->setCognomeDestinatario($accountCalciatore->getCognome());
+                } else if ($m->getMittente() == "calciatore") {
+                    $m->setNomeMittente($accountCalciatore->getNome());
+                    $m->setCognomeMittente($accountCalciatore->getCognome());
+
+                    $m->setNomeDestinatario($accountAllenatore->getNome());
+                    $m->setCognomeDestinatario($accountAllenatore->getCognome());
+                }*/
+
+            }
+            return $messaggi;
+        } else
+            throw new \Exception("non esistono messaggi");
+    }
 }
