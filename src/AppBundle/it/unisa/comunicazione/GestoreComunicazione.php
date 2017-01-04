@@ -27,6 +27,9 @@ class GestoreComunicazione
     {
         if ($msg == null) throw new \Exception("valore nullo");
 
+        var_dump($msg);
+
+
         $sql = "INSERT INTO messaggio (testo,allenatore,calciatore,mittente,data,tipo) 
                 VALUES ('" . $msg->getTesto() . "','"
             . $msg->getAllenatore() . "','"

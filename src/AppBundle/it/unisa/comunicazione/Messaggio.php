@@ -102,7 +102,7 @@ class Messaggio
                 $this->nomeMittente = $accountAllenatore->getNome();
                 $this->cognomeMittente = $accountAllenatore->getCognome();
             } else if ($this->mittente == "calciatore") {
-                $accountCalciatore = $gestoreAccount->ricercaAccount_G($this->allenatore);
+                $accountCalciatore = $gestoreAccount->ricercaAccount_G($this->calciatore);
                 $this->nomeMittente = $accountCalciatore->getNome();
                 $this->cognomeMittente = $accountCalciatore->getCognome();
             }
@@ -131,7 +131,7 @@ class Messaggio
                 $this->nomeMittente = $accountAllenatore->getNome();
                 $this->cognomeMittente = $accountAllenatore->getCognome();
             } else if ($this->mittente == "calciatore") {
-                $accountCalciatore = $gestoreAccount->ricercaAccount_G($this->allenatore);
+                $accountCalciatore = $gestoreAccount->ricercaAccount_G($this->calciatore);
                 $this->nomeMittente = $accountCalciatore->getNome();
                 $this->cognomeMittente = $accountCalciatore->getCognome();
             }
@@ -161,7 +161,7 @@ class Messaggio
                 $this->nomeDestinatario = $accountCalciatore->getNome();
                 $this->cognomeDestinatario = $accountCalciatore->getCognome();
             } else if ($this->mittente == "calciatore") {
-                $accountAllenatore = $gestoreAccount->ricercaAccount_A_T_S($this->allenatore);
+                $accountAllenatore = $gestoreAccount->ricercaAccount_A_T_S($this->calciatore);
                 $this->nomeDestinatario = $accountAllenatore->getNome();
                 $this->cognomeDestinatario = $accountAllenatore->getCognome();
             }
@@ -191,7 +191,7 @@ class Messaggio
                 $this->nomeDestinatario = $accountCalciatore->getNome();
                 $this->cognomeDestinatario = $accountCalciatore->getCognome();
             } else if ($this->mittente == "calciatore") {
-                $accountAllenatore = $gestoreAccount->ricercaAccount_A_T_S($this->allenatore);
+                $accountAllenatore = $gestoreAccount->ricercaAccount_A_T_S($this->calciatore);
                 $this->nomeDestinatario = $accountAllenatore->getNome();
                 $this->cognomeDestinatario = $accountAllenatore->getCognome();
             }
