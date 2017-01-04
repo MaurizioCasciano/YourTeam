@@ -13,57 +13,57 @@
                     </div>
                     <div id="chat_viewport">
                         <ul id="chat" class="list-unstyled">
-                                {% for messaggio in messaggi %}
-                                    {% if messaggio.getMittente() == "calciatore" %}
-                                        <li class="right clearfix">
+                            {% for messaggio in messaggi %}
+                                {% if messaggio.getMittente() == "calciatore" %}
+                                    <li class="right clearfix">
                                         <span class="chat-img pull-right">
                                             <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar"
                                                  class="img-circle"/>
                                         </span>
-                                            <div class="chat-body clearfix">
-                                                <div class="header">
-                                                    <span class="glyphicon glyphicon-time">{{ messaggio.getData() }}</span>
-                                                    <strong class="pull-right primary-font">{{ messaggio.getNomeMittente() }}
-                                                        &nbsp;{{ messaggio.getCognomeMittente() }}</strong>
-                                                </div>
-                                                <p>
-                                                    {{ messaggio.getTesto() }}
-                                                </p>
+                                        <div class="chat-body clearfix">
+                                            <div class="header">
+                                                <span class="glyphicon glyphicon-time">{{ messaggio.getData() }}</span>
+                                                <strong class="pull-right primary-font">{{ messaggio.getNomeMittente() }}
+                                                    &nbsp;{{ messaggio.getCognomeMittente() }}</strong>
                                             </div>
-                                        </li>
+                                            <p>
+                                                {{ messaggio.getTesto() }}
+                                            </p>
+                                        </div>
+                                    </li>
 
-                                    {% elseif messaggio.getMittente() == "allenatore" %}
-                                        <li class="left clearfix">
+                                {% elseif messaggio.getMittente() == "allenatore" %}
+                                    <li class="left clearfix">
                                         <span class="chat-img pull-left">
                                             <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar"
                                                  class="img-circle"/>
                                         </span>
-                                            <div class="chat-body clearfix">
-                                                <div class="header">
-                                                    <strong class="primary-font">{{ messaggio.getNomeMittente() }}
-                                                        &nbsp;{{ messaggio.getCognomeMittente() }}</strong>
-                                                    <span class="glyphicon glyphicon-time pull-right">{{ messaggio.getData() }}</span>
-                                                </div>
-                                                <p class="pull-right">
-                                                    {{ messaggio.getTesto() }}
-                                                </p>
+                                        <div class="chat-body clearfix">
+                                            <div class="header">
+                                                <strong class="primary-font">{{ messaggio.getNomeMittente() }}
+                                                    &nbsp;{{ messaggio.getCognomeMittente() }}</strong>
+                                                <span class="glyphicon glyphicon-time pull-right">{{ messaggio.getData() }}</span>
                                             </div>
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="panel-footer">
-                            <div class="input-group">
-                                <!--<input id="message_target" type="hidden" value="{{ destinatario }}" name="destinatario">-->
-                                <input id="chatInput" name="testo" type="text"
-                                       placeholder="Scrivi un messaggio..."
-                                       class="form-control chat-input">
-                                <span class="input-group-btn">
+                                            <p class="pull-right">
+                                                {{ messaggio.getTesto() }}
+                                            </p>
+                                        </div>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="input-group">
+                            <!--<input id="message_target" type="hidden" value="{{ destinatario }}" name="destinatario">-->
+                            <input id="chatInput" name="testo" type="text"
+                                   placeholder="Scrivi un messaggio..."
+                                   class="form-control chat-input">
+                            <span class="input-group-btn">
                                 <button class="btn btn-warning btn-sm" id="send">Invio</button>
                             </span>
-                            </div>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -119,9 +119,12 @@
         }
 
         function sendChatText() {
+            alert("Send Chat Text");
+
+
             var chatInput = $('#chatInput').val();
             if (chatInput != "") {
-                $.ajax({
+                {#$.ajax({
                             url: "{{ path('calciatoreInviaMessaggioChat') }}",
                             type: "POST",
                             dataType: 'json',
@@ -187,7 +190,29 @@
                             }
                         }
                 )
-                ;
+                ;#}
+
+
+                $.ajax({
+                    url: "{{ path('calciatoreInviaMessaggioChat') }}",
+                    type: "POST",
+                    data: {
+                        "destinatario": "{{ destinatario }}",
+                        "testo": $("#chatInput").val()
+                    },
+                    success: function (response, textStatus, jqXHR) {
+                        console.log("Response invia messaggio chat.");
+                        console.log(response);
+
+                        alert("Messaggio inviato con successo: " + response);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("TextStatus: " + textStatus);
+                        console.log("Status: " + jqXHR.status);
+                        console.log("ResponseText: " + jqXHR.responseText);
+                        console.log("Error: " + errorThrown);
+                    }
+                });
             }
         }
     </script>
