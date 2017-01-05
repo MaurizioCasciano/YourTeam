@@ -88,7 +88,16 @@ class GestioneRosa
                 $riga=$risultato->fetch_assoc();
                 $emailCalciatore=$riga["email"];
 
-                //invio email da implementare in attesa di account email per il sistema
+                /*invio email da implementare in attesa di account email per il sistema
+                $message = \Swift_Message::newInstance()
+                    ->setSubject("Schierato")
+                    ->setFrom("")
+                    ->setTo($emailCalciatore)
+                    ->setBody("Sei stato schierato per la prossima partita","text/plain")
+
+                ;
+                $this->get('mailer')->send($message);
+                */
             }
         }
 
