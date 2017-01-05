@@ -46,6 +46,8 @@ class GestionePartita
             return $modelPartita;
         }
 
+        if($risultato->num_rows>0) throw new Exception("errore database, piu partite in 2 giorni per : ".$squadra);
+
         return null;
 
 
@@ -57,7 +59,15 @@ class GestionePartita
      */
     public function disponibilitaFormazione($squadra)
     {
-        $partita=$this->disponibilitaPartita($squadra);
+        try
+        {
+            $partita=$this->disponibilitaPartita($squadra);
+        }
+        catch (Exception $erDatabase)
+        {
+            throw new PartitaNonDispException("".$erDatabase->getMessage());
+        }
+
         if(!is_null($partita))
         {
             $data=$partita->getData();
@@ -89,7 +99,15 @@ class GestionePartita
      */
     public function disponibilitaConvocazione($squadra)
     {
-        $partita=$this->disponibilitaPartita($squadra);
+        try
+        {
+            $partita=$this->disponibilitaPartita($squadra);
+        }
+        catch (Exception $erDatabase)
+        {
+            throw new PartitaNonDispException("".$erDatabase->getMessage());
+        }
+
         if(!is_null($partita))
         {
             $data=$partita->getData();
