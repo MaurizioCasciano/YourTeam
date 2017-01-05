@@ -111,4 +111,6 @@ class ControllerStatisticheCalciatoreUtenteRegistrato extends Controller
 
         return new Response(var_dump($arrayStatistiche));
     }
+
+
 }

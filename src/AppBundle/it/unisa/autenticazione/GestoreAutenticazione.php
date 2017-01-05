@@ -113,24 +113,53 @@ class GestoreAutenticazione
      * @param $ogg
      */
     public function check($rotta){
-      /**questo metodo dovrà controllare se una rotta è accessibile dall'utente corrente'
-        quindi creare una struttura dati che per esempio un array associativo:
-        array("account/ciao/"=>"attore",
-            "account/ciao/"=>"attore"
-        "account/ciao/"=>"attore")
-        chiaramente per tutte le rotte che richiedono autenticazione
-        DA FARE
-        **/
+
+      $rotteStabilite=$this->inizializzazioneRotte();
+      foreach ($rotteStabilite as $r){
+         if($r->getRotta()==$rotta){
+             foreach ($r->getAttori() as $a)
+                 if($a==$_SESSION["tipo"])
+                     return true;
+         }
+         return false;
+
+
+        }
     }
+
+    private function inizializzazioneRotte(){
+        $rotte=array(new RottaUtente("/account/calciatore/aggiungi",array("staff")),
+            new RottaUtente("/account/calciatore/aggiungi",array("staff")),
+        );
+        return $rotte;
+    }
+
 
     /**
      * @return bool
      */
     public function logout(){
         if(isset($_SESSION)){
+            /*
             setcookie("PHPSESSID","",time()-3600,"/");
             return session_destroy();
-        } else
+            */
+
+            $_SESSION = array();
+
+            if (ini_get("session.use_cookies"))
+            {
+                $params = session_get_cookie_params();
+
+                setcookie(session_name(), '', time() - 42000,
+                    $params["path"], $params["domain"],
+                    $params["secure"], $params["httponly"]
+                );
+            }
+            return session_destroy();
+
+        }
+        else
             return FALSE;
     }
 

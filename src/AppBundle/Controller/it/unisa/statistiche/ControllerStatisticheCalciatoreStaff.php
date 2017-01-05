@@ -78,7 +78,7 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
         //inserisco i dati nel DataBase
         $statisticheCalciatore = new StatisticheCalciatore($calciatore, $tiriTotali, $tiriPorta, $falliFatti, $falliSubiti, $percentualePassaggiriusciti, $golFatti, $golSubiti, $assist, $ammonizioni, $espulsioni, 0);
         $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
-        $executed = $gestoreStatisticheCalciatore->inserisciStatistiche($statisticheCalciatore, $nomePartita, $dataPartita);
+        $executed = $gestoreStatisticheCalciatore->inserisciStatistiche($statisticheCalciatore, $nomePartita, $dataPartita, $_SESSION["squadra"]);
 
         return new Response("Statistiche " . ($executed ? " inserite " : "non inserite ") . "per il calciatore: " . $calciatore . " - " . $nomePartita . " - " . $dataPartita);
     }
@@ -139,5 +139,25 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
         $executed = $gestoreStatisticheCalciatore->modificaStatisticheCalciatore($statisticheCalciatore, $nomePartita, $dataPartita);
 
         return new Response(($executed ? "Modifiche effettuate" : "Modifiche non effettuate") . "Modifica statistiche calciatore: " . $calciatore . " partita: " . $nomePartita . " " . $dataPartita);
+    }
+
+    /**
+     * Restituisce la view con la lista delle statistiche dei calciatori della squadra dell'utente.
+     * @Route("/statistiche/staff/calciatore/all")
+     * @Method("GET")
+     */
+    public function getStatisticheCalciatoriView()
+    {
+        $squadra = $_SESSION["squadra"];
+
+        $gestore = new GestoreStatisticheCalciatore();
+        $calciatori = $gestore->getCalciatori($squadra);
+
+        //XDebug
+        //var_dump($calciatori);
+
+        //return new Response("Statistiche calciatori: ");
+
+        return $this->render("staff/ViewListaStatisticheCalciatori.html.twig", array("calciatori" => $calciatori));
     }
 }
