@@ -1,4 +1,4 @@
-<form class="inserisci-statistiche-partita">
+<form class="inserisci-statistiche-partita" action="{{ path("inserisciStatistichePartita") }}" method="post">
     <input type="hidden" name="nome" value="{{ partita.getNome() }}">
     <input type="hidden" name="data" value="{{ partita.getDataString() }}">
 

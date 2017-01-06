@@ -53,11 +53,11 @@
 
                     {% if partita.hasStatistiche() %}
                         <div class="modifica" style="display: none;">
-                            {#{% include ":staff:FormModificaStatistichePartita.html.twig" with {"partita" : partita} only %}#}
+                            {% include ":staff:FormModificaStatistichePartita.html.twig" with {"partita" : partita} only %}
                         </div>
 
                         <div class="visualizza" style="display:none;">
-                            {#{% include ":staff:ViewInfoPartita.html.twig" with {"partita" : partita} only %}#}
+                            {% include ":staff:ViewStatistichePartita.html.twig" with {"partita" : partita} only %}
                         </div>
                     {% else %}
                         <div class="inserisci" style="display: none;">
@@ -84,6 +84,10 @@
 
             $(".modifica-btn").click(function () {
                 $(this).parent().siblings(".modifica").toggle();
+            });
+
+            $(".visualizza-btn").click(function () {
+                $(this).parent().siblings(".visualizza").toggle();
             });
         });
     </script>

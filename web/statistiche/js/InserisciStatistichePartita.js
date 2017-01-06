@@ -3,14 +3,14 @@ var ROOT_DIR = "/yourteam/web/app_dev.php";
  * Created by Maurizio on 31/12/2016.
  */
 $(function () {
-    $("form.inserisci-statistiche-partita").submit(inserisciStatistichePartitaHandler);
+    //$("form.inserisci-statistiche-partita").submit(inserisciStatistichePartitaHandler);
     $("button.marcatori").click(aggiungiMarcatoriHandler);
     $("button.assistmen").click(aggiungiAssistMenHandler);
     $("button.ammonizioni").click(aggiungiAmmonizioniMenHandler);
     $("button.espulsioni").click(aggiungiEspulsioniMenHandler);
 });
 
-var NOME, DATA, CONVOCATI = null;
+var NOME = null, DATA = null, CONVOCATI = null;
 
 function inserisciStatistichePartitaHandler(event) {
     /* stop form from submitting normally */
@@ -86,6 +86,7 @@ function removeLastSelectHandler() {
 }
 
 function aggiungiMarcatoriHandler(event) {
+    alert("Aggiungi marcatori handler");
     var $button = $(this);
     var $target = $($button).parent();
 
@@ -266,7 +267,7 @@ function addEspulsioniSelect(convocati, target) {
  * @param target L'elemento DOM in cui inserire i nuovi dati.
  */
 function getConvocati(nome, data, handler, target) {
-    //alert("GET CONVOCATI");
+    alert("GET CONVOCATI");
 
     console.log("NOME: " + NOME);
     console.log("nome: " + nome);
@@ -280,8 +281,10 @@ function getConvocati(nome, data, handler, target) {
             type: "GET",
             cache: false,
             success: function (response, textStatus, jqXHR) {
-                //console.log("GET CONVOCATI AJAX JSON Response");
-                //console.log(response);
+                console.log("GET CONVOCATI AJAX JSON Response");
+                console.log(response);
+                console.log(textStatus);
+                console.log(jqXHR);
 
                 var convocati = response.calciatori;
                 NOME = nome;

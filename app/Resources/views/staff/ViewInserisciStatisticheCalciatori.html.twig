@@ -1,6 +1,10 @@
-{% extends ":staff:template.html.twig" %}
+{% extends "staff/template.html.twig" %}
 {% block contenuto %}
+    <h2>Inserisci statistiche calciatori</h2>
+    <h3>{{ partita.getNome }}</h3>
+
     <div id="accordion" class="panel-group" role="tablist">
+        {#{{ dump(partita) }}#}
         {% for calciatore in calciatori %}
             {#{{ dump(calciatore) }}#}
             <div class="panel panel-default">
@@ -8,7 +12,7 @@
                     <h4 class="panel-title">
                         <button class="collapsed" data-toggle="collapse" data-parent="#accordion"
                                 data-target="#{{ loop.index }}">
-                            <span class="pull-left">{{ calciatore.getNome() |capitalize }}
+                            <span class="pull-left">{{ calciatore.getNome() |capitalize }}&nbsp;
                                 &nbsp;{{ calciatore.getCognome() |capitalize }}</span>
                             <span class="pull-right"></span>
                         </button>
@@ -16,11 +20,7 @@
                 </div>
                 <div id="{{ loop.index }}" class="panel-collapse collapse" role="tabpanel">
                     <div class="panel-body">
-                        {% if calciatore.hasStatistiche() %}
-                            {% include "staff/ViewStatisticheCalciatore.html.twig" with {"calciatore" : calciatore} only %}
-                        {% else %}
-                            <h2>Statistiche non disponibili</h2>
-                        {% endif %}
+                        {% include "staff/FormInserisciStatisticheCalciatore.html.twig" with {"partita" : partita, "calciatore" : calciatore} only %}
                     </div>
                 </div>
             </div>

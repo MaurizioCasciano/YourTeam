@@ -117,7 +117,7 @@ class Partita implements PartitaInterface, \JsonSerializable
     }
 
     /**
-     * @param mixed $data
+     * @param \DateTime $data
      */
     public function setData($data)
     {

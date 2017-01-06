@@ -8,7 +8,6 @@
 
 namespace AppBundle\it\unisa\statistiche;
 
-use AppBundle\it\unisa\account\AccountCalciatore;
 use AppBundle\it\unisa\account\GestoreAccount;
 use AppBundle\Utility\DB;
 
@@ -322,6 +321,50 @@ assist = ?, ammonizioni = ?, espulsioni = ? WHERE calciatore = ? AND nome_partit
             }
         } else {
             throw new \Exception("Statement not prepared.");
+        }
+    }
+
+    public function getCalciatore($contratto)
+    {
+        if ($statement = $this->conn->prepare("
+            SELECT * FROM calciatore
+            WHERE contratto = ?")
+        ) {
+            if ($statement->bind_param("s", $contratto)) {
+
+                if ($statement->execute()) {
+                    $result = $statement->get_result();
+
+                    if ($row = $result->fetch_assoc()) {
+                        $contratto = $row["contratto"];
+                        $password = $row["password"];
+                        $squadra = $row["squadra"];
+                        $email = $row["email"];
+                        $nome = $row["nome"];
+                        $cognome = $row["cognome"];
+                        $dataDiNascita = $row["datadinascita"];
+                        $numeroMaglia = $row["numeromaglia"];
+                        $domicilio = $row["domicilio"];
+                        $indirizzo = $row["indirizzo"];
+                        $provincia = $row["provincia"];
+                        $telefono = $row["telefono"];
+                        $immagine = $row["immagine"];
+
+                        $calciatore = new Calciatore($contratto, $password, $squadra, $email, $nome, $cognome, $dataDiNascita, $numeroMaglia, $domicilio, $indirizzo, $provincia, $telefono, $immagine);
+                        $statisticheCalciatore = $this->getStatisticheComplessiveCalciatore($contratto);
+                        $calciatore->setStatistiche($statisticheCalciatore);
+                        return $calciatore;
+                    } else {
+                        throw new \Exception("Calciatore " . $contratto . " non trovato.");
+                    }
+                } else {
+                    throw new \Exception("Errore nell'esecuzione dello statement.");
+                }
+            } else {
+                throw new \Exception("Errore nel legare il parametro allo statement.");
+            }
+        } else {
+            throw new \Exception("Errore nella preparazione dello statement.");
         }
     }
 }

@@ -303,6 +303,7 @@ class Calciatore implements \JsonSerializable
             "nome" => $this->getNome(),
             "cognome" => $this->getCognome(),
             "datadinascita" => $this->getDataDiNascita(),
+            "numeromaglia" => $this->getNumeroMaglia(),
         ];
     }
 }

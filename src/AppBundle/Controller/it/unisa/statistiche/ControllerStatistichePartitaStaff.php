@@ -9,7 +9,9 @@
 namespace AppBundle\Controller\it\unisa\statistiche;
 
 
+use AppBundle\it\unisa\formazione\GestioneRosa;
 use AppBundle\it\unisa\partite\GestorePartite;
+use AppBundle\it\unisa\statistiche\GestoreStatisticheCalciatore;
 use AppBundle\it\unisa\statistiche\GestoreStatistichePartita;
 use AppBundle\it\unisa\statistiche\StatistichePartita;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -36,7 +38,7 @@ class ControllerStatistichePartitaStaff extends Controller
     public function inserisciStatistiche(Request $request)
     {
         $squadra = $_SESSION["squadra"];
-        $values = $request->get("values");
+        /*$values = $request->get("values");
 
         $array = json_decode($values, true);
         //var_dump($array);
@@ -57,7 +59,18 @@ class ControllerStatistichePartitaStaff extends Controller
         $dataPartita = $array["data"];
         $golFatti = $array["golfatti"];
         $golSubiti = $array["golsubiti"];
-        $possessoPalla = $array["possessopalla"];
+        $possessoPalla = $array["possessopalla"];*/
+
+        $nomePartita = $request->get("nome");
+        $dataPartita = $request->get("data");
+        $golFatti = $request->get("golfatti");
+        $golSubiti = $request->get("golsubiti");
+        $possessoPalla = $request->get("possessopalla");
+
+        $marcatori = $request->get("marcatori");
+        $assistmen = $request->get("assistmen");
+        $ammonizioni = $request->get("ammonizioni");
+        $espulsioni = $request->get("espulsioni");
 
         $gestorePartite = new GestorePartite();
         $partita = $gestorePartite->getPartita($nomePartita, $dataPartita, $squadra);
@@ -70,10 +83,12 @@ class ControllerStatistichePartitaStaff extends Controller
         $gestoreStatistichePartita = new GestoreStatistichePartita();
         $executed = $gestoreStatistichePartita->inserisciStatistiche($partita);
 
+        if ($executed) {
+            return $this->redirectToRoute("ViewInserisciStatisticheCalciatori", array("nome" => $nomePartita, "data" => $dataPartita));
 
-
-
-        return new Response("OK Response\nExecuted: " . $executed);
+        } else {
+            return new Response("CONTROLLER_STATISTICHE_PARTITA_STAFF: Errore nell'inserimento delle statistiche della partita.");
+        }
     }
 
     /**
@@ -98,9 +113,32 @@ class ControllerStatistichePartitaStaff extends Controller
      */
     public function getMarcatori($nome, $data, $squadra)
     {
+        $gestorePartite = new GestorePartite();
+        $partita = $gestorePartite->getPartita($nome, $data, $squadra);
+
         $gestoreStatistichePartita = new GestoreStatistichePartita();
-        $marcatori = $gestoreStatistichePartita->getMarcatori($nome, $data, $squadra);
+        $marcatori = $gestoreStatistichePartita->getMarcatori($partita);
 
         return new JsonResponse($marcatori);
+    }
+
+    /**
+     * Restituisce i convocati per la partita.
+     * @Route("/statistiche/convocati/{nome}/{data}")
+     */
+    public function getConvocati($nome, $data)
+    {
+        try {
+            $gestorePartite = new GestorePartite();
+            $partita = $gestorePartite->getPartita($nome, $data, $_SESSION["squadra"]);
+
+            $gestioneRosa = new GestioneRosa();
+            $calciatori = $gestioneRosa->ottieniConvocati($partita);
+
+        } catch (\Exception $e1) {
+            return new Response($e1->getMessage());
+        }
+
+        return new JsonResponse(array("calciatori" => $calciatori));
     }
 }

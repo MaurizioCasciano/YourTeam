@@ -87,14 +87,14 @@ class GestoreStatistichePartita
          */
         $calciatori = array_keys($goals + $assists + $yellowCards + $redCards);
 
-        var_dump($calciatori);
+        //var_dump($calciatori);
         $statisticheCalciatori = array();
         $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
 
         $executed = true;
 
         foreach ($calciatori as $calciatore) {
-            var_dump($calciatore);
+            //var_dump($calciatore);
             $username = $calciatore;
             $tiriTotali = 0;
             $tiriPorta = 0;
@@ -117,10 +117,10 @@ class GestoreStatistichePartita
                 $falliCommessi, $falliSubiti, $percentualePassaggiRiusciti, $golFattiCalciatore, $golSubitiCalciatore,
                 $assistCalciatore, $ammonizioniCalciatore, $espulsioniCalciatore, $partiteGiocate);
 
-            var_dump($statisticheCalciatore);
+            //var_dump($statisticheCalciatore);
             $statisticheCalciatori[] = $statisticheCalciatore;
             $executed = $executed && $gestoreStatisticheCalciatore->inserisciStatistiche($statisticheCalciatore, $nome, $data, $squadra);
-            var_dump($executed);
+            //var_dump($executed);
         }
 
 
@@ -138,9 +138,43 @@ class GestoreStatistichePartita
         return $executed && $executed1;
     }
 
-    public function getStatistiche()
+    public function getStatistiche(PartitaInterface $partita)
     {
+        if ($statement = $this->conn->prepare("
+        SELECT * FROM partita
+        WHERE nome = ? AND data = ? AND squadra = ?")
+        ) {
+            $nome = $partita->getNome();
+            $data = $partita->getDataString();
+            $squadra = $partita->getSquadra();
 
+            if ($statement->bind_param("sss", $nome, $data, $squadra)) {
+                if ($statement->execute()) {
+                    if ($result = $statement->get_result()) {
+                        if ($row = $result->fetch_assoc()) {
+                            $golFatti = $row["golfatti"];
+                            $golSubiti = $row["golsubiti"];
+                            $possessoPalla = $row["possessopalla"];
+
+                            if ((empty($golFatti) || is_null($golFatti))
+                                && (empty($golSubiti) || is_null($golSubiti))
+                                && (empty($possessoPalla) || is_null($possessoPalla))
+                            ) {
+                                return null;
+                            } else {
+                                $marcatori = $this->getMarcatori($partita);
+                                $assistMen = $this->getAssistMen($partita);
+                                $ammonizioni = $this->getAmmonizioni($partita);
+                                $espulsioni = $this->getEspulsioni($partita);
+
+                                $stats = new StatistichePartita($golFatti, $golSubiti, $possessoPalla, $marcatori, $assistMen, $ammonizioni, $espulsioni);
+                                return $stats;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public function modificaStatistiche()
@@ -149,37 +183,147 @@ class GestoreStatistichePartita
     }
 
 
-    public function getMarcatori($nome, $data, $squadra)
+    public function getMarcatori(PartitaInterface $partita)
     {
         if ($statement = $this->conn->prepare("
             SELECT *
             FROM statistiche_calciatore
             WHERE
-              nome_partita = ?
+            nome_partita = ?
               AND data_partita = ?
-              AND squadra = ?;
-        ")
+              AND squadra = ?;")
         ) {
-            $statement->bind_param("sss", $nome, $data, $squadra);
-            $statement->execute();
-            $result = $statement->get_result();
+            $nome = $partita->getNome();
+            $data = $partita->getData();
+            $squadra = $partita->getSquadra();
 
-            $marcatori = array();
+            if ($statement->bind_param("sss", $nome, $data, $squadra)) {
+                if ($statement->execute()) {
+                    if ($result = $statement->get_result()) {
 
-            while ($row = $result->fetch_assoc()) {
-                $calciatore = $row["calciatore"];
-                $golFatti = $row["gol_fatti"];
+                        $marcatori = array();
 
-                for ($i = 0; $i < $golFatti; $i++) {
-                    $marcatori[] = $calciatore;
+                        while ($row = $result->fetch_assoc()) {
+                            $calciatore = $row["calciatore"];
+                            $gol_fatti = $row["gol_fatti"];
+
+                            for ($i = 0; $i < $gol_fatti; $i++) {
+                                $marcatori[] = $calciatore;
+                            }
+                        }
+
+                        return $marcatori;
+                    }
                 }
             }
-
-            return $marcatori;
-        } else {
-            throw  new \Exception("Prepare failed: (" . $this->conn->errno . ") " . $this->conn->error);
         }
     }
 
+    public function getAssistMen(PartitaInterface $partita)
+    {
+        if ($statement = $this->conn->prepare("
+            SELECT *
+            FROM statistiche_calciatore
+            WHERE
+            nome_partita = ?
+              AND data_partita = ?
+              AND squadra = ?;")
+        ) {
+            $nome = $partita->getNome();
+            $data = $partita->getData();
+            $squadra = $partita->getSquadra();
 
+            if ($statement->bind_param("sss", $nome, $data, $squadra)) {
+                if ($statement->execute()) {
+                    if ($result = $statement->get_result()) {
+
+                        $assistmen = array();
+
+                        while ($row = $result->fetch_assoc()) {
+                            $calciatore = $row["calciatore"];
+                            $assist = $row["assist"];
+
+                            for ($i = 0; $i < $assist; $i++) {
+                                $assistmen[] = $calciatore;
+                            }
+                        }
+
+                        return $assistmen;
+                    }
+                }
+            }
+        }
+    }
+
+    public function getAmmonizioni(PartitaInterface $partita)
+    {
+        if ($statement = $this->conn->prepare("
+            SELECT *
+            FROM statistiche_calciatore
+            WHERE
+            nome_partita = ?
+              AND data_partita = ?
+              AND squadra = ?;")
+        ) {
+            $nome = $partita->getNome();
+            $data = $partita->getData();
+            $squadra = $partita->getSquadra();
+
+            if ($statement->bind_param("sss", $nome, $data, $squadra)) {
+                if ($statement->execute()) {
+                    if ($result = $statement->get_result()) {
+
+                        $ammonizioni = array();
+
+                        while ($row = $result->fetch_assoc()) {
+                            $calciatore = $row["calciatore"];
+                            $yellows = $row["ammonizioni"];
+
+                            for ($i = 0; $i < $yellows; $i++) {
+                                $ammonizioni[] = $calciatore;
+                            }
+                        }
+
+                        return $ammonizioni;
+                    }
+                }
+            }
+        }
+    }
+
+    public function getEspulsioni(PartitaInterface $partita)
+    {
+        if ($statement = $this->conn->prepare("
+            SELECT *
+            FROM statistiche_calciatore
+            WHERE
+            nome_partita = ?
+              AND data_partita = ?
+              AND squadra = ?;")
+        ) {
+            $nome = $partita->getNome();
+            $data = $partita->getData();
+            $squadra = $partita->getSquadra();
+
+            if ($statement->bind_param("sss", $nome, $data, $squadra)) {
+                if ($statement->execute()) {
+                    if ($result = $statement->get_result()) {
+
+                        $espulsioni = array();
+
+                        while ($row = $result->fetch_assoc()) {
+                            $calciatore = $row["calciatore"];
+                            $reds = $row["espulsioni"];
+
+                            for ($i = 0; $i < $reds; $i++) {
+                                $espulsioni[] = $calciatore;
+                            }
+                        }
+
+                        return $espulsioni;
+                    }
+                }
+            }
+        }
+    }
 }

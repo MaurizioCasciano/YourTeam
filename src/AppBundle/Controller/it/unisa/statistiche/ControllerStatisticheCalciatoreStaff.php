@@ -9,6 +9,7 @@
 namespace AppBundle\Controller\it\unisa\statistiche;
 
 
+use AppBundle\it\unisa\partite\GestorePartite;
 use AppBundle\it\unisa\statistiche\GestoreStatisticheCalciatore;
 use AppBundle\it\unisa\statistiche\StatisticheCalciatore;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -47,7 +48,7 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
 
     /**
      * Inserisce le statistiche di un calciatore relativamente ad una partita nel DataBase.
-     * @Route("/statistiche/staff/calciatore/insert/submit");
+     * @Route("/statistiche/staff/calciatore/insert/submit", name="InserisciStatisticheCalciatore");
      * @Method("POST")
      * @param $request La richiesta contenente la sessione con gli attributi "calciatore", "nome_partita", "data_partita".
      * @return Response
@@ -159,5 +160,34 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
         //return new Response("Statistiche calciatori: ");
 
         return $this->render("staff/ViewListaStatisticheCalciatori.html.twig", array("calciatori" => $calciatori));
+    }
+
+    /**
+     * @Route("/statistiche/staff/calciatore/insert/view/{nome}/{data}", name="ViewInserisciStatisticheCalciatori")
+     */
+    public function getInserisciStatisticheCalciatoriView($nome, $data)
+    {
+        $squadra = $_SESSION["squadra"];
+
+        $gestorePartite = new GestorePartite();
+        $partita = $gestorePartite->getPartita($nome, $data, $squadra);
+        $calciatori = $gestorePartite->getCalciatoriConvocati($partita);
+
+        return $this->render("staff/ViewInserisciStatisticheCalciatori.html.twig", array("partita" => $partita, "calciatori" => $calciatori));
+    }
+
+    /**
+     * @Route("/statistiche/staff/calciatore/edit/view/{nome}/{data}", name = "ViewModificaStatisticheCalciatori")
+     */
+    public function getModificaStatisticheCalciatoriView($nome, $data)
+    {
+        $squadra = $_SESSION["squadra"];
+
+        $gestorePartite = new GestorePartite();
+        $partita = $gestorePartite->getPartita($nome, $data, $squadra);
+        $calciatori = $gestorePartite->getCalciatoriConvocati($partita);
+
+        //return render template modifica
+        return $this->render("staff/ViewModificaStatisticheCalciatori.html.twig", array("partita" => $partita, "calciatori" => $calciatori));
     }
 }
