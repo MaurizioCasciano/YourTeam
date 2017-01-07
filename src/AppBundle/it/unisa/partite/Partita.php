@@ -19,6 +19,7 @@ class Partita implements PartitaInterface, \JsonSerializable
     private $squadra;
     private $stadio;
     private $statistiche;
+    private $convocati;
 
     /**
      * Partita constructor.
@@ -36,6 +37,7 @@ class Partita implements PartitaInterface, \JsonSerializable
         $this->squadra = $squadra;
         $this->stadio = $stadio;
         $this->statistiche = null;
+        $this->convocati = null;
     }
 
     /**
@@ -182,6 +184,34 @@ class Partita implements PartitaInterface, \JsonSerializable
     public function setStatistiche(StatistichePartita $statistiche)
     {
         $this->statistiche = $statistiche;
+    }
+
+    public function hasConvocati()
+    {
+        return $this->convocati != null && count($this->convocati) > 0;
+    }
+
+    /**
+     * @return null
+     */
+    public function getConvocati()
+    {
+        if ($this->hasConvocati()) {
+            return $this->convocati;
+        } else {
+            throw new \Exception("Non ci sono ancora convocati per questa partita.");
+        }
+
+    }
+
+    /**
+     * @param null $convocati
+     */
+    public function setConvocati($convocati)
+    {
+        if (count($convocati) > 0) {
+            $this->convocati = $convocati;
+        }
     }
 
     function __toString()

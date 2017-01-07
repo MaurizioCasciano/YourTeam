@@ -1,43 +1,71 @@
-<form>
-    <input type="hidden" name="nome" value="{{ partita.getNome() }}">
-    <input type="hidden" name="data" value="{{ partita.getDataString() }}">
-    <div>
+{% if partita.hasStatistiche() %}
+    {% set statistiche = partita.getStatistiche() %}
+
+    <form>
+        <input type="hidden" name="nome" value="{{ partita.getNome() }}">
+        <input type="hidden" name="data" value="{{ partita.getDataString() }}">
+        <div>
             <span>
                 <label>Gol Fatti</label>
-                <input type="number" min="0" name="golfatti">
+                <input type="number" min="0" name="golfatti" value="{{ statistiche.getGolFatti() }}">
             </span>
-        <span>
-                <input type="number" min="0" name="golsubiti">
+            <span>
+                <input type="number" min="0" name="golsubiti" value="{{ statistiche.getGolSubiti() }}">
                 <label>Gol Subiti</label>
             </span>
-    </div>
+        </div>
 
-    <div>
-        <label>Possesso Palla</label>
-        <input type="number" min="0" name="possessopalla">
-    </div>
+        <div>
+            <label>Possesso Palla</label>
+            <input type="number" min="0" name="possessopalla" value="{{ statistiche.getPossessoPalla() }}">
+        </div>
 
-    <div>
-        <label>Marcatori</label>
-        <button type="button" class="fa fa-plus marcatori"></button>
-    </div>
+        <div>
+            <label>Marcatori</label>
+            <button type="button" class="fa fa-plus marcatori"></button>
+            <button type="button" class="fa fa-minus marcatori"></button>
+            {% for marcatore in statistiche.getMarcatori() %}
+                <select name="marcatori[]">
+                    <option>{{ marcatore }}</option>
+                </select>
+            {% endfor %}
+        </div>
 
-    <div>
-        <label>Assist Men</label>
-        <button type="button" class="fa fa-plus assistmen"></button>
-    </div>
+        <div>
+            <label>Assist Men</label>
+            <button type="button" class="fa fa-plus assistmen"></button>
+            <button type="button" class="fa fa-minus assistmen"></button>
+            {% for assistMan in statistiche.getAssistMen() %}
+                <select name="assistmen[]">
+                    <option>{{ assistMan }}</option>
+                </select>
+            {% endfor %}
+        </div>
 
-    <div>
-        <label>Ammonizioni</label>
-        <button type="button" class="fa fa-plus ammonizioni"></button>
-    </div>
+        <div>
+            <label>Ammonizioni</label>
+            <button type="button" class="fa fa-plus ammonizioni"></button>
+            <button type="button" class="fa fa-minus ammonizioni"></button>
+            {% for ammonizione in statistiche.getAmmonizioni() %}
+                <select name="ammonizioni[]">
+                    <option>{{ ammonizione }}</option>
+                </select>
+            {% endfor %}
+        </div>
 
-    <div>
-        <label>Espulsioni</label>
-        <button type="button" class="fa fa-plus espulsioni"></button>
-    </div>
+        <div>
+            <label>Espulsioni</label>
+            <button type="button" class="fa fa-plus espulsioni"></button>
+            <button type="button" class="fa fa-minus espulsioni"></button>
+            {% for espulsione in statistiche.getEspulsioni() %}
+                <select name="espulsioni[]">
+                    <option>{{ espulsione }}</option>
+                </select>
+            {% endfor %}
+        </div>
 
-    <div>
-        <button type="submit">Salva</button>
-    </div>
-</form>
+        <div>
+            <button type="submit">Salva</button>
+        </div>
+    </form>
+{% endif %}

@@ -6,25 +6,8 @@
 
 {% block contenuto %}
     <h2>Partite</h2>
-    <div class="alert alert-success alert-dismissable fade in">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <strong>Success!</strong>
-    </div>
-
-    <div class="alert alert-info alert-dismissable fade in">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <strong>Info!</strong>
-    </div>
-
-    <div class="alert alert-warning alert-dismissable fade in">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <strong>Warning!</strong>
-    </div>
-
-    <div class="alert alert-danger alert-dismissable fade in">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <strong>Danger!</strong>
-    </div>
+    
+    {% include "staff/ViewAlertMessages.html.twig" %}
 
     <div class="row">
         <div class="col-xs-12">

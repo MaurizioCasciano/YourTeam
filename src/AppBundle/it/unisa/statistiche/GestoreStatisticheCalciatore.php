@@ -50,12 +50,12 @@ class GestoreStatisticheCalciatore
                 tiri_porta = VALUES(tiri_porta),
                 falli_fatti = VALUES(falli_fatti),
                 falli_subiti = VALUES(falli_subiti),
-                percentuale_passaggi_riusciti = VALUES(percentuale_passaggi_riusciti),
+                percentuale_passaggi_riusciti = VALUES(percentuale_passaggi_riusciti)/*,
                 gol_fatti = VALUES(gol_fatti),
                 gol_subiti = VALUES(gol_subiti),
                 assist = VALUES(assist),
                 ammonizioni = VALUES(ammonizioni),
-                espulsioni = VALUES(espulsioni)");
+                espulsioni = VALUES(espulsioni)*/");
 
         if (!$statement) {
             throw  new \Exception("Prepare failed: (" . $this->conn->errno . ") " . $this->conn->error);
@@ -102,7 +102,10 @@ class GestoreStatisticheCalciatore
             b - BLOB*/
 
 
-        $statement = $this->conn->prepare("SELECT * FROM statistiche_calciatore WHERE calciatore = ? AND nome_partita = ? AND data_partita = ?");
+        $statement = $this->conn->prepare(
+            "SELECT * 
+              FROM statistiche_calciatore 
+              WHERE calciatore = ? AND nome_partita = ? AND data_partita = ?");
         $statement->bind_param("sss", $usernameCalciatore, $nome_partita, $data_partita);
         $executed = $statement->execute();
         $result = $statement->get_result();

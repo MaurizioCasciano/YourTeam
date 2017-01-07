@@ -15,6 +15,7 @@ use AppBundle\it\unisa\statistiche\StatisticheCalciatore;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -59,9 +60,9 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
          * Le informazioni riguardanti il calciatore è la partita vengono settate al momento della richiesta del form per l'inserimento delle statistiche.
          */
         //inizio chiave statistiche_calciatore
-        $calciatore = $request->getSession()->get("calciatore");
-        $nomePartita = $request->getSession()->get("nome_partita");
-        $dataPartita = $request->getSession()->get("data_partita");
+        $calciatore = $request->get("calciatore");
+        $nomePartita = $request->get("nome");
+        $dataPartita = $request->get("data");
         //fine chiave statistiche calciatore
 
         //statistiche
@@ -81,7 +82,7 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
         $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
         $executed = $gestoreStatisticheCalciatore->inserisciStatistiche($statisticheCalciatore, $nomePartita, $dataPartita, $_SESSION["squadra"]);
 
-        return new Response("Statistiche " . ($executed ? " inserite " : "non inserite ") . "per il calciatore: " . $calciatore . " - " . $nomePartita . " - " . $dataPartita);
+        return new JsonResponse(array("executed" => $executed));
     }
 
     /**

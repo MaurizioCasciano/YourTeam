@@ -1,4 +1,24 @@
 {% extends ":staff:template.html.twig" %}
+{% block head %}
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        th {
+            background-color: #0088CC;
+            color: white;
+        }
+
+        table, th, td {
+            margin: 0 auto;
+            padding: 5%;
+            text-align: center;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+{% endblock %}
 {% block contenuto %}
     <div id="accordion" class="panel-group" role="tablist">
         {% for calciatore in calciatori %}

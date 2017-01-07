@@ -1,26 +1,4 @@
 {% block contenuto %}
-    <!--Da spostare nel tag HEAD-->
-    <style>
-        h1 {
-            text-align: center;
-        }
-
-        th {
-            background-color: #0088CC;
-        }
-
-        table, th, td {
-            margin: 0 auto;
-            text-align: center;
-            border: 1px solid black;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 5%;
-        }
-    </style>
-
     <h1>Statistiche Complessive {{ calciatore.getNome() |capitalize }}
         &nbsp;{{ calciatore.getCognome() |capitalize }}</h1>
     <table>

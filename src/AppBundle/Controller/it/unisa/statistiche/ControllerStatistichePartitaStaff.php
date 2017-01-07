@@ -61,19 +61,26 @@ class ControllerStatistichePartitaStaff extends Controller
         $golSubiti = $array["golsubiti"];
         $possessoPalla = $array["possessopalla"];*/
 
-        $nomePartita = $request->get("nome");
-        $dataPartita = $request->get("data");
+        $nome = $request->get("nome");
+        $data = $request->get("data");
         $golFatti = $request->get("golfatti");
         $golSubiti = $request->get("golsubiti");
         $possessoPalla = $request->get("possessopalla");
 
-        $marcatori = $request->get("marcatori");
-        $assistmen = $request->get("assistmen");
-        $ammonizioni = $request->get("ammonizioni");
-        $espulsioni = $request->get("espulsioni");
+        $marcatori = $request->get("marcatori") ? $request->get("marcatori") : array();
+        $assistmen = $request->get("assistmen") ? $request->get("assistmen") : array();
+        $ammonizioni = $request->get("ammonizioni") ? $request->get("ammonizioni") : array();
+        $espulsioni = $request->get("espulsioni") ? $request->get("espulsioni") : array();
+
+        var_dump($nome);
+        var_dump($data);
+        var_dump($golFatti);
+        var_dump($golSubiti);
+        var_dump($possessoPalla);
+        var_dump($marcatori);
 
         $gestorePartite = new GestorePartite();
-        $partita = $gestorePartite->getPartita($nomePartita, $dataPartita, $squadra);
+        $partita = $gestorePartite->getPartita($nome, $data, $squadra);
 
         //__construct($golFatti, $golSubiti, $possessoPalla,
         // array $marcatori, array $assistMen, array $ammonizioni, array $espulsioni)
@@ -84,10 +91,9 @@ class ControllerStatistichePartitaStaff extends Controller
         $executed = $gestoreStatistichePartita->inserisciStatistiche($partita);
 
         if ($executed) {
-            return $this->redirectToRoute("ViewInserisciStatisticheCalciatori", array("nome" => $nomePartita, "data" => $dataPartita));
-
+            return $this->redirectToRoute("ViewInserisciStatisticheCalciatori", array("nome" => $nome, "data" => $data));
         } else {
-            return new Response("CONTROLLER_STATISTICHE_PARTITA_STAFF: Errore nell'inserimento delle statistiche della partita.");
+            return $this->redirectToRoute("lista_statistiche_partite");
         }
     }
 
@@ -128,17 +134,21 @@ class ControllerStatistichePartitaStaff extends Controller
      */
     public function getConvocati($nome, $data)
     {
+        $convocati = array();
+
         try {
             $gestorePartite = new GestorePartite();
             $partita = $gestorePartite->getPartita($nome, $data, $_SESSION["squadra"]);
+            if ($partita->hasConvocati()) {
+                $convocati = $partita->getConvocati();
+            }
 
-            $gestioneRosa = new GestioneRosa();
-            $calciatori = $gestioneRosa->ottieniConvocati($partita);
-
+            //$gestioneRosa = new GestioneRosa();
+            //$calciatori = $gestioneRosa->ottieniConvocati($partita);
         } catch (\Exception $e1) {
             return new Response($e1->getMessage());
         }
 
-        return new JsonResponse(array("calciatori" => $calciatori));
+        return new JsonResponse(array("convocati" => $convocati));
     }
 }

@@ -66,6 +66,10 @@ class GestorePartite
                     $partita->setStatistiche($stats);
                 }
 
+                if (count($convocati = $this->getCalciatoriConvocati($partita)) > 0) {
+                    $partita->setConvocati($convocati);
+                }
+
                 $arrayPartite[] = $partita;
             }
 
@@ -127,6 +131,10 @@ class GestorePartite
 
                 if (($stats = $g->getStatistiche($partita)) != null) {
                     $partita->setStatistiche($stats);
+                }
+
+                if (count($convocati = $this->getCalciatoriConvocati($partita)) > 0) {
+                    $partita->setConvocati($convocati);
                 }
             }
 

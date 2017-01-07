@@ -1,8 +1,8 @@
 {#{% extends 'staff/template.html.twig' %}#}
 {% block contenuto %}
-    <h1>Form inserisci statistiche calciatore</h1>
+    <h1>Statistiche calciatore</h1>
 
-    <form action="{{ path("InserisciStatisticheCalciatore") }}" method="post">
+    <form class="inserisci_statistiche_calciatore" action="{{ path("InserisciStatisticheCalciatore") }}" method="post">
         <input type="hidden" name="nome" value="{{ partita.getNome() }}">
         <input type="hidden" name="data" value="{{ partita.getDataString() }}">
         <input type="hidden" name="calciatore" value="{{ calciatore.getContratto() }}">
