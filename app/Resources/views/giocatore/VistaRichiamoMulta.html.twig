@@ -11,7 +11,9 @@
                     </div>
                         <ul id="chat" class="list-group">
                             {% for messaggio in messaggi %}
-                                <li class="list-group-item">{{ messaggio.getTesto() }}</li>
+                                <li class="list-group-item"> <span>{{ messaggio.getTesto() }}</span>
+                                    <h6>  {{ messaggio.getData() }} </h6>
+                                    <strong> {{ messaggio.getNomeMittente()}} {{ messaggio.getCognomeMittente() }}</strong></li>
                             {% endfor %}
                         </ul>
                 </div>

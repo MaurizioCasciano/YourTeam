@@ -31,11 +31,8 @@ class ControllerChatGiocatore extends Controller
             $data = time();
             $tipo = "chat";
 
-
             //__construct($testo, $allenatore, $calciatore, $mittente, $data, $tipo)
             $messaggio = new Messaggio($testo, $allenatore, $calciatore, $mittente, $data, $tipo);
-            var_dump($messaggio);
-
 
             $g->inviaMessaggio($messaggio);
             return new Response(json_encode(array("testo" => $messaggio->getTesto(),
@@ -59,10 +56,11 @@ class ControllerChatGiocatore extends Controller
             $ora = $richiesta->request->get("ora");
             $luogo = $richiesta->request->get("luogo");
             $data = $richiesta->request->get("data");
-            $g->inviaMessaggio(new Messaggio("ora:" . $ora . " luogo:" . $luogo . " data:" . $data,
+            $testo = $ora." ".$luogo." ".$data;
+            $g->inviaMessaggio(new Messaggio($testo,
                 $_SESSION["username"],
                 $richiesta->get("d"), "calciatore", time(), "voce"));
-            return new Response("Messaggio inviato correttamente");
+            return $this->render(":giocatore:MessaggioSuccesso.html.twig");
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
@@ -86,15 +84,14 @@ class ControllerChatGiocatore extends Controller
         $allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
 
         //XDebug
-        var_dump($allenatoreDestinatario); //OK
-
+        //var_dump($allenatoreDestinatario); //OK
 
         $g = new GestoreComunicazione();
         try {
             $messaggi = $g->ottieniMessaggiCalciatore($calciatoreMittente,
                 "chat");
 
-            var_dump($messaggi);
+            //var_dump($messaggi);
 
             return $this->render("giocatore/FormChatCalciatore.html.twig",
                 array("messaggi" => $messaggi,
@@ -114,23 +111,20 @@ class ControllerChatGiocatore extends Controller
         if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "calciatore") {
             throw new \Exception("Calciatore non loggato");
         }
-        $gestoreComunicazione = new GestoreComunicazione();
+        $g = new GestoreComunicazione();
 
         $calciatoreMittente = $_SESSION["username"];
         $squadra = $_SESSION["squadra"];
-        $allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
-
-        $g = new GestoreComunicazione();
+        $allenatoreDestinatario = $g->getAllenatorePerSquadra($squadra);
         try {
-            $messaggi = $g->ottieniMessaggiCalciatore($calciatoreMittente,
-                "chat");
+            $messaggi = $g->getCalciatoriPerSquadra($squadra);
 
             return $this->render("giocatore/FormVoceCalciatore.html.twig",
                 array("messaggi" => $messaggi, "d" => $allenatoreDestinatario->getUsernameCodiceContratto()));
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
-        $g = new GestoreComunicazione();
+        /*$g = new GestoreComunicazione();
         try {
             $messaggi = $g->ottieniMessaggiCalciatore($contratto_giocatore, "chat");
             $str = "";
@@ -141,7 +135,7 @@ class ControllerChatGiocatore extends Controller
             return new Response($str);
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
-        }
+        }*/
     }
 
     /**

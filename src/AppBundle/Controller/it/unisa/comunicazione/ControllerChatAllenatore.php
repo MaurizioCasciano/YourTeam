@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints\Date;
 
 class ControllerChatAllenatore extends Controller
 {
@@ -63,7 +64,7 @@ class ControllerChatAllenatore extends Controller
                 $richiesta->get("d"), "allenatore", time(), "voce");
 
             $g -> inviaMessaggio($messaggio);
-            return $this->scegliCalciatoreVoce($richiesta);
+            return $this->render(":allenatore:MessaggioSuccesso.html.twig");
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
@@ -82,7 +83,7 @@ class ControllerChatAllenatore extends Controller
             $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
                 $richiesta->get("d"),
                 "allenatore", time(), "multa"));
-            return $this->scegliCalciatoreComportamento($richiesta);
+            return $this->render(":allenatore:MessaggioSuccesso.html.twig");
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
@@ -101,7 +102,7 @@ class ControllerChatAllenatore extends Controller
             $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
                 $richiesta->get("d"),
                 "allenatore", time(), "avvertimento"));
-            return $this->scegliCalciatoreComportamento($richiesta);
+            return $this->render(":allenatore:MessaggioSuccesso.html.twig");
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
@@ -120,7 +121,7 @@ class ControllerChatAllenatore extends Controller
             $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
                 $richiesta->get("d"),
                 "allenatore", time(), "dieta"));
-            return $this->scegliCalciatoreSalute($richiesta);
+            return $this->render(":allenatore:MessaggioSuccesso.html.twig");
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
@@ -139,7 +140,7 @@ class ControllerChatAllenatore extends Controller
             $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
                 $richiesta->get("d"),
                 "allenatore", time(), "allenamento"));
-            return $this->scegliCalciatoreSalute($richiesta);
+            return $this->render(":allenatore:MessaggioSuccesso.html.twig");
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
