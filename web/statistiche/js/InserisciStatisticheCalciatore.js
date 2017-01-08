@@ -34,7 +34,7 @@ function inserisciStatisticheHandler(event) {
             if (executed) {
                 showSuccess("Statistiche inserite con successo.");
                 $($form)[0].reset();
-                $($form).parent().parent().parent().remove();
+                //$($form).parent().parent().parent().remove();
             } else {
                 showWarning("Errore nell'inserimento delle statistiche.");
             }

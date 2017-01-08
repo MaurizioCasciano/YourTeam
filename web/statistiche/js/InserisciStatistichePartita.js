@@ -3,10 +3,15 @@ var ROOT_DIR = "/yourteam/web/app_dev.php";
  * Created by Maurizio on 31/12/2016.
  */
 $(function () {
-    $("button.marcatori").click(aggiungiMarcatoriHandler);
-    $("button.assistmen").click(aggiungiAssistMenHandler);
-    $("button.ammonizioni").click(aggiungiAmmonizioniMenHandler);
-    $("button.espulsioni").click(aggiungiEspulsioniMenHandler);
+    $("button.marcatori.fa-plus").click(aggiungiMarcatoriHandler);
+    $("button.assistmen.fa-plus").click(aggiungiAssistMenHandler);
+    $("button.ammonizioni.fa-plus").click(aggiungiAmmonizioniMenHandler);
+    $("button.espulsioni.fa-plus").click(aggiungiEspulsioniMenHandler);
+
+    $("button.marcatori.fa-minus").click(removeLastSelectHandler);
+    $("button.assistmen.fa-minus").click(removeLastSelectHandler);
+    $("button.ammonizioni.fa-minus").click(removeLastSelectHandler);
+    $("button.espulsioni.fa-minus").click(removeLastSelectHandler);
 });
 
 var NOME = null, DATA = null, CONVOCATI = null;

@@ -7,7 +7,7 @@ namespace AppBundle\it\unisa\statistiche;
  * Date: 14/12/2016
  * Time: 18:45
  */
-class StatisticheCalciatore
+class StatisticheCalciatore implements \JsonSerializable
 {
     private $usernameCalciatore;
     private $tiriTotali;
@@ -244,5 +244,23 @@ class StatisticheCalciatore
     public function setPartiteGiocate($partiteGiocate)
     {
         $this->partiteGiocate = $partiteGiocate;
+    }
+
+    function jsonSerialize()
+    {
+        return [
+            "calciatore" => $this->getUsernameCalciatore(),
+            "tiriTotali" => $this->getTiriTotali(),
+            "tiriPorta" => $this->getTiriPorta(),
+            "falliFatti" => $this->getFalliFatti(),
+            "falliSubiti" => $this->getFalliSubiti(),
+            "percentualePassaggiRiusciti" => $this->getPercentualePassaggiRiusciti(),
+            "golFatti" => $this->getGolFatti(),
+            "golSubiti" => $this->getGolSubiti(),
+            "assist" => $this->getAssist(),
+            "ammonizioni" => $this->getAmmonizioni(),
+            "espulsioni" => $this->getEspulsioni(),
+            "partiteGiocate" => $this->getPartiteGiocate()
+        ];
     }
 }

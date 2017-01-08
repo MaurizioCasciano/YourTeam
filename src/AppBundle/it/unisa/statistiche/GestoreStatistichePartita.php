@@ -113,7 +113,7 @@ class GestoreStatistichePartita
             // $falliCommessi, $falliSubiti, $percentualPassaggiRiusciti,
             // $golFatti, $golSubiti, $assist, $ammonizioni, $espulsioni, $partiteGiocate)
 
-            $statisticheCalciatore = new StatisticheCalciatore($calciatore, $tiriTotali, $tiriPorta,
+            $statisticheCalciatore = new StatisticheCalciatore($username, $tiriTotali, $tiriPorta,
                 $falliCommessi, $falliSubiti, $percentualePassaggiRiusciti, $golFattiCalciatore, $golSubitiCalciatore,
                 $assistCalciatore, $ammonizioniCalciatore, $espulsioniCalciatore, $partiteGiocate);
 
@@ -138,6 +138,141 @@ class GestoreStatistichePartita
         return $executed && $executed1;
     }
 
+    /**
+     * Modifica le statistiche della partita passata in input.
+     * @param PartitaInterface $partita
+     */
+    public function modificaStatistiche(PartitaInterface $partita)
+    {
+        if (!$partita->hasStatistiche()) {
+            throw new \RuntimeException("Partita senza statistiche.");
+        }
+
+        $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
+        $gestoreStatisticheCalciatore->rimuoviMarcatori($partita);
+        $gestoreStatisticheCalciatore->rimuoviAssistMen($partita);
+        $gestoreStatisticheCalciatore->rimuoviAmmonizioni($partita);
+        $gestoreStatisticheCalciatore->rimuoviEspulsioni($partita);
+
+        $nome = $partita->getNome();
+        $data = $partita->getDataString();
+        $squadra = $partita->getSquadra();
+        $statistiche = $partita->getStatistiche();
+        $golFatti = $statistiche->getGolFatti();
+        $golSubiti = $statistiche->getGolSubiti();
+        $possessoPalla = $statistiche->getPossessoPalla();
+
+        /**
+         * Array contenente i marcatori come elementi, un elemento è ripetuto tante volte quanti sono i suoi gol.
+         */
+        $marcatori = $statistiche->getMarcatori();
+        /**
+         * Array contenente gli assistmen come elementi, un elemento è ripetuto tante volte quanti sono i suoi assist.
+         */
+        $assistmen = $statistiche->getAssistMen();
+        /**
+         * Array contenente gli ammoniti come elementi, un elemento è ripetuto tante volte quanti sono le sua ammonizioni.
+         */
+        $ammonizioni = $statistiche->getAmmonizioni();
+        /**
+         * Array contenente gli espulsi come elementi, ogni elemento dovrebbe essere presente massimo 1 volta.
+         */
+        $espulsioni = $statistiche->getEspulsioni();
+
+        /*===============================================================================================================*/
+
+        /**
+         * Array associativo contenente le coppie ("contratto" => numero gol).
+         */
+        $goals = array_count_values($marcatori);
+        /**
+         * Array associativo contenente le coppie ("contratto" => numero assist).
+         */
+        $assists = array_count_values($assistmen);
+        /**
+         * Array associativo contenente le coppie ("contratto" => numero ammonizioni).
+         */
+        $yellowCards = array_count_values($ammonizioni);
+        /**
+         * Array associativo contenente le coppie ("contratto" => numero espulsioni).
+         */
+        $redCards = array_count_values($espulsioni);
+
+        /**
+         * Array contenente il "contratto" dei calciatori che hanno segnato, fatto un assist, preso un'ammonizione o un'espulsione.
+         */
+        $calciatori = array_keys($goals + $assists + $yellowCards + $redCards);
+
+        //var_dump($calciatori);
+        $statisticheCalciatori = array();
+        $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
+
+        $executed = true;
+
+        foreach ($calciatori as $calciatore) {
+            //var_dump($calciatore);
+            $username = $calciatore;
+            $tiriTotali = 0;
+            $tiriPorta = 0;
+            $falliCommessi = 0;
+            $falliSubiti = 0;
+            $percentualePassaggiRiusciti = 0;
+            $golFattiCalciatore = array_key_exists($calciatore, $goals) ? $goals[$calciatore] : 0;
+            $golSubitiCalciatore = 0;
+            $assistCalciatore = array_key_exists($calciatore, $assists) ? $assists[$calciatore] : 0;
+            $ammonizioniCalciatore = array_key_exists($calciatore, $yellowCards) ? $yellowCards[$calciatore] : 0;
+            $espulsioniCalciatore = array_key_exists($calciatore, $redCards) ? $redCards[$calciatore] : 0;
+            $partiteGiocate = 0;
+
+            try {
+                $oldStatisticheCalciatore = $gestoreStatisticheCalciatore->getStatisticheCalciatore();
+                $oldStatisticheCalciatore->setGolFatti($golFattiCalciatore);
+                $oldStatisticheCalciatore->setAssist($assistCalciatore);
+                $oldStatisticheCalciatore->setAmmonizioni($ammonizioniCalciatore);
+                $oldStatisticheCalciatore->setEspulsioni($espulsioniCalciatore);
+                $executed = $executed && $gestoreStatisticheCalciatore->modificaStatistiche($oldStatisticheCalciatore, $nome, $data, $squadra);
+            } catch (\Exception $ex) {
+                //__construct($usernameCalciatore, $tiriTotali, $tiriPorta,
+                // $falliCommessi, $falliSubiti, $percentualPassaggiRiusciti,
+                // $golFatti, $golSubiti, $assist, $ammonizioni, $espulsioni, $partiteGiocate)
+
+                $statisticheCalciatore = new StatisticheCalciatore($username, $tiriTotali, $tiriPorta,
+                    $falliCommessi, $falliSubiti, $percentualePassaggiRiusciti, $golFattiCalciatore, $golSubitiCalciatore,
+                    $assistCalciatore, $ammonizioniCalciatore, $espulsioniCalciatore, $partiteGiocate);
+
+                $executed = $executed && $gestoreStatisticheCalciatore->inserisciStatistiche($statisticheCalciatore, $nome, $data, $squadra);
+            }
+
+            var_dump($executed);
+        }
+
+        if ($statement = $this->conn->prepare(
+            "UPDATE partita
+                SET
+                golfatti = ?,
+                golsubiti = ?,
+                possessopalla = ?
+                WHERE nome = ? AND data = ? AND squadra = ?")
+        ) {
+            if ($statement->bind_param("iiisss", $golFatti, $golSubiti, $possessoPalla, $nome, $data, $squadra)) {
+                if ($statement->execute()) {
+                    return true && $executed;
+                } else {
+                    throw new \Exception("Statement non eseguito.");
+                }
+            } else {
+                throw new \Exception("Statement binding non eseguito.");
+            }
+        } else {
+            throw new \Exception("Statement non preparato.");
+        }
+    }
+
+    /**
+     * Restituisce le statistiche della partita, se presenti.
+     * @param PartitaInterface $partita
+     * @return StatistichePartita|null
+     */
     public function getStatistiche(PartitaInterface $partita)
     {
         if ($statement = $this->conn->prepare("
@@ -176,12 +311,6 @@ class GestoreStatistichePartita
             }
         }
     }
-
-    public function modificaStatistiche()
-    {
-
-    }
-
 
     public function getMarcatori(PartitaInterface $partita)
     {

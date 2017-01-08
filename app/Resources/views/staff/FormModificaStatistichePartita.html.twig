@@ -1,7 +1,16 @@
 {% if partita.hasStatistiche() %}
     {% set statistiche = partita.getStatistiche() %}
+    {% set marcatori = statistiche.getMarcatori() %}
+    {% set assistmen = statistiche.getAssistMen() %}
+    {% set ammonizioni = statistiche.getAmmonizioni() %}
+    {% set espulsioni = statistiche.getEspulsioni() %}
+    {% if partita.hasConvocati() %}
+        {% set convocati = partita.getConvocati() %}
+    {% endif %}
+    {#{{ dump(partita) }}#}
 
-    <form>
+
+    <form class="modifica_statistiche_calciatore" action="{{ path('modificaStatistichePartita') }}" method="post">
         <input type="hidden" name="nome" value="{{ partita.getNome() }}">
         <input type="hidden" name="data" value="{{ partita.getDataString() }}">
         <div>
@@ -23,18 +32,36 @@
         <div>
             <label>Marcatori</label>
             <button type="button" class="fa fa-plus marcatori"></button>
-            <button type="button" class="fa fa-minus marcatori"></button>
-            {% for marcatore in statistiche.getMarcatori() %}
-                <select name="marcatori[]">
-                    <option>{{ marcatore }}</option>
-                </select>
-            {% endfor %}
+            {% if marcatori | length > 0 %}
+                <button type="button" class="fa fa-minus marcatori"></button>
+            {% endif %}
+
+            {% if convocati is defined %}
+                {% for marcatore in marcatori %}
+                    <select name="marcatori[]">
+                        {% for calciatore in convocati %}
+                            {% set contratto = calciatore.getContratto() %}
+
+                            {% if contratto is same as(marcatore) %}
+                                <option value="{{ marcatore }}"
+                                        selected="selected">{{ calciatore.getNumeroMaglia() }})
+                                    &nbsp;{{ calciatore.getNome() }}&nbsp;{{ calciatore.getCognome() }}</option>
+                            {% else %}
+                                <option value="{{ marcatore }}">{{ calciatore.getNumeroMaglia() }})
+                                    &nbsp;{{ calciatore.getNome() }}&nbsp;{{ calciatore.getCognome() }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                {% endfor %}
+            {% endif %}
         </div>
 
         <div>
             <label>Assist Men</label>
             <button type="button" class="fa fa-plus assistmen"></button>
-            <button type="button" class="fa fa-minus assistmen"></button>
+            {% if assistmen | length > 0 %}
+                <button type="button" class="fa fa-minus assistmen"></button>
+            {% endif %}
             {% for assistMan in statistiche.getAssistMen() %}
                 <select name="assistmen[]">
                     <option>{{ assistMan }}</option>
@@ -45,7 +72,9 @@
         <div>
             <label>Ammonizioni</label>
             <button type="button" class="fa fa-plus ammonizioni"></button>
-            <button type="button" class="fa fa-minus ammonizioni"></button>
+            {% if ammonizioni | length > 0 %}
+                <button type="button" class="fa fa-minus ammonizioni"></button>
+            {% endif %}
             {% for ammonizione in statistiche.getAmmonizioni() %}
                 <select name="ammonizioni[]">
                     <option>{{ ammonizione }}</option>
@@ -56,7 +85,9 @@
         <div>
             <label>Espulsioni</label>
             <button type="button" class="fa fa-plus espulsioni"></button>
-            <button type="button" class="fa fa-minus espulsioni"></button>
+            {% if espulsioni | length > 0 %}
+                <button type="button" class="fa fa-minus espulsioni"></button>
+            {% endif %}
             {% for espulsione in statistiche.getEspulsioni() %}
                 <select name="espulsioni[]">
                     <option>{{ espulsione }}</option>

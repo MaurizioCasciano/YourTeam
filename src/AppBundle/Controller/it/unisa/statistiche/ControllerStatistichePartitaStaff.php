@@ -32,6 +32,14 @@ class ControllerStatistichePartitaStaff extends Controller
     }
 
     /**
+     *
+     */
+    public function getModificaStatisticheForm()
+    {
+
+    }
+
+    /**
      * @Route("/statistiche/staff/partita/insert/submit", name = "inserisciStatistichePartita")
      * @Method("POST")
      */
@@ -91,26 +99,44 @@ class ControllerStatistichePartitaStaff extends Controller
         $executed = $gestoreStatistichePartita->inserisciStatistiche($partita);
 
         if ($executed) {
-            return $this->redirectToRoute("ViewInserisciStatisticheCalciatori", array("nome" => $nome, "data" => $data));
+            return $this->redirectToRoute("lista_statistiche_calciatori_partita", array("nome" => $nome, "data" => $data));
         } else {
             return $this->redirectToRoute("lista_statistiche_partite");
         }
     }
 
     /**
-     *
+     * @Route("/statistiche/staff/partita/edit/submit", name = "modificaStatistichePartita")
+     * @Method("POST")
      */
-    public function getModificaStatisticheForm()
+    public function modificaStatistiche(Request $request)
     {
+        $squadra = $_SESSION["squadra"];
+        $nome = $request->get("nome");
+        $data = $request->get("data");
+        $golFatti = $request->get("golfatti");
+        $golSubiti = $request->get("golsubiti");
+        $possessoPalla = $request->get("possessopalla");
 
-    }
+        $marcatori = $request->get("marcatori") ? $request->get("marcatori") : array();
+        $assistmen = $request->get("assistmen") ? $request->get("assistmen") : array();
+        $ammonizioni = $request->get("ammonizioni") ? $request->get("ammonizioni") : array();
+        $espulsioni = $request->get("espulsioni") ? $request->get("espulsioni") : array();
 
-    /**
-     *
-     */
-    public function modificaStatistiche()
-    {
+        $gestorePartite = new GestorePartite();
+        $partita = $gestorePartite->getPartita($nome, $data, $squadra);
 
+        $statistiche = new StatistichePartita($golFatti, $golSubiti, $possessoPalla, $marcatori, $assistmen, $ammonizioni, $espulsioni);
+        $partita->setStatistiche($statistiche);
+
+        $gestoreStatistichePartita = new GestoreStatistichePartita();
+        $executed = $gestoreStatistichePartita->modificaStatistiche($partita);
+
+        if ($executed) {
+            return $this->redirectToRoute("lista_statistiche_calciatori_partita", array("nome" => $nome, "data" => $data));
+        } else {
+            return $this->redirectToRoute("lista_statistiche_partite");
+        }
     }
 
     /**

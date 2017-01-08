@@ -9,6 +9,7 @@
 namespace AppBundle\it\unisa\statistiche;
 
 use AppBundle\it\unisa\account\GestoreAccount;
+use AppBundle\it\unisa\partite\PartitaInterface;
 use AppBundle\Utility\DB;
 
 class GestoreStatisticheCalciatore
@@ -50,12 +51,12 @@ class GestoreStatisticheCalciatore
                 tiri_porta = VALUES(tiri_porta),
                 falli_fatti = VALUES(falli_fatti),
                 falli_subiti = VALUES(falli_subiti),
-                percentuale_passaggi_riusciti = VALUES(percentuale_passaggi_riusciti)/*,
+                percentuale_passaggi_riusciti = VALUES(percentuale_passaggi_riusciti),
                 gol_fatti = VALUES(gol_fatti),
                 gol_subiti = VALUES(gol_subiti),
                 assist = VALUES(assist),
                 ammonizioni = VALUES(ammonizioni),
-                espulsioni = VALUES(espulsioni)*/");
+                espulsioni = VALUES(espulsioni)");
 
         if (!$statement) {
             throw  new \Exception("Prepare failed: (" . $this->conn->errno . ") " . $this->conn->error);
@@ -85,10 +86,16 @@ class GestoreStatisticheCalciatore
     /**
      * Restituisce le statistiche di un calciatore relativamente ad una partita.
      * @param $usernameCalciatore L'ID del calciatore.
+     * @param $partita La partita a cui si riferiscono le statistiche.
      * @return StatisticheCalciatore Le statistiche del calciatore.
      */
-    public function getStatisticheCalciatore($usernameCalciatore, $nome_partita, $data_partita)
+    public function getStatisticheCalciatore($usernameCalciatore, $nome, $data, $squadra)
     {
+        //var_dump($usernameCalciatore);
+        //var_dump($nome);
+        //var_dump($data);
+        //var_dump($squadra);
+
         /*EXAMPLE
         // prepare and bind
             $stmt = $conn->prepare("INSERT INTO MyGuests (firstname, lastname, email) VALUES (?, ?, ?)");
@@ -101,33 +108,49 @@ class GestoreStatisticheCalciatore
             s - string
             b - BLOB*/
 
-
-        $statement = $this->conn->prepare(
+        if ($statement = $this->conn->prepare(
             "SELECT * 
               FROM statistiche_calciatore 
-              WHERE calciatore = ? AND nome_partita = ? AND data_partita = ?");
-        $statement->bind_param("sss", $usernameCalciatore, $nome_partita, $data_partita);
-        $executed = $statement->execute();
-        $result = $statement->get_result();
-
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $statisticheCalciatore = new StatisticheCalciatore($usernameCalciatore,
-                $row["tiri_totali"], $row["tiri_porta"], $row["falli_fatti"],
-                $row["falli_subiti"], $row["percentuale_passaggi_riusciti"],
-                $row["gol_fatti"], $row["gol_subiti"], $row["assist"],
-                $row["ammonizioni"], $row["espulsioni"], 0);
-
-            return $statisticheCalciatore;
+              WHERE calciatore = ? AND nome_partita = ? AND data_partita = ? AND squadra = ?")
+        ) {
+            if ($statement->bind_param("ssss", $usernameCalciatore, $nome, $data, $squadra)) {
+                if ($executed = $statement->execute()) {
+                    if ($result = $statement->get_result()) {
+                        if ($result->num_rows > 0) {
+                            $row = $result->fetch_assoc();
+                            $statisticheCalciatore = new StatisticheCalciatore($usernameCalciatore,
+                                $row["tiri_totali"], $row["tiri_porta"], $row["falli_fatti"],
+                                $row["falli_subiti"], $row["percentuale_passaggi_riusciti"],
+                                $row["gol_fatti"], $row["gol_subiti"], $row["assist"],
+                                $row["ammonizioni"], $row["espulsioni"], 0);
+                            return $statisticheCalciatore;
+                        } else {
+                            //var_dump($statement);
+                            throw new \Exception("Non ci sono statistiche per questo calciatore in questa partita.");
+                        }
+                    } else {
+                        //var_dump($statement);
+                        throw new \Exception("Result is false.");
+                    }
+                } else {
+                    //var_dump($statement);
+                    throw new \Exception("Statement non eseguito.");
+                }
+            } else {
+                //var_dump($statement);
+                throw new \Exception("Statement binding non effettuato.");
+            }
+        } else {
+            //var_dump($statement);
+            throw new \Exception("Statement not prepared");
         }
-
-        return new StatisticheCalciatore($usernameCalciatore, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     }
 
     /**
      * Restituisce le statistiche complessive di un calciatore.
      */
-    public function getStatisticheComplessiveCalciatore($usernameCalciatore)
+    public
+    function getStatisticheComplessiveCalciatore($usernameCalciatore)
     {
         if ($usernameCalciatore == null) throw new \Exception("L'username del calciatore è null.");
 
@@ -187,11 +210,12 @@ class GestoreStatisticheCalciatore
      * @param $maxEspulsioni int
      * @return StatisticheCalciatore|null
      */
-    public function filtraCalciatori($minTiriTotali, $minTiriPorta, $minGolFatti, $minGolSubiti, $minAssist,
-                                     $minFalliFatti, $minFalliSubiti, $minPercentualePassaggiRiusciti,
-                                     $minAmmonizioni, $minEspulsioni, $maxTiriTotali, $maxTiriPorta,
-                                     $maxGolFatti, $maxGolSubiti, $maxAssist, $maxFalliFatti, $maxFalliSubiti,
-                                     $maxPercentualePassaggiRiusciti, $maxAmmonizioni, $maxEspulsioni)
+    public
+    function filtraCalciatori($minTiriTotali, $minTiriPorta, $minGolFatti, $minGolSubiti, $minAssist,
+                              $minFalliFatti, $minFalliSubiti, $minPercentualePassaggiRiusciti,
+                              $minAmmonizioni, $minEspulsioni, $maxTiriTotali, $maxTiriPorta,
+                              $maxGolFatti, $maxGolSubiti, $maxAssist, $maxFalliFatti, $maxFalliSubiti,
+                              $maxPercentualePassaggiRiusciti, $maxAmmonizioni, $maxEspulsioni)
     {
         $statement = $this->conn->prepare(
             "SELECT calciatore,
@@ -256,35 +280,59 @@ class GestoreStatisticheCalciatore
      * Modifica le statistiche del calciatore, sostituendole con quelle passate in input.
      * @param StatisticheCalciatore $statisticheCalciatore
      */
-    public function modificaStatisticheCalciatore(StatisticheCalciatore $statistiche, $nomePartita, $dataPartita)
+    public
+    function modificaStatistiche(StatisticheCalciatore $statistiche, $nomePartita, $dataPartita, $squadra)
     {
-        $statement = $this->conn->prepare("UPDATE statistiche_calciatore SET tiri_totali = ?, tiri_porta = ?, 
-falli_fatti = ?, falli_subiti = ?, percentuale_passaggi_riusciti = ?, gol_fatti = ?, gol_subiti = ?, 
-assist = ?, ammonizioni = ?, espulsioni = ? WHERE calciatore = ? AND nome_partita = ? AND data_partita = ?");
-        $username = $statistiche->getUsernameCalciatore();
-        $tiriTotali = $statistiche->getTiriTotali();
-        $tiriPorta = $statistiche->getTiriPorta();
-        $falliFatti = $statistiche->getFalliFatti();
-        $falliSubiti = $statistiche->getFalliSubiti();
-        $percentualePassaggiRiusciti = $statistiche->getPercentualePassaggiRiusciti();
-        $golFatti = $statistiche->getGolFatti();
-        $golSubiti = $statistiche->getGolSubiti();
-        $assist = $statistiche->getAssist();
-        $ammonizioni = $statistiche->getAmmonizioni();
-        $espulsioni = $statistiche->getEspulsioni();
+        if ($statement = $this->conn->prepare(
+            "UPDATE statistiche_calciatore
+            SET
+                tiri_totali = ?,
+                tiri_porta = ?,
+                falli_fatti = ?,
+                falli_subiti = ?,
+                percentuale_passaggi_riusciti = ?,
+                gol_fatti = ?,
+                gol_subiti = ?,
+                assist = ?,
+                ammonizioni = ?,
+                espulsioni = ?
+            WHERE calciatore = ? AND nome_partita = ? AND data_partita = ? AND squadra = ?")
+        ) {
+            $username = $statistiche->getUsernameCalciatore();
+            $tiriTotali = $statistiche->getTiriTotali();
+            $tiriPorta = $statistiche->getTiriPorta();
+            $falliFatti = $statistiche->getFalliFatti();
+            $falliSubiti = $statistiche->getFalliSubiti();
+            $percentualePassaggiRiusciti = $statistiche->getPercentualePassaggiRiusciti();
+            $golFatti = $statistiche->getGolFatti();
+            $golSubiti = $statistiche->getGolSubiti();
+            $assist = $statistiche->getAssist();
+            $ammonizioni = $statistiche->getAmmonizioni();
+            $espulsioni = $statistiche->getEspulsioni();
 
-        $statement->bind_param("iiiiiiiiiisss", $tiriTotali, $tiriPorta, $falliFatti, $falliSubiti,
-            $percentualePassaggiRiusciti, $golFatti, $golSubiti, $assist, $ammonizioni, $espulsioni, $username, $nomePartita, $dataPartita);
-
-        $executed = $statement->execute();
-        return $executed;
+            if ($statement->bind_param("iiiiiiiiiissss", $tiriTotali, $tiriPorta, $falliFatti, $falliSubiti,
+                $percentualePassaggiRiusciti, $golFatti, $golSubiti, $assist, $ammonizioni, $espulsioni,
+                $username, $nomePartita, $dataPartita, $squadra)
+            ) {
+                if ($executed = $statement->execute()) {
+                    return $executed;
+                } else {
+                    throw new \Exception("Statement non eseguito.");
+                }
+            } else {
+                throw new \Exception("Statement binding non eseguito.");
+            }
+        } else {
+            throw new \Exception("Statement prepare non eseguito.");
+        }
     }
 
     /**
      *Restituisce l'elenco dei calciatori della squadra, con le loro statistiche complessive.
      * @param $squadra string La squadra dei calciatori.
      */
-    public function getCalciatori($squadra)
+    public
+    function getCalciatori($squadra)
     {
         $calciatori = array();
 
@@ -327,7 +375,8 @@ assist = ?, ammonizioni = ?, espulsioni = ? WHERE calciatore = ? AND nome_partit
         }
     }
 
-    public function getCalciatore($contratto)
+    public
+    function getCalciatore($contratto)
     {
         if ($statement = $this->conn->prepare("
             SELECT * FROM calciatore
@@ -368,6 +417,111 @@ assist = ?, ammonizioni = ?, espulsioni = ? WHERE calciatore = ? AND nome_partit
             }
         } else {
             throw new \Exception("Errore nella preparazione dello statement.");
+        }
+    }
+
+    /**
+     * Imposta a 0 il numero di gol fatti nella partita per i calciatori non presenti tra i nuovi marcatori.
+     * @param $nuoviMarcatori array L'id dei nuovi marcatori.
+     * @param PartitaInterface $partita La partita.
+     */
+    public function rimuoviMarcatori(PartitaInterface $partita)
+    {
+        if ($statement = $this->conn->prepare("
+        UPDATE statistiche_calciatore
+        SET gol_fatti = 0
+        WHERE nome_partita = ? AND data_partita = ? AND squadra = ?")
+        ) {
+            $nome = $partita->getNome();
+            $data = $partita->getData();
+            $squadra = $partita->getSquadra();
+
+            if ($statement->bind_param("sss", $nome, $data, $squadra)) {
+                if ($statement->execute()) {
+                    return true;
+                } else {
+                    throw new \Exception("Statement execution non eseguita.");
+                }
+            } else {
+                throw new \Exception("Statement binding non eseguito.");
+            }
+        } else {
+            throw new \Exception("Statement prepare non eseguito.");
+        }
+    }
+
+    public function rimuoviAssistMen(PartitaInterface $partita)
+    {
+        if ($statement = $this->conn->prepare("
+        UPDATE statistiche_calciatore
+        SET assist = 0
+        WHERE nome_partita = ? AND data_partita = ? AND squadra = ?")
+        ) {
+            $nome = $partita->getNome();
+            $data = $partita->getData();
+            $squadra = $partita->getSquadra();
+
+            if ($statement->bind_param("sss", $nome, $data, $squadra)) {
+                if ($statement->execute()) {
+                    return true;
+                } else {
+                    throw new \Exception("Statement execution non eseguita.");
+                }
+            } else {
+                throw new \Exception("Statement binding non eseguito.");
+            }
+        } else {
+            throw new \Exception("Statement prepare non eseguito.");
+        }
+    }
+
+    public function rimuoviAmmonizioni(PartitaInterface $partita)
+    {
+        if ($statement = $this->conn->prepare("
+        UPDATE statistiche_calciatore
+        SET ammonizioni = 0
+        WHERE nome_partita = ? AND data_partita = ? AND squadra = ?")
+        ) {
+            $nome = $partita->getNome();
+            $data = $partita->getData();
+            $squadra = $partita->getSquadra();
+
+            if ($statement->bind_param("sss", $nome, $data, $squadra)) {
+                if ($statement->execute()) {
+                    return true;
+                } else {
+                    throw new \Exception("Statement execution non eseguita.");
+                }
+            } else {
+                throw new \Exception("Statement binding non eseguito.");
+            }
+        } else {
+            throw new \Exception("Statement prepare non eseguito.");
+        }
+    }
+
+    public function rimuoviEspulsioni(PartitaInterface $partita)
+    {
+        if ($statement = $this->conn->prepare("
+        UPDATE statistiche_calciatore
+        SET espulsioni = 0
+        WHERE nome_partita = ? AND data_partita = ? AND squadra = ?")
+        ) {
+            $nome = $partita->getNome();
+            $data = $partita->getData();
+            $squadra = $partita->getSquadra();
+
+            if ($statement->bind_param("sss", $nome, $data, $squadra)) {
+                if ($statement->execute()) {
+                    return true;
+                } else {
+                    throw new \Exception("Statement execution non eseguita.");
+                }
+            } else {
+                throw new \Exception("Statement binding non eseguito.");
+            }
+        } else {
+            throw new \Exception("Statement prepare non eseguito.");
         }
     }
 }

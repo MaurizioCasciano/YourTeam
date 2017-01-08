@@ -10,6 +10,7 @@ namespace AppBundle\it\unisa\partite;
 
 
 use AppBundle\it\unisa\statistiche\Calciatore;
+use AppBundle\it\unisa\statistiche\GestoreStatisticheCalciatore;
 use AppBundle\it\unisa\statistiche\GestoreStatistichePartita;
 use AppBundle\Utility\DB;
 
@@ -181,10 +182,10 @@ class GestorePartite
             WHERE data = ? AND partita = ? AND giocare.squadra = ?")
         ) {
             $data = $partita->getDataString();
-            $nome = $partita->getNome();
+            $nome_partita = $partita->getNome();
             $squadra = $partita->getSquadra();
 
-            if ($statement->bind_param("sss", $data, $nome, $squadra)) {
+            if ($statement->bind_param("sss", $data, $nome_partita, $squadra)) {
                 if ($statement->execute()) {
                     if ($result = $statement->get_result()) {
                         $calciatori = array();
@@ -205,6 +206,16 @@ class GestorePartite
                             $immagine = $row["immagine"];
 
                             $calciatore = new Calciatore($contratto, $password, $squadra, $email, $nome, $cognome, $dataDiNascita, $numeroMaglia, $domicilio, $indirizzo, $provincia, $telefono, $immagine);
+
+                            try {
+                                $g = new GestoreStatisticheCalciatore();
+                                $stats = $g->getStatisticheCalciatore($contratto, $nome_partita, $data, $squadra);
+                                //var_dump($stats);
+                                $calciatore->setStatistiche($stats);
+                            } catch (\Exception $exception) {
+                                //var_dump($exception);
+                            }
+
                             $calciatori[] = $calciatore;
                         }
 

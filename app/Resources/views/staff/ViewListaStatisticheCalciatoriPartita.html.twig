@@ -1,0 +1,69 @@
+{% extends "staff/template.html.twig" %}
+{% block head %}
+    <link rel="stylesheet" href="{{ asset("statistiche/css/Accordion.css") }}">
+    <link rel="stylesheet" href="{{ asset("statistiche/css/Accordion.css") }}">
+{% endblock %}
+
+{% block contenuto %}
+    <h2>Statistiche Calciatori</h2>
+    <h3>{{ partita.getNome }}</h3>
+    {% include ":staff:ViewAlertMessages.html.twig" %}
+
+    <div id="accordion" class="panel-group" role="tablist">
+        {% for calciatore in calciatori %}
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab">
+                    <h4 class="panel-title">
+                        <button class="collapsed" data-toggle="collapse" data-parent="#accordion"
+                                data-target="#{{ loop.index }}">
+                        <span class="pull-left"><i class="fa fa-user" aria-hidden="true"></i>
+                            {{ calciatore.getNome() | capitalize }}
+                            &nbsp;{{ calciatore.getCognome() | capitalize }}</span><span
+                                    class="pull-right">{{ calciatore.getNumeroMaglia() }}&nbsp;<i
+                                        class="fa fa-shirtsinbulk"></i></span>
+                        </button>
+                    </h4>
+                </div>
+
+                <div id="{{ loop.index }}" class="panel-collapse collapse" role="tabpanel">
+                    <div class="panel-body">
+                        {% if calciatore.hasStatistiche() %}
+                            <button class="modifica-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Modifica
+                            </button>
+                            <button class="visualizza-btn"><i class="fa fa-eye" aria-hidden="true"></i>
+                                &nbsp;Visualizza
+                            </button>
+                        {% else %}
+                            <button class="inserisci-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                &nbsp;Inserisci
+                            </button>
+                        {% endif %}
+                    </div>
+
+                    {% if calciatore.hasStatistiche() %}
+                        <div class="modifica" style="display: none;">
+                            {% include ":staff:FormModificaStatisticheCalciatore.html.twig" with {"partita" : partita, "calciatore" : calciatore} only %}
+                        </div>
+
+                        <div class="visualizza" style="display:none;">
+                            {% include ":staff:ViewStatisticheCalciatore.html.twig" with {"partita" : partita, "calciatore" : calciatore} only %}
+                        </div>
+                    {% else %}
+                        <div class="inserisci" style="display: none;">
+                            {% include ":staff:FormInserisciStatisticheCalciatore.html.twig" with {"partita" : partita, "calciatore" : calciatore} only %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="{{ asset('statistiche/js/Alerts.js') }}"></script>
+    <script src="{{ asset('statistiche/js/Accordion.js') }}"></script>
+    <script src="{{ asset('statistiche/js/InserisciStatisticheCalciatore.js') }}"></script>
+    <script src="{{ asset('statistiche/js/ModificaStatisticheCalciatore.js') }}"></script>
+{% endblock %}
