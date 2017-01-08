@@ -10,7 +10,7 @@
     {#{{ dump(partita) }}#}
 
 
-    <form class="modifica_statistiche_calciatore" action="{{ path('modificaStatistichePartita') }}" method="post">
+    <form class="modifica-statistiche-partita" action="{{ path('modificaStatistichePartita') }}" method="post">
         <input type="hidden" name="nome" value="{{ partita.getNome() }}">
         <input type="hidden" name="data" value="{{ partita.getDataString() }}">
         <div>

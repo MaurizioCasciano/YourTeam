@@ -36,7 +36,7 @@ function modificaStatisticheHandler(event) {
 
             if (executed) {
                 showSuccess("Statistiche modificate con successo.");
-                $($form)[0].reset();
+                //$($form)[0].reset();
                 //$($form).parent().parent().parent().remove();
             } else {
                 showWarning("Errore nell'inserimento delle statistiche.");

@@ -6,7 +6,7 @@
 
     <h1>Modifica Statistiche {{ calciatore.getNome() |capitalize }}&nbsp;{{ calciatore.getCognome() | capitalize }}</h1>
 
-    <form action="{{ path('ModificheStatisticheCalciatore') }}" method="post">
+    <form class="modifica_statistiche_calciatore" action="{{ path('ModificheStatisticheCalciatore') }}" method="post">
         <input type="hidden" name="nome_partita" value="{{ partita.getNome() }}">
         <input type="hidden" name="data_partita" value="{{ partita.getData() }}">
         <input type="hidden" name="calciatore" value="{{ calciatore.getContratto() }}">
