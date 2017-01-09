@@ -1,9 +1,17 @@
-<div class="view-statistiche-partita">
-    <input type="hidden" name="nome" value="{{ partita.getNome() }}">
-    <input type="hidden" name="data" value="{{ partita.getDataString() }}">
+{% if partita.hasStatistiche() %}
+    {% set statistiche = partita.getStatistiche() %}
+    {% set marcatori = statistiche.getMarcatori() %}
+    {% set assistmen = statistiche.getAssistMen() %}
+    {% set ammonizioni = statistiche.getAmmonizioni() %}
+    {% set espulsioni = statistiche.getEspulsioni() %}
+    {% if partita.hasConvocati() %}
+        {% set convocati = partita.getConvocati() %}
+    {% endif %}
 
-    {% if partita.hasStatistiche() %}
-        {% set statistiche = partita.getStatistiche() %}
+    <div class="view-statistiche-partita">
+        <input type="hidden" name="nome" value="{{ partita.getNome() }}">
+        <input type="hidden" name="data" value="{{ partita.getDataString() }}">
+
         <div>
         <span>
             <label>Gol Fatti</label>
@@ -23,38 +31,86 @@
 
         <div>
             <label>Marcatori</label>
-            <ul>
-                {% for marcatore in statistiche.getMarcatori() %}
-                    <li>{{ marcatore }}</li>
-                {% endfor %}
+            <ul class="marcatori list-group">
+                {% if convocati is defined %}
+                    {% for marcatore in marcatori %}
+                        {% for calciatore in convocati %}
+                            {% set contratto = calciatore.getContratto() %}
+
+                            {% if contratto is same as(marcatore) %}
+                                <li class="list-group-item">
+                                    &nbsp;{{ calciatore.getNome() | capitalize }}
+                                    &nbsp;{{ calciatore.getCognome() | capitalize }}
+                                    <span class="badge">{{ calciatore.getNumeroMaglia() }}</span>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
             </ul>
         </div>
 
         <div>
             <label>Assist Men</label>
-            <ul>
-                {% for assistMan in statistiche.getAssistMen() %}
-                    <li>{{ assistMan }}</li>
-                {% endfor %}
+            <ul class="assistmen list-group">
+                {% if convocati is defined %}
+                    {% for assistman in assistmen %}
+                        {% for calciatore in convocati %}
+                            {% set contratto = calciatore.getContratto() %}
+
+                            {% if contratto is same as(assistman) %}
+                                <li class="list-group-item">
+                                    &nbsp;{{ calciatore.getNome() | capitalize }}
+                                    &nbsp;{{ calciatore.getCognome()| capitalize }}
+                                    <span class="badge">{{ calciatore.getNumeroMaglia() }}</span>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
             </ul>
         </div>
 
         <div>
             <label>Ammonizioni</label>
-            <ul>
-                {% for asmmonizione in statistiche.getAmmonizioni() %}
-                    <li>{{ asmmonizione }}</li>
-                {% endfor %}
+            <ul class="ammonizioni list-group">
+                {% if convocati is defined %}
+                    {% for ammonizione in ammonizioni %}
+                        {% for calciatore in convocati %}
+                            {% set contratto = calciatore.getContratto() %}
+
+                            {% if contratto is same as(ammonizione) %}
+                                <li class="list-group-item">
+                                    &nbsp;{{ calciatore.getNome() | capitalize }}
+                                    &nbsp;{{ calciatore.getCognome()| capitalize }}
+                                    <span class="badge">{{ calciatore.getNumeroMaglia() }}</span>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
             </ul>
         </div>
 
         <div>
             <label>Espulsioni</label>
-            <ul>
-                {% for espulsione in statistiche.getEspulsioni() %}
-                    <li>{{ espulsione }}</li>
-                {% endfor %}
+            <ul class="espulsioni list-group">
+                {% if convocati is defined %}
+                    {% for espulsione in espulsioni %}
+                        {% for calciatore in convocati %}
+                            {% set contratto = calciatore.getContratto() %}
+
+                            {% if contratto is same as(espulsione) %}
+                                <li class="list-group-item">
+                                    &nbsp;{{ calciatore.getNome()| capitalize }}
+                                    &nbsp;{{ calciatore.getCognome()| capitalize }}
+                                    <span class="badge">{{ calciatore.getNumeroMaglia() }}</span>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
             </ul>
         </div>
-    {% endif %}
-</div>
+    </div>
+{% endif %}

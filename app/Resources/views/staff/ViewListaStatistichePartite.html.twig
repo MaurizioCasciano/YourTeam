@@ -59,20 +59,5 @@
             crossorigin="anonymous"></script>
     <script src="{{ asset("statistiche/js/InserisciStatistichePartita.js") }}"></script>
     <script src="{{ asset("statistiche/js/Alerts.js") }}"></script>
-
-    <script>
-        $(function () {
-            $(".inserisci-btn").click(function () {
-                $(this).parent().siblings(".inserisci").toggle();
-            });
-
-            $(".modifica-btn").click(function () {
-                $(this).parent().siblings(".modifica").toggle();
-            });
-
-            $(".visualizza-btn").click(function () {
-                $(this).parent().siblings(".visualizza").toggle();
-            });
-        });
-    </script>
+    <script src="{{ asset('statistiche/js/Accordion.js') }}"></script>
 {% endblock %}
