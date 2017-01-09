@@ -29,7 +29,7 @@
             <input type="number" min="0" max="100" name="possessopalla" value="{{ statistiche.getPossessoPalla() }}">
         </div>
 
-        <div>
+        <div class="marcatori">
             <label>Marcatori</label>
             <button type="button" class="fa fa-plus marcatori"></button>
             {% if marcatori | length > 0 %}
@@ -56,7 +56,7 @@
             {% endif %}
         </div>
 
-        <div>
+        <div class="assistmen">
             <label>Assist Men</label>
             <button type="button" class="fa fa-plus assistmen"></button>
             {% if assistmen | length > 0 %}
@@ -83,7 +83,7 @@
             {% endif %}
         </div>
 
-        <div>
+        <div class="ammonizioni">
             <label>Ammonizioni</label>
             <button type="button" class="fa fa-plus ammonizioni"></button>
             {% if ammonizioni | length > 0 %}
@@ -110,7 +110,7 @@
             {% endif %}
         </div>
 
-        <div>
+        <div class="espulsioni">
             <label>Espulsioni</label>
             <button type="button" class="fa fa-plus espulsioni"></button>
             {% if espulsioni | length > 0 %}
