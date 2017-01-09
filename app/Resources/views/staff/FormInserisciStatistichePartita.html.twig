@@ -1,4 +1,4 @@
-<form class="inserisci-statistiche-partita">
+<form class="inserisci-statistiche-partita" action="{{ path("inserisciStatistichePartita") }}" method="post">
     <input type="hidden" name="nome" value="{{ partita.getNome() }}">
     <input type="hidden" name="data" value="{{ partita.getDataString() }}">
 
@@ -18,22 +18,22 @@
         <input type="number" min="0" name="possessopalla" required="required">
     </div>
 
-    <div>
+    <div class="marcatori">
         <label>Marcatori</label>
         <button type="button" class="fa fa-plus marcatori"></button>
     </div>
 
-    <div>
+    <div class="assistmen">
         <label>Assist Men</label>
         <button type="button" class="fa fa-plus assistmen"></button>
     </div>
 
-    <div>
+    <div class="ammonizioni">
         <label>Ammonizioni</label>
         <button type="button" class="fa fa-plus ammonizioni"></button>
     </div>
 
-    <div>
+    <div class="espulsioni">
         <label>Espulsioni</label>
         <button type="button" class="fa fa-plus espulsioni"></button>
     </div>

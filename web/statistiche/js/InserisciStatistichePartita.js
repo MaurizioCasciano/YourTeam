@@ -3,78 +3,18 @@ var ROOT_DIR = "/yourteam/web/app_dev.php";
  * Created by Maurizio on 31/12/2016.
  */
 $(function () {
-    $("form.inserisci-statistiche-partita").submit(inserisciStatistichePartitaHandler);
-    $("button.marcatori").click(aggiungiMarcatoriHandler);
-    $("button.assistmen").click(aggiungiAssistMenHandler);
-    $("button.ammonizioni").click(aggiungiAmmonizioniMenHandler);
-    $("button.espulsioni").click(aggiungiEspulsioniMenHandler);
+    $("button.marcatori.fa-plus").click(aggiungiMarcatoriHandler);
+    $("button.assistmen.fa-plus").click(aggiungiAssistMenHandler);
+    $("button.ammonizioni.fa-plus").click(aggiungiAmmonizioniMenHandler);
+    $("button.espulsioni.fa-plus").click(aggiungiEspulsioniMenHandler);
+
+    $("button.marcatori.fa-minus").click(removeLastSelectHandler);
+    $("button.assistmen.fa-minus").click(removeLastSelectHandler);
+    $("button.ammonizioni.fa-minus").click(removeLastSelectHandler);
+    $("button.espulsioni.fa-minus").click(removeLastSelectHandler);
 });
 
-var NOME, DATA, CONVOCATI = null;
-
-function inserisciStatistichePartitaHandler(event) {
-    /* stop form from submitting normally */
-    event.preventDefault();
-    console.log("Ajax Inserisci Statistiche Partita Handler...");
-
-    var $form = $(this);
-    var $singleInputs = $($form).find(":input:not([type = 'submit'], [type ='button'], [name $= '[]'])");
-    var values = {};
-
-    var $marcatori = $($form).find(":input[name = 'marcatori[]']");
-    var $assistMen = $($form).find(":input[name = 'assistmen[]']");
-    var $ammonizioni = $($form).find(":input[name = 'ammonizioni[]']");
-    var $espulsioni = $($form).find(":input[name = 'espulsioni[]']");
-
-    $singleInputs.each(function (index, element) {
-        values[this.name] = $(this).val();
-    });
-
-    var marcatori = [];
-    $marcatori.each(function () {
-        marcatori.push($(this).val())
-    });
-
-    var assistmen = [];
-    $assistMen.each(function () {
-        assistmen.push($(this).val())
-    });
-
-    var ammonizioni = [];
-    $ammonizioni.each(function () {
-        ammonizioni.push($(this).val())
-    });
-
-    var espulsioni = [];
-    $espulsioni.each(function () {
-        espulsioni.push($(this).val())
-    });
-
-    values["marcatori"] = marcatori;
-    values["assistmen"] = assistmen;
-    values["ammonizioni"] = ammonizioni;
-    values["espulsioni"] = espulsioni;
-
-    //console.log(values);
-
-    $.ajax({
-        url: ROOT_DIR + "/statistiche/staff/partita/insert/submit",
-        type: "POST",
-        data: {"values": JSON.stringify(values)},
-        cache: false,
-        success: function (response, textStatus, jqXHR) {
-            console.log("AJAX JSON Response");
-            console.log(response);
-        }
-        ,
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log(textStatus)
-            console.log(jqXHR.status);
-            console.log(jqXHR.responseText);
-            console.log(errorThrown);
-        }
-    });
-}
+var NOME = null, DATA = null, CONVOCATI = null;
 
 function removeLastSelectHandler() {
     var $button = $(this);
@@ -184,12 +124,9 @@ function addMarcatoriSelect(convocati, target) {
 
     $(convocati).each(function (index, calciatore) {
         var $option = document.createElement("option");
-        $option.appendChild(document.createTextNode(calciatore.nomeCognome));
+        $option.appendChild(document.createTextNode(calciatore.numeromaglia + ") " + calciatore.nome + " " + calciatore.cognome));
         $option.setAttribute("value", calciatore.contratto);
         $selectCalciatori.appendChild($option);
-
-        //console.log(calciatore.nomeCognome);
-        //console.log(calciatore.contratto);
     });
 
     $(target).append($selectCalciatori);
@@ -205,12 +142,9 @@ function addAssistMenSelect(convocati, target) {
 
     $(convocati).each(function (index, calciatore) {
         var $option = document.createElement("option");
-        $option.appendChild(document.createTextNode(calciatore.nomeCognome));
+        $option.appendChild(document.createTextNode(calciatore.numeromaglia + ") " + calciatore.nome + " " + calciatore.cognome));
         $option.setAttribute("value", calciatore.contratto);
         $selectCalciatori.appendChild($option);
-
-        //console.log(calciatore.nomeCognome);
-        //console.log(calciatore.contratto);
     });
 
     $(target).append($selectCalciatori);
@@ -226,12 +160,9 @@ function addAmmonizioniSelect(convocati, target) {
 
     $(convocati).each(function (index, calciatore) {
         var $option = document.createElement("option");
-        $option.appendChild(document.createTextNode(calciatore.nomeCognome));
+        $option.appendChild(document.createTextNode(calciatore.numeromaglia + ") " + calciatore.nome + " " + calciatore.cognome));
         $option.setAttribute("value", calciatore.contratto);
         $selectCalciatori.appendChild($option);
-
-        //console.log(calciatore.nomeCognome);
-        //console.log(calciatore.contratto);
     });
 
     $(target).append($selectCalciatori);
@@ -247,12 +178,9 @@ function addEspulsioniSelect(convocati, target) {
 
     $(convocati).each(function (index, calciatore) {
         var $option = document.createElement("option");
-        $option.appendChild(document.createTextNode(calciatore.nomeCognome));
+        $option.appendChild(document.createTextNode(calciatore.numeromaglia + ") " + calciatore.nome + " " + calciatore.cognome));
         $option.setAttribute("value", calciatore.contratto);
         $selectCalciatori.appendChild($option);
-
-        //console.log(calciatore.nomeCognome);
-        //console.log(calciatore.contratto);
     });
 
     $(target).append($selectCalciatori);
@@ -266,7 +194,7 @@ function addEspulsioniSelect(convocati, target) {
  * @param target L'elemento DOM in cui inserire i nuovi dati.
  */
 function getConvocati(nome, data, handler, target) {
-    //alert("GET CONVOCATI");
+    console.log("GET CONVOCATI");
 
     console.log("NOME: " + NOME);
     console.log("nome: " + nome);
@@ -280,10 +208,13 @@ function getConvocati(nome, data, handler, target) {
             type: "GET",
             cache: false,
             success: function (response, textStatus, jqXHR) {
-                //console.log("GET CONVOCATI AJAX JSON Response");
-                //console.log(response);
+                console.log("GET CONVOCATI AJAX JSON Response");
+                console.log(response);
+                console.log(textStatus);
+                console.log(jqXHR);
 
-                var convocati = response.calciatori;
+                var convocati = response.convocati;
+                console.log(convocati);
                 NOME = nome;
                 DATA = data;
                 CONVOCATI = convocati;

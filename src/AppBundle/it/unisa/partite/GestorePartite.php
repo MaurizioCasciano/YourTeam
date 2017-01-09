@@ -9,6 +9,9 @@
 namespace AppBundle\it\unisa\partite;
 
 
+use AppBundle\it\unisa\statistiche\Calciatore;
+use AppBundle\it\unisa\statistiche\GestoreStatisticheCalciatore;
+use AppBundle\it\unisa\statistiche\GestoreStatistichePartita;
 use AppBundle\Utility\DB;
 
 class GestorePartite
@@ -42,6 +45,7 @@ class GestorePartite
         $statement->bind_param("s", $squadra);
         $executed = $statement->execute();
         $result = $statement->get_result();
+        $g = new GestoreStatistichePartita();
 
         if ($result->num_rows > 0) {
             $arrayPartite = array();
@@ -59,6 +63,13 @@ class GestorePartite
                 $golFatti = $row["golfatti"];
                 $golSubiti = $row["golsubiti"];
 
+                if (($stats = $g->getStatistiche($partita)) != null) {
+                    $partita->setStatistiche($stats);
+                }
+
+                if (count($convocati = $this->getCalciatoriConvocati($partita)) > 0) {
+                    $partita->setConvocati($convocati);
+                }
 
                 $arrayPartite[] = $partita;
             }
@@ -117,6 +128,15 @@ class GestorePartite
                 $dateTime = new \DateTime($row["data"]);
 
                 $partita = new Partita($casa, $trasferta, $dateTime, $row["squadra"], $row["stadio"]);
+                $g = new GestoreStatistichePartita();
+
+                if (($stats = $g->getStatistiche($partita)) != null) {
+                    $partita->setStatistiche($stats);
+                }
+
+                if (count($convocati = $this->getCalciatoriConvocati($partita)) > 0) {
+                    $partita->setConvocati($convocati);
+                }
             }
 
             return $partita;
@@ -153,5 +173,64 @@ class GestorePartite
 
         $success = $statement->execute();
         return $success;
+    }
+
+    public function getCalciatoriConvocati(PartitaInterface $partita)
+    {
+        if ($statement = $this->conn->prepare("
+            SELECT * FROM calciatore JOIN giocare ON calciatore.contratto = giocare.calciatore
+            WHERE data = ? AND partita = ? AND giocare.squadra = ?")
+        ) {
+            $data = $partita->getDataString();
+            $nome_partita = $partita->getNome();
+            $squadra = $partita->getSquadra();
+
+            if ($statement->bind_param("sss", $data, $nome_partita, $squadra)) {
+                if ($statement->execute()) {
+                    if ($result = $statement->get_result()) {
+                        $calciatori = array();
+
+                        while ($row = $result->fetch_assoc()) {
+                            $contratto = $row["contratto"];
+                            $password = $row["password"];
+                            $squadra = $row["squadra"];
+                            $email = $row["email"];
+                            $nome = $row["nome"];
+                            $cognome = $row["cognome"];
+                            $dataDiNascita = $row["datadinascita"];
+                            $numeroMaglia = $row["numeromaglia"];
+                            $domicilio = $row["domicilio"];
+                            $indirizzo = $row["indirizzo"];
+                            $provincia = $row["provincia"];
+                            $telefono = $row["telefono"];
+                            $immagine = $row["immagine"];
+
+                            $calciatore = new Calciatore($contratto, $password, $squadra, $email, $nome, $cognome, $dataDiNascita, $numeroMaglia, $domicilio, $indirizzo, $provincia, $telefono, $immagine);
+
+                            try {
+                                $g = new GestoreStatisticheCalciatore();
+                                $stats = $g->getStatisticheCalciatore($contratto, $nome_partita, $data, $squadra);
+                                //var_dump($stats);
+                                $calciatore->setStatistiche($stats);
+                            } catch (\Exception $exception) {
+                                //var_dump($exception);
+                            }
+
+                            $calciatori[] = $calciatore;
+                        }
+
+                        return $calciatori;
+                    } else {
+                        throw new \Exception("Result is false.");
+                    }
+                } else {
+                    throw new \Exception("Statement not executed.");
+                }
+            } else {
+                throw new \Exception("Parameters binding failed.");
+            }
+        } else {
+            throw new \Exception("Statement preparation failed.");
+        }
     }
 }
