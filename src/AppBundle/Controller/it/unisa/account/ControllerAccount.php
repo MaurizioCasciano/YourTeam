@@ -12,6 +12,7 @@ use AppBundle\it\unisa\account\AccountCalciatore;
 use \AppBundle\it\unisa\account\Calciatore;
 use \AppBundle\it\unisa\account\GestoreAccount;
 use \AppBundle\it\unisa\account\Account;
+use \AppBundle\it\unisa\account\Squadra;
 use AppBundle\Utility\Utility;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,7 +44,7 @@ class ControllerAccount extends Controller
             return $this->render("guest/registrazione.html.twig",array("squadre"=>$squadre));/*vista non completa*/
         }catch(\Exception $e)
         {
-            //DA IMPLEMENTARE
+
         }
 
 
@@ -60,34 +61,67 @@ return new Response("error");
     public function aggiungiAccount(Request $r,$attore)
     {
 
+
+
         if($attore=="staff_allenatore_tifoso"){
             $data= str_replace("/","-",$r->request->get("d"));
 
+               $staff=$r->request->get("tipo");
+               if($staff=="staff")
+               {
+                 $s=new Squadra($r->request->get("nomeSquadra"),
+                   $r->request->get("sedeSquadra"),
+                   $r->request->get("stadioSquadra"),
+                   "","","","","","","","","",$r->request->get("scudettiSquadra"));
+
+                   $a = new Account($r->request->get("u"),
+                       $r->request->get("p"),
+                       $r->request->get("nomeSquadra"),
+                       $r->request->get("e"), $r->request->get("n"),
+                       $r->request->get("c"), $data,
+                       $r->request->get("do"), $r->request->get("i"),
+                       $r->request->get("pr"), $r->request->get("t"),
+                       "", $r->request->get("tipo"));
 
 
-                $a = new Account($r->request->get("u"),
-                    $r->request->get("p"),
-                    $r->request->get("s"),
-                    $r->request->get("e"), $r->request->get("n"),
-                    $r->request->get("c"), $data,
-                    $r->request->get("do"), $r->request->get("i"),
-                    $r->request->get("pr"), $r->request->get("t"),
-                    "", $r->request->get("tipo"));
-                try {
+                   $db = new GestoreAccount();
+                   $pathSquadra=Utility::loadFileSquadra("fileSquadra","account");
+                   $path=Utility::loadFile("file","account");
+                   if($pathSquadra!=null || $path!=null) {
+                       $s->setImmagine($pathSquadra);
+                       $a->setImmagine($path);
 
-                    $g = new GestoreAccount();
-                    $path=Utility::loadFile("file","account");
-                    if($path!=null){
-                        $a->setImmagine($path);
-                        $g->aggiungiAccount_A_T_S($a);
-                        return new Response("inserimento andato a buon fine");
-                        }
-                        else return new Response("NON RIESCO A CARICARE LA FOTO");
+                       $db->aggiungiSquadra($s);
+                       $db->aggiungiAccount_A_T_S($a);
+                       return new Response("inserimento andato a buon fine");
+                   }
 
-                    } catch (\Exception $e) {
-                        return new Response($e->getMessage(), 404);
-                }
-            }
+               }else {
+
+                   $a = new Account($r->request->get("u"),
+                       $r->request->get("p"),
+                       $r->request->get("s"),
+                       $r->request->get("e"), $r->request->get("n"),
+                       $r->request->get("c"), $data,
+                       $r->request->get("do"), $r->request->get("i"),
+                       $r->request->get("pr"), $r->request->get("t"),
+                       "", $r->request->get("tipo"));
+
+                   try {
+
+
+                       $g = new GestoreAccount();
+                       $path = Utility::loadFile("file", "account");
+                       if ($path != null) {
+                           $a->setImmagine($path);
+                           $g->aggiungiAccount_A_T_S($a);
+                           return new Response("inserimento andato a buon fine");
+                       }
+                   }catch (\Exception $e) {
+                       return new Response($e->getMessage(), 404);
+                   }
+
+            }}
             else
                 if($attore=="calciatore") {
 
@@ -102,9 +136,12 @@ return new Response("error");
                         $r->request->get("im"), $r->request->get("nazionalita"));
                     try {
                         $g = new GestoreAccount();
-                        $g->aggiungiAccount_C($a);
-                        return new Response("inserimento andato a buon fine");
-                    } catch (\Exception $e) {
+                        $path = Utility::loadFile("file", "account");
+                        if ($path != null) {
+                            $a->setImmagine($path);
+                            $g->aggiungiAccount_C($a);
+                            return new Response("inserimento andato a buon fine");
+                        } } catch (\Exception $e) {
                         return new Response($e->getMessage(), 404);
                     }
                 }
@@ -298,19 +335,38 @@ return new Response("nessun tipo");
     }
 
     /**
-     * @Route("/account/Staff/convalida",name="convalidaAccount")
+     * @Route("/account/staff/convalida",name="convalidaAccount")
      * @Method("POST")
      */
     public function convalidaAccount(Request $request)
     {
         $g = new GestoreAccount();
+        $u=$_SESSION["username"];
         try {
             $g->convalidaAccount_A_G($request->request->get("u"));
-            return new Response("account convalidato");
+            return $this->redirect("/yourteam/web/app_dev.php/account/staff_allenatore_tifoso/".$u);
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }
 
     }
+    /**
+     * @Route("/account/ConvalidaForm")
+     * @Method("GET")
+     */
+     public function ConvalidaForm()
+     {
+        $u=$_SESSION["username"];
+
+         $g = new GestoreAccount();
+         try {
+             $a=$g->dammiAccountDaConvalidare();
+             $staff=$g->ricercaAccount_A_T_S($u);
+            return $this->render("staff/utentiDaConvalidare.html.twig", array("utente" => $a,"staff" => $staff));
+         }catch (\Exception $e) {
+             return new Response($e->getMessage(), 404);
+         }
+
+     }
 
 }

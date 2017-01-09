@@ -3,17 +3,31 @@
 	<head>
 		<script type="text/javascript">
 
+function func(){
+	var p1=document.getElementById("pwd").value;
+	var p2=document.getElementById("pwd2").value;
+
+	if(p1!=p2){
+		document.getElementById("psw").style.color="red";
+	}else{
+		document.getElementById("psw").style.color="green";
+	}
+}
 			function changeTipo(tipo){
 
 				var form=document.getElementById("f");
 				var t=document.getElementById("t");
 				var r=document.getElementById("rafel");
 				var s=document.getElementById("scritta");
+				var squadra = document.getElementById("squadra");
+				var elencoSquadre= document.getElementById("divSceltaSquadre");
 				if(tipo=="staff"){
 					form.action="staff_allenatore_tifoso/aggiungi";
 					t.value="staff";
 					s.innerHTML="username"
 					r.hidden=true;
+					elencoSquadre.hidden=true;
+					squadra.hidden=false;
 				}
 				else
 				if(tipo=="allenatore"){
@@ -21,6 +35,8 @@
 					t.value="allenatore";
 					s.innerHTML="codice contratto F.I.G.C";
 					r.hidden=true;
+					elencoSquadre.hidden=false;
+					squadra.hidden=true;
 				}
 				else
 				if(tipo=="tifoso"){
@@ -28,11 +44,15 @@
 					t.value="tifoso";
 					s.innerHTML="username"
 					r.hidden=true;
+					elencoSquadre.hidden=false;
+					squadra.hidden=true;
 				}else
 				if(tipo=="giocatore"){
 					form.action="calciatore/aggiungi";
 					t.value="giocatore";
 					r.hidden=false;
+					elencoSquadre.hidden=false;
+					squadra.hidden=true;
 					s.innerHTML="codice contratto F.I.G.C"
 				}
 			}

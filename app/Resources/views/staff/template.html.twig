@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<script type="text/javascript">
+
+			function func(){
+				var p1=document.getElementById("pwd").value;
+				var p2=document.getElementById("pwd2").value;
+
+				if(p1!=p2){
+					document.getElementById("psw").style.color="red";
+				}else{
+					document.getElementById("psw").style.color="green";
+				}
+			}
+			</script>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta charset="utf-8">
 		<title>Your Team</title>
@@ -49,8 +62,8 @@
 		  <ul class="nav nav-stacked">
 
 			<li><a href="javascript:;"><i class="glyphicon glyphicon-flash"></i> Home</a></li>
-			<li><a href="javascript:;"><i class="glyphicon glyphicon-link"></i>convalida</a></li>
-			<li><a href="javascript:;"><i class="glyphicon glyphicon-list-alt"></i> ricerca account</a></li>
+			<li><a href="/yourteam/web/app_dev.php/account/ConvalidaForm"><i class="glyphicon glyphicon-link"></i>convalida</a></li>
+			<li><a href=""><i class="glyphicon glyphicon-list-alt"></i> ricerca account</a></li>
 			<li><a href="javascript:;"><i class="glyphicon glyphicon-book"></i> statistiche partite</a></li>
 			<li><a href="javascript:;"><i class="glyphicon glyphicon-briefcase"></i> statistiche giocatore </a></li>
 
