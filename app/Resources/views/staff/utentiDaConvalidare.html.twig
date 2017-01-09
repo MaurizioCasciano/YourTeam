@@ -1,0 +1,31 @@
+{% extends 'staff/template.html.twig' %}
+{% block utente %}
+    <form method="post">
+        <button type="submit" style=" background: transparent; border: transparent">{{ staff.getNome() }}  {{ staff.getCognome() }}</button></form>
+{% endblock %}
+{% block contenuto %}
+    <form class="form-horizontal" method="POST" action="/yourteam/web/app_dev.php/account/staff/convalida" id="f" enctype="multipart/form-data">
+
+    <div class="form-group" id="divSceltaSquadre">
+        <label class="control-label col-sm-2">Scegli utente da convalidare</label>
+        <div class="row">
+            <select name="u">
+
+
+            {% for u in utente %}
+                <div class="col-sm-1 col-md-offset-2">
+                    <option value="{{u.getUsernamecodiceContratto()}}"/>{{ u.getNome() }} {{ u.getCognome() }}
+                </div>
+            {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-info">Conferma</button>
+        </div>
+    </div>
+    </form>
+
+{% endblock %}

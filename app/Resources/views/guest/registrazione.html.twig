@@ -1,7 +1,7 @@
 {% extends 'guest/template.html.twig' %}
 {% block contenuto %}
 
-<form class="form-horizontal" method="POST" action="" id="f" enctype="multipart/form-data">
+<form data-toggle="validator" class="form-horizontal" method="POST" action="" id="f" enctype="multipart/form-data" role="form">
 	<!--apro la form-->
 
 	<input type="text" name="tipo" value="x" class="form-control" id="t" style="visibility: hidden">
@@ -91,46 +91,95 @@
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="pwd">Password</label>
 				<div class="col-sm-10">
-					<input type="password" name="p" id="pwd" class="form-control">
-				</div>
-			</div>
+					<input type="password" name="p" id="pwd" class="form-control" required>
+				</div></div>
 
-			<div class="form-group">
-				<label class="control-label col-sm-2" for="pwd2">Conferma password(da fare)</label>
+
+	<div class="form-group">
+				<label class="control-label col-sm-2" for="pwd2" id="psw">Conferma password</label>
 				<div class="col-sm-10">
-					<input type="password" id="pwd2" class="form-control">
+					<input type="password" onkeyup="func()" id="pwd2" class="form-control" required>
 				</div>
 			</div>
 
-			<div class="form-group" id="divSceltaSquadre">
+
+	<div class="form-group" id="rafel" hidden> <!-- mi serve per inserire label e campo in una riga ben formattata-->
+		<label class="control-label col-sm-2" for="nome">Nazionalità</label> <!--control-label mi inserisce il testo vicino al campo, col-sm-2 mi fa una colonna di grandezza 2-->
+		<div class="col-sm-10"> <!--colonna di grandezza 10 -->
+			<input type="text" id="nazionalita" name="nazionalita" class="form-control" placeholder="italiana" onfocus="checkPassword()">
+		</div>
+<br>
+	</div>
+
+			<div class="form-group" id="divSceltaSquadre" hidden>
 				<label class="control-label col-sm-2">Scegli squadra</label>
 				<div class="row">
+					<select name="s">
 				{% for s in squadre %}
 					<div class="col-sm-1 col-md-offset-2">
-						<label><input type="radio" name="s" value="{{s.getNome()}}">{{ s.getNome() }}</label>
+						<label><option value="{{s.getNome()}}">{{ s.getNome() }}</label>
 					</div>
 				{% endfor %}
+					</select>
 				</div>
 			</div>
 
-		   <div class="form-group" id="rafel" hidden> <!-- mi serve per inserire label e campo in una riga ben formattata-->
-			<label class="control-label col-sm-2" for="nome">Nazionalità</label> <!--control-label mi inserisce il testo vicino al campo, col-sm-2 mi fa una colonna di grandezza 2-->
-			<div class="col-sm-10"> <!--colonna di grandezza 10 -->
-				<input type="text" id="nazionalita" name="nazionalita" class="form-control" placeholder="italiana">
-			</div>
 
-			</div>
 
-			<div class="form-group">
-				<label class="control-label col-sm-2" for="scegli">Scegli foto profilo</label>
 
-				<div class="col-sm-10">
-					<!--<label class="btn btn-default btn-file" style="background-color:#182a3f;"> FOTO <input type="file" style="display: none;"  onchange="$('#upload-file-info').html($(this).val());">
-					</label>
-					<span class='label label-info' id="upload-file-info"></span>-->
-					<input type="file" class="waves-effect waves-light btn" name="file" />
-				</div>
+	<div class="form-group">
+		<label class="control-label col-sm-2" for="scegli">Scegli foto profilo</label>
+
+		<div class="col-sm-10">
+			<!--<label class="btn btn-default btn-file" style="background-color:#182a3f;"> FOTO <input type="file" style="display: none;"  onchange="$('#upload-file-info').html($(this).val());">
+            </label>
+            <span class='label label-info' id="upload-file-info"></span>-->
+			<input type="file" class="waves-effect waves-light btn" name="file" />
+		</div>
+	</div>
+
+	<div class="form-group" id="squadra" hidden>
+
+		<hr>
+
+		<div class="form-group"><!-- mi serve per inserire label e campo in una riga ben formattata-->
+		<label class="control-label col-sm-2" for="nome">Nome squadra</label> <!--control-label mi inserisce il testo vicino al campo, col-sm-2 mi fa una colonna di grandezza 2-->
+		<div class="col-sm-10"> <!--colonna di grandezza 10 -->
+			<input type="text" id="nomeSquadra" name="nomeSquadra" class="form-control" placeholder="">
+		</div></div>
+
+		<div class="form-group">
+		<label class="control-label col-sm-2" for="nome">Sede squadra</label> <!--control-label mi inserisce il testo vicino al campo, col-sm-2 mi fa una colonna di grandezza 2-->
+		<div class="col-sm-10"> <!--colonna di grandezza 10 -->
+			<input type="text" id="sedeSquadra" name="sedeSquadra" class="form-control" placeholder="">
+		</div></div>
+
+		<div class="form-group">
+		<label class="control-label col-sm-2" for="nome">Stadio</label> <!--control-label mi inserisce il testo vicino al campo, col-sm-2 mi fa una colonna di grandezza 2-->
+		<div class="col-sm-10"> <!--colonna di grandezza 10 -->
+			<input type="text" id="stadioSquadra" name="stadioSquadra" class="form-control" placeholder="">
+		</div></div>
+
+		<div class="form-group">
+		<label class="control-label col-sm-2" for="nome">Scudetti</label> <!--control-label mi inserisce il testo vicino al campo, col-sm-2 mi fa una colonna di grandezza 2-->
+		<div class="col-sm-10"> <!--colonna di grandezza 10 -->
+			<input type="text" id="scudettiSquadra" name="scudettiSquadra" class="form-control" placeholder="">
+		</div></div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="scegli">Scegli foto squadra</label>
+
+			<div class="col-sm-10">
+				<!--<label class="btn btn-default btn-file" style="background-color:#182a3f;"> FOTO <input type="file" style="display: none;"  onchange="$('#upload-file-info').html($(this).val());">
+                </label>
+                <span class='label label-info' id="upload-file-info"></span>-->
+				<input type="file" class="waves-effect waves-light btn" name="fileSquadra" />
 			</div>
+		</div>
+
+<hr>
+	</div>
+
 
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">

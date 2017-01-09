@@ -11,6 +11,7 @@ namespace AppBundle\it\unisa\account;
 
 
 use AppBundle\Utility\DB;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 
 class GestoreAccount
@@ -70,6 +71,26 @@ class GestoreAccount
         return $user;
     }
 */
+
+public function aggiungiSquadra(Squadra $s){
+
+    $sql="INSERT INTO squadra (nome,sede,stadio,golfatti,golsubiti,possessopalla,vittorie,sconfitte,pareggi,emblema,scudetti,immagine) 
+        VALUES ('" . $s->getNome() . "','"
+        . $s->getSede() . "','"
+        . $s->getStadio() . "','"
+        . $s->getGolfatti() . "','"
+        . $s->getGolsubiti() . "','"
+        . $s->getPossessopalla() . "','"
+        . $s->getVittorie() . "','"
+        . $s->getSconfitte(). "','"
+        . $s->getPareggi() . "','"
+        . $s->getEmblema(). "','"
+        . $s->getScudetti(). "','"
+        . $s->getImmagine(). "');";
+
+     $this->conn->query($sql);
+
+}
     public function aggiungiAccount_A_T_S(Account $a){
 
 
@@ -92,7 +113,10 @@ class GestoreAccount
                 . $a->getTelefono(). "','"
                 . $a->getTipo(). "','"
                 . $a->getImmagine(). "');";
+
+
         }
+
         else throw new \Exception("la tipologia account scelta non va bene");
 
         $ris = $this->conn->query($sql);
@@ -121,7 +145,7 @@ class GestoreAccount
                 //$nome, $sede, $stadio, $golfatti, $golsubiti, $possessopalla, $vittorie, $sconfitte, $pareggi, $emblema, $scudetti
                 $s=new Squadra($row["nome"],$row["sede"],$row["stadio"],
                     $row["golfatti"],$row["golsubiti"],$row["possessopalla"],
-                    $row["vittorie"],$row["sconfitte"],$row["pareggi"],$row["emblema"],$row["scudetti"]);
+                    $row["vittorie"],$row["sconfitte"],$row["pareggi"],$row["emblema"],$row["scudetti"],$row["immagine"]);
                 $squadre[$i]=$s;
                 $i++;
             }
@@ -255,6 +279,7 @@ class GestoreAccount
         catch (\Exception $e){
             throw new \Exception("l'utente da eliminare non esiste");
         }
+        return "Andato a buon fine";
     }
 
     public function eliminaAccount_G($u){
@@ -272,6 +297,7 @@ class GestoreAccount
         catch (\Exception $e){
             throw new \Exception("l'utente da eliminare non esiste");
         }
+        return "Andato a buon fine";
     }
 
     public function aggiungiAccount_C(AccountCalciatore $c){
@@ -323,6 +349,28 @@ class GestoreAccount
             $this->conn->query($sql);
 
         }
+    }
+    public function dammiAccountDaConvalidare(){
+
+        $sql="SELECT * FROM utente WHERE attivo ='0' AND tipo !='staff' ";
+        try {
+            $ris = $this->conn->query($sql);
+            if($ris->num_rows<=0)throw new Exception("Nessun utente trovato");
+          while($row = $ris->fetch_assoc()) {
+              $user = new Account($row["username_codiceContratto"],$row["password"],
+                  $row["squadra"],$row["email"],$row["nome"],
+                  $row["cognome"],$row["datadinascita"],$row["domicilio"],
+                  $row["indirizzo"],$row["provincia"],$row["telefono"],
+                  $row["immagine"],$row["tipo"]);
+
+              $utenti[]=$user;
+          }
+
+        }catch(\Exception $e){
+
+
+        }
+        return $utenti;
     }
 
     public function __destruct()

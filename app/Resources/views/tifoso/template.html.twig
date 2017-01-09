@@ -11,6 +11,19 @@
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <link href="{{ asset("assetTemplate/css/styles.css") }}" rel="stylesheet">
+		<script type="text/javascript">
+
+			function func(){
+				var p1=document.getElementById("pwd").value;
+				var p2=document.getElementById("pwd2").value;
+
+				if(p1!=p2){
+				}else{
+					document.getElementById("psw").style.color="red";
+					document.getElementById("psw").style.color="green";
+				}
+			}
+		</script>
 
     {% block head %}
     {% endblock %}

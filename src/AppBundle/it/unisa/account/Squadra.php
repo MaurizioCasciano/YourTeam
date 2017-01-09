@@ -22,7 +22,7 @@ class Squadra
     private $pareggi;
     private $emblema;
     private $scudetti;
-
+    private $immagine;
     /**
      * Squadra constructor.
      * @param $nome
@@ -35,9 +35,10 @@ class Squadra
      * @param $sconfitte
      * @param $pareggi
      * @param $emblema
+     * @param $immagine
      * @param $scudetti
      */
-    public function __construct($nome, $sede, $stadio, $golfatti, $golsubiti, $possessopalla, $vittorie, $sconfitte, $pareggi, $emblema, $scudetti)
+    public function __construct($nome, $sede, $stadio, $golfatti, $golsubiti, $possessopalla, $vittorie, $sconfitte, $pareggi, $emblema,$immagine,$scudetti)
     {
         $this->nome = $nome;
         $this->sede = $sede;
@@ -50,11 +51,23 @@ class Squadra
         $this->pareggi = $pareggi;
         $this->emblema = $emblema;
         $this->scudetti = $scudetti;
-    }
+        $this->immagine = $immagine;
 
-    /**
-     * @return mixed
-     */
+    }/**
+ * @return mixed
+ */
+public function getImmagine()
+{
+    return $this->immagine;
+}/**
+ * @param mixed $immagine
+ */
+public function setImmagine($immagine)
+{
+    $this->immagine = $immagine;
+}
+
+
     public function getNome()
     {
         return $this->nome;

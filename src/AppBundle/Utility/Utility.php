@@ -30,4 +30,21 @@ class Utility
 
     }
 
+    public static function loadFileSquadra($nameinputFile,$nomeCartella)
+    {
+        // define("UPLOAD_DIR", "../web/imgArt/");
+        define("UPLOAD_DIRS", "../web/ImmaginiApp/".$nomeCartella."/");
+
+        if(isset($_FILES[$nameinputFile]))
+        {
+            $file = $_FILES[$nameinputFile];
+            if($file["error"] == UPLOAD_ERR_OK and is_uploaded_file($file["tmp_name"]))
+            {
+                move_uploaded_file($file['tmp_name'], UPLOAD_DIRS.time().$file['name']);
+                return (time().$file['name']);
+            }
+        }
+        else return null;
+
+    }
 }
