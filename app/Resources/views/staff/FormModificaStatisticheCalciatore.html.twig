@@ -41,31 +41,17 @@
                    value="{{ statistiche.getPercentualePassaggiRiusciti() }}"><br/>
         </div>
 
-        {#<div>
-            <label for="gol_fatti">Gol Fatti</label>
-            <input id="gol_fatti" type="number" name="gol_fatti" value="{{ statistiche.golFatti }}"><br/>
-        </div>
 
-        <div>
-            <label for="gol_subiti">Gol Subiti</label>
-            <input id="gol_subiti" type="number" name="gol_subiti" value="{{ statistiche.golSubiti }}"><br/>
-        </div>
+        <input id="gol_fatti" type="hidden" name="gol_fatti" value="{{ statistiche.golFatti }}"><br/>
 
-        <div>
-            <label for="assist">Assist</label>
-            <input id="assist" type="number" name="assist" value="{{ statistiche.assist }}"><br/>
-        </div>
+        <input id="gol_subiti" type="hidden" name="gol_subiti" value="{{ statistiche.golSubiti }}"><br/>
 
-        <div>
-            <label for="ammonizioni">Ammonizioni</label>
-            <input id="ammonizioni" type="number" name="ammonizioni"
-                   value="{{ statistiche.ammonizioni }}"><br/>
-        </div>
+        <input id="assist" type="hidden" name="assist" value="{{ statistiche.assist }}"><br/>
 
-        <div>
-            <label for="espulsioni">Espulsioni</label>
-            <input id="espulsioni" type="number" name="espulsioni" value="{{ statistiche.espulsioni }}"><br/>
-        </div>#}
+        <input id="ammonizioni" type="hidden" name="ammonizioni"
+               value="{{ statistiche.ammonizioni }}"><br/>
+
+        <input id="espulsioni" type="hidden" name="espulsioni" value="{{ statistiche.espulsioni }}"><br/>
 
         <div>
             <input type="submit" value="Salva">
