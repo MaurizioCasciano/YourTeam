@@ -8,9 +8,7 @@
                     <div class="panel-control">
                     </div>
                 </div>
-
-
-                <form action="/comunicazione/allenatore/inviaMessaggioVoce" method="post">
+                <form action="/yourteam/web/app_dev.php/comunicazione/allenatore/inviaMessaggioVoce" method="post">
                     <div class="container">
                         <div class="row">
                             <div id="form">
@@ -22,9 +20,11 @@
                     <div class="row">
                         <div class='col-sm-12'>
                             <div class="form-group">
-                                Data: <input type='date' maxlength="10" class="form-control" name="data"/>
+                                <input type="hidden" value="{{ d }}" name="d">
+
+                                Data: <input type='date' maxlength="20" class="form-control" name="data"/>
                                 Ora: <input type='time' maxlength="10" class="form-control" name="ora"/>
-                                Luogo:<input type='text' maxlength="10" class="form-control" name="luogo"/></br>
+                                Luogo:<input type='text' maxlength="30" class="form-control" name="luogo"/></br>
 
                                 <input type="submit" class="btn btn-default">
                             </div>

@@ -17,7 +17,7 @@
                                 {% if messaggio.getMittente() == "allenatore" %}
                                     <li class="right clearfix">
                                         <span class="chat-img pull-right">
-                                            <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar"
+                                            <img src="{{ asset("ImmaginiApp/account/") }}{{ allenatore.getImmagine() }}"
                                                  class="img-circle"/>
                                         </span>
                                         <div class="chat-body clearfix">
@@ -35,7 +35,7 @@
                                 {% elseif messaggio.getMittente() == "calciatore" %}
                                     <li class="left clearfix">
                                         <span class="chat-img pull-left">
-                                            <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar"
+                                            <img src="{{ asset("ImmaginiApp/account/") }}{{ allenatore.getImmagine() }}"
                                                  class="img-circle"/>
                                         </span>
                                         <div class="chat-body clearfix">
@@ -113,7 +113,7 @@
                 var html = "";
                 for (var i = 0; i < jsonLength; i++) {
                     var result = jsonData.results[i];
-                    html += '<div style="color:#' + result.color + '">(' + result.chattime + ') <b>' + result.usrname + '</b>: ' + result.chattext + '</div>';
+                    html += '<div style="color:' + result.color + '">(' + result.chattime + ') <b>' + result.usrname + '</b>: ' + result.chattext + '</div>';
                     lastTimeID = result.id;
                 }
                 $('#view_ajax').append(html);
@@ -143,7 +143,6 @@
                             senderImgSpan.setAttribute("class", "chat-img pull-right");
                             senderImgSpan.appendChild(senderImg);
                             //senderImgSpan END
-
                             //chatHeaderDiv BEGIN
                             var timeTextNode = document.createTextNode(data.data);
                             var timeSpan = document.createElement("span");

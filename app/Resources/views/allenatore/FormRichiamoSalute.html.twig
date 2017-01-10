@@ -1,7 +1,6 @@
 {% extends 'allenatore/template.html.twig' %}
 {% block contenuto %}
 <div class="container">
-
     <div class="col-md-6 col-lg-6">
         <div class="panel">
             <!--Heading-->
@@ -10,32 +9,29 @@
                 </div>
             </div>
 
-
-
             <div class="container">
                 <div class="col-md-6 col-lg-6">
                 <div id="richiamo">
-                    <h1>Richiamo comportamentale:</h1>
+                    <h1>Richiamo Salute:</h1>
                 </div>
                 <br><br>
                 <div class="row">
-
                 </div>
                 </div>
             </div>
             <div class="row">
                 <div class='col-lg-6'>
                     <div class="form-group">
-                        <form action="/yourteam/web/app_dev.php/comunicazione/allenatore/inviaRichiamoMulta" method="post">
+                        <form action="/yourteam/web/app_dev.php/comunicazione/allenatore/inviaRichiamoDieta" method="post">
                             <fieldset>
-                                <legend>Multa:</legend>
-                                <label id="multa">
-                                    Sei stato multato per comportamenti scorretti. Per chiarimenti mi trovi nel mio ufficio.
+                                <legend>Dieta:</legend>
+                                <label id="dieta">
+                                    Ti consiglio di migliorare e fare attenzione alla tua dieta.
                                 </label>
                                 <br>
                                 <input type="hidden" value="{{ d }}" name="d">
 
-                                <input name ="multa" type="hidden" value="Sei stato multato per comportamenti scorretti. Per chiarimenti mi trovi nel mio ufficio." readonly="readonly">
+                                <input name ="dieta" type="hidden" value="Migliora il tuo stile alimentare se vuoi continuare ad essere preso in considerazione" readonly="readonly">
 
                                 <input type="submit" class="btn btn-default" value="Invia">
                             </fieldset>
@@ -44,16 +40,17 @@
                 </div>
                 <div class='col-lg-6'>
                     <div class="form-group">
-                        <form action="/yourteam/web/app_dev.php/comunicazione/allenatore/inviaRichiamoAvvertimento" method="post">
+                        <form action="/yourteam/web/app_dev.php/comunicazione/allenatore/inviaRichiamoAllenamento" method="post">
                             <fieldset>
-                                <legend>Avvertimento:</legend>
-                                <label id="avvertimento">
-                                    Volevo avvisarti che il tuo comportamento, se non modificato, potrà avere delle conseguenze
+                                <legend>Allenamento:</legend>
+                                <label id="allenamento">
+                                    Ti consiglio di migliorare il tuo regime di allenamento.
                                 </label>
                                 <br>
                                 <input type="hidden" value="{{ d }}" name="d">
 
-                                <input name ="avvertimento" type="hidden" value="Volevo avvisarti che il tuo comportamento portà portare a delle conseguenze." readonly="readonly">
+                                <input name ="allenamento" type="hidden" value="Migliora il tuo regime di allenamento se vuoi continuare ad essere preso in considerazione per gli 11 titolari" readonly="readonly">
+
                                 <input type="submit" class="btn btn-default" value="Invia">
                             </fieldset>
                         </form>
@@ -62,6 +59,10 @@
             </div>
 
         </div>
+
+
+
+
     </div>
 </div>
 {% endblock %}
