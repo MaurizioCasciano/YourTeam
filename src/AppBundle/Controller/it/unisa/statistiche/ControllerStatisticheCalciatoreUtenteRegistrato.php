@@ -34,7 +34,7 @@ class ControllerStatisticheCalciatoreUtenteRegistrato extends Controller
 
     /**
      * Restituisce il form per filtrare i calciatori in base alle loro statistiche.
-     * @Route("/statistiche/user/calciatore/filter/form")
+     * @Route("/statistiche/user/calciatore/filter/form", name = "form_filtra_calciatori")
      * @Method("GET")
      */
     public function getFiltraCalciatoriForm()
@@ -55,46 +55,55 @@ class ControllerStatisticheCalciatoreUtenteRegistrato extends Controller
     }
 
     /**
-     * @Route("/statistiche/user/calciatore/filter/submit")
+     * @Route("/statistiche/user/calciatore/filter/submit", name = "filtra_calciatori")
      * @Method("POST")
      * @param Request $request
      * @return Response
      */
     public function filtraCalciatori(Request $request)
     {
+        //var_dump($request);
+        if (!isset($_SESSION)) {
+            throw new \Exception("SESSION NOT SER");
+        }
+
+        $squadra = $_SESSION["squadra"];
+
         //MIN
-        $minTiriTotali = $request->get("min_tiri_totali");
-        $minTiriPorta = $request->get("min_tiri_porta");
-        $minFalliFatti = $request->get("min_falli_fatti");
-        $minFalliSubiti = $request->get("min_falli_subiti");
-        $minPercentualePassaggiRiusciti = $request->get("min_percentuale_passaggi_riusciti");
-        $minGolFatti = $request->get("min_gol_fatti");
-        $minGolSubiti = $request->get("min_gol_subiti");
-        $minAssist = $request->get("min_assist");
-        $minAmmonizioni = $request->get("min_ammonizioni");
-        $minEspulsioni = $request->get("min_espulsioni");
+        $minTiriTotali = empty($request->get("min_tiri_totali")) ? 0 : $request->get("min_tiri_totali");
+        $minTiriPorta = empty($request->get("min_tiri_porta")) ? 0 : $request->get("min_tiri_porta");
+        $minFalliFatti = empty($request->get("min_falli_fatti")) ? 0 : $request->get("min_falli_fatti");
+        $minFalliSubiti = empty($request->get("min_falli_subiti")) ? 0 : $request->get("min_falli_subiti");
+        $minPercentualePassaggiRiusciti = empty($request->get("min_percentuale_passaggi_riusciti")) ? 0 : $request->get("min_percentuale_passaggi_riusciti");
+        $minGolFatti = empty($request->get("min_gol_fatti")) ? 0 : $request->get("min_gol_fatti");
+        $minGolSubiti = empty($request->get("min_gol_subiti")) ? 0 : $request->get("min_gol_subiti");
+        $minAssist = empty($request->get("min_assist")) ? 0 : $request->get("min_assist");
+        $minAmmonizioni = empty($request->get("min_ammonizioni")) ? 0 : $request->get("min_ammonizioni");
+        $minEspulsioni = empty($request->get("min_espulsioni")) ? 0 : $request->get("min_espulsioni");
 
         //MAX
-        $maxTiriTotali = $request->get("max_tiri_totali");
-        $maxTiriPorta = $request->get("max_tiri_porta");
-        $maxFalliFatti = $request->get("max_falli_fatti");
-        $maxFalliSubiti = $request->get("max_falli_subiti");
-        $maxPercentualePassaggiRiusciti = $request->get("max_percentuale_passaggi_riusciti");
-        $maxGolFatti = $request->get("max_gol_fatti");
-        $maxGolSubiti = $request->get("max_gol_subiti");
-        $maxAssist = $request->get("max_assist");
-        $maxAmmonizioni = $request->get("max_ammonizioni");
-        $maxEspulsioni = $request->get("max_espulsioni");
+        $maxTiriTotali = empty($request->get("max_tiri_totali")) ? PHP_INT_MAX : $request->get("max_tiri_totali");
+        $maxTiriPorta = empty($request->get("max_tiri_porta")) ? PHP_INT_MAX : $request->get("max_tiri_porta");
+        $maxFalliFatti = empty($request->get("max_falli_fatti")) ? PHP_INT_MAX : $request->get("max_falli_fatti");
+        $maxFalliSubiti = empty($request->get("max_falli_subiti")) ? PHP_INT_MAX : $request->get("max_falli_subiti");
+        $maxPercentualePassaggiRiusciti = empty($request->get("max_percentuale_passaggi_riusciti")) ? 100 : $request->get("max_percentuale_passaggi_riusciti");
+        $maxGolFatti = empty($request->get("max_gol_fatti")) ? PHP_INT_MAX : $request->get("max_gol_fatti");
+        $maxGolSubiti = empty($request->get("max_gol_subiti")) ? PHP_INT_MAX : $request->get("max_gol_subiti");
+        $maxAssist = empty($request->get("max_assist")) ? PHP_INT_MAX : $request->get("max_assist");
+        $maxAmmonizioni = empty($request->get("max_ammonizioni")) ? PHP_INT_MAX : $request->get("max_ammonizioni");
+        $maxEspulsioni = empty($request->get("max_espulsioni")) ? PHP_INT_MAX : $request->get("max_espulsioni");
 
         $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
-        $calciatori = $gestoreStatisticheCalciatore->filtraCalciatori($minTiriTotali, $minTiriPorta, $minGolFatti, $minGolSubiti, $minAssist,
+        $calciatori = $gestoreStatisticheCalciatore->filtraCalciatori($squadra, $minTiriTotali, $minTiriPorta, $minGolFatti, $minGolSubiti, $minAssist,
             $minFalliFatti, $minFalliSubiti, $minPercentualePassaggiRiusciti,
             $minAmmonizioni, $minEspulsioni, $maxTiriTotali, $maxTiriPorta,
             $maxGolFatti, $maxGolSubiti, $maxAssist, $maxFalliFatti, $maxFalliSubiti,
             $maxPercentualePassaggiRiusciti, $maxAmmonizioni, $maxEspulsioni);
 
+        //var_dump($calciatori);
 
-        return $this->render(":staff:ViewCalciatoriFiltrati.html.twig", array("calciatori" => $calciatori));
+
+        return $this->render(":staff:ViewListaStatisticheCalciatori.html.twig", array("calciatori" => $calciatori));
     }
 
     /**
