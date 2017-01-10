@@ -148,7 +148,7 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
 
     /**
      * Restituisce la view con la lista delle statistiche dei calciatori della squadra dell'utente.
-     * @Route("/statistiche/staff/calciatore/all")
+     * @Route("/statistiche/user/calciatore/all", name = "lista_statistiche_calciatori")
      * @Method("GET")
      */
     public function getStatisticheCalciatoriView()

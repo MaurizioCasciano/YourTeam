@@ -52,6 +52,10 @@ class GestorePartite
 
             while ($row = $result->fetch_assoc()) {
                 $squadre = explode('-', $row["nome"]);
+
+                //var_dump($squadre);
+                //var_dump($row["nome"]);
+
                 $casa = $squadre[0];
                 $trasferta = $squadre[1];
                 $dateTime = new \DateTime($row["data"]);
@@ -153,26 +157,34 @@ class GestorePartite
     public function modificaPartita(PartitaInterface $old, PartitaInterface $new)
     {
         //ogni squadra può modificare solo le proprie partite.
-        $statement = $this->conn->prepare(
+        if ($statement = $this->conn->prepare(
             "UPDATE partita
                 SET
                 nome = ?,
                 data = ?,
                 stadio = ?
-                WHERE nome = ? AND data = ? AND squadra = ?");
+                WHERE nome = ? AND data = ? AND squadra = ?")
+        ) {
+            $newNome = $new->getNome();
+            $newData = $new->getDataString();
+            $newStadio = $new->getStadio();
 
-        $newNome = $new->getNome();
-        $newData = $new->getDataString();
-        $newStadio = $new->getStadio();
+            $oldNome = $old->getNome();
+            $oldData = $old->getDataString();
+            $oldSquadra = $old->getSquadra();
 
-        $oldNome = $old->getNome();
-        $oldData = $old->getDataString();
-        $oldSquadra = $old->getSquadra();
-
-        $statement->bind_param("ssssss", $newNome, $newData, $newStadio, $oldNome, $oldData, $oldSquadra);
-
-        $success = $statement->execute();
-        return $success;
+            if ($statement->bind_param("ssssss", $newNome, $newData, $newStadio, $oldNome, $oldData, $oldSquadra)) {
+                if ($statement->execute()) {
+                    return true;
+                } else {
+                    throw new \Exception("Statement non eseguito.");
+                }
+            } else {
+                throw new \Exception("Binding non eseguito.");
+            }
+        } else {
+            throw new \Exception("Statement not prepared.");
+        }
     }
 
     public function getCalciatoriConvocati(PartitaInterface $partita)

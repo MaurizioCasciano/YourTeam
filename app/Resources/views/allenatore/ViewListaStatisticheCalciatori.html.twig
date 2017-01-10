@@ -1,0 +1,61 @@
+{% extends ":allenatore:template.html.twig" %}
+{% block head %}
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        th {
+            background-color: #0088CC;
+            color: white;
+        }
+
+        table, th, td {
+            margin: 0 auto;
+            padding: 5%;
+            text-align: center;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+{% endblock %}
+{% block contenuto %}
+
+    <div class="text-right" style="margin-bottom: 10px;">
+        <form action="{{ path('form_filtra_calciatori') }}" method="get">
+            <button type="submit" class="btn btn-default">Filtra</button>
+        </form>
+    </div>
+
+    <div id="accordion" class="panel-group" role="tablist">
+        {% for calciatore in calciatori %}
+            {#{{ dump(calciatore) }}#}
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab">
+                    <h4 class="panel-title">
+                        <button class="collapsed" data-toggle="collapse" data-parent="#accordion"
+                                data-target="#{{ loop.index }}">
+                            <span class="pull-left">{{ calciatore.getNome() |capitalize }}
+                                &nbsp;{{ calciatore.getCognome() |capitalize }}</span>
+                            <span class="pull-right"></span>
+                        </button>
+                    </h4>
+                </div>
+                <div id="{{ loop.index }}" class="panel-collapse collapse" role="tabpanel">
+                    <div class="panel-body">
+                        {% if calciatore.hasStatistiche() %}
+                            {% include "staff/ViewStatisticheCalciatore.html.twig" with {"calciatore" : calciatore} only %}
+                        {% else %}
+                            <h2>Statistiche non disponibili</h2>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+{% endblock %}

@@ -11,19 +11,19 @@
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <link href="{{ asset("assetTemplate/css/styles.css") }}" rel="stylesheet">
-		<script type="text/javascript">
+    <script type="text/javascript">
 
-			function func(){
-				var p1=document.getElementById("pwd").value;
-				var p2=document.getElementById("pwd2").value;
+        function func() {
+            var p1 = document.getElementById("pwd").value;
+            var p2 = document.getElementById("pwd2").value;
 
-				if(p1!=p2){
-				}else{
-					document.getElementById("psw").style.color="red";
-					document.getElementById("psw").style.color="green";
-				}
-			}
-		</script>
+            if (p1 != p2) {
+            } else {
+                document.getElementById("psw").style.color = "red";
+                document.getElementById("psw").style.color = "green";
+            }
+        }
+    </script>
 
     {% block head %}
     {% endblock %}
@@ -64,12 +64,26 @@
 
             <ul class="nav nav-stacked">
 
-                <li><a href="{{ path('lista_partite') }}"><i class="glyphicon glyphicon-link"></i>Partite</a></li>
+                <li><a href="javascript:;"><i class="glyphicon glyphicon-flash"></i>Home</a></li>
+                <li>
+                    <a href="{{ path('lista_partite') }}">
+                        <i class="fa fa-futbol-o">&nbsp;Partite</i>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('lista_statistiche_partite') }}">
+                        <i class="fa fa-book">&nbsp;Statistiche Partite</i>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('lista_statistiche_calciatori') }}">
+                        <i class="fa fa-users">&nbsp;Statistiche Calciatori</i>
+                    </a>
+                </li>
+
                 <li><a href="javascript:;"><i class="glyphicon glyphicon-flash"></i> rosa squadra preferita</a></li>
                 <li><a href=""><i
                                 class="glyphicon glyphicon-link"></i> home</a></li>
-                <li><a href="javascript:;"><i class="glyphicon glyphicon-list-alt"></i> statistiche Giocatore</a></li>
-                <li><a href="javascript:;"><i class="glyphicon glyphicon-book"></i> statistiche partite</a></li>
                 <li>
                     <a href="/yourteam/web/app_dev.php/contenuti/utenteRegistrato/visualizzaElencoContenutiPerTipo/video"><i
                                 class="glyphicon glyphicon-briefcase"></i> video</a></li>
