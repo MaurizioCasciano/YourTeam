@@ -13,7 +13,6 @@ use AppBundle\it\unisa\account\GestoreAccount;
  */
 class Messaggio
 {
-
     private $mittente;
     private $calciatore;
     private $allenatore;
@@ -88,6 +87,7 @@ class Messaggio
         $this->tipo = $tipo;
     }
 
+
     /**
      * @return mixed
      */
@@ -101,12 +101,11 @@ class Messaggio
                 $this->nomeMittente = $accountAllenatore->getNome();
                 $this->cognomeMittente = $accountAllenatore->getCognome();
             } else if ($this->mittente == "calciatore") {
-                $accountCalciatore = $gestoreAccount->ricercaAccount_G($this->allenatore);
+                $accountCalciatore = $gestoreAccount->ricercaAccount_G($this->calciatore);
                 $this->nomeMittente = $accountCalciatore->getNome();
                 $this->cognomeMittente = $accountCalciatore->getCognome();
             }
         }
-
         return $this->nomeMittente;
     }
 
@@ -131,7 +130,7 @@ class Messaggio
                 $this->nomeMittente = $accountAllenatore->getNome();
                 $this->cognomeMittente = $accountAllenatore->getCognome();
             } else if ($this->mittente == "calciatore") {
-                $accountCalciatore = $gestoreAccount->ricercaAccount_G($this->allenatore);
+                $accountCalciatore = $gestoreAccount->ricercaAccount_G($this->calciatore);
                 $this->nomeMittente = $accountCalciatore->getNome();
                 $this->cognomeMittente = $accountCalciatore->getCognome();
             }
@@ -157,7 +156,7 @@ class Messaggio
             $gestoreAccount = new GestoreAccount();
 
             if ($this->mittente == "allenatore") {
-                $accountCalciatore = $gestoreAccount->ricercaAccount_G($this->allenatore);
+                $accountCalciatore = $gestoreAccount->ricercaAccount_G($this->calciatore);
                 $this->nomeDestinatario = $accountCalciatore->getNome();
                 $this->cognomeDestinatario = $accountCalciatore->getCognome();
             } else if ($this->mittente == "calciatore") {
@@ -187,7 +186,7 @@ class Messaggio
             $gestoreAccount = new GestoreAccount();
 
             if ($this->mittente == "allenatore") {
-                $accountCalciatore = $gestoreAccount->ricercaAccount_G($this->allenatore);
+                $accountCalciatore = $gestoreAccount->ricercaAccount_G($this->calciatore);
                 $this->nomeDestinatario = $accountCalciatore->getNome();
                 $this->cognomeDestinatario = $accountCalciatore->getCognome();
             } else if ($this->mittente == "calciatore") {

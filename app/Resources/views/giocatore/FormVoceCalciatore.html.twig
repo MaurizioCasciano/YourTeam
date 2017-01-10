@@ -10,7 +10,7 @@
                 </div>
 
 
-                <form action="/comunicazione/giocatore/inviaMessaggioVoce" method="post">
+                <form action="/yourteam/web/app_dev.php/comunicazione/giocatore/inviaMessaggioVoce" method="post">
                     <div class="container">
                         <div id="form">
                             <h1>Messaggio a voce: Allenatore</h1>
@@ -24,9 +24,12 @@
                         <div class='col-sm-12'>
                             <div class="form-group">
                                 </br>
-                                Data: <input type='date' maxlength="10" class="form-control" name="data"/>
+                                <input type="hidden" value="{{ d }}" name="d">
+
+                                Data: <input type='date' maxlength="20" class="form-control" name="data"/>
                                 Ora: <input type='time' maxlength="10" class="form-control" name="ora"/>
-                                Luogo:<input type='text' maxlength="10" class="form-control" name="luogo"/
+                                Luogo:<input type='text' maxlength="30" class="form-control" name="luogo"/>
+
                                 <input type="submit" class="btn btn-default">
                             </div>
                         </div>
