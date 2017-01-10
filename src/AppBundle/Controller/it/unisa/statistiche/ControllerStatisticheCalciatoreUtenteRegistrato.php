@@ -102,24 +102,18 @@ class ControllerStatisticheCalciatoreUtenteRegistrato extends Controller
 
         //var_dump($calciatori);
 
-
-        return $this->render(":staff:ViewListaStatisticheCalciatori.html.twig", array("calciatori" => $calciatori));
+        if (isset($_SESSION) && isset($_SESSION["tipo"])) {
+            if ($_SESSION["tipo"] == "allenatore") {
+                return $this->render(":allenatore:ViewListaStatisticheCalciatori.html.twig", array("calciatori" => $calciatori));
+            } else if ($_SESSION["tipo"] == "calciatore") {
+                return $this->render(":calciatore:ViewListaStatisticheCalciatori.html.twig", array("calciatori" => $calciatori));
+            } else if ($_SESSION["tipo"] == "tifoso") {
+                return $this->render(":tifoso:ViewListaStatisticheCalciatori.html.twig", array("calciatori" => $calciatori));
+            } else if ($_SESSION["tipo"] == "staff") {
+                return $this->render(":staff:ViewListaStatisticheCalciatori.html.twig", array("calciatori" => $calciatori));
+            }
+        } else {
+            throw new AccessDeniedException("Access Denied!!!");
+        }
     }
-
-    /**
-     * @Route("/test")
-     */
-    public function filtra(Request $request)
-    {
-        $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
-        $arrayStatistiche = $gestoreStatisticheCalciatore->filtraCalciatori(0, 0, 0, 0, 0,
-            0, 0, 0,
-            0, 0, 999, 999,
-            999, 999, 999, 999, 999,
-            999, 999, 999);
-
-        return new Response(var_dump($arrayStatistiche));
-    }
-
-
 }
