@@ -42,8 +42,10 @@ function modificaPartitaHandler(event) {
     console.log("AJAX Values: ");
     console.log(JSON.stringify(values));
 
+    var url = $($form).attr("action");
+
     $.ajax({
-        url: ROOT_DIR + "/partite/staff/edit/submit",
+        url: url,//ROOT_DIR + "/partite/staff/edit/submit",
         type: "POST",
         dataType: 'json',
         data: {"values": JSON.stringify(values)},

@@ -1,7 +1,7 @@
 {% block contenuto %}
     <h3 style="text-align: center;">Modifica</h3>
 
-    <form class="modifica-partita">
+    <form class="modifica-partita" action="{{ path('modificaPartita') }}" method="post">
         <label for="casa">Casa</label>
         <input id="casa" type="text" name="casa" required="required" value="{{ partita.getCasa() }}"
                data-original-value="{{ partita.getCasa() }}">
