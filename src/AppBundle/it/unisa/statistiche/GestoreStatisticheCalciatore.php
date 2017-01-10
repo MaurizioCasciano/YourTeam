@@ -8,7 +8,6 @@
 
 namespace AppBundle\it\unisa\statistiche;
 
-use AppBundle\it\unisa\account\GestoreAccount;
 use AppBundle\it\unisa\partite\PartitaInterface;
 use AppBundle\Utility\DB;
 
@@ -211,69 +210,73 @@ class GestoreStatisticheCalciatore
      * @return StatisticheCalciatore|null
      */
     public
-    function filtraCalciatori($minTiriTotali, $minTiriPorta, $minGolFatti, $minGolSubiti, $minAssist,
+    function filtraCalciatori($squadra, $minTiriTotali, $minTiriPorta, $minGolFatti, $minGolSubiti, $minAssist,
                               $minFalliFatti, $minFalliSubiti, $minPercentualePassaggiRiusciti,
                               $minAmmonizioni, $minEspulsioni, $maxTiriTotali, $maxTiriPorta,
                               $maxGolFatti, $maxGolSubiti, $maxAssist, $maxFalliFatti, $maxFalliSubiti,
                               $maxPercentualePassaggiRiusciti, $maxAmmonizioni, $maxEspulsioni)
     {
-        $statement = $this->conn->prepare(
-            "SELECT calciatore,
-                SUM(tiri_totali) AS tiri_totali,
-                SUM(tiri_porta) AS tiri_porta,
-                SUM(falli_fatti) AS falli_fatti,
-                SUM(falli_subiti) AS falli_subiti,
-                (SUM(percentuale_passaggi_riusciti) / COUNT(calciatore)) AS percentuale_passaggi_riusciti,
-                SUM(gol_fatti) AS gol_fatti,
-                SUM(gol_subiti) AS gol_subiti,
-                SUM(assist) AS assist,
-                SUM(ammonizioni) AS ammonizioni,
-                SUM(espulsioni) AS espulsioni,
-                COUNT('calciatore') AS partite_giocate
-            FROM
-                statistiche_calciatore
-            GROUP BY (calciatore)
-            HAVING
-              SUM(tiri_totali) >= ? AND SUM(tiri_totali) <= ? AND
-              SUM(tiri_porta) >= ? AND SUM(tiri_porta) <= ? AND 
-              SUM(falli_fatti) >= ? AND SUM(falli_fatti) <= ? AND 
-              SUM(falli_subiti) >= ? AND SUM(falli_subiti) <= ? AND 
-              (SUM(percentuale_passaggi_riusciti) / COUNT(calciatore)) >= ? AND (SUM(percentuale_passaggi_riusciti) / COUNT(calciatore)) <= ? AND 
-              SUM(gol_fatti) >= ? AND SUM(gol_fatti) <= ? AND 
-              SUM(gol_subiti) >= ? AND SUM(gol_subiti) <= ? AND 
-              SUM(assist) >= ? AND SUM(assist) <= ? AND 
-              SUM(ammonizioni) >= ? AND SUM(ammonizioni) <= ? AND 
-              SUM(espulsioni) >= ? AND SUM(espulsioni) <= ?;");
+        $calciatori = $this->getCalciatori($squadra);
+        //var_dump($calciatori);
+        $filtrati = array();
 
-        $statement->bind_param("iiiiiiiiiiiiiiiiiiii", $minTiriTotali, $maxTiriTotali, $minTiriPorta, $maxTiriPorta, $minFalliFatti, $maxFalliFatti,
-            $minFalliSubiti, $maxFalliSubiti, $minPercentualePassaggiRiusciti, $maxPercentualePassaggiRiusciti, $minGolFatti, $maxGolFatti, $minGolSubiti,
-            $maxGolSubiti, $minAssist, $maxAssist, $minAmmonizioni, $maxAmmonizioni, $minEspulsioni, $maxEspulsioni);
-        $executed = $statement->execute();
-        $result = $statement->get_result();
+        foreach ($calciatori as $calciatore) {
+            if ($calciatore->hasStatistiche()) {
+                $statistiche = $calciatore->getStatistiche();
 
-        if ($result->num_rows > 0) {
-            /*$arrayStatistiche = array();
+                $tiriTotali = $statistiche->getTiriTotali();
+                $tiriPorta = $statistiche->getTiriPorta();
+                $falliFatti = $statistiche->getFalliFatti();
+                $falliSubiti = $statistiche->getFalliSubiti();
+                $percentualePassaggiRiusciti = $statistiche->getPercentualePassaggiRiusciti();
+                $golFatti = $statistiche->getGolFatti();
+                $golSubiti = $statistiche->getGolSubiti();
+                $assist = $statistiche->getAssist();
+                $ammonizioni = $statistiche->getAmmonizioni();
+                $espulsioni = $statistiche->getEspulsioni();
 
-            for ($i = 0; $row = $result->fetch_assoc(); $i++) {
-                $arrayStatistiche[] = new StatisticheCalciatore($row["calciatore"], $row["tiri_totali"], $row["tiri_porta"],
-                    $row["falli_fatti"], $row["falli_subiti"], $row["percentuale_passaggi_riusciti"], $row["gol_fatti"],
-                    $row["gol_subiti"], $row["assist"], $row["ammonizioni"], $row["espulsioni"], $row["partite_giocate"]);
+                /*var_dump($calciatore);
+                var_dump($tiriTotali >= $minTiriTotali && $tiriTotali <= $maxTiriTotali);
+                var_dump($tiriPorta >= $minTiriPorta && $tiriPorta <= $maxTiriPorta);
+                var_dump($golFatti >= $minGolFatti && $golFatti <= $maxGolFatti);
+                var_dump($golSubiti >= $minGolSubiti && $golSubiti <= $maxGolSubiti);
+                var_dump($assist >= $minAssist && $assist <= $maxAssist);
+                var_dump($assist);
+                var_dump($minAssist);
+                var_dump($maxAssist);
+
+
+                var_dump($falliFatti >= $minFalliFatti && $falliFatti <= $maxFalliFatti);
+                var_dump($falliSubiti >= $minFalliSubiti && $falliSubiti <= $maxFalliSubiti);
+                var_dump($percentualePassaggiRiusciti >= $minPercentualePassaggiRiusciti && $percentualePassaggiRiusciti <= $maxPercentualePassaggiRiusciti);
+                var_dump($ammonizioni >= $minAmmonizioni && $ammonizioni <= $maxAmmonizioni);
+                var_dump($espulsioni >= $minEspulsioni && $espulsioni <= $maxEspulsioni);*/
+
+                if ($tiriTotali >= $minTiriTotali && $tiriTotali <= $maxTiriTotali) {
+                    if ($tiriPorta >= $minTiriPorta && $tiriPorta <= $maxTiriPorta) {
+                        if ($golFatti >= $minGolFatti && $golFatti <= $maxGolFatti) {
+                            if ($golSubiti >= $minGolSubiti && $golSubiti <= $maxGolSubiti) {
+                                if ($assist >= $minAssist && $assist <= $maxAssist) {
+                                    if ($falliFatti >= $minFalliFatti && $falliFatti <= $maxFalliFatti) {
+                                        if ($falliSubiti >= $minFalliSubiti && $falliSubiti <= $maxFalliSubiti) {
+                                            if ($percentualePassaggiRiusciti >= $minPercentualePassaggiRiusciti && $percentualePassaggiRiusciti <= $maxPercentualePassaggiRiusciti) {
+                                                if ($ammonizioni >= $minAmmonizioni && $ammonizioni <= $maxAmmonizioni) {
+                                                    if ($espulsioni >= $minEspulsioni && $espulsioni <= $maxEspulsioni) {
+                                                        $filtrati[] = $calciatore;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-
-            return $arrayStatistiche;*/
-
-            $arrayCalciatori = array();
-            $gestoreAccount = new GestoreAccount();
-
-            while ($row = $result->fetch_assoc()) {
-                //$arrayCalciatori[] = $gestoreAccount->ricercaAccount_G($row["calciatore"]);
-                $arrayCalciatori[] = "ciao";
-            }
-
-            return $arrayCalciatori;
-        } else {
-            return "Error, num_rows: " + $result->num_rows + " executed: " + $executed + " error: " + $this->conn->error;
         }
+
+        return $filtrati;
     }
 
     /**
