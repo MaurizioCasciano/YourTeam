@@ -123,4 +123,46 @@ class GestioneContenuti
 
         return $contenuto;
     }
+
+    public function contaSquadre(){
+        $sql = "SELECT COUNT(*) as total FROM squadra  ";
+        $res = $this->conn->query($sql);
+        if($res->num_rows <= 0) throw new \Exception("nessuna squadra presente nel database");
+        $row = $res->fetch_assoc();
+        $totale=$row['total'];
+        return $totale;
+    }
+
+    public function contaCalciatori(){
+        $sql = "SELECT COUNT(*) as total FROM calciatore  ";
+        $res = $this->conn->query($sql);
+        if($res->num_rows <= 0) throw new \Exception("nessun calciatore presente nel database");
+        $row = $res->fetch_assoc();
+        $totale=$row['total'];
+        return $totale;
+    }
+    public function contaAllenatori(){
+        $sql = "SELECT COUNT(*) as total FROM utente WHERE tipo='allenatore'  ";
+        $res = $this->conn->query($sql);
+        if($res->num_rows <= 0) throw new \Exception("nessun allenatore presente nel database");
+        $row = $res->fetch_assoc();
+        $totale=$row['total'];
+        return $totale;
+    }
+    public function contaTifosi(){
+        $sql = "SELECT COUNT(*) as total FROM utente WHERE tipo='tifoso'  ";
+        $res = $this->conn->query($sql);
+        if($res->num_rows <= 0) throw new \Exception("nessun tifoso presente nel database");
+        $row = $res->fetch_assoc();
+        $totale=$row['total'];
+        return $totale;
+    }
+    public function contaStaff(){
+        $sql = "SELECT COUNT(*) as total FROM utente WHERE tipo='staff'  ";
+        $res = $this->conn->query($sql);
+        if($res->num_rows <= 0) throw new \Exception("nessun staff presente nel database");
+        $row = $res->fetch_assoc();
+        $totale=$row['total'];
+        return $totale;
+    }
 }

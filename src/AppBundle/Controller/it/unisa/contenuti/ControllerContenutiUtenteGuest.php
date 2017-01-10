@@ -62,8 +62,13 @@ class ControllerContenutiUtenteGuest extends Controller
         $gestore = new GestioneContenuti();
         try {
             $elenco = $gestore->visualizzaElencoContenutiPerTipo("immagine");
+            $numSquadre = $gestore->contaSquadre();
+            $numAllenatori = $gestore->contaAllenatori();
+            $numTifosi = $gestore->contaTifosi();
+            $numStaff = $gestore->contaStaff();
+            $numCalciatori = $gestore->contaCalciatori();
             return $this->render("guest/visualizzaElencoContenuti.html.twig",
-                array('elenco' => $elenco));
+                array("elenco" => $elenco, "numSquadre"=>$numSquadre,"numAllenatori"=>$numAllenatori,"numTifosi"=>$numTifosi,"numStaff"=>$numStaff,"numCalciatori"=>$numCalciatori));
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
         }

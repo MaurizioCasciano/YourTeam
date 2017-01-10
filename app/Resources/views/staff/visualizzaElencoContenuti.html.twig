@@ -1,11 +1,11 @@
 {% extends 'staff/template.html.twig' %}
 
 {% block contenuto %}
-    <label>Foto</label>
+    <h1>Foto</h1>
     <br>
-    <div class="container-fluid">
+    <div class="container-fluid" class="col-md-10 col-sm-10">
 
-        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <div id="myCarousel" class="carousel slide" data-ride="carousel" style="width: 600px; margin: 0 auto">
             <!-- Indicators -->
             <ol class="carousel-indicators">
                 <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -20,12 +20,12 @@
             <!-- Wrapper for slides -->
             <div class="carousel-inner" role="listbox">
                 <div class="item active">
-                    <a href="visualizzaContenutoView/{{ immagini[0].getId() }}"> <img class="col-md-12 col-sm-12"src="{{ asset("ImmaginiApp/contenuti/") }}{{ immagini[0].getURL() }}" ></a>
+                    <a href="/yourteam/web/app_dev.php/contenuti/staff/visualizzaContenutoView/{{ immagini[0].getId() }}"> <img style="width: 600px" src="{{ asset("ImmaginiApp/contenuti/") }}{{ immagini[0].getURL() }}" ></a>
                 </div>
                 {% for immagine in immagini %}
                     {% if loop.first== false %}
                         <div class="item">
-                            <a href="visualizzaContenutoView/{{ immagine.getId() }}"> <img class="col-md-12 col-sm-12"src="{{ asset("ImmaginiApp/contenuti/") }}{{ immagine.getURL() }}" ></a>
+                            <a href="/yourteam/web/app_dev.php/contenuti/staff/visualizzaContenutoView/{{ immagine.getId() }}"> <img style="width: 600px" src="{{ asset("ImmaginiApp/contenuti/") }}{{ immagine.getURL() }}" ></a>
                         </div>
                     {% endif %}
                 {% endfor %}
@@ -42,11 +42,11 @@
 
     </div>
     <br><br>
-    <label>Video</label>
+    <h1>Video</h1>
     <br>
     <div class="container-fluid">
 
-        <div id="myCarousel2" class="carousel slide" data-ride="carousel">
+        <div id="myCarousel2" class="carousel slide" data-ride="carousel" style="width: 320px; margin: 0 auto" >
             <!-- Indicators -->
             <ol class="carousel-indicators">
                 <li data-target="#myCarousel2" data-slide-to="0" class="active"></li>
@@ -61,18 +61,18 @@
             <!-- Wrapper for slides -->
             <div class="carousel-inner" role="listbox">
                 <div class="item active">
-                    <a href="visualizzaContenutoView/{{ video[0].getId() }}">
-                        <video controls>
-                            <source src="{{ asset("ImmaginiApp/contenuti/Video/") }}{{ video[0].getURL() }}"  type="video/mp4">
+                    <a href="/yourteam/web/app_dev.php/contenuti/staff/visualizzaContenutoView/{{ video[0].getId() }}">
+                        <video width="320" height="240" controls>
+                            <source src="{{ asset("ImmaginiApp/contenuti/Video/") }}{{ video[0].getURL() }}"   type="video/mp4">
                         </video>
                     </a>
                 </div>
                 {% for vid in video %}
                     {% if loop.first== false %}
                         <div class="item">
-                            <a href="visualizzaContenutoView/{{ vid.getId() }}">
-                                <video controls>
-                                    <source src="{{ asset("ImmaginiApp/contenuti/Video/") }}{{ vid.getURL() }}"  type="video/mp4">
+                            <a href="/yourteam/web/app_dev.php/contenuti/staff/visualizzaContenutoView/{{ vid.getId() }}">
+                                <video width="320" height="240" controls>
+                                    <source src="{{ asset("ImmaginiApp/contenuti/Video/") }}{{ vid.getURL() }}"  type="video/mp4" >
                                 </video>
                             </a>
                         </div>
