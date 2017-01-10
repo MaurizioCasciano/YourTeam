@@ -37,7 +37,7 @@ class GestionePartita
 
         $risultato=$this->connessione->query($query);
 
-        if($risultato->num_rows<=0) throw new Exception("errore query partite per la squadra: ".$squadra);
+        if($risultato->num_rows<0) throw new Exception("errore query partite per la squadra: ".$squadra);
         //se esiste, ritorna la partita
         if($risultato->num_rows==1)
         {
@@ -46,7 +46,7 @@ class GestionePartita
             return $modelPartita;
         }
 
-        if($risultato->num_rows>0) throw new Exception("errore database, piu partite in 2 giorni per : ".$squadra);
+        if($risultato->num_rows>1) throw new Exception("errore database, piu partite in 2 giorni per : ".$squadra);
 
         return null;
 
@@ -88,7 +88,7 @@ class GestionePartita
         }
         else
         {
-            throw new PartitaNonDispException("non esiste nessuna partita disponibile alla formazione!");
+            throw new PartitaNonDispException("non esiste nessuna partita entro 48 ore disponibile alla formazione!");
         }
 
     }
@@ -127,7 +127,7 @@ class GestionePartita
         }
         else
         {
-            throw new PartitaNonDispException("non esiste nessuna partita disponibile alla convocazione!");
+            throw new PartitaNonDispException("non esiste nessuna partita entro 48 ore disponibile alla convocazione!");
         }
     }
 
