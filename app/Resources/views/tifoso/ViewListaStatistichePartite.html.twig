@@ -1,0 +1,52 @@
+{% extends 'tifoso/template.html.twig' %}
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ asset("partite/css/Main.css") }}">
+{% endblock %}
+
+{% block contenuto %}
+
+    <h2>Statistiche Partite</h2>
+
+    {% include "staff/ViewAlertMessages.html.twig" %}
+
+    <div id="accordion" class="panel-group" role="tablist">
+
+        {% for partita in partite %}
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab">
+                    <h4 class="panel-title">
+                        <button class="collapsed" data-toggle="collapse" data-parent="#accordion"
+                                data-target="#{{ loop.index }}">
+                            <span class="pull-left">{{ partita.getNome() }}</span><span
+                                    class="pull-right">{{ partita.getData() | date('Y-m-d H:i:s') }}</span>
+                        </button>
+                    </h4>
+                </div>
+
+                <div id="{{ loop.index }}" class="panel-collapse collapse" role="tabpanel">
+                    <div class="panel-body">
+                        {% if partita.hasStatistiche() %}
+                            <button class="visualizza-btn">Visualizza</button>
+                        {% endif %}
+                    </div>
+
+                    {% if partita.hasStatistiche() %}
+                        <div class="visualizza" style="display:none;">
+                            {% include ":staff:ViewStatistichePartita.html.twig" with {"partita" : partita} only %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="{{ asset("statistiche/js/InserisciStatistichePartita.js") }}"></script>
+    <script src="{{ asset("statistiche/js/Alerts.js") }}"></script>
+    <script src="{{ asset('statistiche/js/Accordion.js') }}"></script>
+{% endblock %}

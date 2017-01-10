@@ -6,10 +6,12 @@ $(function () {
     });
 
     $(".modifica-btn").click(function () {
+        $(this).parent().siblings(":not('.modifica')").hide();
         $(this).parent().siblings(".modifica").toggle();
     });
 
     $(".info-btn").click(function () {
+        $(this).parent().siblings(":not('.info')").hide();
         $(this).parent().siblings(".info").toggle();
     });
 
@@ -25,7 +27,7 @@ function inserisciPartitaHandler(event) {
     event.preventDefault();
     console.log("Ajax Inserisci Partita Handler...");
 
-    var form = $(this);
+    var $form = $(this);
     var casa = $("input[name='casa']").val();
     var trasferta = $("input[name='trasferta']").val();
     var stadio = $("input[name='stadio']").val();
@@ -39,9 +41,11 @@ function inserisciPartitaHandler(event) {
     console.log("Data: " + data);
     console.log("Ora: " + ora);
 
+    var url = $($form).attr("action");
+
     $.ajax({
         //url Specifies the URL to send the request to. Default is the current page.
-        url: ROOT_DIR + "/partite/staff/insert/submit",
+        url: url,//ROOT_DIR + "/partite/staff/insert/submit",
         //type	Specifies the type of request. (GET or POST)
         type: "POST",
         //dataType	The data type expected of the server response.
@@ -180,14 +184,16 @@ function inserisciPartitaHandler(event) {
                 $("#accordion").append(container);
 
                 $(".modifica-btn").click(function () {
+                    $(this).parent().siblings(":not('.modifica')").hide();
                     $(this).parent().siblings(".modifica").toggle();
                 });
 
                 $(".info-btn").click(function () {
+                    $(this).parent().siblings(":not('.info')").hide();
                     $(this).parent().siblings(".info").toggle();
                 });
 
-                $(form)[0].reset();
+                $($form)[0].reset();
                 $("#new").hide();
 
                 //Success feedback
