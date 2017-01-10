@@ -1,5 +1,5 @@
 {% block contenuto %}
-    <form class="inserisci-partita">
+    <form class="inserisci-partita" action = "{{ path('inserisciPartita') }}" method="post">
         <label for="casa">Casa</label>
         <input id="casa" type="text" name="casa" required="required">
 

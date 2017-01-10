@@ -153,17 +153,25 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
      */
     public function getStatisticheCalciatoriView()
     {
-        $squadra = $_SESSION["squadra"];
+        if (isset($_SESSION) && isset($_SESSION["squadra"]) && isset($_SESSION["tipo"])) {
+            $gestore = new GestoreStatisticheCalciatore();
+            $calciatori = $gestore->getCalciatori($_SESSION["squadra"]);
 
-        $gestore = new GestoreStatisticheCalciatore();
-        $calciatori = $gestore->getCalciatori($squadra);
-
-        //XDebug
-        //var_dump($calciatori);
-
-        //return new Response("Statistiche calciatori: ");
-
-        return $this->render("staff/ViewListaStatisticheCalciatori.html.twig", array("calciatori" => $calciatori));
+            switch ($_SESSION["tipo"]) {
+                case "allenatore" :
+                    return $this->render("allenatore/ViewListaStatisticheCalciatori.html.twig", array("calciatori" => $calciatori));
+                case "calciatore" :
+                    return $this->render("giocatore/ViewListaStatisticheCalciatori.html.twig", array("calciatori" => $calciatori));
+                case "tifoso" :
+                    return $this->render("tifoso/ViewListaStatisticheCalciatori.html.twig", array("calciatori" => $calciatori));
+                case "staff":
+                    return $this->render("staff/ViewListaStatisticheCalciatori.html.twig", array("calciatori" => $calciatori));
+                default :
+                    throw new \Exception("Tipo account sconosciuto.");
+            }
+        } else {
+            throw new \Exception("SESSION not set");
+        }
     }
 
     /**
