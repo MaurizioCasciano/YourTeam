@@ -1,8 +1,11 @@
 {% extends 'guest/template.html.twig' %}
 {% block contenuto %}
-    <div class="container-fluid">
-
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <div class="container-fluid ">
+    <div class="container col-md-6">
+        <h1 class="text-center"> Ecco un'anteprima</h1>
+        <hr>
+        <br/><br/>
+    <div id="myCarousel"  class="carousel slide col-md-6" data-ride="carousel" style="width: 600px; margin: 0 auto" >
         <!-- Indicators -->
         <ol class="carousel-indicators">
             <li data-target="#myCarousel" data-slide-to="{{ 0 }}" class="active"></li>
@@ -36,11 +39,50 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
-
+    </div>
+        <div class="container-fluid">
+        <div class="col-md-6 text-center">
+            <div class="box">
+                <div class="box-content">
+                    <h1 class="tag-title">I nostri numeri</h1>
+                    <hr />
+                    <div class="col-md-12">
+                        <img src="{{ asset("immaginiStatiche/squadra.png") }}" width="40" class="col-sm-2">
+                        {%  set totale = numSquadre%}
+                        <h3 style="color:firebrick" class="col-lg-10 col-md-10">Numero Squadre iscritte {{ totale }}</h3>
+                    </div>
+                    <br />
+                    <div class="col-md-12">
+                        <img src="{{ asset("immaginiStatiche/manager.png") }}" width="40" class="col-sm-2">
+                        {%  set totale = numAllenatori%}
+                        <h3 style="color:#d58512" class="col-lg-10 col-md-10">Numero Allenatori iscritti {{ totale }}</h3>
+                    </div>
+                    <br />
+                    <div class="col-md-12">
+                        <img src="{{ asset("immaginiStatiche/fan.png") }}" width="40" class="col-sm-2">
+                        {%  set totale = numTifosi%}
+                        <h3  style="color:blueviolet" class="col-lg-10 col-md-10">Numero Tifosi iscritti {{ totale }}</h3>
+                    </div>
+                    <br />
+                    <div  class="col-md-12">
+                        <img src="{{ asset("immaginiStatiche/manager.png") }}" width="40" class="col-sm-2">
+                        {%  set totale = numStaff%}
+                        <h3 style="color:#0088CC" class="col-lg-10 col-md-10">Numero Staff iscritti {{ totale }}</h3>
+                    </div>
+                    <br />
+                    <div  class="col-md-12">
+                        <img src="{{ asset("immaginiStatiche/player.png") }}" width="40" class="col-sm-2">
+                        {%  set totale = numCalciatori%}
+                        <h3 style="color:#6b9311" class="col-lg-10 col-md-10">Numero Calciatori iscritti {{ totale }}</h3>
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </div>
     </div>
 
 
-<br><br><hr><br><br>
+<br><br><br><br>
                 <center>
                 <div class="col-md-4 text-center">
                     <div class="box">
@@ -59,7 +101,7 @@
                         <div class="box-content">
                             <h1 class="tag-title"> Allenatore o Dirigente?</h1>
                             <hr />
-                            <img src="{{ asset("immaginiStatiche/player.png") }}" width="80">
+                            <img src="{{ asset("immaginiStatiche/manager.png") }}" width="80">
                             <p>Con pochi click riuscirai a gestire la tua
                                 società e la tua rosa grazie all'innovativo Social Network Calcistico.</p>
                             <br />
@@ -72,7 +114,7 @@
                         <div class="box-content">
                             <h1 class="tag-title">Tifoso?</h1>
                             <hr />
-                            <img src="{{ asset("immaginiStatiche/player.png") }}" width="80">
+                            <img src="{{ asset("immaginiStatiche/fan.png") }}" width="80">
                             <p> Su KickOver non sarai più un semplice spettatore ma un vero e
                                 proprio protagonista del tuo Campionato di Calcio Dilettantistico</p>
                             <br />

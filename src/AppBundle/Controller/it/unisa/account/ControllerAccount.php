@@ -34,7 +34,7 @@ class ControllerAccount extends Controller
      * @Route("/account/registrazione",name="formAggiungiAccount")
      * @Method("GET")
      */
-    public function aggiungiAccountForm($attore)
+    public function aggiungiAccountForm()
     {
 
         $g = new GestoreAccount();

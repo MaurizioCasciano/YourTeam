@@ -118,10 +118,11 @@ function func(){
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="icon-toggle"></span>
             </button>
-            <a class="navbar-brand" href="http://localhost/yourteam/web/app_dev.php"><img
-                        src="{{ asset('immaginiStatiche/Logo.png') }}"
-                        width="30"
-                        height="30">Your Team</a>
+            <div class="container-fluid">
+            <a class="navbar-brand" href={{ path("home") }}>
+                <img src="{{ asset('immaginiStatiche/Logo.png') }}" width="30" height="30">
+                Your Team</a>
+            </div>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -147,7 +148,7 @@ function func(){
 </nav>
 
 <!-- Main -->
-<div class="container-fluid">
+<div class="container-fluid" >
 
 
     <div class="row">
