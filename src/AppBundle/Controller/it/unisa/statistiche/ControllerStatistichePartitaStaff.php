@@ -87,7 +87,7 @@ class ControllerStatistichePartitaStaff extends Controller
         var_dump($possessoPalla);
         var_dump($marcatori);
 
-        $gestorePartite = new GestorePartite();
+        $gestorePartite = GestorePartite::getInstance();
         $partita = $gestorePartite->getPartita($nome, $data, $squadra);
 
         //__construct($golFatti, $golSubiti, $possessoPalla,
@@ -95,7 +95,7 @@ class ControllerStatistichePartitaStaff extends Controller
         $statistiche = new StatistichePartita($golFatti, $golSubiti, $possessoPalla, $marcatori, $assistmen, $ammonizioni, $espulsioni);
         $partita->setStatistiche($statistiche);
 
-        $gestoreStatistichePartita = new GestoreStatistichePartita();
+        $gestoreStatistichePartita = GestoreStatistichePartita::getInstance();
         $executed = $gestoreStatistichePartita->inserisciStatistiche($partita);
 
         if ($executed) {
@@ -123,13 +123,13 @@ class ControllerStatistichePartitaStaff extends Controller
         $ammonizioni = $request->get("ammonizioni") ? $request->get("ammonizioni") : array();
         $espulsioni = $request->get("espulsioni") ? $request->get("espulsioni") : array();
 
-        $gestorePartite = new GestorePartite();
+        $gestorePartite = GestorePartite::getInstance();
         $partita = $gestorePartite->getPartita($nome, $data, $squadra);
 
         $statistiche = new StatistichePartita($golFatti, $golSubiti, $possessoPalla, $marcatori, $assistmen, $ammonizioni, $espulsioni);
         $partita->setStatistiche($statistiche);
 
-        $gestoreStatistichePartita = new GestoreStatistichePartita();
+        $gestoreStatistichePartita = GestoreStatistichePartita::getInstance();
         $executed = $gestoreStatistichePartita->modificaStatistiche($partita);
 
         if ($executed) {
@@ -145,10 +145,10 @@ class ControllerStatistichePartitaStaff extends Controller
      */
     public function getMarcatori($nome, $data, $squadra)
     {
-        $gestorePartite = new GestorePartite();
+        $gestorePartite = GestorePartite::getInstance();
         $partita = $gestorePartite->getPartita($nome, $data, $squadra);
 
-        $gestoreStatistichePartita = new GestoreStatistichePartita();
+        $gestoreStatistichePartita = GestoreStatistichePartita::getInstance();
         $marcatori = $gestoreStatistichePartita->getMarcatori($partita);
 
         return new JsonResponse($marcatori);
@@ -163,7 +163,7 @@ class ControllerStatistichePartitaStaff extends Controller
         $convocati = array();
 
         try {
-            $gestorePartite = new GestorePartite();
+            $gestorePartite = GestorePartite::getInstance();
             $partita = $gestorePartite->getPartita($nome, $data, $_SESSION["squadra"]);
             if ($partita->hasConvocati()) {
                 $convocati = $partita->getConvocati();

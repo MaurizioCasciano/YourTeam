@@ -15,9 +15,9 @@ class GestoreStatisticheCalciatore
 {
     private $db;
     private $conn;
-    private static $tabellaStatisticheCalciatore = "statistiche_calciatore";
+    private static $instance = null;
 
-    public function __construct()
+    private function __construct()
     {
         $this->db = new DB();
         $this->conn = $this->db->connect();
@@ -28,6 +28,18 @@ class GestoreStatisticheCalciatore
         $this->db->close($this->conn);
     }
 
+    private function __clone()
+    {
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new static();
+        }
+
+        return self::$instance;
+    }
 
     /**
      * Inserisce la statistiche nel database.

@@ -46,7 +46,7 @@ class ControllerPartiteStaff extends Controller
         //($nome, $data, $squadra, $stadio)
         $partita = new Partita($casa, $trasferta, $dateTime, $squadra, $stadio);
 
-        $gestorePartite = new GestorePartite();
+        $gestorePartite = GestorePartite::getInstance();
 
         $success = $gestorePartite->inserisciPartita($partita);
 
@@ -67,7 +67,7 @@ class ControllerPartiteStaff extends Controller
         $nome = $request->get("nome");
         $data = $request->get("data");
         $squadra = $_SESSION["squadra"];
-        $gestorePartite = new GestorePartite();
+        $gestorePartite = GestorePartite::getInstance();
 
         try {
             $partita = $gestorePartite->getPartita($nome, $data, $squadra);
@@ -118,7 +118,7 @@ class ControllerPartiteStaff extends Controller
         $newStadio = $values["stadio"]["new"];
         $new = new Partita($newCasa, $newTrasferta, $newDateTime, $_SESSION["squadra"], $newStadio);
 
-        $gestorePartite = new GestorePartite();
+        $gestorePartite = GestorePartite::getInstance();
         $success = $gestorePartite->modificaPartita($old, $new);
 
         return new JsonResponse(array("old" => $old, "new" => $new, "success" => $success), Response::HTTP_OK);
@@ -131,7 +131,7 @@ class ControllerPartiteStaff extends Controller
     public function test123()
     {
         $partita = new Partita("Milan-Napoli", "2016-12-26 20:45:00", "Napoli", "San Siro");
-        $gestorePartite = new GestorePartite();
+        $gestorePartite = GestorePartite::getInstance();
 
         return new Response("Error: " . $gestorePartite->inserisciPartita($partita));
     }
@@ -163,7 +163,7 @@ class ControllerPartiteStaff extends Controller
 
         //var_dump($new);
 
-        $gestorePartite = new GestorePartite();
+        $gestorePartite = GestorePartite::getInstance();
         $success = $gestorePartite->modificaPartita($old, $new);
 
         return new JsonResponse(array("old" => $old, "new" => $new, "success" => $success), Response::HTTP_OK);
@@ -196,7 +196,7 @@ class ControllerPartiteStaff extends Controller
 
         //var_dump($new);
 
-        $gestorePartite = new GestorePartite();
+        $gestorePartite = GestorePartite::getInstance();
         $success = $gestorePartite->modificaPartita($old, $new);
 
         return new JsonResponse(array("old" => $old, "new" => $new, "success" => $success), Response::HTTP_OK);
