@@ -79,7 +79,7 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
 
         //inserisco i dati nel DataBase
         $statisticheCalciatore = new StatisticheCalciatore($calciatore, $tiriTotali, $tiriPorta, $falliFatti, $falliSubiti, $percentualePassaggiriusciti, $golFatti, $golSubiti, $assist, $ammonizioni, $espulsioni, 0);
-        $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
+        $gestoreStatisticheCalciatore = GestoreStatisticheCalciatore::getInstance();
         $executed = $gestoreStatisticheCalciatore->inserisciStatistiche($statisticheCalciatore, $nomePartita, $dataPartita, $_SESSION["squadra"]);
 
         return new JsonResponse(array("executed" => $executed));
@@ -101,7 +101,7 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
             $request->getSession()->set("data_partita", $data_partita);
             $squadra = $_SESSION["squadra"];
 
-            $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
+            $gestoreStatisticheCalciatore = GestoreStatisticheCalciatore::getInstance();
             $statisticheCalciatore = $gestoreStatisticheCalciatore->getStatisticheCalciatore($calciatore, $nome_partita, $data_partita, $squadra);
             return $this->render(":staff:FormModificaStatisticheCalciatore.html.twig", array("statistiche_calciatore" => $statisticheCalciatore));
         }
@@ -139,7 +139,7 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
 
         //inserisco i dati nel DataBase
         $statisticheCalciatore = new StatisticheCalciatore($calciatore, $tiriTotali, $tiriPorta, $falliFatti, $falliSubiti, $percentualePassaggiriusciti, $golFatti, $golSubiti, $assist, $ammonizioni, $espulsioni, 0);
-        $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
+        $gestoreStatisticheCalciatore = GestoreStatisticheCalciatore::getInstance();
         $executed = $gestoreStatisticheCalciatore->modificaStatistiche($statisticheCalciatore, $nomePartita, $dataPartita, $squadra);
 
         //return new Response(($executed ? "Modifiche effettuate" : "Modifiche non effettuate") . "Modifica statistiche calciatore: " . $calciatore . " partita: " . $nomePartita . " " . $dataPartita);
@@ -154,7 +154,7 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
     public function getStatisticheCalciatoriView()
     {
         if (isset($_SESSION) && isset($_SESSION["squadra"]) && isset($_SESSION["tipo"])) {
-            $gestore = new GestoreStatisticheCalciatore();
+            $gestore = GestoreStatisticheCalciatore::getInstance();
             $calciatori = $gestore->getCalciatori($_SESSION["squadra"]);
 
             switch ($_SESSION["tipo"]) {
@@ -213,7 +213,7 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
     {
         $squadra = $_SESSION["squadra"];
 
-        $gestorePartite = new GestorePartite();
+        $gestorePartite = GestorePartite::getInstance();
         $partita = $gestorePartite->getPartita($nome, $data, $squadra);
         $calciatori = $gestorePartite->getCalciatoriConvocati($partita);
 

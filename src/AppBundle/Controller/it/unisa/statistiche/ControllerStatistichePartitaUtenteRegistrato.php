@@ -26,7 +26,7 @@ class ControllerStatistichePartitaUtenteRegistrato extends Controller
     public function getListaStatisticheView()
     {
         if (isset($_SESSION) && isset($_SESSION["squadra"]) && isset($_SESSION["tipo"])) {
-            $gestorePartite = new GestorePartite();
+            $gestorePartite = GestorePartite::getInstance();
             $partite = $gestorePartite->getPartite($_SESSION["squadra"]);
 
             switch ($_SESSION["tipo"]) {

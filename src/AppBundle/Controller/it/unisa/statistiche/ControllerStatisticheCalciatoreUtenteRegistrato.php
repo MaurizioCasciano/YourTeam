@@ -26,8 +26,8 @@ class ControllerStatisticheCalciatoreUtenteRegistrato extends Controller
      */
     public function getStatisticheView($calciatore)
     {
-        $gestore = new GestoreStatisticheCalciatore();
-        $statistiche = $gestore->getStatisticheComplessiveCalciatore($calciatore);
+        $gestoreStatisticheCalciatore = GestoreStatisticheCalciatore::getInstance();
+        $statistiche = $gestoreStatisticheCalciatore->getStatisticheComplessiveCalciatore($calciatore);
 
         return $this->render(":staff:ViewStatisticheCalciatore.html.twig", array("statistiche_calciatore" => $statistiche));
     }
@@ -93,7 +93,7 @@ class ControllerStatisticheCalciatoreUtenteRegistrato extends Controller
         $maxAmmonizioni = empty($request->get("max_ammonizioni")) ? PHP_INT_MAX : $request->get("max_ammonizioni");
         $maxEspulsioni = empty($request->get("max_espulsioni")) ? PHP_INT_MAX : $request->get("max_espulsioni");
 
-        $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
+        $gestoreStatisticheCalciatore = GestoreStatisticheCalciatore::getInstance();
         $calciatori = $gestoreStatisticheCalciatore->filtraCalciatori($squadra, $minTiriTotali, $minTiriPorta, $minGolFatti, $minGolSubiti, $minAssist,
             $minFalliFatti, $minFalliSubiti, $minPercentualePassaggiRiusciti,
             $minAmmonizioni, $minEspulsioni, $maxTiriTotali, $maxTiriPorta,
