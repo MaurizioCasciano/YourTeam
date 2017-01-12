@@ -20,10 +20,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 class ControllerContenutiUtenteGuest extends Controller
 {
     /**
-     * @Route("/contenuti/utenteGuest/visualizzaContenuto")
+     * @Route("/contenuti/utenteGuest/visualizzaContenuti")
      * @Method("GET")
      */
-    public function visualizzaElencoContenuti()
+
+
+    /* Questo metodo sembra inutile
+
+      public function visualizzaElencoContenuti()
     {
         $gestore = GestioneContenuti::getInstance();
         try {
@@ -34,6 +38,8 @@ class ControllerContenutiUtenteGuest extends Controller
         return $this->render("guest/visualizzaElencoContenuti.html.twig",
             array('elenco' => $elenco));
     }
+     */
+
 
     /**
      * @Route("/contenuti/utenteGuest/visualizzaContenutoView/{id}")
@@ -57,11 +63,11 @@ class ControllerContenutiUtenteGuest extends Controller
      * @Route("/", name = "home")
      * @Method("GET")
      */
-    public function visualizzaElencoContenutiPerTipo()
+    public function visualizzaElencoContenuti()
     {
         $gestore = GestioneContenuti::getInstance();
         try {
-            $elenco = $gestore->visualizzaElencoContenutiPerTipo("immagine");
+            $elenco = $gestore->visualizzaElencoContenutiUtenteGuest("immagine");
             $numSquadre = $gestore->contaSquadre();
             $numAllenatori = $gestore->contaAllenatori();
             $numTifosi = $gestore->contaTifosi();
