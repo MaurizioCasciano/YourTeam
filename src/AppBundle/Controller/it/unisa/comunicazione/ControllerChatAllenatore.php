@@ -29,7 +29,7 @@ class ControllerChatAllenatore extends Controller
 
     public function inviaMessaggioChat(Request $richiesta)
     {
-        $g = new GestoreComunicazione();
+        $g = GestoreComunicazione::getInstance();
         try {
             $testo = $richiesta->request->get("testo");
             $messaggio = new Messaggio($testo, $_SESSION["username"],
@@ -54,7 +54,7 @@ class ControllerChatAllenatore extends Controller
      */
     public function inviaMessaggioVoce(Request $richiesta)
     {
-        $g = new GestoreComunicazione();
+        $g = GestoreComunicazione::getInstance();
         try {
             $ora = $richiesta->request->get("ora");
             $luogo = $richiesta->request->get("luogo");
@@ -77,7 +77,7 @@ class ControllerChatAllenatore extends Controller
      */
     public function inviaRichiamoMulta(Request $richiesta)
     {
-        $g = new GestoreComunicazione();
+        $g = GestoreComunicazione::getInstance();
         try {
             $testo = $richiesta->request->get("multa");
             $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
@@ -96,7 +96,7 @@ class ControllerChatAllenatore extends Controller
      */
     public function inviaRichiamoAvvertimento(Request $richiesta)
     {
-        $g = new GestoreComunicazione();
+        $g = GestoreComunicazione::getInstance();
         try {
             $testo = $richiesta->request->get("avvertimento");
             $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
@@ -115,7 +115,7 @@ class ControllerChatAllenatore extends Controller
      */
     public function inviaRichiamoDieta(Request $richiesta)
     {
-        $g = new GestoreComunicazione();
+        $g = GestoreComunicazione::getInstance();
         try {
             $testo = $richiesta->request->get("dieta");
             $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
@@ -134,7 +134,7 @@ class ControllerChatAllenatore extends Controller
      */
     public function inviaRichiamoAllenamento(Request $richiesta)
     {
-        $g = new GestoreComunicazione();
+        $g = GestoreComunicazione::getInstance();
         try {
             $testo = $richiesta->request->get("allenamento");
             $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
@@ -152,7 +152,7 @@ class ControllerChatAllenatore extends Controller
      */
     public function scegliCalciatore(Request $request)
     {
-        $g = new GestoreComunicazione();
+        $g = GestoreComunicazione::getInstance();
         if (!isset($_SESSION["squadra"])) {
             throw new \RuntimeException("Squadra is null");
         }
@@ -168,7 +168,7 @@ class ControllerChatAllenatore extends Controller
      */
     public function scegliCalciatoreVoce(Request $request)
     {
-        $g = new GestoreComunicazione();
+        $g = GestoreComunicazione::getInstance();
         if (!isset($_SESSION["squadra"])) {
             throw new \RuntimeException("Squadra is null");
         }
@@ -183,7 +183,7 @@ class ControllerChatAllenatore extends Controller
     */
     public function scegliCalciatoreComportamento(Request $request)
     {
-        $g = new GestoreComunicazione();
+        $g = GestoreComunicazione::getInstance();
         if (!isset($_SESSION["squadra"])) {
             throw new \RuntimeException("Squadra is null");
         }
@@ -200,7 +200,7 @@ class ControllerChatAllenatore extends Controller
      */
     public function scegliCalciatoreSalute(Request $request)
     {
-        $g = new GestoreComunicazione();
+        $g = GestoreComunicazione::getInstance();
         if (!isset($_SESSION["squadra"])) {
             throw new \RuntimeException("Squadra is null");
         }
@@ -221,11 +221,11 @@ class ControllerChatAllenatore extends Controller
             throw new \Exception("Allenatore non loggato");
         }
 
-        $g = new GestoreAccount();
+        $g = GestoreAccount::getInstance();
         $allenatoreMittente = $g->ricercaAccount_A_T_S($_SESSION["username"]);
         $calciatoreDestinatario = $request->get("calciatore_destinatario");
 
-        $g = new GestoreComunicazione();
+        $g = GestoreComunicazione::getInstance();
         try {
             $messaggi = $g->ottieniMessaggi($allenatoreMittente, "chat", $calciatoreDestinatario);
 
@@ -246,7 +246,7 @@ class ControllerChatAllenatore extends Controller
         }
         $allenatoreMittente = $_SESSION["username"];
         $calciatoreDestinatario = $request->get("calciatore_destinatario");
-        $g = new GestoreComunicazione();
+        $g = GestoreComunicazione::getInstance();
         try {
             $messaggi = $g->ottieniMessaggi($allenatoreMittente, "chat", $calciatoreDestinatario);
 
@@ -269,7 +269,7 @@ class ControllerChatAllenatore extends Controller
         $allenatoreMittente = $_SESSION["username"];
         $calciatoreDestinatario = $request->get("calciatore_destinatario");
         $testomulta = $request->get("multa");
-        $g = new GestoreComunicazione();
+        $g = GestoreComunicazione::getInstance();
 
         try {
             $messaggi = $g->ottieniMessaggioComportamento($allenatoreMittente, $calciatoreDestinatario, $testomulta);
@@ -293,7 +293,7 @@ class ControllerChatAllenatore extends Controller
         $allenatoreMittente = $_SESSION["username"];
         $calciatoreDestinatario = $request->get("calciatore_destinatario");
         $testomulta = $request->get("avvertimento");
-        $g = new GestoreComunicazione();
+        $g = GestoreComunicazione::getInstance();
         try {
             $messaggi = $g->ottieniMessaggioComportamento($allenatoreMittente, $calciatoreDestinatario, $testomulta);
             $str = "";
@@ -316,7 +316,7 @@ class ControllerChatAllenatore extends Controller
         $allenatoreMittente = $_SESSION["username"];
         $calciatoreDestinatario = $request->get("calciatore_destinatario");
         $testorichiamo = $request->get("avvertimento");
-        $g = new GestoreComunicazione();
+        $g = GestoreComunicazione::getInstance();
         try {
             $messaggi = $g->ottieniMessaggioSalute($allenatoreMittente, $calciatoreDestinatario, $testorichiamo);
             $str = "";
@@ -338,7 +338,7 @@ class ControllerChatAllenatore extends Controller
         $allenatoreMittente = $_SESSION["username"];
         $calciatoreDestinatario = $request->get("calciatore_destinatario");
         $testorichiamo = $request->get("avvertimento");
-        $g = new GestoreComunicazione();
+        $g = GestoreComunicazione::getInstance();
         try {
             $messaggi = $g->ottieniMessaggioSalute($allenatoreMittente, $calciatoreDestinatario, $testorichiamo);
             $str = "";

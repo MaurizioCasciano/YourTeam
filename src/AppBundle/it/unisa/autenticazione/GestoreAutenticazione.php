@@ -27,14 +27,28 @@ class GestoreAutenticazione
      * @var DB
      */
     private $db;
+    private static $instance = null;
 
     /**
      * GestioneAutenticazione constructor.
      */
-    public function __construct()
+    private function __construct()
     {
         $this->db=new DB();
         $this->conn=$this->db->connect();
+    }
+
+    private function __clone()
+    {
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new static();
+        }
+
+        return self::$instance;
     }
 
     /**
@@ -49,7 +63,7 @@ class GestoreAutenticazione
      */
     public function login($username , $password){
         if(!isset($_SESSION)) {
-            $g = new GestoreAccount();
+            $g = GestoreAccount::getInstance();
             try {
                     $acc = $g->ricercaAccount_A_T_S($username);
                     $check = $this->checkPassword($password, $acc->getPassword());

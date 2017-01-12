@@ -22,7 +22,7 @@ class ControllerChatGiocatore extends Controller
     {
         var_dump("InviaMessaggioCHAT");
 
-        $g = new GestoreComunicazione();
+        $g = GestoreComunicazione::getInstance();
         try {
             $testo = $richiesta->request->get("testo");
             $allenatore = $richiesta->get("destinatario");
@@ -51,7 +51,7 @@ class ControllerChatGiocatore extends Controller
      */
     public function inviaMessaggioVoce(Request $richiesta)
     {
-        $g = new GestoreComunicazione();
+        $g = GestoreComunicazione::getInstance();
         try {
             $ora = $richiesta->request->get("ora");
             $luogo = $richiesta->request->get("luogo");
@@ -75,9 +75,9 @@ class ControllerChatGiocatore extends Controller
         if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "calciatore") {
             throw new \Exception("Calciatore non loggato");
         }
-        $gestoreComunicazione = new GestoreComunicazione();
+        $gestoreComunicazione = GestoreComunicazione::getInstance();
 
-        $g = new GestoreAccount();
+        $g = GestoreAccount::getInstance();
         // = $g->ricercaAccount_G($_SESSION["username"]);
         $calciatoreMittente = $_SESSION["username"];
         $squadra = $_SESSION["squadra"];
@@ -86,7 +86,7 @@ class ControllerChatGiocatore extends Controller
         //XDebug
         //var_dump($allenatoreDestinatario); //OK
 
-        $g = new GestoreComunicazione();
+        $g = GestoreComunicazione::getInstance();
         try {
             $messaggi = $g->ottieniMessaggiCalciatore($calciatoreMittente,
                 "chat");
@@ -111,7 +111,7 @@ class ControllerChatGiocatore extends Controller
         if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "calciatore") {
             throw new \Exception("Calciatore non loggato");
         }
-        $g = new GestoreComunicazione();
+        $g = GestoreComunicazione::getInstance();
 
         $calciatoreMittente = $_SESSION["username"];
         $squadra = $_SESSION["squadra"];
@@ -146,7 +146,7 @@ class ControllerChatGiocatore extends Controller
         if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "calciatore") {
             throw new \Exception("Calciatore non loggato");
         }
-        $gestoreComunicazione = new GestoreComunicazione();
+        $gestoreComunicazione = GestoreComunicazione::getInstance();
 
         $calciatoreMittente = $_SESSION["username"];
         $squadra = $_SESSION["squadra"];
@@ -168,7 +168,7 @@ class ControllerChatGiocatore extends Controller
         if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "calciatore") {
             throw new \Exception("Calciatore non loggato");
         }
-        $gestoreComunicazione = new GestoreComunicazione();
+        $gestoreComunicazione = GestoreComunicazione::getInstance();
 
         $calciatoreMittente = $_SESSION["username"];
         $squadra = $_SESSION["squadra"];
@@ -190,7 +190,7 @@ class ControllerChatGiocatore extends Controller
         if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "calciatore") {
             throw new \Exception("Calciatore non loggato");
         }
-        $gestoreComunicazione = new GestoreComunicazione();
+        $gestoreComunicazione = GestoreComunicazione::getInstance();
 
         $calciatoreMittente = $_SESSION["username"];
         $squadra = $_SESSION["squadra"];
@@ -212,7 +212,7 @@ class ControllerChatGiocatore extends Controller
         if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "calciatore") {
             throw new \Exception("Calciatore non loggato");
         }
-        $gestoreComunicazione = new GestoreComunicazione();
+        $gestoreComunicazione = GestoreComunicazione::getInstance();
 
         $calciatoreMittente = $_SESSION["username"];
         $squadra = $_SESSION["squadra"];

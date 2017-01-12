@@ -8,7 +8,6 @@
  */
 
 
-
 namespace AppBundle\Controller\it\unisa\formazione;
 
 use AppBundle\it\unisa\formazione\ConvocNonDispException;
@@ -36,36 +35,28 @@ class ControllerFormazione extends Controller
      */
     public function verificaConvocazioniVista()
     {
-        if(isset($_SESSION))
-        {
-            $gestionePartita=new GestionePartita();
-            $gestoreRosa=new GestioneRosa();
+        if (isset($_SESSION)) {
+            $gestionePartita = GestionePartita::getInstance();
+            $gestoreRosa = GestioneRosa::getInstance();
 
-            try
-            {
-                $squadra=$_SESSION["squadra"];
+            try {
+                $squadra = $_SESSION["squadra"];
 
-                $partita=$gestionePartita->disponibilitaConvocazione($squadra);
-                $calciatori=$gestoreRosa->visualizzaRosa($squadra);
+                $partita = $gestionePartita->disponibilitaConvocazione($squadra);
+                $calciatori = $gestoreRosa->visualizzaRosa($squadra);
 
-                $_SESSION["partita"]=$partita;
+                $_SESSION["partita"] = $partita;
 
-                return $this->render("allenatore/visualizzaCalciatoriConvocazione.html.twig",array('calciatori'=> $calciatori , 'partita' => $partita));
+                return $this->render("allenatore/visualizzaCalciatoriConvocazione.html.twig", array('calciatori' => $calciatori, 'partita' => $partita));
 
 
+            } catch (PartitaNonDispException $e1) {
+                return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => $e1->messaggioDiErrore()));
+            } catch (ConvocNonDispException $e2) {
+                return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => $e2->messaggioDiErrore()));
             }
-            catch (PartitaNonDispException $e1)
-            {
-                return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> $e1->messaggioDiErrore()));
-            }
-            catch (ConvocNonDispException $e2)
-            {
-                return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> $e2->messaggioDiErrore()));
-            }
-        }
-        else
-        {
-            return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> "devi effettuare prima l accesso!"));
+        } else {
+            return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => "devi effettuare prima l accesso!"));
         }
     }
 
@@ -79,46 +70,36 @@ class ControllerFormazione extends Controller
      */
     public function verificaFormazioneVista()
     {
-        if(isset($_SESSION))
-        {
-            $gestionePartita=new GestionePartita();
+        if (isset($_SESSION)) {
+            $gestionePartita = GestionePartita::getInstance();
 
-            try
-            {
-                $squadra=$_SESSION["squadra"];
+            try {
+                $squadra = $_SESSION["squadra"];
 
-                $partita=$gestionePartita->disponibilitaFormazione($squadra);
+                $partita = $gestionePartita->disponibilitaFormazione($squadra);
 
-                $gestioneRosa=new GestioneRosa();
+                $gestioneRosa = GestioneRosa::getInstance();
 
-                $tattiche=$gestioneRosa->visualizzaTattica();
+                $tattiche = $gestioneRosa->visualizzaTattica();
 
-                $_SESSION["partita"]=$partita;
+                $_SESSION["partita"] = $partita;
 
-                return $this->render("allenatore/visualizzaTatticaFormazione.html.twig", array('partita' => $partita , 'tattiche' => $tattiche));
+                return $this->render("allenatore/visualizzaTatticaFormazione.html.twig", array('partita' => $partita, 'tattiche' => $tattiche));
 
 
-            }
-            catch (PartitaNonDispException $e1)
-            {
-                return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> $e1->messaggioDiErrore()));
+            } catch (PartitaNonDispException $e1) {
+                return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => $e1->messaggioDiErrore()));
 
-            }
-            catch (FormazioneNonDispException $e2)
-            {
-                return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> $e2->messaggioDiErrore()));
+            } catch (FormazioneNonDispException $e2) {
+                return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => $e2->messaggioDiErrore()));
 
-            }
-            catch (Exception $e)
-            {
-                return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> $e->getMessage()));
+            } catch (Exception $e) {
+                return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => $e->getMessage()));
 
             }
 
-        }
-        else
-        {
-            return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> "devi effettuare prima l accesso!"));
+        } else {
+            return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => "devi effettuare prima l accesso!"));
         }
     }
 
@@ -132,24 +113,22 @@ class ControllerFormazione extends Controller
      */
     public function controlConvocazioniVista(Request $r)
     {
-        $convocazioni=$r->get("calciatori"); //elenco id calciatori convocati
+        $convocazioni = $r->get("calciatori"); //elenco id calciatori convocati
 
-        if(!is_null($convocazioni))
-        {
-            $partita=$_SESSION["partita"];
-            if(!is_null($partita))
-            {
-                $gestionePartita=new GestionePartita();
+        if (!is_null($convocazioni)) {
+            $partita = $_SESSION["partita"];
+            if (!is_null($partita)) {
+                $gestionePartita = GestionePartita::getInstance();
 
-                $gestionePartita->diramaConvocazioni($convocazioni,$partita);
+                $gestionePartita->diramaConvocazioni($convocazioni, $partita);
 
-                return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> "convocazioni diramate!"));
+                return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => "convocazioni diramate!"));
 
             }
 
         }
 
-        return $this->render("allenatore/visualizzaRisposta.html.twig",array('messaggio'=> "nessun calciatore convocato !"));
+        return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => "nessun calciatore convocato !"));
 
     }
 
@@ -161,26 +140,23 @@ class ControllerFormazione extends Controller
      * @Method("POST")
      * @param Request $r
      */
-    public function schieraFormazioneVista(Request  $r)
+    public function schieraFormazioneVista(Request $r)
     {
 
-        $calciatori=$r->get("calciatori");
-        $tattica=$r->get("modulo");
+        $calciatori = $r->get("calciatori");
+        $tattica = $r->get("modulo");
 
-        $gestionePartita=new GestionePartita();
+        $gestionePartita = GestionePartita::getInstance();
 
-        $gestionePartita->scritturaModulo($_SESSION["partita"],$tattica);
+        $gestionePartita->scritturaModulo($_SESSION["partita"], $tattica);
 
-        $calciatori=json_decode($calciatori);
+        $calciatori = json_decode($calciatori);
 
-        $gestoreRosa=new GestioneRosa();
+        $gestoreRosa = GestioneRosa::getInstance();
 
-        try
-        {
+        try {
             $gestoreRosa->inviaEmailSchieramentoFormazione($calciatori);
-        }
-        catch(Exception $e1)
-        {
+        } catch (Exception $e1) {
             return new Response("email non inviate!");
         }
 
@@ -195,17 +171,14 @@ class ControllerFormazione extends Controller
      */
     public function ottieniCalciatori()
     {
-        try
-        {
-            $gestioneRosa=new GestioneRosa();
+        try {
+            $gestioneRosa = GestioneRosa::getInstance();
 
-            $partita=$_SESSION["partita"];
+            $partita = $_SESSION["partita"];
 
-            $calciatori=$gestioneRosa->ottieniConvocati($partita);
+            $calciatori = $gestioneRosa->ottieniConvocati($partita);
 
-        }
-        catch (Exception $e1)
-        {
+        } catch (Exception $e1) {
             return new Response($e1->getMessage());
         }
 
@@ -221,12 +194,11 @@ class ControllerFormazione extends Controller
      */
     public function cambiaTattica()
     {
-        $gestioneRosa=new GestioneRosa();
+        $gestioneRosa = GestioneRosa::getInstance();
 
-        $moduli=$gestioneRosa->visualizzaTattica();
-        foreach ($moduli as $schieramento)
-        {
-            $modulo[]=$gestioneRosa->ottieniTattica($schieramento);
+        $moduli = $gestioneRosa->visualizzaTattica();
+        foreach ($moduli as $schieramento) {
+            $modulo[] = $gestioneRosa->ottieniTattica($schieramento);
         }
 
         return new JsonResponse(array("modulo" => $modulo));

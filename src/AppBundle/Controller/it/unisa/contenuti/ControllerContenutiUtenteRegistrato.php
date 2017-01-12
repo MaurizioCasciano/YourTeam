@@ -24,7 +24,7 @@ class ControllerContenutiUtenteRegistrato extends Controller
      */
     public function visualizzaElencoContenuti(){
         $squadra=$_SESSION["squadra"];
-        $gestore = new GestioneContenuti();
+        $gestore = GestioneContenuti::getInstance();
         try {
             $contenuti=$gestore->visualizzaElencoContenutiSquadra($squadra);
             return $this->render("tifoso/visualizzaElencoContenuti.html.twig",array("elenco"=>$contenuti));
@@ -39,7 +39,7 @@ class ControllerContenutiUtenteRegistrato extends Controller
      * @Method("GET")
      */
     public function visualizzaContenutoView($id){
-        $gestore = new GestioneContenuti();
+        $gestore = GestioneContenuti::getInstance();
 
         try {
             $contenuto=$gestore->visualizzaContenuto($id);
@@ -62,7 +62,7 @@ class ControllerContenutiUtenteRegistrato extends Controller
      * @Method("GET")
      */
     public function visualizzaElencoContenutiPerTipo($tipo){
-        $gestore = new GestioneContenuti();
+        $gestore = GestioneContenuti::getInstance();
         try {
             $elenco=$gestore->visualizzaElencoContenutiPerTipo($tipo);
             if($tipo=="immagine") {

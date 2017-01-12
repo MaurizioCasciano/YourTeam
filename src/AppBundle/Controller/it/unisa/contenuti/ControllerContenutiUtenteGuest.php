@@ -25,7 +25,7 @@ class ControllerContenutiUtenteGuest extends Controller
      */
     public function visualizzaElencoContenuti()
     {
-        $gestore = new GestioneContenuti();
+        $gestore = GestioneContenuti::getInstance();
         try {
             $elenco = $gestore->visualizzaElencoContenuti();
         } catch (\Exception $e) {
@@ -41,7 +41,7 @@ class ControllerContenutiUtenteGuest extends Controller
      */
     public function visualizzaContenutoView($id)
     {
-        $gestore = new GestioneContenuti();
+        $gestore = GestioneContenuti::getInstance();
 
         try {
             $contenuto = $gestore->visualizzaContenuto($id);
@@ -59,7 +59,7 @@ class ControllerContenutiUtenteGuest extends Controller
      */
     public function visualizzaElencoContenutiPerTipo()
     {
-        $gestore = new GestioneContenuti();
+        $gestore = GestioneContenuti::getInstance();
         try {
             $elenco = $gestore->visualizzaElencoContenutiPerTipo("immagine");
             $numSquadre = $gestore->contaSquadre();

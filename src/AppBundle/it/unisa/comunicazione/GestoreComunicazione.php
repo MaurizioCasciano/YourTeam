@@ -16,11 +16,25 @@ class GestoreComunicazione
 {
     private $conn;
     private $db;
+    private static $instance = null;
 
-    public function __construct()
+    private function __construct()
     {
         $this->db = new DB();
         $this->conn = $this->db->connect();
+    }
+
+    private function __clone()
+    {
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new static();
+        }
+
+        return self::$instance;
     }
 
     public function inviaMessaggio(Messaggio $msg)
@@ -58,7 +72,7 @@ class GestoreComunicazione
                 $messaggi[$i] = $messaggio;
                 $i++;
 
-                $gestoreAccount = new GestoreAccount();
+                $gestoreAccount = GestoreAccount::getInstance();
                 $accountAllenatore = $gestoreAccount->ricercaAccount_A_T_S($row["allenatore"]);
                 $accountCalciatore = $gestoreAccount->ricercaAccount_G($row["calciatore"]);
 
@@ -107,7 +121,7 @@ class GestoreComunicazione
                 $messaggi[$i] = $m;
                 $i++;
 
-                $g = new GestoreAccount();
+                $g = GestoreAccount::getInstance();
                 $accountAllenatore = $g->ricercaAccount_A_T_S($allenatore);
 
                 $accountCalciatore = $g->ricercaAccount_G($calciatoreDestinatario);
@@ -157,7 +171,7 @@ class GestoreComunicazione
                 $messaggi[$i] = $m;
                 $i++;
 
-                $g = new GestoreAccount();
+                $g = GestoreAccount::getInstance();
                 $accountAllenatore = $g->ricercaAccount_A_T_S($allenatore);
 
                 $accountCalciatore = $g->ricercaAccount_G($calciatoreDestinatario);
@@ -312,7 +326,7 @@ class GestoreComunicazione
                 $messaggi[$i] = $m;
                 $i++;
 
-                $g = new GestoreAccount();
+                $g = GestoreAccount::getInstance();
                 //$accountAllenatore = $g->ricercaAccount_A_T_S($allenatore);
 
                 //$accountCalciatore = $g->ricercaAccount_G($calciatoreDestinatario);
@@ -352,7 +366,7 @@ class GestoreComunicazione
                 $messaggi[$i] = $m;
                 $i++;
 
-                $g = new GestoreAccount();
+                $g = GestoreAccount::getInstance();
                 //$accountAllenatore = $g->ricercaAccount_A_T_S($allenatore);
 
                 //$accountCalciatore = $g->ricercaAccount_G($calciatoreDestinatario);
@@ -392,7 +406,7 @@ class GestoreComunicazione
                 $messaggi[$i] = $m;
                 $i++;
 
-                $g = new GestoreAccount();
+                $g = GestoreAccount::getInstance();
                 //$accountAllenatore = $g->ricercaAccount_A_T_S($allenatore);
 
                 //$accountCalciatore = $g->ricercaAccount_G($calciatoreDestinatario);
@@ -432,7 +446,7 @@ class GestoreComunicazione
                 $messaggi[$i] = $m;
                 $i++;
 
-                $g = new GestoreAccount();
+                $g = GestoreAccount::getInstance();
                 //$accountAllenatore = $g->ricercaAccount_A_T_S($allenatore);
 
                 //$accountCalciatore = $g->ricercaAccount_G($calciatoreDestinatario);
