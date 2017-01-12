@@ -20,9 +20,11 @@
 
                 {% for calciatore in calciatori %}
 
-                    <input type="checkbox" name="calciatori[]" value="{{ calciatore.getUsernameCodiceContratto }}">{{ calciatore.getNome }} {{ calciatore.getCognome }}<br>
+                    <input type="checkbox" name="calciatori[]" value="{{ calciatore.getUsernameCodiceContratto }}">   {{ calciatore.getNome }} {{ calciatore.getCognome }}<br>
 
                 {% endfor %}
+
+                <br>
 
                 <input type="submit" value="Submit">
 
