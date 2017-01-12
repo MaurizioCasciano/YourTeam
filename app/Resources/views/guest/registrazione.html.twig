@@ -29,20 +29,20 @@
 		    <div class="form-group">
 			<label class="control-label col-sm-2" for="username" id="scritta">Contratto F.I.G.C.</label>
 			<div class="col-sm-10">
-				<input type="text" id ="username" name="u" class="form-control" placeholder="username">
+				<input type="text" id ="username" name="u" class="form-control" placeholder="username"  maxlength="25">
 			</div>
 		</div>
 			<div class="form-group"> <!-- mi serve per inserire label e campo in una riga ben formattata-->
 				<label class="control-label col-sm-2" for="nome">Nome</label> <!--control-label mi inserisce il testo vicino al campo, col-sm-2 mi fa una colonna di grandezza 2-->
 				<div class="col-sm-10"> <!--colonna di grandezza 10 -->
-					<input type="text" id="nome" name="n" class="form-control" placeholder="Adamo">
+					<input type="text" id="nome" name="n" class="form-control" placeholder="Adamo"  maxlength="25">
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="cognome">Cognome</label>
 				<div class="col-sm-10">
-					<input type="text" id ="cognome" name="c" class="form-control" placeholder="Rossi">
+					<input type="text" id ="cognome" name="c" class="form-control" placeholder="Rossi"  maxlength="25">
 				</div>
 			</div>
 
@@ -56,28 +56,28 @@
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="domicilio">Domicilio</label>
 				<div class="col-sm-10">
-					<input type="text" id="domicilio" name="do" placeholder="Salerno" class="form-control" />
+					<input type="text" id="domicilio" name="do" placeholder="Salerno" class="form-control"  maxlength="25" />
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="indirizzo">Indirizzo</label>
 				<div class="col-sm-10">
-					<input type="text" id="indirizzo" name="i" placeholder="Via mazzini" class="form-control" />
+					<input type="text" id="indirizzo" name="i" placeholder="Via mazzini" class="form-control"  maxlength="25"/>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="provincia">Provincia</label>
 				<div class="col-sm-10">
-					<input type="text" name="pr" id="provincia"placeholder="SA" class="form-control" />
+					<input type="text" name="pr" id="provincia"placeholder="SA" class="form-control"  maxlength="25"/>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="telefono">Telefono</label>
 				<div class="col-sm-10">
-					<input type="number"  name="t" id="telefono" class="form-control" placeholder="123456789">
+					<input type="number"  name="t" id="telefono" class="form-control" placeholder="123456789"  maxlength="25">
 				</div>
 			</div>
 
@@ -91,14 +91,14 @@
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="pwd">Password</label>
 				<div class="col-sm-10">
-					<input type="password" name="p" id="pwd" class="form-control" required>
+					<input type="password" name="p" id="pwd" class="form-control"  maxlength="25" required>
 				</div></div>
 
 
 	<div class="form-group">
 				<label class="control-label col-sm-2" for="pwd2" id="psw">Conferma password</label>
 				<div class="col-sm-10">
-					<input type="password" onkeyup="func()" id="pwd2" class="form-control" required>
+					<input type="password" onkeyup="func()" id="pwd2" class="form-control"  maxlength="25" required>
 				</div>
 			</div>
 
@@ -106,7 +106,7 @@
 	<div class="form-group" id="rafel" hidden> <!-- mi serve per inserire label e campo in una riga ben formattata-->
 		<label class="control-label col-sm-2" for="nome">Nazionalità</label> <!--control-label mi inserisce il testo vicino al campo, col-sm-2 mi fa una colonna di grandezza 2-->
 		<div class="col-sm-10"> <!--colonna di grandezza 10 -->
-			<input type="text" id="nazionalita" name="nazionalita" class="form-control" placeholder="italiana" onfocus="checkPassword()">
+			<input type="text" id="nazionalita" name="nazionalita" class="form-control" placeholder="italiana"  maxlength="25">
 		</div>
 <br>
 	</div>
@@ -145,25 +145,25 @@
 		<div class="form-group"><!-- mi serve per inserire label e campo in una riga ben formattata-->
 		<label class="control-label col-sm-2" for="nome">Nome squadra</label> <!--control-label mi inserisce il testo vicino al campo, col-sm-2 mi fa una colonna di grandezza 2-->
 		<div class="col-sm-10"> <!--colonna di grandezza 10 -->
-			<input type="text" id="nomeSquadra" name="nomeSquadra" class="form-control" placeholder="">
+			<input type="text" id="nomeSquadra" name="nomeSquadra" class="form-control" placeholder=""  maxlength="25">
 		</div></div>
 
 		<div class="form-group">
 		<label class="control-label col-sm-2" for="nome">Sede squadra</label> <!--control-label mi inserisce il testo vicino al campo, col-sm-2 mi fa una colonna di grandezza 2-->
 		<div class="col-sm-10"> <!--colonna di grandezza 10 -->
-			<input type="text" id="sedeSquadra" name="sedeSquadra" class="form-control" placeholder="">
+			<input type="text" id="sedeSquadra" name="sedeSquadra" class="form-control" placeholder=""  maxlength="25">
 		</div></div>
 
 		<div class="form-group">
 		<label class="control-label col-sm-2" for="nome">Stadio</label> <!--control-label mi inserisce il testo vicino al campo, col-sm-2 mi fa una colonna di grandezza 2-->
 		<div class="col-sm-10"> <!--colonna di grandezza 10 -->
-			<input type="text" id="stadioSquadra" name="stadioSquadra" class="form-control" placeholder="">
+			<input type="text" id="stadioSquadra" name="stadioSquadra" class="form-control" placeholder=""  maxlength="25">
 		</div></div>
 
 		<div class="form-group">
 		<label class="control-label col-sm-2" for="nome">Scudetti</label> <!--control-label mi inserisce il testo vicino al campo, col-sm-2 mi fa una colonna di grandezza 2-->
 		<div class="col-sm-10"> <!--colonna di grandezza 10 -->
-			<input type="text" id="scudettiSquadra" name="scudettiSquadra" class="form-control" placeholder="">
+			<input type="number" id="scudettiSquadra" name="scudettiSquadra" class="form-control" placeholder=""  maxlength="25">
 		</div></div>
 
 		<div class="form-group">
@@ -181,9 +181,9 @@
 	</div>
 
 
-			<div class="form-group">
+			<div class="form-group" id="buttonc">
 				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" class="btn btn-info">Conferma</button>
+					<button type="submit" class="btn btn-info" >Conferma</button>
 				</div>
 			</div>
 
