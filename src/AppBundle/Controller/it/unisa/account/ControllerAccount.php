@@ -89,7 +89,7 @@ class ControllerAccount extends Controller
 
                     $db->aggiungiSquadra($s);
                     $db->aggiungiAccount_A_T_S($a);
-                    return new Response("inserimento andato a buon fine");
+                    return $this->redirect("/yourteam/web/app_dev.php/");
                 }
 
             } else {
@@ -111,7 +111,7 @@ class ControllerAccount extends Controller
                     if ($path != null) {
                         $a->setImmagine($path);
                         $g->aggiungiAccount_A_T_S($a);
-                        return new Response("inserimento andato a buon fine");
+                        return $this->redirect("/yourteam/web/app_dev.php/");
                     }
                 } catch (\Exception $e) {
                     return new Response($e->getMessage(), 404);
@@ -136,7 +136,7 @@ class ControllerAccount extends Controller
                     if ($path != null) {
                         $a->setImmagine($path);
                         $g->aggiungiAccount_C($a);
-                        return new Response("inserimento andato a buon fine");
+                        return $this->redirect("/yourteam/web/app_dev.php/");
                     }
                 } catch (\Exception $e) {
                     return new Response($e->getMessage(), 404);
@@ -153,7 +153,11 @@ class ControllerAccount extends Controller
     {
 
         /*vista non completa*/
-        return $this->render("account/ricercaAccount.html.twig");
+        $u = $_SESSION["username"];
+        $g = GestoreAccount::getInstance();
+        $staff = $g->ricercaAccount_A_T_S($u);
+
+        return $this->render("staff/ricercaAccount.html.twig", array(staff => $staff));
 
     }
     /**
