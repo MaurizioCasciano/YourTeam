@@ -37,7 +37,7 @@ class ControllerFormazione extends Controller
     {
         if (isset($_SESSION)) {
             $gestionePartita = GestionePartita::getInstance();
-            $gestoreRosa = new GestioneRosa();
+            $gestoreRosa = GestioneRosa::getInstance();
 
             try {
                 $squadra = $_SESSION["squadra"];
@@ -78,7 +78,7 @@ class ControllerFormazione extends Controller
 
                 $partita = $gestionePartita->disponibilitaFormazione($squadra);
 
-                $gestioneRosa = new GestioneRosa();
+                $gestioneRosa = GestioneRosa::getInstance();
 
                 $tattiche = $gestioneRosa->visualizzaTattica();
 
@@ -152,7 +152,7 @@ class ControllerFormazione extends Controller
 
         $calciatori = json_decode($calciatori);
 
-        $gestoreRosa = new GestioneRosa();
+        $gestoreRosa = GestioneRosa::getInstance();
 
         try {
             $gestoreRosa->inviaEmailSchieramentoFormazione($calciatori);
@@ -172,7 +172,7 @@ class ControllerFormazione extends Controller
     public function ottieniCalciatori()
     {
         try {
-            $gestioneRosa = new GestioneRosa();
+            $gestioneRosa = GestioneRosa::getInstance();
 
             $partita = $_SESSION["partita"];
 
@@ -194,7 +194,7 @@ class ControllerFormazione extends Controller
      */
     public function cambiaTattica()
     {
-        $gestioneRosa = new GestioneRosa();
+        $gestioneRosa = GestioneRosa::getInstance();
 
         $moduli = $gestioneRosa->visualizzaTattica();
         foreach ($moduli as $schieramento) {
