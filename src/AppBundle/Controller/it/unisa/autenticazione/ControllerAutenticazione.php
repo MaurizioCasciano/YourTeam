@@ -29,7 +29,7 @@ class ControllerAutenticazione extends Controller
     {
         $u = $richiesta->request->get("u");
         $p = $richiesta->request->get("p");
-        $g = new GestoreAutenticazione();
+        $g = GestoreAutenticazione::getInstance();
         $r = $g->login($u, $p);
         if ($r) {
             if ($_SESSION["tipo"] == "allenatore") {
@@ -66,7 +66,7 @@ class ControllerAutenticazione extends Controller
      */
     public function logout(Request $richiesta)
     {
-        $g = new GestoreAutenticazione();
+        $g = GestoreAutenticazione::getInstance();
         $g->logout();
         return $this->redirect("/yourteam/web/app_dev.php/");
     }
