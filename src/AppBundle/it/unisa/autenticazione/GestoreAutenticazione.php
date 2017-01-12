@@ -126,26 +126,72 @@ class GestoreAutenticazione
     /**
      * @param $ogg
      */
-    public function check($rotta){
+    public function check($rotta)
+    {
 
       $rotteStabilite=$this->inizializzazioneRotte();
-      foreach ($rotteStabilite as $r){
-         if($r->getRotta()==$rotta){
+      foreach ($rotteStabilite as $r)
+      {
+         if($r->getRotta()==$rotta)
+         {
              foreach ($r->getAttori() as $a)
+             {
                  if($a==$_SESSION["tipo"])
+                 {
                      return true;
+                 }
+             }
+
          }
-         return false;
-
-
-        }
+      }
+      return false;
     }
 
     private function inizializzazioneRotte(){
         $rotte=array(new RottaUtente("/account/calciatore/aggiungi",array("staff")),
             new RottaUtente("/account/calciatore/aggiungi",array("staff")),
+            new RottaUtente("app_it_unisa_formazione_controllerformazione_verificaconvocazionivista",array("allenatore")),
+            new RottaUtente("app_it_unisa_formazione_controllerformazione_verificaformazionevista",array("allenatore"))
         );
         return $rotte;
+    }
+
+    /**
+     * Verifica che l'account sia validato
+     * @param $account
+     */
+    public function verificaValidaAccount($account)
+    {
+        if ($_SESSION["tipo"]=="calciatore")
+        {
+            $sql = "SELECT * FROM calciatore WHERE attivo ='1' AND contratto ='$account' ";
+        }
+        else
+        {
+            $sql = "SELECT * FROM utente WHERE attivo ='1' AND username_codiceContratto ='$account' ";
+        }
+
+        $res=$this->conn->query($sql);
+
+        if($res->num_rows>0)
+        {
+            return 1;
+        }
+        else
+        {
+            $sq=$_SESSION["squadra"];
+            $staffQuery="SELECT * FROM utente WHERE tipo= 'staff' AND squadra='$sq'";
+            $riga=$this->conn->query($staffQuery)->fetch_assoc();
+            if($riga["telefono"]==null)
+            {
+                return "staff non presente per la squadra";
+            }
+            else
+            {
+                return $riga["telefono"];
+            }
+        }
+
     }
 
 
