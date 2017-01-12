@@ -126,28 +126,32 @@ class GestoreAutenticazione
     /**
      * @param $ogg
      */
-    public function check($rotta){
+    public function check($rotta)
+    {
 
       $rotteStabilite=$this->inizializzazioneRotte();
-      foreach ($rotteStabilite as $r){
-         if($r->getRotta()==$rotta){
+      foreach ($rotteStabilite as $r)
+      {
+         if($r->getRotta()==$rotta)
+         {
              foreach ($r->getAttori() as $a)
+             {
                  if($a==$_SESSION["tipo"])
+                 {
                      return true;
+                 }
+             }
+
          }
-         return false;
-
-
-        }
+      }
+      return false;
     }
 
     private function inizializzazioneRotte(){
         $rotte=array(new RottaUtente("/account/calciatore/aggiungi",array("staff")),
             new RottaUtente("/account/calciatore/aggiungi",array("staff")),
-            new RottaUtente("/formazione/allenatore/verificaConvocazioni",array("Allenatore")),
-            new RottaUtente("/formazione/allenatore/verificaFormazione",array("Allenatore")),
-            new RottaUtente("/formazione/allenatore/controlConvocazioni",array("Allenatore")),
-            new RottaUtente("/formazione/allenatore/schieraFormazione",array("Allenatore"))
+            new RottaUtente("app_it_unisa_formazione_controllerformazione_verificaconvocazionivista",array("allenatore")),
+            new RottaUtente("app_it_unisa_formazione_controllerformazione_verificaformazionevista",array("allenatore"))
         );
         return $rotte;
     }
