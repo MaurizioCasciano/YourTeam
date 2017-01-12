@@ -147,7 +147,12 @@ class GestoreAutenticazione
             new RottaUtente("/formazione/allenatore/verificaConvocazioni",array("Allenatore")),
             new RottaUtente("/formazione/allenatore/verificaFormazione",array("Allenatore")),
             new RottaUtente("/formazione/allenatore/controlConvocazioni",array("Allenatore")),
-            new RottaUtente("/formazione/allenatore/schieraFormazione",array("Allenatore"))
+            new RottaUtente("/formazione/allenatore/schieraFormazione",array("Allenatore")),
+            new RottaUtente("/account/{attore}/{tipo}/modificaAccount",array("allenatore","calciatore","staff","tifoso")),
+            new RottaUtente("/account/elimina/{attore}/eliminaAccount/{username}",array("allenatore","calciatore","staff","tifoso")),
+            new RottaUtente("/account/staff/convalida",array("staff")),
+            new RottaUtente("/account/{attore}/{username}",array("allenatore","calciatore","staff","tifoso")),
+            new RottaUtente("/account/{attore}/aggiungi",array("allenatore","calciatore","staff","tifoso")),
         );
         return $rotte;
     }
