@@ -16,11 +16,12 @@ class GestoreStatistichePartita
 {
     private $conn;
     private $db;
+    private static $instance = null;
 
     /**
      * GestoreStatistichePartita constructor.
      */
-    public function __construct()
+    private function __construct()
     {
         $this->db = new DB();
         $this->conn = $this->db->connect();
@@ -31,6 +32,18 @@ class GestoreStatistichePartita
         $this->db->close($this->conn);
     }
 
+    private function __clone()
+    {
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new static();
+        }
+
+        return self::$instance;
+    }
 
     public function inserisciStatistiche(PartitaInterface $partita)
     {
@@ -89,7 +102,7 @@ class GestoreStatistichePartita
 
         //var_dump($calciatori);
         $statisticheCalciatori = array();
-        $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
+        $gestoreStatisticheCalciatore = GestoreStatisticheCalciatore::getInstance();
 
         $executed = true;
 
@@ -148,7 +161,7 @@ class GestoreStatistichePartita
             throw new \RuntimeException("Partita senza statistiche.");
         }
 
-        $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
+        $gestoreStatisticheCalciatore = GestoreStatisticheCalciatore::getInstance();
         $gestoreStatisticheCalciatore->rimuoviMarcatori($partita);
         $gestoreStatisticheCalciatore->rimuoviAssistMen($partita);
         $gestoreStatisticheCalciatore->rimuoviAmmonizioni($partita);
@@ -205,7 +218,7 @@ class GestoreStatistichePartita
 
         //var_dump($calciatori);
         $statisticheCalciatori = array();
-        $gestoreStatisticheCalciatore = new GestoreStatisticheCalciatore();
+        $gestoreStatisticheCalciatore = GestoreStatisticheCalciatore::getInstance();
 
         $executed = true;
 

@@ -29,7 +29,7 @@ class ControllerPartiteUtenteRegistrato extends Controller
         $nome = $request->get("nome");
         $data = $request->get("data");
         $squadra = $_SESSION["squadra"];
-        $gestorePartite = new GestorePartite();
+        $gestorePartite = GestorePartite::getInstance();
 
         try {
             $partita = $gestorePartite->getPartita($nome, $data, $squadra);
@@ -46,7 +46,7 @@ class ControllerPartiteUtenteRegistrato extends Controller
     public function getListaPartiteView()
     {
         if (isset($_SESSION) && isset($_SESSION["squadra"]) && isset($_SESSION["tipo"])) {
-            $gestorePartite = new GestorePartite();
+            $gestorePartite = GestorePartite::getInstance();
             $partite = $gestorePartite->getPartite($_SESSION["squadra"]);
 
             switch ($_SESSION["tipo"]) {

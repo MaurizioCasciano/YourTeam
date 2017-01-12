@@ -18,12 +18,12 @@ class GestorePartite
 {
     private $conn;
     private $db;
+    private static $instance = null;
 
     /**
      * GestionePartite constructor.
-     * @param $conn
      */
-    public function __construct()
+    private function __construct()
     {
         $this->db = new DB();
         $this->conn = $this->db->connect();
@@ -34,6 +34,18 @@ class GestorePartite
         $this->db->close($this->conn);
     }
 
+    private function __clone()
+    {
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new static();
+        }
+
+        return self::$instance;
+    }
 
     /**
      * Restituisce le partite
@@ -45,7 +57,7 @@ class GestorePartite
         $statement->bind_param("s", $squadra);
         $executed = $statement->execute();
         $result = $statement->get_result();
-        $g = new GestoreStatistichePartita();
+        $g = GestoreStatistichePartita::getInstance();
 
         if ($result->num_rows > 0) {
             $arrayPartite = array();
@@ -132,7 +144,7 @@ class GestorePartite
                 $dateTime = new \DateTime($row["data"]);
 
                 $partita = new Partita($casa, $trasferta, $dateTime, $row["squadra"], $row["stadio"]);
-                $g = new GestoreStatistichePartita();
+                $g = GestoreStatistichePartita::getInstance();
 
                 if (($stats = $g->getStatistiche($partita)) != null) {
                     $partita->setStatistiche($stats);
@@ -220,7 +232,7 @@ class GestorePartite
                             $calciatore = new Calciatore($contratto, $password, $squadra, $email, $nome, $cognome, $dataDiNascita, $numeroMaglia, $domicilio, $indirizzo, $provincia, $telefono, $immagine);
 
                             try {
-                                $g = new GestoreStatisticheCalciatore();
+                                $g = GestoreStatisticheCalciatore::getInstance();
                                 $stats = $g->getStatisticheCalciatore($contratto, $nome_partita, $data, $squadra);
                                 //var_dump($stats);
                                 $calciatore->setStatistiche($stats);

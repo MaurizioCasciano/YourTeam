@@ -53,7 +53,7 @@ class ControllerContenutiStaff extends Controller
         if($path!=null){
 
             $contenuto = new Contenuto($titolo,$descrizione,$path,$tipo,$data,$squadra);
-            $gestore = new GestioneContenuti();
+            $gestore = GestioneContenuti::getInstance();
             try {
                 $gestore->inserisciContenuto($contenuto);
                 return $this->render("staff/alertInserisciContenuto.html.twig");
@@ -91,7 +91,7 @@ class ControllerContenutiStaff extends Controller
         $squadra= $_SESSION["squadra"];*/
 
         $contenuto = new Contenuto($titolo,$descrizione,$URL,$tipo,$data,$squadra);
-        $gestore = new GestioneContenuti();
+        $gestore = GestioneContenuti::getInstance();
         try {
             $gestore->modificaContenuto($id,$contenuto);
             return new Response("<br/> modifica andata a buon fine <br/>");
@@ -106,7 +106,7 @@ class ControllerContenutiStaff extends Controller
      */
     public function cancellaContenutoView($id){
 
-        $gestore = new GestioneContenuti();
+        $gestore = GestioneContenuti::getInstance();
 
         try {
             $contenuto = $gestore->cancellaContenuto($id);
@@ -127,7 +127,7 @@ class ControllerContenutiStaff extends Controller
      * @Method("GET")
      */
     public function visualizzaElencoContenuti(){
-        $gestore = new GestioneContenuti();
+        $gestore = GestioneContenuti::getInstance();
         try {
             $gestore->visualizzaElencoContenuti();
         }catch (\Exception $e) {
@@ -141,7 +141,7 @@ class ControllerContenutiStaff extends Controller
      * @Method("GET")
      */
     public function visualizzaContenutoView($id){
-        $gestore = new GestioneContenuti();
+        $gestore = GestioneContenuti::getInstance();
         try {
             $contenuto=$gestore->visualizzaContenuto($id);
             if($contenuto->getTipo()=="immagine") {
@@ -164,7 +164,7 @@ class ControllerContenutiStaff extends Controller
      */
     public function visualizzaElencoContenutiSquadra(){
         $squadra=$_SESSION["squadra"];
-        $gestore = new GestioneContenuti();
+        $gestore = GestioneContenuti::getInstance();
         try {
             $contenuti=$gestore->visualizzaElencoContenutiSquadra($squadra);
             $immagini= array();
@@ -201,7 +201,7 @@ class ControllerContenutiStaff extends Controller
      * @Method("GET")
      */
     public function visualizzaElencoContenutiPerTipo($tipo){
-        $gestore = new GestioneContenuti();
+        $gestore = GestioneContenuti::getInstance();
         try {
             $gestore->visualizzaElencoContenutiPerTipo($tipo);
         } catch (\Exception $e) {

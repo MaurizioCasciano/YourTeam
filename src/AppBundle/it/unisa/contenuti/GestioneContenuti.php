@@ -14,11 +14,30 @@ class GestioneContenuti
 
     private $conn;
     private $db;
+    private static $instance = null;
 
-    public function __construct()
+    private function __construct()
     {
         $this->db=new DB();
         $this->conn=$this->db->connect();
+    }
+
+    function __destruct()
+    {
+        $this->db->close($this->conn);
+    }
+
+    private function __clone()
+    {
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new static();
+        }
+
+        return self::$instance;
     }
 
     public function inserisciContenuto(Contenuto $contenuto){

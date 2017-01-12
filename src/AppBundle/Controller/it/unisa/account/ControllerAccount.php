@@ -37,7 +37,7 @@ class ControllerAccount extends Controller
     public function aggiungiAccountForm()
     {
 
-        $g = new GestoreAccount();
+        $g = GestoreAccount::getInstance();
         try {
             $squadre = $g->ottieniTutteLeSquadre();
             return $this->render("guest/registrazione.html.twig", array("squadre" => $squadre));/*vista non completa*/
@@ -80,7 +80,7 @@ class ControllerAccount extends Controller
                     "", $r->request->get("tipo"));
 
 
-                $db = new GestoreAccount();
+                $db = GestoreAccount::getInstance();
                 $pathSquadra = Utility::loadFileSquadra("fileSquadra", "account");
                 $path = Utility::loadFile("file", "account");
                 if ($pathSquadra != null || $path != null) {
@@ -106,7 +106,7 @@ class ControllerAccount extends Controller
                 try {
 
 
-                    $g = new GestoreAccount();
+                    $g = GestoreAccount::getInstance();
                     $path = Utility::loadFile("file", "account");
                     if ($path != null) {
                         $a->setImmagine($path);
@@ -131,7 +131,7 @@ class ControllerAccount extends Controller
                     $r->request->get("pr"), $r->request->get("t"),
                     $r->request->get("im"), $r->request->get("nazionalita"));
                 try {
-                    $g = new GestoreAccount();
+                    $g = GestoreAccount::getInstance();
                     $path = Utility::loadFile("file", "account");
                     if ($path != null) {
                         $a->setImmagine($path);
@@ -167,7 +167,7 @@ class ControllerAccount extends Controller
     public function ricercaAccount($attore, $username)
     {
 
-        $g = new GestoreAccount();
+        $g = GestoreAccount::getInstance();
         if ($attore == "staff_allenatore_tifoso") {
             try {
                 $ast = $g->ricercaAccount_A_T_S($username);
@@ -206,7 +206,7 @@ class ControllerAccount extends Controller
 
         //  $tipo = $_SESSION["tipo"];
         //  $u = $_SESSION["username"];
-        $g = new GestoreAccount();
+        $g = GestoreAccount::getInstance();
 
         $s = $g->ottieniTutteLeSquadre();
         try {
@@ -247,7 +247,7 @@ class ControllerAccount extends Controller
     {
         if ($attore == "staff_allenatore_tifoso") {
             /*il tipo e la squadra non possono essere modificati quindi non glieli inviamo proprio non devono */
-            $gats = new GestoreAccount();
+            $gats = GestoreAccount::getInstance();
             $a = new Account("",
                 $r->request->get("p"), "",
                 $r->request->get("e"), $r->request->get("n"),
@@ -272,7 +272,7 @@ class ControllerAccount extends Controller
                 return new Response($e->getMessage(), 404);
             }
         } else if ($attore == "giocatore") {
-            $gg = new GestoreAccount();
+            $gg = GestoreAccount::getInstance();
 
 
             /*il tipo e la squadra non possono essere modificati quindi non glieli inviamo proprio non devono */
@@ -310,7 +310,7 @@ class ControllerAccount extends Controller
         //  $username=$_SESSION["username"];
 
         if ($attore == "staff_allenatore_tifoso") {
-            $g = new GestoreAccount();
+            $g = GestoreAccount::getInstance();
             try {
                 $g->eliminaAccount_A_T_S($username);
                 return $this->render("guest/eliminato.html.twig");
@@ -318,7 +318,7 @@ class ControllerAccount extends Controller
                 return new Response($e->getMessage(), 404);
             }
         } else if ($attore == "calciatore") {
-            $g = new GestoreAccount();
+            $g = GestoreAccount::getInstance();
             try {
                 $g->eliminaAccount_G($username);
                 return $this->render("guest/eliminato.html.twig");
@@ -338,7 +338,7 @@ class ControllerAccount extends Controller
      */
     public function convalidaAccount(Request $request)
     {
-        $g = new GestoreAccount();
+        $g = GestoreAccount::getInstance();
         $u = $_SESSION["username"];
         try {
             $g->convalidaAccount_A_G($request->request->get("u"));
@@ -357,7 +357,7 @@ class ControllerAccount extends Controller
     {
         $u = $_SESSION["username"];
 
-        $g = new GestoreAccount();
+        $g = GestoreAccount::getInstance();
         try {
             $a = $g->dammiAccountDaConvalidare();
             $staff = $g->ricercaAccount_A_T_S($u);
