@@ -144,6 +144,10 @@ class GestoreAutenticazione
     private function inizializzazioneRotte(){
         $rotte=array(new RottaUtente("/account/calciatore/aggiungi",array("staff")),
             new RottaUtente("/account/calciatore/aggiungi",array("staff")),
+            new RottaUtente("/formazione/allenatore/verificaConvocazioni",array("allenatore")),
+            new RottaUtente("/formazione/allenatore/verificaFormazione",array("allenatore")),
+            new RottaUtente("/formazione/allenatore/controlConvocazioni",array("allenatore")),
+            new RottaUtente("/formazione/allenatore/schieraFormazione",array("allenatore"))
         );
         return $rotte;
     }
