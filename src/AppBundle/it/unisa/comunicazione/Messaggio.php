@@ -94,7 +94,7 @@ class Messaggio
     public function getNomeMittente()
     {
         if (!isset($this->nomeMittente)) {
-            $gestoreAccount = new GestoreAccount();
+            $gestoreAccount = GestoreAccount::getInstance();
 
             if ($this->mittente == "allenatore") {
                 $accountAllenatore = $gestoreAccount->ricercaAccount_A_T_S($this->allenatore);
@@ -123,7 +123,7 @@ class Messaggio
     public function getCognomeMittente()
     {
         if (!isset($this->cognomeMittente)) {
-            $gestoreAccount = new GestoreAccount();
+            $gestoreAccount = GestoreAccount::getInstance();
 
             if ($this->mittente == "allenatore") {
                 $accountAllenatore = $gestoreAccount->ricercaAccount_A_T_S($this->allenatore);
@@ -153,7 +153,7 @@ class Messaggio
     public function getNomeDestinatario()
     {
         if (!isset($this->nomeDestinatario)) {
-            $gestoreAccount = new GestoreAccount();
+            $gestoreAccount = GestoreAccount::getInstance();
 
             if ($this->mittente == "allenatore") {
                 $accountCalciatore = $gestoreAccount->ricercaAccount_G($this->calciatore);
@@ -183,7 +183,7 @@ class Messaggio
     public function getCognomeDestinatario()
     {
         if (!isset($this->cognomeDestinatario)) {
-            $gestoreAccount = new GestoreAccount();
+            $gestoreAccount = GestoreAccount::getInstance();
 
             if ($this->mittente == "allenatore") {
                 $accountCalciatore = $gestoreAccount->ricercaAccount_G($this->calciatore);

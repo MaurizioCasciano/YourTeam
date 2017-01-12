@@ -77,7 +77,7 @@ class ControllerChatGiocatore extends Controller
         }
         $gestoreComunicazione = GestoreComunicazione::getInstance();
 
-        $g = new GestoreAccount();
+        $g = GestoreAccount::getInstance();
         // = $g->ricercaAccount_G($_SESSION["username"]);
         $calciatoreMittente = $_SESSION["username"];
         $squadra = $_SESSION["squadra"];

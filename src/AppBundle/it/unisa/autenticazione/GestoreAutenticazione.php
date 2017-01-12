@@ -63,7 +63,7 @@ class GestoreAutenticazione
      */
     public function login($username , $password){
         if(!isset($_SESSION)) {
-            $g = new GestoreAccount();
+            $g = GestoreAccount::getInstance();
             try {
                     $acc = $g->ricercaAccount_A_T_S($username);
                     $check = $this->checkPassword($password, $acc->getPassword());

@@ -221,7 +221,7 @@ class ControllerChatAllenatore extends Controller
             throw new \Exception("Allenatore non loggato");
         }
 
-        $g = new GestoreAccount();
+        $g = GestoreAccount::getInstance();
         $allenatoreMittente = $g->ricercaAccount_A_T_S($_SESSION["username"]);
         $calciatoreDestinatario = $request->get("calciatore_destinatario");
 
