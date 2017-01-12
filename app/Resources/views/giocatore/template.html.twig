@@ -38,7 +38,7 @@
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="icon-toggle"></span>
             </button>
-            <a class="navbar-brand" href="#"><img src="{{ asset('immaginiStatiche/Logo.png') }}" width="30" height="30">Your
+            <a class="navbar-brand" href="http://localhost/yourteam/web/app_dev.php"><img src="{{ asset('immaginiStatiche/Logo.png') }}" width="30" height="30">Your
                 Team</a>
         </div>
         <div class="navbar-collapse collapse">
@@ -60,42 +60,40 @@
     <div class="row">
         <div class="col-sm-3">
             <!-- left -->
-            <h3><i class="glyphicon glyphicon-briefcase"></i> Toolbox</h3>
+            <h3><i class="glyphicon glyphicon-cog"></i> Menù</h3>
             <hr>
 
             <ul class="nav nav-stacked">
-                <li><a href="javascript:;"><i class="glyphicon glyphicon-flash"></i>Home</a></li>
+                <li><a href="javascript:;"><i class="glyphicon glyphicon-home"></i> Home</a></li>
                 <li>
                     <a href="{{ path('lista_partite') }}">
-                        <i class="fa fa-futbol-o">&nbsp;Partite</i>
+                        <i class="glyphicon glyphicon-calendar"></i> Partite
                     </a>
                 </li>
                 <li>
                     <a href="{{ path('lista_statistiche_partite') }}">
-                        <i class="fa fa-book">&nbsp;Statistiche Partite</i>
+                        <i class="glyphicon glyphicon-tasks"></i> Statistiche Partite
                     </a>
                 </li>
                 <li>
                     <a href="{{ path('lista_statistiche_calciatori') }}">
-                        <i class="fa fa-users">&nbsp;Statistiche Calciatori</i>
+                        <i class="glyphicon glyphicon-list-alt"></i> Statistiche Calciatori
                     </a>
                 </li>
 
-                <li><a href="../../comunicazione/giocatore/ottieniMessaggioChatView"><i
-                                class="glyphicon glyphicon-comment"></i> Colloquio
-                        Chat</a></li>
+                <li><a href="../../comunicazione/giocatore/ottieniMessaggioChatView">
+                        <i class="glyphicon glyphicon-comment"></i> Colloquio Chat</a></li>
                 <li><a href="../../comunicazione/giocatore/ottieniMessaggioVoceView">
-                        <i class="glyphicon glyphicon-sort-by-alphabet"></i> Colloquio
-                        Voce </a></li>
+                        <i class="glyphicon glyphicon-sort-by-alphabet"></i> Colloquio Voce </a></li>
                 <li><a href="../../comunicazione/giocatore/ottieniVistaRichiamoMulta">
                         <i class="glyphicon glyphicon-warning-sign"></i> Guarda Richiami Multa </a></li>
                 <li><a href="../../comunicazione/giocatore/ottieniVistaRichiamoAvvertimento">
-                        <i class="glyphicon glyphicon-warning-sign"></i> Guarda Richiami Avvertimento </a></li>
+                        <i class="glyphicon glyphicon-warning-sign"></i> Guarda Richiami Avvertimento </a></li >
                 <li><a href="../../comunicazione/giocatore/ottieniVistaRichiamoDieta">
                         <i class="glyphicon glyphicon-cutlery"></i> Guarda Richiami Dieta </a></li>
                 <li><a href="../../comunicazione/giocatore/ottieniVistaRichiamoAllenamento">
                         <i class="glyphicon glyphicon-briefcase"></i> Guarda Richiami Allenamento </a></li>
-                <li><a href="javascript:;"><i class="glyphicon glyphicon-heart-empty"></i> Rosa</a></li>
+                <li><a href="javascript:;"><i class="glyphicon glyphicon-book"></i> Rosa</a></li>
 
             </ul>
 
