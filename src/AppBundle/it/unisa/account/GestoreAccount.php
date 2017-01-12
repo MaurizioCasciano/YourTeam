@@ -18,6 +18,7 @@ class GestoreAccount
 
     private $conn;
     private $db;
+    private static $instance = null;
 
     /*Aggiungere   :
 
@@ -30,10 +31,23 @@ class GestoreAccount
     Aggiungere il controllo che il giocatore esiste veramente nella clausola, quindi sfruttare ricerca_G*/
 
 
-    public function __construct()
+    private function __construct()
     {
         $this->db = new DB();
         $this->conn = $this->db->connect();
+    }
+
+    private function __clone()
+    {
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new static();
+        }
+
+        return self::$instance;
     }
 
     /*
