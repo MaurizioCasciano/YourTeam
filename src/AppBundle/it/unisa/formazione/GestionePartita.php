@@ -15,11 +15,25 @@ class GestionePartita
 {
     private $db;
     private $connessione;
+    private static $instance = null;
 
-    public function __construct()
+    private function __construct()
     {
         $this->db=new DB();
         $this->connessione=$this->db->connect();
+    }
+
+    private function __clone()
+    {
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new static();
+        }
+
+        return self::$instance;
     }
 
     /**
