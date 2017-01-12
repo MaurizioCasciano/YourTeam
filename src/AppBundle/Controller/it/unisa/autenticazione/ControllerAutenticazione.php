@@ -31,7 +31,13 @@ class ControllerAutenticazione extends Controller
         $p = $richiesta->request->get("p");
         $g = GestoreAutenticazione::getInstance();
         $r = $g->login($u, $p);
-        if ($r) {
+        if ($r)
+        {
+            if($risposta=$g->verificaValidaAccount($u)!=1)
+            {
+                return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON VALIDATO CONTATTARE LO STAFF PER INFO: ".$risposta));
+            }
+
             if ($_SESSION["tipo"] == "allenatore") {
                 //return $this->redirect("/yourteam/web/app_dev.php/account/staff_allenatore_tifoso/".$u);
                 return $this->redirect($this->generateUrl("ricercaAccount",

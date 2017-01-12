@@ -144,12 +144,50 @@ class GestoreAutenticazione
     private function inizializzazioneRotte(){
         $rotte=array(new RottaUtente("/account/calciatore/aggiungi",array("staff")),
             new RottaUtente("/account/calciatore/aggiungi",array("staff")),
-            new RottaUtente("/formazione/allenatore/verificaConvocazioni",array("allenatore")),
-            new RottaUtente("/formazione/allenatore/verificaFormazione",array("allenatore")),
-            new RottaUtente("/formazione/allenatore/controlConvocazioni",array("allenatore")),
-            new RottaUtente("/formazione/allenatore/schieraFormazione",array("allenatore"))
+            new RottaUtente("/formazione/allenatore/verificaConvocazioni",array("Allenatore")),
+            new RottaUtente("/formazione/allenatore/verificaFormazione",array("Allenatore")),
+            new RottaUtente("/formazione/allenatore/controlConvocazioni",array("Allenatore")),
+            new RottaUtente("/formazione/allenatore/schieraFormazione",array("Allenatore"))
         );
         return $rotte;
+    }
+
+    /**
+     * Verifica che l'account sia validato
+     * @param $account
+     */
+    public function verificaValidaAccount($account)
+    {
+        if ($_SESSION["tipo"]=="calciatore")
+        {
+            $sql = "SELECT * FROM calciatore WHERE attivo ='1' AND contratto ='$account' ";
+        }
+        else
+        {
+            $sql = "SELECT * FROM utente WHERE attivo ='1' AND username_codiceContratto ='$account' ";
+        }
+
+        $res=$this->conn->query($sql);
+
+        if($res->num_rows>0)
+        {
+            return 1;
+        }
+        else
+        {
+            $sq=$_SESSION["squadra"];
+            $staffQuery="SELECT * FROM utente WHERE tipo= 'staff' AND squadra='$sq'";
+            $riga=$this->conn->query($staffQuery)->fetch_assoc();
+            if($riga["telefono"]==null)
+            {
+                return "staff non presente per la squadra";
+            }
+            else
+            {
+                return $riga["telefono"];
+            }
+        }
+
     }
 
 
