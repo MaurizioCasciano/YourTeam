@@ -169,7 +169,7 @@ class GestoreAutenticazione
         }
         else
         {
-            $sql = "SELECT * FROM utente WHERE attivo ='1' AND username_codiceContratto ='$account' ";
+            $sql = "SELECT * FROM utente WHERE attivo ='1' AND username_codiceContratto ='$account'  ";
         }
 
         $res=$this->conn->query($sql);
