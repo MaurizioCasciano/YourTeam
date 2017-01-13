@@ -30,7 +30,7 @@ class ControllerFormazione extends Controller
      * comunicazione di lista calciatori o
      * messaggio di errore in base alla disponibilità della partita.
      *
-     * @Route("/formazione/allenatore/verificaConvocazioni")
+     * @Route("/formazione/allenatore/verificaConvocazioni", name="verificaConvocazioni", name="verificaConvocazioni")
      * @Method("GET")
      */
     public function verificaConvocazioniVista()
@@ -65,7 +65,7 @@ class ControllerFormazione extends Controller
      * comunicazione della schermata di selezione tattica o
      * messaggio di errore in base alla disponibilità della partita.
      *
-     * @Route("/formazione/allenatore/verificaFormazione")
+     * @Route("/formazione/allenatore/verificaFormazione", name="verificaFormazione")
      * @Method("GET")
      */
     public function verificaFormazioneVista()
