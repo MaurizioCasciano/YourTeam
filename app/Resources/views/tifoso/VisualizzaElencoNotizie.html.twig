@@ -2,7 +2,7 @@
 {% block contenuto %}
     {% if elenco is empty %}
         <div class="alert alert-danger">
-            <strong>Attenzione</strong> Siamo spiacenti ma al momento non sono presenti foto della tua squadra
+            <strong>Attenzione</strong> Siamo spiacenti ma al momento non sono presenti notizie
         </div>
     {% else %}
     <div class="container-fluid">
@@ -12,7 +12,7 @@
             <ol class="carousel-indicators">
                 <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
                 {% set counter = 1%}
-                {% for immagine in elenco %}
+                {% for notizia in elenco %}
                     {% if loop.first== false %}
                         <li data-target="#myCarousel" data-slide-to="{{ counter}}" ></li>
                         {% set counter = counter + 1 %}
@@ -24,10 +24,10 @@
                 <div class="item active">
                     <a href="/yourteam/web/app_dev.php/contenuti/utenteRegistrato/visualizzaContenutoView/{{ elenco[0].getId() }}"> <img style="margin: 0 auto"src="{{ asset("ImmaginiApp/contenuti/") }}{{ elenco[0].getURL() }}" ></a>
                 </div>
-                {% for immagine in elenco %}
+                {% for notizia in elenco %}
                     {% if loop.first== false %}
                         <div class="item">
-                            <a href="/yourteam/web/app_dev.php/contenuti/utenteRegistrato/visualizzaContenutoView/{{ immagine.getId() }}"> <img style="margin: 0 auto" src="{{ asset("ImmaginiApp/contenuti/") }}{{ immagine.getURL() }}" ></a>
+                            <a href="/yourteam/web/app_dev.php/contenuti/utenteRegistrato/visualizzaContenutoView/{{ notizia.getId() }}"> <img style="margin: 0 auto" src="{{ asset("ImmaginiApp/contenuti/") }}{{ notizia.getURL() }}" ></a>
                         </div>
                     {% endif %}
                 {% endfor %}

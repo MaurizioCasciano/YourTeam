@@ -142,9 +142,9 @@ class ControllerContenutiStaff extends Controller
      */
     public function visualizzaContenutoView($id){
         $gestore = GestioneContenuti::getInstance();
-        try {
+
             $contenuto=$gestore->visualizzaContenuto($id);
-            if($contenuto->getTipo()=="immagine") {
+            if($contenuto->getTipo()=="immagine" || $contenuto->getTipo()=="notizia") {
                 return $this->render("staff/visualizzaContenutoStaff.html.twig",
                     array("contenuto" => $contenuto));
             }else{
@@ -153,9 +153,8 @@ class ControllerContenutiStaff extends Controller
                         array("contenuto" => $contenuto));
                 }
             }
-        } catch (\Exception $e) {
-            return new Response($e->getMessage(), 404);
-        }
+
+        return new Response();
     }
 
     /**
@@ -165,7 +164,6 @@ class ControllerContenutiStaff extends Controller
     public function visualizzaElencoContenutiSquadra(){
         $squadra=$_SESSION["squadra"];
         $gestore = GestioneContenuti::getInstance();
-        try {
             $contenuti=$gestore->visualizzaElencoContenutiSquadra($squadra);
             $immagini= array();
             $video = array();
@@ -189,11 +187,8 @@ class ControllerContenutiStaff extends Controller
                     }
                 }
             }
-            return $this->render("staff/visualizzaElencoContenuti.html.twig",array("immagini"=>$immagini,"video"=>$video,"notizia"=>$notizie));
-        } catch (\Exception $e) {
-            return new Response($e->getMessage(), 404);
-        }
-
+            return $this->render("staff/visualizzaElencoContenuti.html.twig",array("immagini"=>$immagini,"video"=>$video,"notizie"=>$notizie));
+        return new Response();
     }
 
     /**
