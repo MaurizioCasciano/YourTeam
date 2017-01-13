@@ -50,12 +50,7 @@ class ControllerPartiteStaff extends Controller
 
         $success = $gestorePartite->inserisciPartita($partita);
 
-        if ($success) {
-            //return new Response(json_encode(array("partita" => $partita, "success" => $success), JSON_PRETTY_PRINT));
-            return new JsonResponse(array("partita" => $partita, "success" => $success), Response::HTTP_OK);
-        } else {
-
-        }
+        return new JsonResponse(array("partita" => $partita, "success" => $success));
     }
 
     /**
@@ -119,9 +114,13 @@ class ControllerPartiteStaff extends Controller
         $new = new Partita($newCasa, $newTrasferta, $newDateTime, $_SESSION["squadra"], $newStadio);
 
         $gestorePartite = GestorePartite::getInstance();
-        $success = $gestorePartite->modificaPartita($old, $new);
 
-        return new JsonResponse(array("old" => $old, "new" => $new, "success" => $success), Response::HTTP_OK);
+        try {
+            $success = $gestorePartite->modificaPartita($old, $new);
+            return new JsonResponse(array("old" => $old, "new" => $new, "success" => $success));
+        } catch (\Exception $ex) {
+            return new JsonResponse(array("old" => $old, "new" => $new, "success" => false));
+        }
     }
 
 
