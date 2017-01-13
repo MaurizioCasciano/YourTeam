@@ -61,7 +61,7 @@ class ControllerAutenticazione extends Controller
                         }
         } else
             if (!$r)
-                return new Response("non hai i permessi");
+                return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "DATI DI ACCESSO NON VALIDI"));
             else if ($r == -1)
                 return new Response("gia sei autenticato");
 
