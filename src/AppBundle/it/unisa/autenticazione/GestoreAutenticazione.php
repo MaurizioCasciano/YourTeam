@@ -61,39 +61,42 @@ class GestoreAutenticazione
      *                                      - tipo(calciatore,allenatore,staff,tisofo)
      *                false se non esiste l'account
      */
-    public function login($username , $password){
-        if(!isset($_SESSION)) {
-            $g = GestoreAccount::getInstance();
-            try {
-                    $acc = $g->ricercaAccount_A_T_S($username);
-                    $check = $this->checkPassword($password, $acc->getPassword());
-                    if ($check) {
-                        $this->creaSession($acc->getUsernameCodiceContratto(), $acc->getTipo(), $acc->getSquadra());
-                        return TRUE;
-                        }
-                        else return false;
-                }
-            catch (\Exception $e){
-                    /*perchè non è stato trovato un account di tipo allenatore, staff o tifoso vediamo se è un calciatore*/
-                    //DA IMPLEMENTARE
-                    try{
-                        //implementare il metodo ricerca AccountC
-                        $acc = $g->ricercaAccount_G($username);
-                        $check = $this->checkPassword($password, $acc->getPassword());
-                            if ($check) {
-                                $this->creaSession($acc->getUsernameCodiceContratto(),"calciatore", $acc->getSquadra());
-                                return TRUE;
-                                }
-                                else return false;
-                        }
-                        catch (\Exception $e){
-                        return false;
-                        }
+    public function login($username , $password)
+    {
+        $this->logout();
 
-            }
+        $g = GestoreAccount::getInstance();
 
+
+        try
+        {
+            $acc = $g->ricercaAccount_A_T_S($username);
+            $check = $this->checkPassword($password, $acc->getPassword());
+            if ($check)
+            {
+                $this->creaSession($acc->getUsernameCodiceContratto(), $acc->getTipo(), $acc->getSquadra());
+                return TRUE;
             }
-            else return -1;
+            else return false;
+        }
+        catch (\Exception $e)
+        {
+            /*perchè non è stato trovato un account di tipo allenatore, staff o tifoso vediamo se è un calciatore*/
+            //DA IMPLEMENTARE
+            try
+            {
+                //implementare il metodo ricerca AccountC
+                $acc = $g->ricercaAccount_G($username);
+                $check = $this->checkPassword($password, $acc->getPassword());
+                if ($check)
+                {
+                    $this->creaSession($acc->getUsernameCodiceContratto(), "calciatore", $acc->getSquadra());
+                    return TRUE;
+                } else return false;
+            } catch (\Exception $e) {
+                return false;
+            }
+        }
 
     }
 
@@ -126,33 +129,32 @@ class GestoreAutenticazione
     /**
      * @param $ogg
      */
-    public function check($rotta){
+    public function check($rotta)
+    {
 
       $rotteStabilite=$this->inizializzazioneRotte();
-      foreach ($rotteStabilite as $r){
-         if($r->getRotta()==$rotta){
+      foreach ($rotteStabilite as $r)
+      {
+         if($r->getRotta()==$rotta)
+         {
              foreach ($r->getAttori() as $a)
+             {
                  if($a==$_SESSION["tipo"])
+                 {
                      return true;
+                 }
+             }
+
          }
-         return false;
-
-
-        }
+      }
+      return false;
     }
 
     private function inizializzazioneRotte(){
         $rotte=array(new RottaUtente("/account/calciatore/aggiungi",array("staff")),
             new RottaUtente("/account/calciatore/aggiungi",array("staff")),
-            new RottaUtente("/formazione/allenatore/verificaConvocazioni",array("Allenatore")),
-            new RottaUtente("/formazione/allenatore/verificaFormazione",array("Allenatore")),
-            new RottaUtente("/formazione/allenatore/controlConvocazioni",array("Allenatore")),
-            new RottaUtente("/formazione/allenatore/schieraFormazione",array("Allenatore")),
-            new RottaUtente("/account/{attore}/{tipo}/modificaAccount",array("allenatore","calciatore","staff","tifoso")),
-            new RottaUtente("/account/elimina/{attore}/eliminaAccount/{username}",array("allenatore","calciatore","staff","tifoso")),
-            new RottaUtente("/account/staff/convalida",array("staff")),
-            new RottaUtente("/account/{attore}/{username}",array("allenatore","calciatore","staff","tifoso")),
-            new RottaUtente("/account/{attore}/aggiungi",array("allenatore","calciatore","staff","tifoso")),
+            new RottaUtente("app_it_unisa_formazione_controllerformazione_verificaconvocazionivista",array("allenatore")),
+            new RottaUtente("app_it_unisa_formazione_controllerformazione_verificaformazionevista",array("allenatore"))
         );
         return $rotte;
     }
@@ -163,13 +165,18 @@ class GestoreAutenticazione
      */
     public function verificaValidaAccount($account)
     {
+        if ($_SESSION["tipo"]=="staff")
+        {
+            return 1;
+        }
         if ($_SESSION["tipo"]=="calciatore")
         {
             $sql = "SELECT * FROM calciatore WHERE attivo ='1' AND contratto ='$account' ";
         }
-        else
+        if ($_SESSION["tipo"]=="allenatore" || $_SESSION["tipo"]=="tifoso")
         {
-            $sql = "SELECT * FROM utente WHERE attivo ='1' AND username_codiceContratto ='$account'  ";
+            $sql = "SELECT * FROM utente WHERE attivo ='1' AND username_codiceContratto ='$account' ";
+
         }
 
         $res=$this->conn->query($sql);
@@ -185,7 +192,7 @@ class GestoreAutenticazione
             $riga=$this->conn->query($staffQuery)->fetch_assoc();
             if($riga["telefono"]==null)
             {
-                return "staff non presente per la squadra";
+                return "numero dello staff non presente per la squadra";
             }
             else
             {
@@ -200,7 +207,8 @@ class GestoreAutenticazione
      * @return bool
      */
     public function logout(){
-        if(isset($_SESSION)){
+        if(isset($_SESSION))
+        {
             /*
             setcookie("PHPSESSID","",time()-3600,"/");
             return session_destroy();

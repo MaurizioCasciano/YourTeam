@@ -33,9 +33,10 @@ class ControllerAutenticazione extends Controller
         $r = $g->login($u, $p);
         if ($r)
         {
-            if($risposta=$g->verificaValidaAccount($u)!=1)
+            $risposta=$g->verificaValidaAccount($u);
+            if($risposta!=1)
             {
-                return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON VALIDATO CONTATTARE LO STAFF PER INFO: ".$risposta));
+                return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON VALIDATO CONTATTARE LO STAFF PER INFO: ".$risposta." ".$_SESSION["squadra"]));
             }
 
             if ($_SESSION["tipo"] == "allenatore") {
@@ -60,7 +61,7 @@ class ControllerAutenticazione extends Controller
                         }
         } else
             if (!$r)
-                return new Response("non hai i permessi");
+                return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "DATI DI ACCESSO NON VALIDI"));
             else if ($r == -1)
                 return new Response("gia sei autenticato");
 
