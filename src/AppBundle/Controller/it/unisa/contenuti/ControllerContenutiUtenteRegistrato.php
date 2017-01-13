@@ -41,9 +41,8 @@ class ControllerContenutiUtenteRegistrato extends Controller
     public function visualizzaContenutoView($id){
         $gestore = GestioneContenuti::getInstance();
 
-        try {
             $contenuto=$gestore->visualizzaContenuto($id);
-            if ($contenuto->getTipo()=="immagine") {
+            if ($contenuto->getTipo()=="immagine" || $contenuto->getTipo()=="notizia") {
                 return $this->render("tifoso/visualizzaContenuto.html.twig",
                     array('contenuto' => $contenuto));
             }else{
@@ -52,9 +51,7 @@ class ControllerContenutiUtenteRegistrato extends Controller
                         array('contenuto' => $contenuto));
                 }
             }
-        } catch (\Exception $e) {
-            return new Response($e->getMessage(), 404);
-        }
+
     }
 
     /**
@@ -62,9 +59,9 @@ class ControllerContenutiUtenteRegistrato extends Controller
      * @Method("GET")
      */
     public function visualizzaElencoContenutiPerTipo($tipo){
+        $squadra=$_SESSION["squadra"];
         $gestore = GestioneContenuti::getInstance();
-        try {
-            $elenco=$gestore->visualizzaElencoContenutiPerTipo($tipo);
+            $elenco=$gestore->visualizzaElencoContenutiPerTipo($tipo,$squadra);
             if($tipo=="immagine") {
                 return $this->render("tifoso/visualizzaElencoContenutiPerTipo.html.twig",
                     array('elenco' => $elenco));
@@ -72,10 +69,13 @@ class ControllerContenutiUtenteRegistrato extends Controller
                 if ($tipo=="video"){
                     return $this->render("tifoso/visualizzaElencoVideo.html.twig",
                         array('video' => $elenco));
+                }else{
+                    if($tipo=="notizia") {
+                        return $this->render("tifoso/visualizzaElencoNotizie.html.twig",
+                            array('elenco' => $elenco));
+                    }
                 }
             }
-        } catch (\Exception $e) {
-            return new Response($e->getMessage(), 404);
-        }
+            return new Response();
     }
 }

@@ -10,6 +10,7 @@
 
 namespace AppBundle\Controller\it\unisa\formazione;
 
+use AppBundle\it\unisa\autenticazione\GestoreAutenticazione;
 use AppBundle\it\unisa\formazione\ConvocNonDispException;
 use AppBundle\it\unisa\formazione\FormazioneNonDispException;
 use AppBundle\it\unisa\formazione\GestioneRosa;
@@ -33,31 +34,46 @@ class ControllerFormazione extends Controller
      * @Route("/formazione/allenatore/verificaConvocazioni", name="verificaConvocazioni", name="verificaConvocazioni")
      * @Method("GET")
      */
-    public function verificaConvocazioniVista()
+    public function verificaConvocazioniVista(Request $r)
     {
-        if (isset($_SESSION)) {
-            $gestionePartita = GestionePartita::getInstance();
-            $gestoreRosa = GestioneRosa::getInstance();
+        $autenticazione= GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($r->get("_route")))
+        {
+            if (isset($_SESSION))
+            {
+                $gestionePartita = GestionePartita::getInstance();
+                $gestoreRosa = GestioneRosa::getInstance();
 
-            try {
-                $squadra = $_SESSION["squadra"];
+                try {
+                    $squadra = $_SESSION["squadra"];
 
-                $partita = $gestionePartita->disponibilitaConvocazione($squadra);
-                $calciatori = $gestoreRosa->visualizzaRosa($squadra);
+                    $partita = $gestionePartita->disponibilitaConvocazione($squadra);
+                    $calciatori = $gestoreRosa->visualizzaRosa($squadra);
 
-                $_SESSION["partita"] = $partita;
+                    $_SESSION["partita"] = $partita;
 
-                return $this->render("allenatore/visualizzaCalciatoriConvocazione.html.twig", array('calciatori' => $calciatori, 'partita' => $partita));
+                    return $this->render("allenatore/visualizzaCalciatoriConvocazione.html.twig", array('calciatori' => $calciatori, 'partita' => $partita));
 
 
-            } catch (PartitaNonDispException $e1) {
-                return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => $e1->messaggioDiErrore()));
-            } catch (ConvocNonDispException $e2) {
-                return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => $e2->messaggioDiErrore()));
+                } catch (PartitaNonDispException $e1) {
+                    return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => $e1->messaggioDiErrore()));
+                } catch (ConvocNonDispException $e2) {
+                    return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => $e2->messaggioDiErrore()));
+                }
             }
-        } else {
-            return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => "devi effettuare prima l accesso!"));
+            else
+            {
+                return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => "devi effettuare prima l accesso!"));
+            }
+
         }
+        else
+        {
+            return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
+
+        }
+
+
     }
 
     /**
@@ -68,38 +84,47 @@ class ControllerFormazione extends Controller
      * @Route("/formazione/allenatore/verificaFormazione", name="verificaFormazione")
      * @Method("GET")
      */
-    public function verificaFormazioneVista()
+    public function verificaFormazioneVista(Request $r)
     {
-        if (isset($_SESSION)) {
-            $gestionePartita = GestionePartita::getInstance();
+        $autenticazione= GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($r->get("_route")))
+        {
+            if (isset($_SESSION)) {
+                $gestionePartita = GestionePartita::getInstance();
 
-            try {
-                $squadra = $_SESSION["squadra"];
+                try {
+                    $squadra = $_SESSION["squadra"];
 
-                $partita = $gestionePartita->disponibilitaFormazione($squadra);
+                    $partita = $gestionePartita->disponibilitaFormazione($squadra);
 
-                $gestioneRosa = GestioneRosa::getInstance();
+                    $gestioneRosa = GestioneRosa::getInstance();
 
-                $tattiche = $gestioneRosa->visualizzaTattica();
+                    $tattiche = $gestioneRosa->visualizzaTattica();
 
-                $_SESSION["partita"] = $partita;
+                    $_SESSION["partita"] = $partita;
 
-                return $this->render("allenatore/visualizzaTatticaFormazione.html.twig", array('partita' => $partita, 'tattiche' => $tattiche));
+                    return $this->render("allenatore/visualizzaTatticaFormazione.html.twig", array('partita' => $partita, 'tattiche' => $tattiche));
 
 
-            } catch (PartitaNonDispException $e1) {
-                return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => $e1->messaggioDiErrore()));
+                } catch (PartitaNonDispException $e1) {
+                    return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => $e1->messaggioDiErrore()));
 
-            } catch (FormazioneNonDispException $e2) {
-                return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => $e2->messaggioDiErrore()));
+                } catch (FormazioneNonDispException $e2) {
+                    return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => $e2->messaggioDiErrore()));
 
-            } catch (Exception $e) {
-                return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => $e->getMessage()));
+                } catch (Exception $e) {
+                    return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => $e->getMessage()));
 
+                }
+
+            } else {
+                return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => "devi effettuare prima l accesso!"));
             }
 
-        } else {
-            return $this->render("allenatore/visualizzaRisposta.html.twig", array('messaggio' => "devi effettuare prima l accesso!"));
+        }
+        else
+        {
+            return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
 
