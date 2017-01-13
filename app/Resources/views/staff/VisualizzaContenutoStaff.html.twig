@@ -1,8 +1,7 @@
 {% extends 'staff/template.html.twig' %}
 {% block contenuto %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 col-lg-6">
+    <div class="container col-md-10 col-lg-10">
+        <div class="row col-md-12 col-lg-12">
                 <div class="form-group">
                     <label >{{  contenuto.getTitolo()}}</label>
                 </div>
@@ -10,19 +9,16 @@
                     <textarea style="border:none; height: auto" rows="5" cols="100" readonly >{{ contenuto.getDescrizione()}}</textarea>
                 </div>
                 <img src="{{ asset("ImmaginiApp/contenuti/") }}{{ contenuto.getURL() }}" class="img-rounded img-responsive" alt="immagine">
-            </div>
         </div>
     </div>
     <br>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 col-lg-6">
+    <div class="container col-md-10 col-lg-10">
+        <div class="row col-md-12 col-lg-12">
                 <form>
                     <div class="form-group">
                          <button type="submit" class="btn btn-default"><a style="color:black; text-decoration: none" href="/yourteam/web/app_dev.php/contenuti/staff/cancellaContenuto/{{ contenuto.getId() }}">Elimina contenuto</a></button>
                     </div>
                 </form>
-            </div>
         </div>
     </div>
 {% endblock %}
