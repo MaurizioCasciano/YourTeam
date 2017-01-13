@@ -9,6 +9,7 @@
 namespace AppBundle\Controller\it\unisa\statistiche;
 
 
+use AppBundle\it\unisa\autenticazione\GestoreAutenticazione;
 use AppBundle\it\unisa\formazione\GestioneRosa;
 use AppBundle\it\unisa\partite\GestorePartite;
 use AppBundle\it\unisa\statistiche\GestoreStatisticheCalciatore;
@@ -24,84 +25,77 @@ use Symfony\Component\HttpFoundation\Response;
 class ControllerStatistichePartitaStaff extends Controller
 {
     /**
-     *
-     */
-    public function getInserisciStatisticheForm()
-    {
-
-    }
-
-    /**
-     *
-     */
-    public function getModificaStatisticheForm()
-    {
-
-    }
-
-    /**
      * @Route("/statistiche/staff/partita/insert/submit", name = "inserisciStatistichePartita")
      * @Method("POST")
      */
     public function inserisciStatistiche(Request $request)
     {
-        $squadra = $_SESSION["squadra"];
-        /*$values = $request->get("values");
+        if (isset($_SESSION) && isset($_SESSION["squadra"]) && isset($_SESSION["tipo"])) {
+            $autenticazione = GestoreAutenticazione::getInstance();
+            if ($autenticazione->check($request->get("_route"))) {
+                $squadra = $_SESSION["squadra"];
+                /*$values = $request->get("values");
 
-        $array = json_decode($values, true);
-        //var_dump($array);
+                $array = json_decode($values, true);
+                //var_dump($array);
 
-        $marcatori = $array["marcatori"];
-        $assistmen = $array["assistmen"];
-        $ammonizioni = $array["ammonizioni"];
-        $espulsioni = $array["espulsioni"];
+                $marcatori = $array["marcatori"];
+                $assistmen = $array["assistmen"];
+                $ammonizioni = $array["ammonizioni"];
+                $espulsioni = $array["espulsioni"];
 
-        //var_dump($marcatori);
-        //var_dump($assistmen);
-        //var_dump($ammonizioni);
-        //var_dump($espulsioni);
+                //var_dump($marcatori);
+                //var_dump($assistmen);
+                //var_dump($ammonizioni);
+                //var_dump($espulsioni);
 
-        //var_dump(count($espulsioni));
+                //var_dump(count($espulsioni));
 
-        $nomePartita = $array["nome"];
-        $dataPartita = $array["data"];
-        $golFatti = $array["golfatti"];
-        $golSubiti = $array["golsubiti"];
-        $possessoPalla = $array["possessopalla"];*/
+                $nomePartita = $array["nome"];
+                $dataPartita = $array["data"];
+                $golFatti = $array["golfatti"];
+                $golSubiti = $array["golsubiti"];
+                $possessoPalla = $array["possessopalla"];*/
 
-        $nome = $request->get("nome");
-        $data = $request->get("data");
-        $golFatti = $request->get("golfatti");
-        $golSubiti = $request->get("golsubiti");
-        $possessoPalla = $request->get("possessopalla");
+                $nome = $request->get("nome");
+                $data = $request->get("data");
+                $golFatti = $request->get("golfatti");
+                $golSubiti = $request->get("golsubiti");
+                $possessoPalla = $request->get("possessopalla");
 
-        $marcatori = $request->get("marcatori") ? $request->get("marcatori") : array();
-        $assistmen = $request->get("assistmen") ? $request->get("assistmen") : array();
-        $ammonizioni = $request->get("ammonizioni") ? $request->get("ammonizioni") : array();
-        $espulsioni = $request->get("espulsioni") ? $request->get("espulsioni") : array();
+                $marcatori = $request->get("marcatori") ? $request->get("marcatori") : array();
+                $assistmen = $request->get("assistmen") ? $request->get("assistmen") : array();
+                $ammonizioni = $request->get("ammonizioni") ? $request->get("ammonizioni") : array();
+                $espulsioni = $request->get("espulsioni") ? $request->get("espulsioni") : array();
 
-        var_dump($nome);
-        var_dump($data);
-        var_dump($golFatti);
-        var_dump($golSubiti);
-        var_dump($possessoPalla);
-        var_dump($marcatori);
+                //var_dump($nome);
+                //var_dump($data);
+                //var_dump($golFatti);
+                //var_dump($golSubiti);
+                //var_dump($possessoPalla);
+                //var_dump($marcatori);
 
-        $gestorePartite = GestorePartite::getInstance();
-        $partita = $gestorePartite->getPartita($nome, $data, $squadra);
+                $gestorePartite = GestorePartite::getInstance();
+                $partita = $gestorePartite->getPartita($nome, $data, $squadra);
 
-        //__construct($golFatti, $golSubiti, $possessoPalla,
-        // array $marcatori, array $assistMen, array $ammonizioni, array $espulsioni)
-        $statistiche = new StatistichePartita($golFatti, $golSubiti, $possessoPalla, $marcatori, $assistmen, $ammonizioni, $espulsioni);
-        $partita->setStatistiche($statistiche);
+                //__construct($golFatti, $golSubiti, $possessoPalla,
+                // array $marcatori, array $assistMen, array $ammonizioni, array $espulsioni)
+                $statistiche = new StatistichePartita($golFatti, $golSubiti, $possessoPalla, $marcatori, $assistmen, $ammonizioni, $espulsioni);
+                $partita->setStatistiche($statistiche);
 
-        $gestoreStatistichePartita = GestoreStatistichePartita::getInstance();
-        $executed = $gestoreStatistichePartita->inserisciStatistiche($partita);
+                $gestoreStatistichePartita = GestoreStatistichePartita::getInstance();
+                $executed = $gestoreStatistichePartita->inserisciStatistiche($partita);
 
-        if ($executed) {
-            return $this->redirectToRoute("lista_statistiche_calciatori_partita", array("nome" => $nome, "data" => $data));
+                if ($executed) {
+                    return $this->redirectToRoute("lista_statistiche_calciatori_partita", array("nome" => $nome, "data" => $data));
+                } else {
+                    return $this->redirectToRoute("lista_statistiche_partite");
+                }
+            } else {
+                return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "Azione non consentita."));
+            }
         } else {
-            return $this->redirectToRoute("lista_statistiche_partite");
+            return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "Effettuare il login."));
         }
     }
 
@@ -111,36 +105,45 @@ class ControllerStatistichePartitaStaff extends Controller
      */
     public function modificaStatistiche(Request $request)
     {
-        $squadra = $_SESSION["squadra"];
-        $nome = $request->get("nome");
-        $data = $request->get("data");
-        $golFatti = $request->get("golfatti");
-        $golSubiti = $request->get("golsubiti");
-        $possessoPalla = $request->get("possessopalla");
+        if (isset($_SESSION) && isset($_SESSION["squadra"]) && isset($_SESSION["tipo"])) {
+            $autenticazione = GestoreAutenticazione::getInstance();
+            if ($autenticazione->check($request->get("_route"))) {
+                $squadra = $_SESSION["squadra"];
+                $nome = $request->get("nome");
+                $data = $request->get("data");
+                $golFatti = $request->get("golfatti");
+                $golSubiti = $request->get("golsubiti");
+                $possessoPalla = $request->get("possessopalla");
 
-        $marcatori = $request->get("marcatori") ? $request->get("marcatori") : array();
-        $assistmen = $request->get("assistmen") ? $request->get("assistmen") : array();
-        $ammonizioni = $request->get("ammonizioni") ? $request->get("ammonizioni") : array();
-        $espulsioni = $request->get("espulsioni") ? $request->get("espulsioni") : array();
+                $marcatori = $request->get("marcatori") ? $request->get("marcatori") : array();
+                $assistmen = $request->get("assistmen") ? $request->get("assistmen") : array();
+                $ammonizioni = $request->get("ammonizioni") ? $request->get("ammonizioni") : array();
+                $espulsioni = $request->get("espulsioni") ? $request->get("espulsioni") : array();
 
-        $gestorePartite = GestorePartite::getInstance();
-        $partita = $gestorePartite->getPartita($nome, $data, $squadra);
+                $gestorePartite = GestorePartite::getInstance();
+                $partita = $gestorePartite->getPartita($nome, $data, $squadra);
 
-        $statistiche = new StatistichePartita($golFatti, $golSubiti, $possessoPalla, $marcatori, $assistmen, $ammonizioni, $espulsioni);
-        $partita->setStatistiche($statistiche);
+                $statistiche = new StatistichePartita($golFatti, $golSubiti, $possessoPalla, $marcatori, $assistmen, $ammonizioni, $espulsioni);
+                $partita->setStatistiche($statistiche);
 
-        $gestoreStatistichePartita = GestoreStatistichePartita::getInstance();
-        $executed = $gestoreStatistichePartita->modificaStatistiche($partita);
+                $gestoreStatistichePartita = GestoreStatistichePartita::getInstance();
+                $executed = $gestoreStatistichePartita->modificaStatistiche($partita);
 
-        if ($executed) {
-            return $this->redirectToRoute("lista_statistiche_calciatori_partita", array("nome" => $nome, "data" => $data));
+                if ($executed) {
+                    return $this->redirectToRoute("lista_statistiche_calciatori_partita", array("nome" => $nome, "data" => $data));
+                } else {
+                    return $this->redirectToRoute("lista_statistiche_partite");
+                }
+            } else {
+                return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "Azione non consentita."));
+            }
         } else {
-            return $this->redirectToRoute("lista_statistiche_partite");
+            return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "Effettuare il login."));
         }
     }
 
     /**
-     * @Route("/test/marcatori/{nome}/{data}/{squadra}")
+     * @Route("/test/marcatori/{nome}/{data}/{squadra}", name = "getMarcatoriPartita")
      * @Method("GET")
      */
     public function getMarcatori($nome, $data, $squadra)
@@ -156,25 +159,31 @@ class ControllerStatistichePartitaStaff extends Controller
 
     /**
      * Restituisce i convocati per la partita.
-     * @Route("/statistiche/convocati/{nome}/{data}")
+     * @Route("/statistiche/convocati/{nome}/{data}", name = "getConvocatiPartita")
      */
-    public function getConvocati($nome, $data)
+    public function getConvocati(Request $request, $nome, $data)
     {
-        $convocati = array();
+        if (isset($_SESSION) && isset($_SESSION["squadra"]) && isset($_SESSION["tipo"])) {
+            $autenticazione = GestoreAutenticazione::getInstance();
+            if ($autenticazione->check($request->get("_route"))) {
+                $convocati = array();
 
-        try {
-            $gestorePartite = GestorePartite::getInstance();
-            $partita = $gestorePartite->getPartita($nome, $data, $_SESSION["squadra"]);
-            if ($partita->hasConvocati()) {
-                $convocati = $partita->getConvocati();
+                try {
+                    $gestorePartite = GestorePartite::getInstance();
+                    $partita = $gestorePartite->getPartita($nome, $data, $_SESSION["squadra"]);
+                    if ($partita->hasConvocati()) {
+                        $convocati = $partita->getConvocati();
+                    }
+                } catch (\Exception $e1) {
+                    return new JsonResponse(array("convocati" => $convocati));
+                }
+
+                return new JsonResponse(array("convocati" => $convocati));
+            } else {
+                return new JsonResponse(array("convocati" => array()));
             }
-
-            //$gestioneRosa = new GestioneRosa();
-            //$calciatori = $gestioneRosa->ottieniConvocati($partita);
-        } catch (\Exception $e1) {
-            return new Response($e1->getMessage());
+        } else {
+            return new JsonResponse(array("convocati" => array()));
         }
-
-        return new JsonResponse(array("convocati" => $convocati));
     }
 }

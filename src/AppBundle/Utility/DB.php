@@ -14,8 +14,10 @@ class DB
 
     public function connect()
     {
-        $conn = new \mysqli("mysql3.gear.host", "yourteam", "P@ssw0rd", "yourteam");
+        //$conn = new \mysqli("mysql3.gear.host", "yourteam", "P@ssw0rd", "yourteam");
 
+        //$host, $username, $passwd, $dbname, $port, $socket
+        $conn = new \mysqli("127.0.0.1", "root", "root", "yourteam", 3306);
         // Check connection
         if ($conn->connect_error) {
             die("Connection failed: " . $this->conn->connect_error);

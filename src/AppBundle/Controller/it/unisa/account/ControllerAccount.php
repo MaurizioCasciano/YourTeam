@@ -89,7 +89,7 @@ class ControllerAccount extends Controller
 
                     $db->aggiungiSquadra($s);
                     $db->aggiungiAccount_A_T_S($a);
-                    return new Response("inserimento andato a buon fine");
+                    return $this->redirect("/yourteam/web/app_dev.php/");
                 }
 
             } else {
@@ -111,7 +111,7 @@ class ControllerAccount extends Controller
                     if ($path != null) {
                         $a->setImmagine($path);
                         $g->aggiungiAccount_A_T_S($a);
-                        return new Response("inserimento andato a buon fine");
+                        return $this->redirect("/yourteam/web/app_dev.php/");
                     }
                 } catch (\Exception $e) {
                     return new Response($e->getMessage(), 404);
@@ -136,7 +136,7 @@ class ControllerAccount extends Controller
                     if ($path != null) {
                         $a->setImmagine($path);
                         $g->aggiungiAccount_C($a);
-                        return new Response("inserimento andato a buon fine");
+                        return $this->redirect("/yourteam/web/app_dev.php/");
                     }
                 } catch (\Exception $e) {
                     return new Response($e->getMessage(), 404);
@@ -149,12 +149,60 @@ class ControllerAccount extends Controller
      * @Route("/account/all/ricerca",name="ricercaAccountForm")
      * @Method("GET")
      */
-    public function ricercaAccountVista($attore)
+    public function ricercaAccountVista()
     {
 
         /*vista non completa*/
-        return $this->render("account/ricercaAccount.html.twig");
+        $u = $_SESSION["username"];
+        $g = GestoreAccount::getInstance();
+        $staff = $g->ricercaAccount_A_T_S($u);
 
+        return $this->render("staff/ricercaAccount.html.twig", array("staff" => $staff));
+
+    }
+    /**
+     * @Route("/account/ricercaAccountStaff/ricerca",name="ricercaAccountStaff")
+     * @Method("POST")
+     */
+    /*attore potrà essere:
+        -calciatore
+        -staff_allenatore_tifoso
+    */
+    public function ricercaAccountStaff(Request $r)
+    {
+        $attore=$r->request->get("tipo");
+        $g = GestoreAccount::getInstance();
+
+        if($attore== "staff_allenatore_tifoso") {
+            try {
+                $ast = $g->ricercaAccount_A_T_S($r->request->get("u"));
+                $staff = $g->ricercaAccount_A_T_S($_SESSION["username"]);
+                $tipo = $ast->getTipo();
+                if ($tipo == "allenatore")
+                    return $this->render("staff/visualizzaAccountStaffRicercato.html.twig", array('ricercato' => $ast,'staff' => $staff ));
+                else
+                    if ($tipo == "tifoso")
+                        return $this->render("staff/visualizzaAccountStaffRicercato.html.twig", array('ricercato' => $ast,'staff' => $staff));
+                    else
+                        if ($tipo == "staff")
+                            return $this->render("staff/visualizzaAccountStaffRicercato.html.twig", array('ricercato' => $ast,'staff' => $staff));
+
+
+            } catch (\Exception $e) {
+                return new Response($e->getMessage(), 404);
+            }
+        }
+
+            if ($attore == "calciatore") {
+                try {
+                    $ag = $g->ricercaAccount_G($r->request->get("u"));
+                    $staff = $g->ricercaAccount_A_T_S($_SESSION["username"]);
+                    return $this->render("staff/visualizzaAccountStaffRicercato.html.twig", array('ricercato' => $ag,'staff' => $staff));
+                } catch (\Exception $e) {
+                    return new Response($e->getMessage(), 404);
+                }
+            }
+        return new Response("tipo erratoo");
     }
     /**
      * @Route("/account/{attore}/{username}",name="ricercaAccount")
