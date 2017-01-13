@@ -149,7 +149,7 @@ class ControllerAccount extends Controller
      * @Route("/account/all/ricerca",name="ricercaAccountForm")
      * @Method("GET")
      */
-    public function ricercaAccountVista($attore)
+    public function ricercaAccountVista()
     {
 
         /*vista non completa*/
