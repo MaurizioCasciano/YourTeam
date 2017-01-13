@@ -45,7 +45,7 @@ class GestoreStatistichePartita
         return self::$instance;
     }
 
-    public function inserisciStatistiche(PartitaInterface $partita)
+    public function inserisciStatistiche($partita)
     {
         if (!$partita->hasStatistiche()) {
             throw new \RuntimeException("Partita senza statistiche.");
@@ -155,7 +155,7 @@ class GestoreStatistichePartita
      * Modifica le statistiche della partita passata in input.
      * @param PartitaInterface $partita
      */
-    public function modificaStatistiche(PartitaInterface $partita)
+    public function modificaStatistiche($partita)
     {
         if (!$partita->hasStatistiche()) {
             throw new \RuntimeException("Partita senza statistiche.");
@@ -286,7 +286,7 @@ class GestoreStatistichePartita
      * @param PartitaInterface $partita
      * @return StatistichePartita|null
      */
-    public function getStatistiche(PartitaInterface $partita)
+    public function getStatistiche($partita)
     {
         if ($statement = $this->conn->prepare("
         SELECT * FROM partita
@@ -325,7 +325,7 @@ class GestoreStatistichePartita
         }
     }
 
-    public function getMarcatori(PartitaInterface $partita)
+    public function getMarcatori($partita)
     {
         if ($statement = $this->conn->prepare("
             SELECT *
@@ -361,7 +361,7 @@ class GestoreStatistichePartita
         }
     }
 
-    public function getAssistMen(PartitaInterface $partita)
+    public function getAssistMen($partita)
     {
         if ($statement = $this->conn->prepare("
             SELECT *
@@ -397,7 +397,7 @@ class GestoreStatistichePartita
         }
     }
 
-    public function getAmmonizioni(PartitaInterface $partita)
+    public function getAmmonizioni($partita)
     {
         if ($statement = $this->conn->prepare("
             SELECT *
@@ -433,7 +433,7 @@ class GestoreStatistichePartita
         }
     }
 
-    public function getEspulsioni(PartitaInterface $partita)
+    public function getEspulsioni($partita)
     {
         if ($statement = $this->conn->prepare("
             SELECT *
