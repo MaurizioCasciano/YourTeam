@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ControllerPartiteStaff extends Controller
 {
     /**
-     * @Route("/partite/staff/insert/form")
+     * @Route("/partite/staff/insert/form", name = "inserisciPartitaForm")
      * @Method("GET")
      */
     public function getInserisciPartitaForm()
@@ -121,83 +121,5 @@ class ControllerPartiteStaff extends Controller
         } catch (\Exception $ex) {
             return new JsonResponse(array("old" => $old, "new" => $new, "success" => false));
         }
-    }
-
-
-    /**
-     * @Route("/test123")
-     */
-    public function test123()
-    {
-        $partita = new Partita("Milan-Napoli", "2016-12-26 20:45:00", "Napoli", "San Siro");
-        $gestorePartite = GestorePartite::getInstance();
-
-        return new Response("Error: " . $gestorePartite->inserisciPartita($partita));
-    }
-
-    /**
-     * Testa la funzionalità di modifica di una partita.
-     * @Route("/test/modifica/partita")
-     * @return Response
-     */
-    public function testModifica()
-    {
-        $squadra = "Napoli";
-
-        $oldCasa = "Napoli";
-        $oldTrasferta = "Test";
-        $oldDateTime = new \DateTime("2016-12-30 20:45:00");
-        $oldStadio = "San Paolo";
-
-        //__construct($casa, $trasferta, $data, $squadra, $stadio)
-        $old = new Partita($oldCasa, $oldTrasferta, $oldDateTime, "Napoli", $oldStadio);
-
-        //var_dump($old);
-
-        $newCasa = "Napoli2";
-        $newTrasferta = "Test2";
-        $newDateTime = new \DateTime("2016-12-30 20:45:00");
-        $newStadio = "San Paolo2";
-        $new = new Partita($newCasa, $newTrasferta, $newDateTime, $_SESSION["squadra"], $newStadio);
-
-        //var_dump($new);
-
-        $gestorePartite = GestorePartite::getInstance();
-        $success = $gestorePartite->modificaPartita($old, $new);
-
-        return new JsonResponse(array("old" => $old, "new" => $new, "success" => $success), Response::HTTP_OK);
-    }
-
-    /**
-     * Testa la funzionalità di modifica di una partita.
-     * @Route("/test/modifica/partita/revert")
-     * @return Response
-     */
-    public function testModificaRevert()
-    {
-        $squadra = "Napoli";
-
-        $oldCasa = "Napoli2";
-        $oldTrasferta = "Test2";
-        $oldDateTime = new \DateTime("2016-12-30 20:45:00");
-        $oldStadio = "San Paolo2";
-
-        //__construct($casa, $trasferta, $data, $squadra, $stadio)
-        $old = new Partita($oldCasa, $oldTrasferta, $oldDateTime, "Napoli", $oldStadio);
-
-        //var_dump($old);
-
-        $newCasa = "Napoli";
-        $newTrasferta = "Test";
-        $newDateTime = new \DateTime("2016-12-30 20:45:00");
-        $newStadio = "San Paolo";
-        $new = new Partita($newCasa, $newTrasferta, $newDateTime, $_SESSION["squadra"], $newStadio);
-
-        //var_dump($new);
-
-        $gestorePartite = GestorePartite::getInstance();
-        $success = $gestorePartite->modificaPartita($old, $new);
-
-        return new JsonResponse(array("old" => $old, "new" => $new, "success" => $success), Response::HTTP_OK);
     }
 }
