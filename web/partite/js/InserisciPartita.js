@@ -197,7 +197,10 @@ function inserisciPartitaHandler(event) {
                 $("#new").hide();
 
                 //Success feedback
-                $(".alert-success").show().delay(1000).fadeOut();
+                showSuccess("Partita inserita correttamente.");
+            }
+            else {
+                showWarning("Errore nell'inserimento della partita.");
             }
         }
         ,

@@ -1,0 +1,78 @@
+{% extends 'staff/template.html.twig' %}
+{% block utente %}
+    <form method="post">
+        <button type="submit" style=" background: transparent; border: transparent">{{ staff.getNome() }}  {{ staff.getCognome() }}</button></form>
+{% endblock %}
+{% block contenuto %}
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ staff.getNome() }} {{ staff.getCognome() }} <b>Staff</b></h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="{{ asset("ImmaginiApp/account/") }}{{ ricercato.getImmagine() }}" class="img-circle img-responsive"> </div>
+
+                <!--<div class="col-xs-10 col-sm-10 hidden-md hidden-lg"> <br>
+                  <dl>
+                    <dt>DEPARTMENT:</dt>
+                    <dd>Administrator</dd>
+                    <dt>HIRE DATE</dt>
+                    <dd>11/12/2013</dd>
+                    <dt>DATE OF BIRTH</dt>
+                       <dd>11/12/2013</dd>
+                    <dt>GENDER</dt>
+                    <dd>Male</dd>
+                  </dl>
+                </div>-->
+                <div class=" col-md-9 col-lg-9 ">
+                    <table class="table table-user-information">
+                        <tbody>
+                        <tr>
+                            <td><b>Email:</b></td>
+                            <td>{{ricercato.getEmail() }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>username</b></td>
+                            <td>{{ ricercato.getUsernamecodiceContratto() }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Data di Nascita</b></td>
+                            <td>{{ ricercato.getDataDiNascita() }}</td>
+                        </tr>
+
+                        <tr>
+                        <tr>
+                            <td><b>Domicilio</b></td>
+                            <td>{{ ricercato.getDomicilio() }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Indirizzo</b></td>
+                            <td>{{ ricercato.getIndirizzo() }}</td>
+                        </tr>
+
+
+                        <tr>
+                            <td><b>Provincia</b></td>
+                            <td>{{ ricercato.getProvincia() }}
+                        </tr>
+                        <tr>
+
+                            <td><b>Telefono</b></td>
+                            <td>   {{ ricercato.getTelefono() }}
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+
+        </div>
+
+    </div>
+{% endblock %}
