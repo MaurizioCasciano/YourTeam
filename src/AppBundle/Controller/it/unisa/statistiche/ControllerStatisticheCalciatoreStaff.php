@@ -147,66 +147,6 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
     }
 
     /**
-     * Restituisce la view con la lista delle statistiche dei calciatori della squadra dell'utente.
-     * @Route("/statistiche/user/calciatore/all", name = "lista_statistiche_calciatori")
-     * @Method("GET")
-     */
-    public function getStatisticheCalciatoriView()
-    {
-        if (isset($_SESSION) && isset($_SESSION["squadra"]) && isset($_SESSION["tipo"])) {
-            $gestore = GestoreStatisticheCalciatore::getInstance();
-            $calciatori = $gestore->getCalciatori($_SESSION["squadra"]);
-
-            switch ($_SESSION["tipo"]) {
-                case "allenatore" :
-                    return $this->render("allenatore/ViewListaStatisticheCalciatori.html.twig", array("calciatori" => $calciatori));
-                case "calciatore" :
-                    return $this->render("giocatore/ViewListaStatisticheCalciatori.html.twig", array("calciatori" => $calciatori));
-                case "tifoso" :
-                    return $this->render("tifoso/ViewListaStatisticheCalciatori.html.twig", array("calciatori" => $calciatori));
-                case "staff":
-                    return $this->render("staff/ViewListaStatisticheCalciatori.html.twig", array("calciatori" => $calciatori));
-                default :
-                    throw new \Exception("Tipo account sconosciuto.");
-            }
-        } else {
-            throw new \Exception("SESSION not set");
-        }
-    }
-
-    /**
-     * @Route("/statistiche/staff/calciatore/insert/view/{nome}/{data}", name="ViewInserisciStatisticheCalciatori")
-     * @deprecated
-     */
-    /*public function getInserisciStatisticheCalciatoriView($nome, $data)
-    {
-        $squadra = $_SESSION["squadra"];
-
-        $gestorePartite = new GestorePartite();
-        $partita = $gestorePartite->getPartita($nome, $data, $squadra);
-        $calciatori = $gestorePartite->getCalciatoriConvocati($partita);
-
-        return $this->render("staff/ViewInserisciStatisticheCalciatori.html.twig", array("partita" => $partita, "calciatori" => $calciatori));
-    }*/
-
-    /**
-     * Restituisce la view per la modifica delle statistiche dei calciatori convocati.
-     * @Route("/statistiche/staff/calciatore/edit/view/{nome}/{data}", name = "ViewModificaStatisticheCalciatori")
-     * @deprecated
-     */
-    /*public function getModificaStatisticheCalciatoriView($nome, $data)
-    {
-        $squadra = $_SESSION["squadra"];
-
-        $gestorePartite = new GestorePartite();
-        $partita = $gestorePartite->getPartita($nome, $data, $squadra);
-        $calciatori = $gestorePartite->getCalciatoriConvocati($partita);
-
-        //return render template modifica
-        return $this->render("staff/ViewModificaStatisticheCalciatori.html.twig", array("partita" => $partita, "calciatori" => $calciatori));
-    }*/
-
-    /**
      * @Route("/statistiche/staff/calciatore/{nome}/{data}", name = "lista_statistiche_calciatori_partita")
      */
     public function getListaStatisticheCalciatoriPartitaView($nome, $data)
