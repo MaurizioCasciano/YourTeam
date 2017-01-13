@@ -13,6 +13,8 @@
     <form class="modifica-statistiche-partita" action="{{ path('modificaStatistichePartita') }}" method="post">
         <input type="hidden" name="nome" value="{{ partita.getNome() }}">
         <input type="hidden" name="data" value="{{ partita.getDataString() }}">
+        <input type="hidden" name="get_convocati" value="{{ path('getConvocatiPartita',
+        {'nome': partita.getNome(), 'data': partita.getDataString()}) }}">
         <div>
             <span>
                 <label>Gol Fatti</label>

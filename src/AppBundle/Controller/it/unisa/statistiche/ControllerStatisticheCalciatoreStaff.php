@@ -128,7 +128,7 @@ class ControllerStatisticheCalciatoreStaff extends ControllerStatisticheCalciato
 
     /**
      * @param Request $request
-     * @Route("/statistiche/staff/calciatore/edit/submit", name="ModificheStatisticheCalciatore", name = "modificaStatisticheCalciatore")
+     * @Route("/statistiche/staff/calciatore/edit/submit", name="ModificheStatisticheCalciatore")
      * @Method("POST")
      */
     public

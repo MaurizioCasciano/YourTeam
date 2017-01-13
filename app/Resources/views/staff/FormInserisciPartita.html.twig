@@ -1,5 +1,5 @@
 {% block contenuto %}
-    <form class="inserisci-partita" action = "{{ path('inserisciPartita') }}" method="post">
+    <form class="inserisci-partita" action="{{ path('inserisciPartita') }}" method="post">
         <label for="casa">Casa</label>
         <input id="casa" type="text" name="casa" required="required">
 
@@ -16,5 +16,7 @@
         <input id="ora" type="time" name="ora" required="required">
 
         <input id="salva_partita" type="submit" value="Salva">
+        <input type="hidden" name="info" value="{{ path('infoPartita') }}">
+        <input type="hidden" name="modifica" value="{{ path('Form_modifica_partita') }}">
     </form>
 {% endblock %}

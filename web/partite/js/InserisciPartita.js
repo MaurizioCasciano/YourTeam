@@ -1,5 +1,3 @@
-var ROOT_DIR = "/yourteam/web/app_dev.php";
-
 $(function () {
     $("#add").click(function () {
         $("#new").toggle();
@@ -28,11 +26,13 @@ function inserisciPartitaHandler(event) {
     console.log("Ajax Inserisci Partita Handler...");
 
     var $form = $(this);
-    var casa = $("input[name='casa']").val();
-    var trasferta = $("input[name='trasferta']").val();
-    var stadio = $("input[name='stadio']").val();
-    var data = $("input[name='data']").val();
-    var ora = $("input[name='ora']").val();
+    var casa = $($form).children("input[name='casa']").val();
+    var trasferta = $($form).children("input[name='trasferta']").val();
+    var stadio = $($form).children("input[name='stadio']").val();
+    var data = $($form).children("input[name='data']").val();
+    var ora = $($form).children("input[name='ora']").val();
+    var info_partita_path = $($form).children("input[name='info']").val();
+    var modifica_partita_form_path = $($form).children("input[name='modifica']").val();
 
     console.log("Salva Partita");
     console.log("Casa: " + casa);
@@ -129,7 +129,7 @@ function inserisciPartitaHandler(event) {
                 console.log("Partita: " + partita);
 
                 $.ajax({
-                    url: ROOT_DIR + "/partite/user/info",
+                    url: info_partita_path,
                     //type	Specifies the type of request. (GET or POST)
                     type: "POST",
                     //data	Specifies data to be sent to the server.
@@ -155,7 +155,7 @@ function inserisciPartitaHandler(event) {
                 divModifica.setAttribute("class", "modifica");
 
                 $.ajax({
-                    url: ROOT_DIR + "/partite/staff/edit/form",
+                    url: modifica_partita_form_path,
                     //type	Specifies the type of request. (GET or POST)
                     type: "POST",
                     //data	Specifies data to be sent to the server.

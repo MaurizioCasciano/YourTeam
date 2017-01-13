@@ -31,12 +31,10 @@ class ControllerAutenticazione extends Controller
         $p = $richiesta->request->get("p");
         $g = GestoreAutenticazione::getInstance();
         $r = $g->login($u, $p);
-        if ($r)
-        {
-            $risposta=$g->verificaValidaAccount($u);
-            if($risposta!=1)
-            {
-                return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON VALIDATO CONTATTARE LO STAFF PER INFO: ".$risposta." ".$_SESSION["squadra"]));
+        if ($r) {
+            $risposta = $g->verificaValidaAccount($u);
+            if ($risposta != 1) {
+                return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON VALIDATO CONTATTARE LO STAFF PER INFO: " . $risposta . " " . $_SESSION["squadra"]));
             }
 
             if ($_SESSION["tipo"] == "allenatore") {
@@ -75,6 +73,6 @@ class ControllerAutenticazione extends Controller
     {
         $g = GestoreAutenticazione::getInstance();
         $g->logout();
-        return $this->redirect("/yourteam/web/app_dev.php/");
+        return $this->redirectToRoute("home");
     }
 }
