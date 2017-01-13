@@ -10,12 +10,8 @@ namespace AppBundle\Utility;
 
 class DB
 {
-
-
     public function connect()
     {
-        //$conn = new \mysqli("mysql3.gear.host", "yourteam", "P@ssw0rd", "yourteam");
-
         $host = getenv("YOURTEAM_DB_HOST");
         $username = getenv("YOURTEAM_DB_USER");
         $password = getenv("YOURTEAM_DB_PASSWORD");
@@ -27,6 +23,17 @@ class DB
         //var_dump($password);
         //var_dump($dbname);
         //var_dump($port);
+
+        /*
+         * Nel caso in cui non siano state settate le variabili di ambiente, vengono utilizzati i valori di default.
+         */
+        if (!($host && $username && $password && $dbname && $port)) {
+            $host = "mysql3.gear.host";
+            $username = "yourteam";
+            $password = "P@ssw0rd";
+            $dbname = "yourteam";
+            $port = 3306;
+        }
 
         //$host, $username, $passwd, $dbname, $port, $socket
         //$conn = new \mysqli("127.0.0.1", "root", "root", "yourteam", 3306);
