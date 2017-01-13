@@ -156,7 +156,12 @@ class GestoreAutenticazione
             new RottaUtente("StatisticheComplessiveCalciatoreView", array("allenatore", "calciatore", "staff", "tifoso")),
             new RottaUtente("form_filtra_calciatori", array("allenatore", "calciatore", "staff", "tifoso")),
             new RottaUtente("filtra_calciatori", array("allenatore", "calciatore", "staff", "tifoso")),
-            new RottaUtente("lista_statistiche_calciatori", array("allenatore", "calciatore", "staff", "tifoso"))
+            new RottaUtente("lista_statistiche_calciatori", array("allenatore", "calciatore", "staff", "tifoso")),
+            new RottaUtente("form_modifica_statistiche_calciatore", array("staff")),
+            new RottaUtente("form_inserisci_statistiche_calciatore", array("staff")),
+            new RottaUtente("InserisciStatisticheCalciatore", array("staff")),
+            new RottaUtente("modificaStatisticheCalciatore", array("staff")),
+            new RottaUtente("lista_statistiche_calciatori_partita", array("staff"))
         );
         return $rotte;
     }
