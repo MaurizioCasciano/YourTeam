@@ -9,14 +9,12 @@
 namespace AppBundle\Controller\it\unisa\statistiche;
 
 
-use AppBundle\it\unisa\formazione\GestioneRosa;
+use AppBundle\it\unisa\autenticazione\GestoreAutenticazione;
 use AppBundle\it\unisa\partite\GestorePartite;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\BrowserKit\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 class ControllerStatistichePartitaUtenteRegistrato extends Controller
 {
