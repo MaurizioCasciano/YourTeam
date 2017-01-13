@@ -56,7 +56,7 @@
     {% else %}
     <div class="container-fluid">
 
-        <div id="myCarousel2" class="carousel slide" data-ride="carousel" style="width: 320px; margin: 0 auto" >
+        <div id="myCarousel2" class="carousel slide" data-ride="carousel" style="width: 400px; margin: 0 auto" >
             <!-- Indicators -->
             <ol class="carousel-indicators">
                 <li data-target="#myCarousel2" data-slide-to="0" class="active"></li>
@@ -72,7 +72,7 @@
             <div class="carousel-inner" role="listbox">
                 <div class="item active">
                     <a href="/yourteam/web/app_dev.php/contenuti/staff/visualizzaContenutoView/{{ video[0].getId() }}">
-                        <video width="320" height="240"  style="margin:0 auto" controls>
+                        <video style="width:400px; height:240px; margin: 0 auto" controls>
                             <source src="{{ asset("ImmaginiApp/contenuti/Video/") }}{{ video[0].getURL() }}"   type="video/mp4">
                         </video>
                     </a>
