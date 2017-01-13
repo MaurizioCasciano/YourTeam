@@ -1,5 +1,3 @@
-var ROOT_DIR = "/yourteam/web/app_dev.php";
-
 $(function () {//document.ready()
     /* attach a submit handler to the form */
     $(".modifica-partita").submit(modificaPartitaHandler);
@@ -45,7 +43,7 @@ function modificaPartitaHandler(event) {
     var url = $($form).attr("action");
 
     $.ajax({
-        url: url,//ROOT_DIR + "/partite/staff/edit/submit",
+        url: url,
         type: "POST",
         dataType: 'json',
         data: {"values": JSON.stringify(values)},

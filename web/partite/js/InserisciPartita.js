@@ -1,5 +1,3 @@
-var ROOT_DIR = "/yourteam/web/app_dev.php";
-
 $(function () {
     $("#add").click(function () {
         $("#new").toggle();

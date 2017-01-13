@@ -1,7 +1,6 @@
 /**
  * Created by Maurizio on 05/01/2017.
  */
-var ROOT_DIR = "/yourteam/web/app_dev.php";
 
 $(function () {
     $("form.inserisci_statistiche_calciatore").submit(inserisciStatisticheHandler);
