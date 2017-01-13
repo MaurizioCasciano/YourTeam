@@ -37,14 +37,15 @@
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="icon-toggle"></span>
             </button>
-            <a class="navbar-brand" href="http://localhost/yourteam/web/app_dev.php/"><img src="{{ asset('immaginiStatiche/Logo.png') }}" width="30" height="30">Your
+            <a class="navbar-brand" href="http://localhost/yourteam/web/app_dev.php/"><img
+                        src="{{ asset('immaginiStatiche/Logo.png') }}" width="30" height="30">Your
                 Team</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
 
                 <li><a href="#">{% block utente %} {% endblock %}</a></li>
-                <li><a href="http://localhost/yourteam/web/app_dev.php/logout"><i class="glyphicon glyphicon-lock"></i>
+                <li><a href="{{ path('logout') }}"><i class="glyphicon glyphicon-lock"></i>
                         Logout</a></li>
 
 
@@ -83,16 +84,22 @@
                 </li>
 
                 <li><a href="javascript:;"><i class="glyphicon glyphicon-book"></i> Rosa</a></li>
-                <li><a href="../../formazione/allenatore/verificaConvocazioni"><i class="glyphicon glyphicon-bullhorn"></i> Dirama
+                <li><a href="../../formazione/allenatore/verificaConvocazioni"><i
+                                class="glyphicon glyphicon-bullhorn"></i> Dirama
                         convocazioni</a></li>
-                <li><a href="../../formazione/allenatore/verificaFormazione"><i class="glyphicon glyphicon-pushpin"></i> Schiera
+                <li><a href="../../formazione/allenatore/verificaFormazione"><i class="glyphicon glyphicon-pushpin"></i>
+                        Schiera
                         formazione</a></li>
-                <li><a href="../../comunicazione/allenatore/sceglicalciatore"><i class="glyphicon glyphicon-comment"></i> Colloquio
+                <li><a href="../../comunicazione/allenatore/sceglicalciatore"><i
+                                class="glyphicon glyphicon-comment"></i> Colloquio
                         Chat</a></li>
-                <li><a href="../../comunicazione/allenatore/sceglicalciatorevoce"><i class="glyphicon glyphicon-sort-by-alphabet"></i> Colloquio
+                <li><a href="../../comunicazione/allenatore/sceglicalciatorevoce"><i
+                                class="glyphicon glyphicon-sort-by-alphabet"></i> Colloquio
                         Voce</a></li>
-                <li><a href="../../comunicazione/allenatore/sceglicalciatorecomportamento"><i class="glyphicon glyphicon-warning-sign"></i> Richiamo Comportamento</a></li>
-                <li><a href="../../comunicazione/allenatore/sceglicalciatoresalute"><i class="glyphicon glyphicon-heart-empty"></i> Richiamo Salute</a></li>
+                <li><a href="../../comunicazione/allenatore/sceglicalciatorecomportamento"><i
+                                class="glyphicon glyphicon-warning-sign"></i> Richiamo Comportamento</a></li>
+                <li><a href="../../comunicazione/allenatore/sceglicalciatoresalute"><i
+                                class="glyphicon glyphicon-heart-empty"></i> Richiamo Salute</a></li>
 
 
             </ul>
@@ -131,14 +138,20 @@
     <div class="container">
         <div class="text-center center-block">
             <p class="txt-railway" style="font-family:Verdana"><strong>I nostri partner</strong></p>
-            <a href="http://www.unisa.it/docenti/filomenaferrucci/index?nv=docenti.unisa.it/filomena.ferrucci"><img width="50px" height="50px" src="{{ asset('immaginiStatiche/profFerrucci.png') }}"></a>
-            <a href="http://www.unisa.it/docenti/carminegravino/index?nv=docenti.unisa.it/carmine.gravino"><img width="50px" height="50px" src="{{ asset('immaginiStatiche/profGravino.png') }}"></a>
-            <a href="http://www.unisa.it/"><img width="50px" height="50px" src="{{ asset('immaginiStatiche/logoUnisa.png') }}"></a>
-            <a href="http://www.unisa.it/facolta/scienze_mmffnn/aree_didattiche/informatica/index"><img width="50px" height="50px" src="{{ asset('immaginiStatiche/logoInformatica.png') }}"></a>
+            <a href="http://www.unisa.it/docenti/filomenaferrucci/index?nv=docenti.unisa.it/filomena.ferrucci"><img
+                        width="50px" height="50px" src="{{ asset('immaginiStatiche/profFerrucci.png') }}"></a>
+            <a href="http://www.unisa.it/docenti/carminegravino/index?nv=docenti.unisa.it/carmine.gravino"><img
+                        width="50px" height="50px" src="{{ asset('immaginiStatiche/profGravino.png') }}"></a>
+            <a href="http://www.unisa.it/"><img width="50px" height="50px"
+                                                src="{{ asset('immaginiStatiche/logoUnisa.png') }}"></a>
+            <a href="http://www.unisa.it/facolta/scienze_mmffnn/aree_didattiche/informatica/index"><img width="50px"
+                                                                                                        height="50px"
+                                                                                                        src="{{ asset('immaginiStatiche/logoInformatica.png') }}"></a>
 
         </div>
 
-    </div></footer>
+    </div>
+</footer>
 
 <div class="modal" id="addWidgetModal">
     <div class="modal-dialog">
