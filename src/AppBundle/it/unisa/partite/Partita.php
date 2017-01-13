@@ -169,7 +169,7 @@ class Partita implements PartitaInterface, \JsonSerializable
     /**
      * @return mixed
      */
-    public function getStatistiche(): StatistichePartita
+    public function getStatistiche()
     {
         if ($this->hasStatistiche()) {
             return $this->statistiche;
