@@ -206,7 +206,6 @@ class ControllerAccount extends Controller
     }
     /**
      * @Route("/account/{attore}/{username}",name="ricercaAccount")
-     * @Method("GET")
      */
     /*attore potrà essere:
         -calciatore
