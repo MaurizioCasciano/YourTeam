@@ -148,7 +148,11 @@ class GestoreAutenticazione
             new RottaUtente("app_it_unisa_formazione_controllerformazione_verificaconvocazionivista", array("allenatore")),
             new RottaUtente("app_it_unisa_formazione_controllerformazione_verificaformazionevista", array("allenatore")),
             new RottaUtente("infoPartita", array("allenatore", "calciatore", "staff", "tifoso")),
-            new RottaUtente("lista_partite", array("allenatore", "calciatore", "staff", "tifoso"))
+            new RottaUtente("lista_partite", array("allenatore", "calciatore", "staff", "tifoso")),
+            new RottaUtente("inserisciPartitaForm", array("staff")),
+            new RottaUtente("inserisciPartita", array("staff")),
+            new RottaUtente("Form_modifica_partita", array("staff")),
+            new RottaUtente("modificaPartita", array("staff"))
         );
         return $rotte;
     }

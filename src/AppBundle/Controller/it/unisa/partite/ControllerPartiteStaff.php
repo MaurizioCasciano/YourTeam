@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Controller\it\unisa\partite;
 
+use AppBundle\it\unisa\autenticazione\GestoreAutenticazione;
 use AppBundle\it\unisa\partite\GestorePartite;
 use AppBundle\it\unisa\partite\Partita;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -22,9 +23,20 @@ class ControllerPartiteStaff extends Controller
      * @Route("/partite/staff/insert/form", name = "inserisciPartitaForm")
      * @Method("GET")
      */
-    public function getInserisciPartitaForm()
+    public function getInserisciPartitaForm(Request $request)
     {
-        return $this->render(":staff:FormInserisciPartita.html.twig", array());
+        //var_dump($request->get("_route"));
+        if (isset($_SESSION) && isset($_SESSION["squadra"]) && isset($_SESSION["tipo"])) {
+
+            $autenticazione = GestoreAutenticazione::getInstance();
+            if ($autenticazione->check($request->get("_route"))) {
+                return $this->render(":staff:FormInserisciPartita.html.twig", array());
+            } else {
+                return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "Azione non consentita."));
+            }
+        } else {
+            return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "Effettuare il login."));
+        }
     }
 
     /**
@@ -34,23 +46,34 @@ class ControllerPartiteStaff extends Controller
      */
     public function inserisciPartita(Request $request)
     {
-        $casa = $request->get("casa");
-        $trasferta = $request->get("trasferta");
-        $stadio = $request->get("stadio");
-        $data = $request->get("data");
-        $ora = $request->get("ora");
-        $squadra = $_SESSION["squadra"];
+        //var_dump($request->get("_route"));
+        if (isset($_SESSION) && isset($_SESSION["squadra"]) && isset($_SESSION["tipo"])) {
 
-        $nome = $casa . "-" . $trasferta;
-        $dateTime = new \DateTime($data . " " . $ora);
-        //($nome, $data, $squadra, $stadio)
-        $partita = new Partita($casa, $trasferta, $dateTime, $squadra, $stadio);
+            $autenticazione = GestoreAutenticazione::getInstance();
+            if ($autenticazione->check($request->get("_route"))) {
+                $casa = $request->get("casa");
+                $trasferta = $request->get("trasferta");
+                $stadio = $request->get("stadio");
+                $data = $request->get("data");
+                $ora = $request->get("ora");
+                $squadra = $_SESSION["squadra"];
 
-        $gestorePartite = GestorePartite::getInstance();
+                $nome = $casa . "-" . $trasferta;
+                $dateTime = new \DateTime($data . " " . $ora);
+                //($nome, $data, $squadra, $stadio)
+                $partita = new Partita($casa, $trasferta, $dateTime, $squadra, $stadio);
 
-        $success = $gestorePartite->inserisciPartita($partita);
+                $gestorePartite = GestorePartite::getInstance();
 
-        return new JsonResponse(array("partita" => $partita, "success" => $success));
+                $success = $gestorePartite->inserisciPartita($partita);
+
+                return new JsonResponse(array("partita" => $partita, "success" => $success));
+            } else {
+                return new JsonResponse(array("success" => false));
+            }
+        } else {
+            return new JsonResponse(array("success" => false));
+        }
     }
 
     /**
@@ -59,16 +82,28 @@ class ControllerPartiteStaff extends Controller
      */
     public function getModificaPartitaForm(Request $request)
     {
-        $nome = $request->get("nome");
-        $data = $request->get("data");
-        $squadra = $_SESSION["squadra"];
-        $gestorePartite = GestorePartite::getInstance();
+        //var_dump($request->get("_route"));
+        if (isset($_SESSION) && isset($_SESSION["squadra"]) && isset($_SESSION["tipo"])) {
 
-        try {
-            $partita = $gestorePartite->getPartita($nome, $data, $squadra);
-            return $this->render("staff/FormModificaPartita.html.twig", array("partita" => $partita));
-        } catch (\Exception $ex) {
-            return new Response($ex->getMessage(), 404);
+            $autenticazione = GestoreAutenticazione::getInstance();
+            if ($autenticazione->check($request->get("_route"))) {
+
+                $nome = $request->get("nome");
+                $data = $request->get("data");
+                $squadra = $_SESSION["squadra"];
+                $gestorePartite = GestorePartite::getInstance();
+
+                try {
+                    $partita = $gestorePartite->getPartita($nome, $data, $squadra);
+                    return $this->render("staff/FormModificaPartita.html.twig", array("partita" => $partita));
+                } catch (\Exception $ex) {
+                    return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "Partita non trovata."));
+                }
+            } else {
+                return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "Azione non consentita."));
+            }
+        } else {
+            return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "Effettuare il login."));
         }
     }
 
@@ -79,47 +114,58 @@ class ControllerPartiteStaff extends Controller
      */
     public function modificaPartita(Request $request)
     {
-        $squadra = $_SESSION["squadra"];
-        $JSON_values = $request->get("values");
-        //var_dump($JSON_values);
+        //var_dump($request->get("_route"));
+        if (isset($_SESSION) && isset($_SESSION["squadra"]) && isset($_SESSION["tipo"])) {
 
-        // Convert JSON string to AssocArray
-        $values = json_decode($JSON_values, true);
+            $autenticazione = GestoreAutenticazione::getInstance();
+            if ($autenticazione->check($request->get("_route"))) {
+                $squadra = $_SESSION["squadra"];
+                $JSON_values = $request->get("values");
+                //var_dump($JSON_values);
 
-        //var_dump($values);
+                // Convert JSON string to AssocArray
+                $values = json_decode($JSON_values, true);
 
-        $oldCasa = $values["casa"]["old"];
-        $oldTrasferta = $values["trasferta"]["old"];
-        $oldData = $values["data"]["old"];
-        $oldOra = $values["ora"]["old"];
-        $oldDateTime = new \DateTime($oldData . " " . $oldOra);
-        $oldStadio = $values["stadio"]["old"];
+                //var_dump($values);
 
-        //XDEBUG
-        //var_dump($oldCasa);
-        //var_dump($oldTrasferta);
-        //var_dump($oldDateTime);
-        //var_dump($oldStadio);
-        //var_dump($_SESSION["squadra"]);
+                $oldCasa = $values["casa"]["old"];
+                $oldTrasferta = $values["trasferta"]["old"];
+                $oldData = $values["data"]["old"];
+                $oldOra = $values["ora"]["old"];
+                $oldDateTime = new \DateTime($oldData . " " . $oldOra);
+                $oldStadio = $values["stadio"]["old"];
 
-        //__construct($casa, $trasferta, $data, $squadra, $stadio)
-        $old = new Partita($oldCasa, $oldTrasferta, $oldDateTime, $_SESSION["squadra"], $oldStadio);
+                //XDEBUG
+                //var_dump($oldCasa);
+                //var_dump($oldTrasferta);
+                //var_dump($oldDateTime);
+                //var_dump($oldStadio);
+                //var_dump($_SESSION["squadra"]);
 
-        $newCasa = $values["casa"]["new"];
-        $newTrasferta = $values["trasferta"]["new"];
-        $newData = $values["data"]["new"];
-        $newOra = $values["ora"]["new"];
-        $newDateTime = new \DateTime($newData . " " . $newOra);
-        $newStadio = $values["stadio"]["new"];
-        $new = new Partita($newCasa, $newTrasferta, $newDateTime, $_SESSION["squadra"], $newStadio);
+                //__construct($casa, $trasferta, $data, $squadra, $stadio)
+                $old = new Partita($oldCasa, $oldTrasferta, $oldDateTime, $_SESSION["squadra"], $oldStadio);
 
-        $gestorePartite = GestorePartite::getInstance();
+                $newCasa = $values["casa"]["new"];
+                $newTrasferta = $values["trasferta"]["new"];
+                $newData = $values["data"]["new"];
+                $newOra = $values["ora"]["new"];
+                $newDateTime = new \DateTime($newData . " " . $newOra);
+                $newStadio = $values["stadio"]["new"];
+                $new = new Partita($newCasa, $newTrasferta, $newDateTime, $_SESSION["squadra"], $newStadio);
 
-        try {
-            $success = $gestorePartite->modificaPartita($old, $new);
-            return new JsonResponse(array("old" => $old, "new" => $new, "success" => $success));
-        } catch (\Exception $ex) {
-            return new JsonResponse(array("old" => $old, "new" => $new, "success" => false));
+                $gestorePartite = GestorePartite::getInstance();
+
+                try {
+                    $success = $gestorePartite->modificaPartita($old, $new);
+                    return new JsonResponse(array("old" => $old, "new" => $new, "success" => $success));
+                } catch (\Exception $ex) {
+                    return new JsonResponse(array("old" => $old, "new" => $new, "success" => false));
+                }
+            } else {
+                return new JsonResponse(array("success" => false));
+            }
+        } else {
+            return new JsonResponse(array("success" => false));
         }
     }
 }
