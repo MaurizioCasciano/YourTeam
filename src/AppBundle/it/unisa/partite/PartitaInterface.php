@@ -33,5 +33,5 @@ interface PartitaInterface
 
     public function hasStatistiche();
 
-    public function getStatistiche(): StatistichePartita;
+    public function getStatistiche();
 }
