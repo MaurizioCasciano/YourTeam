@@ -67,31 +67,30 @@ class GestoreAutenticazione
 
         $g = GestoreAccount::getInstance();
 
-
-        try {
-            $acc = $g->ricercaAccount_A_T_S($username);
-            if($acc=="valore non esiste") return false;
-            
+        $acc = $g->ricercaAccount_A_T_S($username);
+        if($acc=="valore non esiste")
+        {
+            $acc = $g->ricercaAccount_G($username);
             $check = $this->checkPassword($password, $acc->getPassword());
-            if ($check) {
-                $this->creaSession($acc->getUsernameCodiceContratto(), $acc->getTipo(), $acc->getSquadra());
-                return TRUE;
-            } else return false;
-        } catch (\Exception $e) {
-            /*perchè non è stato trovato un account di tipo allenatore, staff o tifoso vediamo se è un calciatore*/
-            //DA IMPLEMENTARE
-            try {
-                //implementare il metodo ricerca AccountC
-                $acc = $g->ricercaAccount_G($username);
-                $check = $this->checkPassword($password, $acc->getPassword());
-                if ($check) {
-                    $this->creaSession($acc->getUsernameCodiceContratto(), "calciatore", $acc->getSquadra());
-                    return TRUE;
-                } else return false;
-            } catch (\Exception $e) {
-                return false;
+
+            if ($acc=="valore non esiste") return false;
+
+            if ($check)
+            {
+                $this->creaSession($acc->getUsernameCodiceContratto(), "calciatore", $acc->getSquadra());
+                return true;
             }
+            else return false;
         }
+
+        $check = $this->checkPassword($password, $acc->getPassword());
+
+        if ($check)
+        {
+            $this->creaSession($acc->getUsernameCodiceContratto(), $acc->getTipo(), $acc->getSquadra());
+            return true;
+        }
+        else return false;
 
     }
 
