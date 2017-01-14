@@ -1,11 +1,11 @@
-{% extends 'allenatore/template.html.twig' %}
+{% extends 'staff/template.html.twig' %}
 {% block utente %}
 	<form method="post">
 		<button type="submit" style=" background: transparent; border: transparent">{{ g.getNome() }}  {{ g.getCognome() }}</button></form>
 
 {% endblock %}
 {% block contenuto %}
-<h1> Modifica avvenuta con successo</h1>
-
-
+	<div class="alert alert-success">
+		<strong>Staff modificato con successo!</strong>
+	</div>
 {% endblock %}

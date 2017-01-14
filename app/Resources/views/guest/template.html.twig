@@ -3,59 +3,57 @@
 <head>
     <script type="text/javascript">
 
-function func(){
-	var p1=document.getElementById("pwd").value;
-	var p2=document.getElementById("pwd2").value;
 
-	if(p1!=p2){
-		document.getElementById("psw").style.color="red";
-	}else{
-		document.getElementById("psw").style.color="green";
-	}
-}
-			function changeTipo(tipo){
+        function func() {
+            var p1 = document.getElementById("pwd").value;
+            var p2 = document.getElementById("pwd2").value;
 
-				var form=document.getElementById("f");
-				var t=document.getElementById("t");
-				var r=document.getElementById("rafel");
-				var s=document.getElementById("scritta");
-				var squadra = document.getElementById("squadra");
-				var elencoSquadre= document.getElementById("divSceltaSquadre");
-				if(tipo=="staff"){
-					form.action="staff_allenatore_tifoso/aggiungi";
-					t.value="staff";
-					s.innerHTML="username"
-					r.hidden=true;
-					elencoSquadre.hidden=true;
-					squadra.hidden=false;
-				}
-				else
-				if(tipo=="allenatore"){
-					form.action="staff_allenatore_tifoso/aggiungi";
-					t.value="allenatore";
-					s.innerHTML="codice contratto F.I.G.C";
-					r.hidden=true;
-					elencoSquadre.hidden=false;
-					squadra.hidden=true;
-				}
-				else
-				if(tipo=="tifoso"){
-					form.action="staff_allenatore_tifoso/aggiungi";
-					t.value="tifoso";
-					s.innerHTML="username"
-					r.hidden=true;
-					elencoSquadre.hidden=false;
-					squadra.hidden=true;
-				}else
-				if(tipo=="giocatore"){
-					form.action="calciatore/aggiungi";
-					t.value="giocatore";
-					r.hidden=false;
-					elencoSquadre.hidden=false;
-					squadra.hidden=true;
-					s.innerHTML="codice contratto F.I.G.C"
-				}
-			}
+            if (p1 != p2) {
+                document.getElementById("psw").style.color = "red";
+            } else {
+                document.getElementById("psw").style.color = "green";
+            }
+        }
+        function changeTipo(tipo) {
+
+            var form = document.getElementById("f");
+            var t = document.getElementById("t");
+            var r = document.getElementById("rafel");
+            var s = document.getElementById("scritta");
+            var squadra = document.getElementById("squadra");
+            var elencoSquadre = document.getElementById("divSceltaSquadre");
+            if (tipo == "staff") {
+                form.action = "{{ path('aggiungiAccount',{'attore':'staff_allenatore_tifoso'}) }}";
+                t.value = "staff";
+                s.innerHTML = "username"
+                r.hidden = true;
+                elencoSquadre.hidden = true;
+                squadra.hidden = false;
+            }
+            else if (tipo == "allenatore") {
+                form.action = "{{ path('aggiungiAccount',{'attore':'staff_allenatore_tifoso'}) }}";
+                t.value = "allenatore";
+                s.innerHTML = "codice contratto F.I.G.C";
+                r.hidden = true;
+                elencoSquadre.hidden = false;
+                squadra.hidden = true;
+            }
+            else if (tipo == "tifoso") {
+                form.action = "{{ path('aggiungiAccount',{'attore':'staff_allenatore_tifoso'}) }}";
+                t.value = "tifoso";
+                s.innerHTML = "username"
+                r.hidden = true;
+                elencoSquadre.hidden = false;
+                squadra.hidden = true;
+            } else if (tipo == "giocatore") {
+                form.action = "{{ path('aggiungiAccount',{'attore':'calciatore'}) }}";
+                t.value = "giocatore";
+                r.hidden = false;
+                elencoSquadre.hidden = false;
+                squadra.hidden = true;
+                s.innerHTML = "codice contratto F.I.G.C"
+            }
+        }
 
 
     </script>
@@ -119,9 +117,9 @@ function func(){
                 <span class="icon-toggle"></span>
             </button>
             <div class="container-fluid">
-            <a class="navbar-brand" href={{ path("home") }}>
-                <img src="{{ asset('immaginiStatiche/Logo.png') }}" width="30" height="30">
-                Your Team</a>
+                <a class="navbar-brand" href={{ path("home") }}>
+                    <img src="{{ asset('immaginiStatiche/Logo.png') }}" width="30" height="30">
+                    Your Team</a>
             </div>
         </div>
         <div class="navbar-collapse collapse">
@@ -129,7 +127,7 @@ function func(){
 
 
                 <li>
-                    <form method="POST" action="http://localhost/yourteam/web/app_dev.php/login"
+                    <form method="POST" action="{{ path('login') }}"
                           class="navbar-form navbar-right">
                         <label style="color: white">Username:</label> <input type="text" name="u" class="form-control"
                                                                              size=5>
@@ -138,7 +136,7 @@ function func(){
                         <button type="submit" class="btn btn-info">Login</button>
                     </form>
                 </li>
-                <li><a href="http://localhost/yourteam/web/app_dev.php/account/registrazione"><i class="material-icons">Registrati </i>
+                <li><a href="{{  path('formAggiungiAccount') }}"><i class="material-icons">Registrati </i>
                     </a></li>
 
 
@@ -148,7 +146,7 @@ function func(){
 </nav>
 
 <!-- Main -->
-<div class="container-fluid" >
+<div class="container-fluid">
 
 
     <div class="row">
@@ -161,7 +159,25 @@ function func(){
 </div><!--/col-span-9-->
 
 
-<footer class="text-center" style="background-color: black"><strong>Your Team</strong></footer>
+<footer class="text-center" style="background-color: black"><strong>Your Team</strong>
+    <br/><br/>
+    <div class="container">
+        <div class="text-center center-block">
+            <p class="txt-railway" style="font-family:Verdana"><strong>I nostri partner</strong></p>
+            <a href="http://www.unisa.it/docenti/filomenaferrucci/index?nv=docenti.unisa.it/filomena.ferrucci"><img
+                        width="50px" height="50px" src="{{ asset('immaginiStatiche/profFerrucci.png') }}"></a>
+            <a href="http://www.unisa.it/docenti/carminegravino/index?nv=docenti.unisa.it/carmine.gravino"><img
+                        width="50px" height="50px" src="{{ asset('immaginiStatiche/profGravino.png') }}"></a>
+            <a href="http://www.unisa.it/"><img width="50px" height="50px"
+                                                src="{{ asset('immaginiStatiche/logoUnisa.png') }}"></a>
+            <a href="http://www.unisa.it/facolta/scienze_mmffnn/aree_didattiche/informatica/index"><img width="50px"
+                                                                                                        height="50px"
+                                                                                                        src="{{ asset('immaginiStatiche/logoInformatica.png') }}"></a>
+
+        </div>
+
+    </div>
+</footer>
 
 
 <!-- script references -->

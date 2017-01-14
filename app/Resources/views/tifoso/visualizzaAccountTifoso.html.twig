@@ -29,11 +29,11 @@
                     <table class="table table-user-information">
                         <tbody>
                         <tr>
-                            <td><b>Email:</b></td>
+                            <td><b>E-mail:</b></td>
                             <td>{{tifoso.getEmail() }}</td>
                         </tr>
                         <tr>
-                            <td><b>username</b></td>
+                            <td><b>Username</b></td>
                             <td>{{ tifoso.getUsernamecodiceContratto() }}</td>
                         </tr>
                         <tr>
@@ -66,10 +66,10 @@
                         <tr>
                             <td>
 
-                                <button type="button" class="btn btn-info" onclick="window.location.href='/yourteam/web/app_dev.php/account/elimina/staff_allenatore_tifoso/eliminaAccount/{{ tifoso.getUsernamecodiceContratto() }}'"> Elimina </button> &nbsp &nbsp
+                                <button type="button" class="btn btn-info" onclick="window.location.href='{{ path('eliminaAccount',{'attore':'staff_allenatore_tifoso','username':tifoso.getUsernamecodiceContratto()}) }}'"> Elimina </button> &nbsp &nbsp
 
                             </td>
-                            <td> <button type="button" class="btn btn-info" onclick="window.location.href='/yourteam/web/app_dev.php/account/modificaForm/tifoso/{{ tifoso.getUsernamecodiceContratto() }}/modifica'"> Modifica </button></td>
+                            <td> <button type="button" class="btn btn-info" onclick="window.location.href='{{ path('modificaAccountForm',{'tipo':'tifoso','u':tifoso.getUsernamecodiceContratto()}) }}'"> Modifica </button></td>
                         </tr>
 
                         </tbody>

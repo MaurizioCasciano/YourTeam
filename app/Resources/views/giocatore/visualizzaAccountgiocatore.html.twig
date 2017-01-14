@@ -63,7 +63,7 @@
                             </td>
                         </tr>
                             <tr>
-                            <td><b>nazionalità</b></td>
+                            <td><b>Nazionalità</b></td>
                             <td>   {{ giocatore.getNazionalita() }}
                             </td>
                             </tr>
@@ -72,10 +72,10 @@
                         <tr>
                             <td>
 
-                                <button type="button" class="btn btn-info"onclick="window.location.href='/yourteam/web/app_dev.php/account/elimina/calciatore/eliminaAccount/{{ giocatore.getUsernamecodiceContratto() }}'"> Elimina </button> &nbsp &nbsp
+                                <button type="button" class="btn btn-info"onclick="window.location.href='{{ path('eliminaAccount',{'attore':'staff_allenatore_tifoso','username':giocatore.getUsernamecodiceContratto() }) }}'"> Elimina </button> &nbsp &nbsp
 
                             </td>
-                            <td> <button type="button" class="btn btn-info" onclick="window.location.href='/yourteam/web/app_dev.php/account/modificaForm/calciatore/{{ giocatore.getUsernamecodiceContratto() }}/modifica'"> Modifica </button></td>
+                            <td> <button type="button" class="btn btn-info" onclick="window.location.href='{{ path('modificaAccountForm',{'tipo':'giocatore','u':giocatore.getUsernamecodiceContratto() }) }}'"> Modifica </button></td>
                         </tr>
 
                         </tbody>

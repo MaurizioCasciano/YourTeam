@@ -9,7 +9,7 @@
                         <div class="panel-heading">
                             <span class="glyphicon glyphicon-search"></span> Scegli Calciatore Comportamento
                         </div>
-                            <form action="/yourteam/web/app_dev.php/comunicazione/allenatore/ottieniRichiamoMultaView" method="post">
+                            <form action="{{ path('ottienimultaview') }}" method="post">
                                 <select name="calciatore_destinatario">
                                      {% for calciatore in calciatori %}
                                       <option>
@@ -18,7 +18,7 @@
                                      {% endfor %}
                                  </select>
 
-                            <input type="submit" value="Invia"/>
+                            <button type="submit" class="btn btn-default">Invia</button>
                             </form>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                             <span class="glyphicon glyphicon-ban-circle"></span> Richiami Avvertimento
                         </div>
                         <ul id="chat" class="list-group">
-                            {% for messaggio in messaggi %}
+                            {% for messaggio in messaggi2 %}
                                 <li class="list-group-item"> <span>{{ messaggio.getTesto() }}</span>
                                 <h6>  {{ messaggio.getData() }} </h6>
                                     <strong> {{ messaggio.getNomeDestinatario()}} {{ messaggio.getCognomeDestinatario() }}</strong></li>

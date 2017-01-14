@@ -23,7 +23,7 @@ class GestioneRosa
     //inizio connessione al database alla costruzione del gestore
     private function __construct()
     {
-        $this->db=new DB();
+        $this->db=DB::getInstance();
         $this->connessione=$this->db->connect();
     }
 

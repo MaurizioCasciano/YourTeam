@@ -81,17 +81,17 @@
                     </a>
                 </li>
 
-                <li><a href="../../comunicazione/giocatore/ottieniMessaggioChatView">
+                <li><a href="{{ path('ottieniMessaggioChatView') }}">
                         <i class="glyphicon glyphicon-comment"></i> Colloquio Chat</a></li>
-                <li><a href="../../comunicazione/giocatore/ottieniMessaggioVoceView">
+                <li><a href="{{ path('ottieniMessaggioVoceView') }}">
                         <i class="glyphicon glyphicon-sort-by-alphabet"></i> Colloquio Voce </a></li>
-                <li><a href="../../comunicazione/giocatore/ottieniVistaRichiamoMulta">
+                <li><a href="{{ path('ottieniMulta') }}">
                         <i class="glyphicon glyphicon-warning-sign"></i> Guarda Richiami Multa </a></li>
-                <li><a href="../../comunicazione/giocatore/ottieniVistaRichiamoAvvertimento">
+                <li><a href="{{ path('ottieniAvvertimento') }}">
                         <i class="glyphicon glyphicon-warning-sign"></i> Guarda Richiami Avvertimento </a></li >
-                <li><a href="../../comunicazione/giocatore/ottieniVistaRichiamoDieta">
+                <li><a href="{{ path('ottieniDieta') }}">
                         <i class="glyphicon glyphicon-cutlery"></i> Guarda Richiami Dieta </a></li>
-                <li><a href="../../comunicazione/giocatore/ottieniVistaRichiamoAllenamento">
+                <li><a href="{{ path('ottieniAvvertimento') }}">
                         <i class="glyphicon glyphicon-briefcase"></i> Guarda Richiami Allenamento </a></li>
                 <li><a href="javascript:;"><i class="glyphicon glyphicon-book"></i> Rosa</a></li>
 
@@ -126,7 +126,19 @@
 <!-- /Main -->
 
 
-<footer class="text-center"><strong>Your Team</strong></footer>
+<footer class="text-center" style="background-color: black; color: white"><strong>Your Team</strong>
+    <br/><br/>
+    <div class="container">
+        <div class="text-center center-block">
+            <p class="txt-railway" style="font-family:Verdana"><strong>I nostri partner</strong></p>
+            <a href="http://www.unisa.it/docenti/filomenaferrucci/index?nv=docenti.unisa.it/filomena.ferrucci"><img width="50px" height="50px" src="{{ asset('immaginiStatiche/profFerrucci.png') }}"></a>
+            <a href="http://www.unisa.it/docenti/carminegravino/index?nv=docenti.unisa.it/carmine.gravino"><img width="50px" height="50px" src="{{ asset('immaginiStatiche/profGravino.png') }}"></a>
+            <a href="http://www.unisa.it/"><img width="50px" height="50px" src="{{ asset('immaginiStatiche/logoUnisa.png') }}"></a>
+            <a href="http://www.unisa.it/facolta/scienze_mmffnn/aree_didattiche/informatica/index"><img width="50px" height="50px" src="{{ asset('immaginiStatiche/logoInformatica.png') }}"></a>
+
+        </div>
+
+    </div></footer>
 
 <div class="modal" id="addWidgetModal">
     <div class="modal-dialog">

@@ -33,7 +33,7 @@ class GestoreAccount
 
     private function __construct()
     {
-        $this->db = new DB();
+        $this->db = DB::getInstance();
         $this->conn = $this->db->connect();
     }
 
@@ -236,14 +236,14 @@ class GestoreAccount
 
     public function ricercaAccount_A_T_S($u)
     {
-        if ($u == null) throw new \Exception("valore non settato");
+          //return una stringa di fallimento
 
         $sql = "SELECT * FROM utente WHERE username_codiceContratto='$u'";
         $res = $this->conn->query($sql);
         /*se la query ha successo allora la proprietà di $res è >0
         chiaramente potremmo controllare anche se la query è ben formattata(controllo solo in fase di sviluppo)
         quindi si può evitare di fare*/
-        if ($res->num_rows <= 0) throw new \Exception("GestoreAccount: account ATS con username " . $u . " non esiste.");
+        if ($res->num_rows <= 0) return "valore non esiste";
         $row = $res->fetch_assoc();
         $user = new Account($row["username_codiceContratto"], $row["password"],
             $row["squadra"], $row["email"], $row["nome"],
@@ -251,6 +251,7 @@ class GestoreAccount
             $row["indirizzo"], $row["provincia"], $row["telefono"],
             $row["immagine"], $row["tipo"]);
         // se è un calciatore query cercare tutti i suoi ruoli->cra un ruolo
+
         return $user;
 
     }
@@ -264,7 +265,7 @@ class GestoreAccount
         /*se la query ha successo allora la proprietà di $res è >0
         chiaramente potremmo controllare anche se la query è ben formattata(controllo solo in fase di sviluppo)
         quindi si può evitare di fare*/
-        if ($res->num_rows <= 0) throw new \Exception("GestoreAccount: Account Calciatore con username " . $u . " non esiste.");
+        if ($res->num_rows <= 0) return "valore non esiste";
         $row = $res->fetch_assoc();
         $user = new AccountCalciatore($row["contratto"], $row["password"],
             $row["squadra"], $row["email"], $row["nome"],
@@ -344,34 +345,37 @@ class GestoreAccount
     }
 
     public function convalidaAccount_A_G($u)
-    {
-
+    {  $sql = "UPDATE calciatore SET attivo='1' WHERE contratto='$u'";
+        $sql2 = "UPDATE utente SET attivo='1' WHERE username_codiceContratto='$u'";
         try {
-            $this->ricercaAccount_A_T_S($u);
-            $sql = "UPDATE utente SET attivo='1' WHERE username_codiceContratto='$u'";
+          //  $this->ricercaAccount_A_T_S($u);
+
             //questo controllo non funziona se passiamo un username che non esiste perciò abbiamo
             //fatto il controllo di ricercaAccount sopra
             //if (!$this->conn->query($sql))  throw new \Exception(("errore MODIFICA dati nel db"));
             $this->conn->query($sql);
+            $this->conn->query($sql2);
 
         } catch (\Exception $e) {
             //significa che in utente non c'è allora vado a vedere se è un giocatore
-            $sql = "UPDATE calciatore SET attivo='1' WHERE contratto='$u'";
-            //questo controllo non funziona se passiamo un username che non esiste perciò abbiamo
-            //fatto il controllo di ricercaAccount sopra
-            //if (!$this->conn->query($sql))  throw new \Exception(("errore MODIFICA dati nel db"));
-            $this->conn->query($sql);
+
 
         }
     }
 
     public function dammiAccountDaConvalidare()
     {
+        $squadra =$_SESSION["squadra"];
+        $utenti = null;
 
-        $sql = "SELECT * FROM utente WHERE attivo ='0' AND tipo !='staff' ";
+        $sql = "SELECT * FROM utente WHERE attivo ='0' AND tipo !='staff' AND squadra='$squadra'";
+        $sql2 = "SELECT * FROM calciatore WHERE attivo ='0' AND squadra='$squadra'";
         try {
             $ris = $this->conn->query($sql);
-            if ($ris->num_rows <= 0) throw new Exception("Nessun utente trovato");
+            $ris2 = $this->conn->query($sql2);
+
+            if ($ris->num_rows >= 0) //throw new Exception("Nessun utente trovato");
+            {
             while ($row = $ris->fetch_assoc()) {
                 $user = new Account($row["username_codiceContratto"], $row["password"],
                     $row["squadra"], $row["email"], $row["nome"],
@@ -380,12 +384,24 @@ class GestoreAccount
                     $row["immagine"], $row["tipo"]);
 
                 $utenti[] = $user;
-            }
+            }}
+            if ($ris2->num_rows >= 0) //throw new Exception("Nessun utente trovato");
+            {
+            while ($row = $ris2->fetch_assoc()) {
+                $user = new Account($row["contratto"], $row["password"],
+                    $row["squadra"], $row["email"], $row["nome"],
+                    $row["cognome"], $row["datadinascita"], $row["domicilio"],
+                    $row["indirizzo"], $row["provincia"], $row["telefono"],
+                    $row["immagine"], "");
+
+                $utenti[] = $user;
+            }}
 
         } catch (\Exception $e) {
 
 
         }
+        if($utenti==null)return "vuoto";
         return $utenti;
     }
 

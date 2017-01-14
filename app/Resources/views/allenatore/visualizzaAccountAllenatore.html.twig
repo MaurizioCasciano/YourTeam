@@ -29,7 +29,7 @@
                                     <table class="table table-user-information">
                                         <tbody>
                                         <tr>
-                                            <td><b>Email:</b></td>
+                                            <td><b>E-mail:</b></td>
                                             <td>{{ allenatore.getEmail() }}</td>
                                         </tr>
                                         <tr>
@@ -64,12 +64,13 @@
 
                                         </tr>
                                         <tr>
+
                                             <td>
 
-                                                <button type="button" class="btn btn-info" onclick="window.location.href='/yourteam/web/app_dev.php/account/elimina/staff_allenatore_tifoso/eliminaAccount/{{ allenatore.getUsernamecodiceContratto() }}'"> Elimina </button> &nbsp &nbsp
+                                                <button type="button" class="btn btn-info" onclick="window.location.href='{{ path('eliminaAccount',{'attore':'staff_allenatore_tifoso','username':allenatore.getUsernamecodiceContratto() }) }}'"> Elimina </button> &nbsp &nbsp
 
                                             </td>
-                                            <td> <button type="button" class="btn btn-info" onclick="window.location.href='/yourteam/web/app_dev.php/account/modificaForm/allenatore/{{ allenatore.getUsernamecodiceContratto() }}/modifica'"> Modifica </button></td>
+                                            <td> <button type="button" class="btn btn-info" onclick="window.location.href='{{ path('modificaAccountForm',{'tipo':'allenatore','u':allenatore.getUsernamecodiceContratto() }) }}'"> Modifica </button></td>
                                         </tr>
 
                                         </tbody>

@@ -18,7 +18,7 @@ class GestioneContenuti
 
     private function __construct()
     {
-        $this->db=new DB();
+        $this->db=DB::getInstance();
         $this->conn=$this->db->connect();
     }
 
@@ -100,7 +100,21 @@ class GestioneContenuti
         return $elenco;
     }
 
-    public function visualizzaElencoContenutiPerTipo($tipo){
+    public function visualizzaElencoContenutiPerTipo($tipo,$squadra){
+        $sql="SELECT * FROM contenuto WHERE tipo='$tipo' AND squadra='$squadra' ORDER BY data DESC";
+        $elenco = array();
+        $res = $this->conn->query($sql);
+        $i=0;
+        while($row = $res->fetch_assoc()){
+            $contenuto = new Contenuto($row["titolo"],$row["descrizione"], $row["url"],$row["tipo"],$row["data"],$row["squadra"]);
+            $contenuto->setId($row["id"]);
+            $elenco[$i]=$contenuto;
+            $i++;
+        }
+        return $elenco;
+    }
+
+    public function visualizzaElencoContenutiUtenteGuest($tipo){
         $sql="SELECT * FROM contenuto WHERE tipo='$tipo' ORDER BY data DESC";
         $elenco = array();
         $res = $this->conn->query($sql);
@@ -120,12 +134,10 @@ class GestioneContenuti
         $elenco = array();
         $res = $this->conn->query($sql);
         $i=0;
-        if($res->num_rows <= 0) throw new \Exception("Elenco contenuti vuoto per la squadra selezionata");
         while($row = $res->fetch_assoc()){
             $contenuto = new Contenuto($row["titolo"],$row["descrizione"], $row["url"],$row["tipo"],$row["data"],$row["squadra"]);
             $contenuto->setId($row{"id"});
             $elenco[$i]=$contenuto;
-
             $i++;
         }
        return $elenco;
@@ -134,7 +146,6 @@ class GestioneContenuti
     public function visualizzaContenuto($id){
         $sql = "SELECT * FROM contenuto WHERE id='$id' ";
         $res = $this->conn->query($sql);
-        if($res->num_rows <= 0) throw new \Exception("contenuto non disponibile");
         $row = $res->fetch_assoc();
 
         $contenuto = new Contenuto($row["titolo"],$row["descrizione"], $row["url"],$row["tipo"],$row["data"],$row["squadra"]);

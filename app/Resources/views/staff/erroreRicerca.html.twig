@@ -1,0 +1,11 @@
+{% extends 'staff/template.html.twig' %}
+{% block utente %}
+	<form method="post">
+		<button type="submit" style=" background: transparent; border: transparent">{{ g.getNome() }}  {{ g.getCognome() }}</button></form>
+
+{% endblock %}
+{% block contenuto %}
+	<div class="alert alert-success">
+		<strong>L'account non esiste!</strong>
+	</div>
+{% endblock %}
