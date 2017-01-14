@@ -30,8 +30,8 @@ class ControllerChatAllenatore extends Controller
     public function inviaMessaggioChat(Request $richiesta)
     {
         $g = GestoreComunicazione::getInstance();
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($richiesta->get("_route"))){
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($richiesta->get("_route"))) {
             try {
                 $testo = $richiesta->request->get("testo");
                 $messaggio = new Messaggio($testo, $_SESSION["username"],
@@ -47,7 +47,7 @@ class ControllerChatAllenatore extends Controller
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
@@ -60,8 +60,8 @@ class ControllerChatAllenatore extends Controller
     public function inviaMessaggioVoce(Request $richiesta)
     {
         $g = GestoreComunicazione::getInstance();
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($richiesta->get("_route"))){
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($richiesta->get("_route"))) {
             try {
                 $ora = $richiesta->request->get("ora");
                 $luogo = $richiesta->request->get("luogo");
@@ -70,12 +70,12 @@ class ControllerChatAllenatore extends Controller
                     $_SESSION["username"],
                     $richiesta->get("d"), "allenatore", time(), "voce");
 
-                $g -> inviaMessaggio($messaggio);
+                $g->inviaMessaggio($messaggio);
                 return $this->render(":allenatore:MessaggioSuccesso.html.twig");
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
@@ -88,8 +88,8 @@ class ControllerChatAllenatore extends Controller
     public function inviaRichiamoMulta(Request $richiesta)
     {
         $g = GestoreComunicazione::getInstance();
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($richiesta->get("_route"))){
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($richiesta->get("_route"))) {
             try {
                 $testo = $richiesta->request->get("multa");
                 $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
@@ -99,7 +99,7 @@ class ControllerChatAllenatore extends Controller
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
@@ -112,8 +112,8 @@ class ControllerChatAllenatore extends Controller
     public function inviaRichiamoAvvertimento(Request $richiesta)
     {
         $g = GestoreComunicazione::getInstance();
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($richiesta->get("_route"))){
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($richiesta->get("_route"))) {
             try {
                 $testo = $richiesta->request->get("avvertimento");
                 $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
@@ -123,8 +123,8 @@ class ControllerChatAllenatore extends Controller
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
-        }else{
-                return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
+        } else {
+            return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
 
@@ -136,8 +136,8 @@ class ControllerChatAllenatore extends Controller
     public function inviaRichiamoDieta(Request $richiesta)
     {
         $g = GestoreComunicazione::getInstance();
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($richiesta->get("_route"))){
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($richiesta->get("_route"))) {
             try {
                 $testo = $richiesta->request->get("dieta");
                 $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
@@ -147,7 +147,7 @@ class ControllerChatAllenatore extends Controller
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
@@ -160,8 +160,8 @@ class ControllerChatAllenatore extends Controller
     public function inviaRichiamoAllenamento(Request $richiesta)
     {
         $g = GestoreComunicazione::getInstance();
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($richiesta->get("_route"))){
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($richiesta->get("_route"))) {
             try {
                 $testo = $richiesta->request->get("allenamento");
                 $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
@@ -171,7 +171,7 @@ class ControllerChatAllenatore extends Controller
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
@@ -183,15 +183,15 @@ class ControllerChatAllenatore extends Controller
     public function scegliCalciatore(Request $request)
     {
         $g = GestoreComunicazione::getInstance();
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($request->get("_route"))){
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["squadra"])) {
                 throw new \RuntimeException("Squadra is null");
             }
             $calciatori = $g->getCalciatoriPerSquadra($_SESSION["squadra"]);
 
             return $this->render(":allenatore:FormScegliCalciatore.html.twig", array("calciatori" => $calciatori));
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
 
@@ -204,28 +204,28 @@ class ControllerChatAllenatore extends Controller
     public function scegliCalciatoreVoce(Request $request)
     {
         $g = GestoreComunicazione::getInstance();
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($request->get("_route"))){
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["squadra"])) {
                 throw new \RuntimeException("Squadra is null");
             }
             $calciatori = $g->getCalciatoriPerSquadra($_SESSION["squadra"]);
 
             return $this->render(":allenatore:FormScegliCalciatoreVoce.html.twig", array("calciatori" => $calciatori));
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
 
     /**
-    * @Route("/comunicazione/allenatore/sceglicalciatorecomportamento", name="sceglicomportamento")
-    * @Method("GET")
-    */
+     * @Route("/comunicazione/allenatore/sceglicalciatorecomportamento", name="sceglicomportamento")
+     * @Method("GET")
+     */
     public function scegliCalciatoreComportamento(Request $request)
     {
         $g = GestoreComunicazione::getInstance();
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($request->get("_route"))){
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["squadra"])) {
                 throw new \RuntimeException("Squadra is null");
             }
@@ -234,7 +234,7 @@ class ControllerChatAllenatore extends Controller
             $messaggi2 = $g->ottieniMessaggioRichiamoAvvertimento($calciatori);
 
             return $this->render(":allenatore:FormScegliCalciatoreComportamento.html.twig", array("calciatori" => $calciatori, "messaggi" => $messaggi, "messaggi2" => $messaggi2));
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
@@ -246,8 +246,8 @@ class ControllerChatAllenatore extends Controller
     public function scegliCalciatoreSalute(Request $request)
     {
         $g = GestoreComunicazione::getInstance();
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($request->get("_route"))){
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["squadra"])) {
                 throw new \RuntimeException("Squadra is null");
             }
@@ -256,7 +256,7 @@ class ControllerChatAllenatore extends Controller
             $messaggi2 = $g->ottieniMessaggioRichiamoAllenamento($calciatori);
 
             return $this->render(":allenatore:FormScegliCalciatoreSalute.html.twig", array("calciatori" => $calciatori, "messaggi" => $messaggi, "messaggi2" => $messaggi2));
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
@@ -267,25 +267,30 @@ class ControllerChatAllenatore extends Controller
      */
     public function ottieniMessaggioChatView(Request $request)
     {
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($request->get("_route"))){
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "allenatore") {
                 throw new \Exception("Allenatore non loggato");
             }
 
             $g = GestoreAccount::getInstance();
             $allenatoreMittente = $g->ricercaAccount_A_T_S($_SESSION["username"]);
+            var_dump($allenatoreMittente);
+
             $calciatoreDestinatario = $request->get("calciatore_destinatario");
+            var_dump($calciatoreDestinatario);
 
             $g = GestoreComunicazione::getInstance();
             try {
-                $messaggi = $g->ottieniMessaggi($allenatoreMittente, "chat", $calciatoreDestinatario);
+                $messaggi = $g->ottieniMessaggiAllenatore($allenatoreMittente->getUsernameCodiceContratto(),
+                    "chat", $calciatoreDestinatario);
 
                 return $this->render("allenatore/FormChatAllenatore2.html.twig", array("messaggi" => $messaggi, "destinatario" => $calciatoreDestinatario, "allenatore" => $allenatoreMittente));
             } catch (\Exception $e) {
+                var_dump($e);
                 return $this->render("allenatore/FormChatAllenatore2.html.twig", array("messaggi" => array(), "destinatario" => $calciatoreDestinatario, "allenatore" => $allenatoreMittente));
             }
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
@@ -296,8 +301,8 @@ class ControllerChatAllenatore extends Controller
      */
     public function ottieniMessaggioVoceView(Request $request)
     {
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($request->get("_route"))){
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "allenatore") {
                 throw new \Exception("Allenatore non loggato");
             }
@@ -311,7 +316,7 @@ class ControllerChatAllenatore extends Controller
             } catch (\Exception $e) {
                 return $this->render("allenatore/FormVoceAllenatore.html.twig", array("messaggi" => array(), "d" => $calciatoreDestinatario));
             }
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
@@ -322,8 +327,8 @@ class ControllerChatAllenatore extends Controller
      */
     public function ottieniRichiamoMultaView(Request $request)
     {
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($request->get("_route"))){
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "allenatore") {
                 throw new \Exception("Allenatore non loggato");
             }
@@ -343,7 +348,7 @@ class ControllerChatAllenatore extends Controller
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
@@ -354,8 +359,8 @@ class ControllerChatAllenatore extends Controller
      */
     public function ottieniRichiamoAvvertimentoView(Request $request)
     {
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($request->get("_route"))){
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "allenatore") {
                 throw new \Exception("Allenatore non loggato");
             }
@@ -371,7 +376,7 @@ class ControllerChatAllenatore extends Controller
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
@@ -382,8 +387,8 @@ class ControllerChatAllenatore extends Controller
      */
     public function ottieniRichiamoDieta(Request $request)
     {
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($request->get("_route"))){
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "allenatore") {
                 throw new \Exception("Allenatore non loggato");
             }
@@ -401,7 +406,7 @@ class ControllerChatAllenatore extends Controller
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
@@ -410,9 +415,10 @@ class ControllerChatAllenatore extends Controller
      * @Route("/comunicazione/allenatore/ottieniRichiamoAllenamentoView", name="ottieniallenamentoview")
      * @Method("POST")
      */
-    public function ottieniRichiamoAllenamentoView(Request $request){
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($request->get("_route"))){
+    public function ottieniRichiamoAllenamentoView(Request $request)
+    {
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "allenatore") {
                 throw new \Exception("Allenatore non loggato");
             }
@@ -428,7 +434,7 @@ class ControllerChatAllenatore extends Controller
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
