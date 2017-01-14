@@ -70,6 +70,8 @@ class GestoreAutenticazione
 
         try {
             $acc = $g->ricercaAccount_A_T_S($username);
+            if($acc=="valore non esiste") return false;
+            
             $check = $this->checkPassword($password, $acc->getPassword());
             if ($check) {
                 $this->creaSession($acc->getUsernameCodiceContratto(), $acc->getTipo(), $acc->getSquadra());

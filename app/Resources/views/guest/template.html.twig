@@ -23,7 +23,7 @@
             var squadra = document.getElementById("squadra");
             var elencoSquadre = document.getElementById("divSceltaSquadre");
             if (tipo == "staff") {
-                form.action = "staff_allenatore_tifoso/aggiungi";
+                form.action = "{{ path('aggiungiAccount',{'attore':'staff_allenatore_tifoso'}) }}";
                 t.value = "staff";
                 s.innerHTML = "username"
                 r.hidden = true;
@@ -31,7 +31,7 @@
                 squadra.hidden = false;
             }
             else if (tipo == "allenatore") {
-                form.action = "staff_allenatore_tifoso/aggiungi";
+                form.action = "{{ path('aggiungiAccount',{'attore':'staff_allenatore_tifoso'}) }}";
                 t.value = "allenatore";
                 s.innerHTML = "codice contratto F.I.G.C";
                 r.hidden = true;
@@ -39,14 +39,14 @@
                 squadra.hidden = true;
             }
             else if (tipo == "tifoso") {
-                form.action = "staff_allenatore_tifoso/aggiungi";
+                form.action = "{{ path('aggiungiAccount',{'attore':'staff_allenatore_tifoso'}) }}";
                 t.value = "tifoso";
                 s.innerHTML = "username"
                 r.hidden = true;
                 elencoSquadre.hidden = false;
                 squadra.hidden = true;
             } else if (tipo == "giocatore") {
-                form.action = "calciatore/aggiungi";
+                form.action = "{{ path('aggiungiAccount',{'attore':'calciatore'}) }}";
                 t.value = "giocatore";
                 r.hidden = false;
                 elencoSquadre.hidden = false;
@@ -136,7 +136,7 @@
                         <button type="submit" class="btn btn-info">Login</button>
                     </form>
                 </li>
-                <li><a href="http://localhost/yourteam/web/app_dev.php/account/registrazione"><i class="material-icons">Registrati </i>
+                <li><a href="{{  path('formAggiungiAccount') }}"><i class="material-icons">Registrati </i>
                     </a></li>
 
 
