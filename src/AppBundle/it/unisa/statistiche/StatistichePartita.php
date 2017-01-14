@@ -47,7 +47,7 @@ class StatistichePartita
      * @param array $ammonizioni
      * @param array $espulsioni
      */
-    public function __construct($golFatti, $golSubiti, $possessoPalla, array $marcatori, array $assistMen, array $ammonizioni, array $espulsioni)
+    public function __construct($golFatti, $golSubiti, $possessoPalla, $marcatori, $assistMen, $ammonizioni, $espulsioni)
     {
         $this->golFatti = $golFatti;
         $this->golSubiti = $golSubiti;
@@ -61,7 +61,7 @@ class StatistichePartita
     /**
      * @return int
      */
-    public function getGolFatti(): int
+    public function getGolFatti()
     {
         return $this->golFatti;
     }
@@ -69,7 +69,7 @@ class StatistichePartita
     /**
      * @param int $golFatti
      */
-    public function setGolFatti(int $golFatti)
+    public function setGolFatti($golFatti)
     {
         $this->golFatti = $golFatti;
     }
@@ -77,7 +77,7 @@ class StatistichePartita
     /**
      * @return int
      */
-    public function getGolSubiti(): int
+    public function getGolSubiti()
     {
         return $this->golSubiti;
     }
@@ -85,7 +85,7 @@ class StatistichePartita
     /**
      * @param int $golSubiti
      */
-    public function setGolSubiti(int $golSubiti)
+    public function setGolSubiti($golSubiti)
     {
         $this->golSubiti = $golSubiti;
     }
@@ -93,7 +93,7 @@ class StatistichePartita
     /**
      * @return int
      */
-    public function getPossessoPalla(): int
+    public function getPossessoPalla()
     {
         return $this->possessoPalla;
     }
@@ -101,7 +101,7 @@ class StatistichePartita
     /**
      * @param int $possessoPalla
      */
-    public function setPossessoPalla(int $possessoPalla)
+    public function setPossessoPalla($possessoPalla)
     {
         $this->possessoPalla = $possessoPalla;
     }
@@ -109,7 +109,7 @@ class StatistichePartita
     /**
      * @return array
      */
-    public function getMarcatori(): array
+    public function getMarcatori()
     {
         return $this->marcatori;
     }
@@ -117,7 +117,7 @@ class StatistichePartita
     /**
      * @param array $marcatori
      */
-    public function setMarcatori(array $marcatori)
+    public function setMarcatori($marcatori)
     {
         $this->marcatori = $marcatori;
     }
@@ -125,7 +125,7 @@ class StatistichePartita
     /**
      * @return array
      */
-    public function getAssistMen(): array
+    public function getAssistMen()
     {
         return $this->assistMen;
     }
@@ -133,7 +133,7 @@ class StatistichePartita
     /**
      * @param array $assistMen
      */
-    public function setAssistMen(array $assistMen)
+    public function setAssistMen($assistMen)
     {
         $this->assistMen = $assistMen;
     }
@@ -141,7 +141,7 @@ class StatistichePartita
     /**
      * @return array
      */
-    public function getAmmonizioni(): array
+    public function getAmmonizioni()
     {
         return $this->ammonizioni;
     }
@@ -149,7 +149,7 @@ class StatistichePartita
     /**
      * @param array $ammonizioni
      */
-    public function setAmmonizioni(array $ammonizioni)
+    public function setAmmonizioni($ammonizioni)
     {
         $this->ammonizioni = $ammonizioni;
     }
@@ -157,7 +157,7 @@ class StatistichePartita
     /**
      * @return array
      */
-    public function getEspulsioni(): array
+    public function getEspulsioni()
     {
         return $this->espulsioni;
     }
@@ -165,7 +165,7 @@ class StatistichePartita
     /**
      * @param array $espulsioni
      */
-    public function setEspulsioni(array $espulsioni)
+    public function setEspulsioni($espulsioni)
     {
         $this->espulsioni = $espulsioni;
     }

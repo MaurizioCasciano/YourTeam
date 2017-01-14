@@ -1,6 +1,8 @@
 <form class="inserisci-statistiche-partita" action="{{ path("inserisciStatistichePartita") }}" method="post">
     <input type="hidden" name="nome" value="{{ partita.getNome() }}">
     <input type="hidden" name="data" value="{{ partita.getDataString() }}">
+    <input type="hidden" name="get_convocati" value="{{ path('getConvocatiPartita',
+    {'nome': partita.getNome(), 'data': partita.getDataString()}) }}">
 
     <div>
         <span>
@@ -15,7 +17,7 @@
 
     <div>
         <label>Possesso Palla</label>
-        <input type="number" min="0" name="possessopalla" required="required">
+        <input type="number" min="0" max = "100" name="possessopalla" required="required">
     </div>
 
     <div class="marcatori">

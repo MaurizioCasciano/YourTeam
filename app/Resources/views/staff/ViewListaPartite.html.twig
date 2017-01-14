@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="text-right">
-                <button id="add" class="btn btn-primary fa fa-plus">Aggiungi</button>
+                <button id="add" class="btn btn-default">Aggiungi</button>
             </div>
         </div>
     </div>
@@ -21,7 +21,7 @@
         <div id="new" class="panel panel-default">
             <div class="panel-heading" role="tab">
                 <h4 class="panel-title">
-                    <button class="collapsed" data-toggle="collapse" data-parent="#accordion"
+                    <button class="btn btn-default" data-toggle="collapse" data-parent="#accordion"
                             data-target="#collapse">
                         <span class="pull-left">Nuova - Partita</span>
                     </button>
@@ -40,7 +40,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab">
                     <h4 class="panel-title">
-                        <button class="collapsed" data-toggle="collapse" data-parent="#accordion"
+                        <button class="btn btn-default" data-toggle="collapse" data-parent="#accordion"
                                 data-target="#{{ loop.index }}">
                             <span class="pull-left">{{ partita.getNome() }}</span><span
                                     class="pull-right">{{ partita.getData() | date('Y-m-d H:i:s') }}</span>
@@ -72,6 +72,7 @@
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
             crossorigin="anonymous"></script>
 
+    <script src="{{ asset('statistiche/js/Alerts.js') }}"></script>
     <script src="{{ asset("partite/js/InserisciPartita.js") }}"></script>
     <script src="{{ asset("partite/js/ModificaPartita.js") }}"></script>
 {% endblock %}

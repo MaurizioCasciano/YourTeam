@@ -24,56 +24,56 @@
 			<div class="form-group"> <!-- mi serve per inserire label e campo in una riga ben formattata-->
 				<label class="control-label col-sm-2" for="nome">Nome</label> <!--control-label mi inserisce il testo vicino al campo, col-sm-2 mi fa una colonna di grandezza 2-->
 				<div class="col-sm-10"> <!--colonna di grandezza 10 -->
-					<input type="text" id="nome" name="n" class="form-control" placeholder="{{ g.getNome() }}">
+					<input type="text" id="nome" name="n" class="form-control" value="{{ g.getNome() }}">
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="cognome">Cognome</label>
 				<div class="col-sm-10">
-					<input type="text" id ="cognome" name="c" class="form-control" placeholder="{{ g.getCognome() }}">
+					<input type="text" id ="cognome" name="c" class="form-control" value="{{ g.getCognome() }}">
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="nascita">Data di nascita</label>
 				<div class="col-sm-10">
-					<input type="date" id="nascita" name="d" placeholder="{{ g.getDataDiNascita() }}" class="form-control"/>
+					<input type="date" id="nascita" name="d" value="{{ g.getDataDiNascita() }}" class="form-control"/>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="domicilio">Domicilio</label>
 				<div class="col-sm-10">
-					<input type="text" id="domicilio" name="do" placeholder="{{ g.getDomicilio() }}" class="form-control" />
+					<input type="text" id="domicilio" name="do" value="{{ g.getDomicilio() }}" class="form-control" />
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="indirizzo">Indirizzo</label>
 				<div class="col-sm-10">
-					<input type="text" id="indirizzo" name="i" placeholder="{{ g.getIndirizzo() }}" class="form-control"/>
+					<input type="text" id="indirizzo" name="i" value="{{ g.getIndirizzo() }}" class="form-control"/>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="provincia">Provincia</label>
 				<div class="col-sm-10">
-					<input type="text" name="pr" id="provincia"placeholder="{{ g.getProvincia() }}" class="form-control"  />
+					<input type="text" name="pr" id="provincia" value="{{ g.getProvincia() }}" class="form-control"  />
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="telefono">Telefono</label>
 				<div class="col-sm-10">
-					<input type="text"  name="t" id="telefono" class="form-control" placeholder="{{ g.getTelefono() }}" >
+					<input type="number"  name="t" id="telefono" class="form-control" value="{{ g.getTelefono() }}" >
 				</div>
 			</div>
 
 			<div class="form-group">
-				<label class="control-label col-sm-2" for="email">email</label>
+				<label class="control-label col-sm-2" for="email">E-mail</label>
 				<div class="col-sm-10">
-					<input type="email" id="email" name="e" class="form-control" placeholder="{{ g.getEmail() }}" >
+					<input type="email" id="email" name="e" class="form-control" value="{{ g.getEmail() }}" >
 				</div>
 			</div>
 

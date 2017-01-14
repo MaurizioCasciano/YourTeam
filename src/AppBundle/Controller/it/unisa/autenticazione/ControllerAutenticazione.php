@@ -32,6 +32,11 @@ class ControllerAutenticazione extends Controller
         $g = GestoreAutenticazione::getInstance();
         $r = $g->login($u, $p);
         if ($r) {
+            $risposta = $g->verificaValidaAccount($u);
+            if ($risposta != 1) {
+                return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON VALIDATO CONTATTARE LO STAFF PER INFO: " . $risposta . " " . $_SESSION["squadra"]));
+            }
+
             if ($_SESSION["tipo"] == "allenatore") {
                 //return $this->redirect("/yourteam/web/app_dev.php/account/staff_allenatore_tifoso/".$u);
                 return $this->redirect($this->generateUrl("ricercaAccount",
@@ -54,7 +59,7 @@ class ControllerAutenticazione extends Controller
                         }
         } else
             if (!$r)
-                return new Response("non hai i permessi");
+                return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "DATI DI ACCESSO NON VALIDI"));
             else if ($r == -1)
                 return new Response("gia sei autenticato");
 
@@ -68,6 +73,6 @@ class ControllerAutenticazione extends Controller
     {
         $g = GestoreAutenticazione::getInstance();
         $g->logout();
-        return $this->redirect("/yourteam/web/app_dev.php/");
+        return $this->redirectToRoute("home");
     }
 }

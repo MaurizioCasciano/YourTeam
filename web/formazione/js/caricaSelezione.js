@@ -2,7 +2,7 @@
  * Created by luigidurso on 17/11/16.
  */
 //quando viene cliccato il pulsante di conferma viene visualizzata la lista dei selezionati
-function confermaSelezione()
+function confermaSelezione(urlFormazione)
 {
     var selezionati=new Array();
     var comboBox=document.getElementById("selezioneTattica");
@@ -43,7 +43,7 @@ function confermaSelezione()
 
     };
 
-    xmlhttp.open("POST", "http://localhost/yourteam/web/app_dev.php/formazione/allenatore/schieraFormazione", false);
+    xmlhttp.open("POST", urlFormazione, false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send("calciatori="+selezionati+"&modulo="+moduloSelezionato);
 }

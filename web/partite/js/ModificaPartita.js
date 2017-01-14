@@ -1,5 +1,3 @@
-var ROOT_DIR = "/yourteam/web/app_dev.php";
-
 $(function () {//document.ready()
     /* attach a submit handler to the form */
     $(".modifica-partita").submit(modificaPartitaHandler);
@@ -45,45 +43,50 @@ function modificaPartitaHandler(event) {
     var url = $($form).attr("action");
 
     $.ajax({
-        url: url,//ROOT_DIR + "/partite/staff/edit/submit",
+        url: url,
         type: "POST",
         dataType: 'json',
         data: {"values": JSON.stringify(values)},
         cache: false,
         success: function (response, textStatus, jqXHR) {
+            var success = response.success;
             console.log("AJAX JSON Response");
             console.log(response);
 
-            console.log("PARTITA old: ");
-            console.log(response.old);
-            var oldPartita = response.old;
+            if (success === true) {
+                console.log("PARTITA old: ");
+                console.log(response.old);
+                var oldPartita = response.old;
 
-            console.log("PARTITA new: ");
-            console.log(response.new);
-            var newPartita = response.new;
+                console.log("PARTITA new: ");
+                console.log(response.new);
+                var newPartita = response.new;
 
-            //Aggiorno i dati visualizzati con quelli appena inseriti.
-            $($spanNome).html(newPartita.nome);
-            $($spanData).html(newPartita.data);
+                //Aggiorno i dati visualizzati con quelli appena inseriti.
+                $($spanNome).html(newPartita.nome);
+                $($spanData).html(newPartita.data);
 
-            //Aggiorno le info della partita con quelli appena inseriti.
-            // get all the inputs into an array.
-            var $infoInputs = $($divInfo).find(":input:not([type = 'submit'])");
+                //Aggiorno le info della partita con quelli appena inseriti.
+                // get all the inputs into an array.
+                var $infoInputs = $($divInfo).find(":input:not([type = 'submit'])");
 
-            console.log("Info update");
-            $infoInputs.each(function () {
-                var name = this.name;
-                $(this).val(newPartita[this.name]);
-                console.log("info[" + this.name + "] = " + $(this).val());
-            });
+                console.log("Info update");
+                $infoInputs.each(function () {
+                    var name = this.name;
+                    $(this).val(newPartita[this.name]);
+                    console.log("info[" + this.name + "] = " + $(this).val());
+                });
 
-            $($divModifica).hide();
-            if ($($divCollapsible).hasClass("in")) {
-                $($divCollapsible).collapse("toggle");
+                $($divModifica).hide();
+                if ($($divCollapsible).hasClass("in")) {
+                    $($divCollapsible).collapse("toggle");
+                }
+
+                //Success feedback
+                showSuccess("Partita modificata correttamente.");
+            } else {
+                showWarning("Errore nella modifica della partita.");
             }
-
-            //Success feedback
-            $(".alert-success").show().delay(1000).fadeOut();
         }
         ,
         error: function (jqXHR, textStatus, errorThrown) {
