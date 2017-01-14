@@ -29,7 +29,7 @@ class Partita implements PartitaInterface, \JsonSerializable
      * @param string $squadra La squadra a cui si riferiscono le informazioni dell'incontro.
      * @param string $stadio Lo stadio in cui si disputa l'incontro.
      */
-    public function __construct(string $casa, string $trasferta, \DateTime $data, string $squadra, string $stadio)
+    public function __construct($casa, $trasferta, $data, $squadra, $stadio)
     {
         $this->casa = $casa;
         $this->trasferta = $trasferta;
@@ -169,7 +169,7 @@ class Partita implements PartitaInterface, \JsonSerializable
     /**
      * @return mixed
      */
-    public function getStatistiche(): StatistichePartita
+    public function getStatistiche()
     {
         if ($this->hasStatistiche()) {
             return $this->statistiche;
@@ -181,7 +181,7 @@ class Partita implements PartitaInterface, \JsonSerializable
     /**
      * @param mixed $statistiche
      */
-    public function setStatistiche(StatistichePartita $statistiche)
+    public function setStatistiche($statistiche)
     {
         $this->statistiche = $statistiche;
     }

@@ -101,7 +101,7 @@ class GestorePartite
      * @param PartitaInterface $partita La partita de inserire nel DataBase.
      * @return bool true on success or false on failure.
      */
-    public function inserisciPartita(PartitaInterface $partita)
+    public function inserisciPartita($partita)
     {
         $statement = $this->conn->prepare("INSERT INTO partita
             (`nome`,
@@ -166,7 +166,7 @@ class GestorePartite
      * @param PartitaInterface $old La vecchia partita.
      * @param PartitaInterface $new La nuova partita.
      */
-    public function modificaPartita(PartitaInterface $old, PartitaInterface $new)
+    public function modificaPartita($old, $new)
     {
         //ogni squadra può modificare solo le proprie partite.
         if ($statement = $this->conn->prepare(
@@ -199,7 +199,7 @@ class GestorePartite
         }
     }
 
-    public function getCalciatoriConvocati(PartitaInterface $partita)
+    public function getCalciatoriConvocati($partita)
     {
         if ($statement = $this->conn->prepare("
             SELECT * FROM calciatore JOIN giocare ON calciatore.contratto = giocare.calciatore
