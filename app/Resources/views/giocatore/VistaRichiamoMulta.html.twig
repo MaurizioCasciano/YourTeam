@@ -14,6 +14,7 @@
                                 <li class="list-group-item"> <span>{{ messaggio.getTesto() }}</span>
                                     <h6>  {{ messaggio.getData() }} </h6>
                                     <strong> {{ messaggio.getNomeMittente()}} {{ messaggio.getCognomeMittente() }}</strong></li>
+                                    <h6> {{ messaggio.getNomeDestinatario()}} {{ messaggio.getCognomeDestinatario() }}</h6></li>
                             {% endfor %}
                         </ul>
                 </div>

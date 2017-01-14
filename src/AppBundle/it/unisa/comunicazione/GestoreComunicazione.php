@@ -52,6 +52,21 @@ class GestoreComunicazione
         if (!$ris) throw new \Exception(("errore inserimento dati nel db " . $this->conn->error));
     }
 
+    public function inviaMessaggioCalciatore(Messaggio $msg)
+    {
+        if ($msg == null) throw new \Exception("valore nullo");
+
+        $sql = "INSERT INTO messaggio (testo,allenatore,calciatore,mittente,data,tipo) 
+                VALUES ('" . $msg->getTesto() . "','"
+            . $msg->getAllenatore() . "','"
+            . $msg->getCalciatore() . "','"
+            . $msg->getMittente() . "','"
+            . $msg->getData() . "','"
+            . $msg->getTipo() . "');";
+        $ris = $this->conn->query($sql);
+        if (!$ris) throw new \Exception(("errore inserimento dati nel db " . $this->conn->error));
+    }
+
 
 
 
@@ -92,8 +107,7 @@ class GestoreComunicazione
             }
 
             return $messaggi;
-        } else
-            throw new \Exception("non esistono messaggi");
+        }
     }
 
     /**
@@ -142,8 +156,7 @@ class GestoreComunicazione
 
             }
             return $messaggi;
-        } else
-            throw new \Exception("non esistono messaggi");
+        }
     }
 
     /**
@@ -192,8 +205,7 @@ class GestoreComunicazione
 
             }
             return $messaggi;
-        } else
-            throw new \Exception("non esistono messaggi");
+        }
     }
 
     public function ottieniMessaggioComportamento($allenatore, $calciatoreDestinatario, $testo_comportamento){
@@ -315,7 +327,7 @@ class GestoreComunicazione
     public function ottieniMessaggiRichiamoMulta($calciatore){
         if ($calciatore == null) throw new \Exception("Messaggio non trovato");
         $messaggi = array();
-        $sql = "SELECT * from messaggio WHERE messaggio.tipo = 'multa' ORDER BY data;";
+        $sql = "SELECT * from messaggio WHERE messaggio.tipo = 'multa' AND messaggio.calciatore = '$calciatore' ORDER BY data;";
 
         $result = $this->conn->query($sql);
         $i = 0;
@@ -347,14 +359,13 @@ class GestoreComunicazione
 
             }
             return $messaggi;
-        } else
-            throw new \Exception("non esistono messaggi");
+        }
     }
 
     public function ottieniMessaggioRichiamoAvvertimento($calciatore){
         if ($calciatore == null) throw new \Exception("Messaggio non trovato");
         $messaggi = array();
-        $sql = "SELECT * from messaggio WHERE messaggio.tipo = 'avvertimento' ORDER BY data;";
+        $sql = "SELECT * from messaggio WHERE messaggio.tipo = 'avvertimento' AND messaggio.calciatore = '$calciatore' ORDER BY data;";
 
         $result = $this->conn->query($sql);
         $i = 0;
@@ -387,14 +398,13 @@ class GestoreComunicazione
 
             }
             return $messaggi;
-        } else
-            throw new \Exception("non esistono messaggi");
+        }
     }
 
     public function ottieniMessaggioRichiamoDieta($calciatore){
         if ($calciatore == null) throw new \Exception("Messaggio non trovato");
         $messaggi = array();
-        $sql = "SELECT * from messaggio WHERE messaggio.tipo = 'dieta'  ORDER BY data;";
+        $sql = "SELECT * from messaggio WHERE messaggio.tipo = 'dieta' AND messaggio.calciatore = '$calciatore'  ORDER BY data;";
 
         $result = $this->conn->query($sql);
         $i = 0;
@@ -427,14 +437,13 @@ class GestoreComunicazione
 
             }
             return $messaggi;
-        } else
-            throw new \Exception("non esistono messaggi");
+        }
     }
 
     public function ottieniMessaggioRichiamoAllenamento($calciatore){
         if ($calciatore == null) throw new \Exception("Messaggio non trovato");
         $messaggi = array();
-        $sql = "SELECT * from messaggio WHERE messaggio.tipo = 'allenamento'  ORDER BY data;";
+        $sql = "SELECT * from messaggio WHERE messaggio.tipo = 'allenamento' AND messaggio.calciatore = '$calciatore'  ORDER BY data;";
 
         $result = $this->conn->query($sql);
         $i = 0;
@@ -467,7 +476,6 @@ class GestoreComunicazione
 
             }
             return $messaggi;
-        } else
-            throw new \Exception("non esistono messaggi");
+        }
     }
 }
