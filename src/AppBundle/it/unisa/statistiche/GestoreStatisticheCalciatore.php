@@ -19,7 +19,7 @@ class GestoreStatisticheCalciatore
 
     private function __construct()
     {
-        $this->db = new DB();
+        $this->db = DB::getInstance();
         $this->conn = $this->db->connect();
     }
 
@@ -46,7 +46,7 @@ class GestoreStatisticheCalciatore
      * L'effetto dell'esecuzione di questo metodo è l'inserimento nel DB delle statistiche date in input, che andranno a sommarsi a quelle già presenti.
      * @param StatisticheCalciatore $statistiche
      */
-    public function inserisciStatistiche(StatisticheCalciatore $statistiche, $nomePartita, $dataPartita, $squadra)
+    public function inserisciStatistiche($statistiche, $nomePartita, $dataPartita, $squadra)
     {
         $statement = $this->conn->prepare(
             "INSERT INTO " . "statistiche_calciatore" .
@@ -296,7 +296,7 @@ class GestoreStatisticheCalciatore
      * @param StatisticheCalciatore $statisticheCalciatore
      */
     public
-    function modificaStatistiche(StatisticheCalciatore $statistiche, $nomePartita, $dataPartita, $squadra)
+    function modificaStatistiche($statistiche, $nomePartita, $dataPartita, $squadra)
     {
         if ($statement = $this->conn->prepare(
             "UPDATE statistiche_calciatore
@@ -440,7 +440,7 @@ class GestoreStatisticheCalciatore
      * @param $nuoviMarcatori array L'id dei nuovi marcatori.
      * @param PartitaInterface $partita La partita.
      */
-    public function rimuoviMarcatori(PartitaInterface $partita)
+    public function rimuoviMarcatori($partita)
     {
         if ($statement = $this->conn->prepare("
         UPDATE statistiche_calciatore
@@ -465,7 +465,7 @@ class GestoreStatisticheCalciatore
         }
     }
 
-    public function rimuoviAssistMen(PartitaInterface $partita)
+    public function rimuoviAssistMen($partita)
     {
         if ($statement = $this->conn->prepare("
         UPDATE statistiche_calciatore
@@ -490,7 +490,7 @@ class GestoreStatisticheCalciatore
         }
     }
 
-    public function rimuoviAmmonizioni(PartitaInterface $partita)
+    public function rimuoviAmmonizioni($partita)
     {
         if ($statement = $this->conn->prepare("
         UPDATE statistiche_calciatore
@@ -515,7 +515,7 @@ class GestoreStatisticheCalciatore
         }
     }
 
-    public function rimuoviEspulsioni(PartitaInterface $partita)
+    public function rimuoviEspulsioni($partita)
     {
         if ($statement = $this->conn->prepare("
         UPDATE statistiche_calciatore

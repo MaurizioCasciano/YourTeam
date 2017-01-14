@@ -45,7 +45,7 @@ function aggiungiMarcatoriHandler(event) {
     var nome = $($inputNome).val();
     var data = $($inputData).val();
 
-    getConvocati(nome, data, addMarcatoriSelect, $target);
+    getConvocati(nome, data, addMarcatoriSelect, $target, $form);
 }
 
 function aggiungiAssistMenHandler() {
@@ -67,7 +67,7 @@ function aggiungiAssistMenHandler() {
     var nome = $($inputNome).val();
     var data = $($inputData).val();
 
-    getConvocati(nome, data, addAssistMenSelect, $target);
+    getConvocati(nome, data, addAssistMenSelect, $target, $form);
 }
 
 function aggiungiAmmonizioniMenHandler() {
@@ -89,7 +89,7 @@ function aggiungiAmmonizioniMenHandler() {
     var nome = $($inputNome).val();
     var data = $($inputData).val();
 
-    getConvocati(nome, data, addAmmonizioniSelect, $target);
+    getConvocati(nome, data, addAmmonizioniSelect, $target, $form);
 }
 
 function aggiungiEspulsioniMenHandler() {
@@ -111,7 +111,7 @@ function aggiungiEspulsioniMenHandler() {
     var nome = $($inputNome).val();
     var data = $($inputData).val();
 
-    getConvocati(nome, data, addEspulsioniSelect, $target);
+    getConvocati(nome, data, addEspulsioniSelect, $target, $form);
 }
 
 /**
@@ -193,7 +193,7 @@ function addEspulsioniSelect(convocati, target) {
  * @param handler La funzione di call-back da chiamare quando si riceve la risposta dal server.
  * @param target L'elemento DOM in cui inserire i nuovi dati.
  */
-function getConvocati(nome, data, handler, target) {
+function getConvocati(nome, data, handler, target, form) {
     console.log("GET CONVOCATI");
 
     console.log("NOME: " + NOME);
@@ -203,8 +203,9 @@ function getConvocati(nome, data, handler, target) {
         console.log("CONVOCATI GIA' PRESENTI...");
         handler(CONVOCATI, target);
     } else {
+        var url = $(form).children("input[name='get_convocati']").val();
         $.ajax({
-            url: ROOT_DIR + "/statistiche/convocati/" + nome + "/" + data,
+            url: url,
             type: "GET",
             cache: false,
             success: function (response, textStatus, jqXHR) {

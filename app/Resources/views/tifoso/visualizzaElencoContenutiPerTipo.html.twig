@@ -1,5 +1,10 @@
 {% extends 'tifoso/template.html.twig' %}
 {% block contenuto %}
+    {% if elenco is empty %}
+        <div class="alert alert-danger">
+            <strong>Attenzione</strong> Siamo spiacenti ma al momento non sono presenti foto della tua squadra
+        </div>
+    {% else %}
     <div class="container-fluid">
 
         <div id="myCarousel" class="carousel slide" data-ride="carousel" style="width: 600px; margin: 0 auto">
@@ -17,12 +22,12 @@
             <!-- Wrapper for slides -->
             <div class="carousel-inner" role="listbox">
                 <div class="item active">
-                    <a href="/yourteam/web/app_dev.php/contenuti/utenteRegistrato/visualizzaContenutoView/{{ elenco[0].getId() }}"> <img src="{{ asset("ImmaginiApp/contenuti/") }}{{ elenco[0].getURL() }}" ></a>
+                    <a href="/yourteam/web/app_dev.php/contenuti/utenteRegistrato/visualizzaContenutoView/{{ elenco[0].getId() }}"> <img style="margin: 0 auto"src="{{ asset("ImmaginiApp/contenuti/") }}{{ elenco[0].getURL() }}" ></a>
                 </div>
                 {% for immagine in elenco %}
                     {% if loop.first== false %}
                         <div class="item">
-                            <a href="/yourteam/web/app_dev.php/contenuti/utenteRegistrato/visualizzaContenutoView/{{ immagine.getId() }}"> <img src="{{ asset("ImmaginiApp/contenuti/") }}{{ immagine.getURL() }}" ></a>
+                            <a href="/yourteam/web/app_dev.php/contenuti/utenteRegistrato/visualizzaContenutoView/{{ immagine.getId() }}"> <img style="margin: 0 auto" src="{{ asset("ImmaginiApp/contenuti/") }}{{ immagine.getURL() }}" ></a>
                         </div>
                     {% endif %}
                 {% endfor %}
@@ -38,4 +43,5 @@
         </div>
 
     </div>
+        {% endif %}
 {% endblock %}

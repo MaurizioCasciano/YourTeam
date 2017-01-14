@@ -19,7 +19,7 @@ class GestionePartita
 
     private function __construct()
     {
-        $this->db=new DB();
+        $this->db=DB::getInstance();
         $this->connessione=$this->db->connect();
     }
 
@@ -60,7 +60,7 @@ class GestionePartita
             return $modelPartita;
         }
 
-        if($risultato->num_rows>1) throw new Exception("errore database, piu partite in 2 giorni per : ".$squadra);
+        if($risultato->num_rows>1) throw new Exception("Errore database, piu partite in 2 giorni per : ".$squadra);
 
         return null;
 
@@ -92,17 +92,17 @@ class GestionePartita
 
             if($risultato->num_rows<=0)
             {
-                throw new FormazioneNonDispException("convocazioni non ancora diramate per la prossima partita");
+                throw new FormazioneNonDispException("Convocazioni non ancora diramate per la prossima partita.");
             }
             if($partita->getModulo()!= null)
             {
-                throw new FormazioneNonDispException("formazione gia schierata per la prossima partita");
+                throw new FormazioneNonDispException("Formazione già schierata per la prossima partita.");
             }
             return $partita;
         }
         else
         {
-            throw new PartitaNonDispException("non esiste nessuna partita entro 48 ore disponibile alla formazione!");
+            throw new PartitaNonDispException("Non esiste nessuna partita entro 48 ore disponibile alla formazione!");
         }
 
     }
@@ -132,7 +132,7 @@ class GestionePartita
 
             if($risultato->num_rows!=0)
             {
-                throw new ConvocNonDispException("convocazioni gia diramate per la prossima partita!");
+                throw new ConvocNonDispException("Convocazioni già diramate per la prossima partita!");
             }
             else
             {
@@ -141,7 +141,7 @@ class GestionePartita
         }
         else
         {
-            throw new PartitaNonDispException("non esiste nessuna partita entro 48 ore disponibile alla convocazione!");
+            throw new PartitaNonDispException("Non esiste nessuna partita entro 48 ore disponibile alla convocazione!");
         }
     }
 

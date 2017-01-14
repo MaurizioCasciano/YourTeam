@@ -1,2 +1,67 @@
-{% extends 'staff/ViewStatisticheCalciatore.html.twig' %}
+{% block contenuto %}
+    {% if calciatore.hasStatistiche() %}
+        {% set statististiche = calciatore.getStatistiche() %}
+
+    {% endif %}
+    <h1>Statistiche {{ calciatore.getNome() |capitalize }}
+        &nbsp;{{ calciatore.getCognome() |capitalize }}</h1>
+    <table class="statistiche table table-bordered table-striped table-hover table-condensed table-responsive">
+        <thead>
+        <tr>
+            <th>STATISTICA</th>
+            <th>VALORE</th>
+        </tr>
+        </thead>
+
+        <tr>
+            <td>Tiri Totali</td>
+            <td>{{ statististiche.getTiriTotali() }}</td>
+        </tr>
+
+        <tr>
+            <td>Tiri in Porta</td>
+            <td>{{ statististiche.getTiriPorta() }}</td>
+        </tr>
+
+        <tr>
+            <td>Falli Fatti</td>
+            <td>{{ statististiche.getFalliFatti() }}</td>
+        </tr>
+
+        <tr>
+            <td>Falli Subiti</td>
+            <td>{{ statististiche.getFalliSubiti() }}</td>
+        </tr>
+
+        <tr>
+            <td>% Passaggi Riusciti</td>
+            <td>{{ statististiche.getPercentualePassaggiRiusciti() }}</td>
+        </tr>
+
+        <tr>
+            <td>Gol Fatti</td>
+            <td>{{ statististiche.getGolFatti() }}</td>
+        </tr>
+
+        <tr>
+            <td>Gol Subiti</td>
+            <td>{{ statististiche.getGolSubiti() }}</td>
+        </tr>
+
+        <tr>
+            <td>Assist</td>
+            <td>{{ statististiche.getAssist() }}</td>
+        </tr>
+
+        <tr>
+            <td>Ammonizioni</td>
+            <td>{{ statististiche.getAmmonizioni() }}</td>
+        </tr>
+
+        <tr>
+            <td>Espulsioni</td>
+            <td>{{ statististiche.getEspulsioni() }}</td>
+        </tr>
+    </table>
+{% endblock %}
 

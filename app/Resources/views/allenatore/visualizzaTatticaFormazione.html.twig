@@ -21,8 +21,8 @@
         <script type="text/javascript">
             window.onload=function()
             {
-                caricaTattica();
-                caricaCalciatori();
+                caricaTattica("{{ path('cambiaTattica') }}");
+                caricaCalciatori("{{ path('ottieniCalciatori') }}");
                 caricaFormazione();
             }
         </script>
@@ -64,7 +64,7 @@
             <div id="contenitorePanchina"><div id="panchina"></div></div>
 
             <div id="bottoniSelezione">
-                <button value="selezioneFormazione" onclick="confermaSelezione()">Conferma formazione</button>
+                <button value="selezioneFormazione" onclick="confermaSelezione('{{ path('schieraFormazione') }}')">Conferma formazione</button>
             </div>
 
             <!-- Modal -->
