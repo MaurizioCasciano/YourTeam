@@ -60,7 +60,15 @@ class ControllerAccount extends Controller
     {
 
 
+
+
         if ($attore == "staff_allenatore_tifoso") {
+
+            $account = $r->request->get("u");
+            $g = GestoreAccount::getInstance();
+            $flag = $g->ricercaAccount_A_T_S($account);
+            if($flag!="valore non esiste")  return $this->render("guest/ViewErroreRegistrazione.html.twig");
+
             $data = str_replace("/", "-", $r->request->get("d"));
 
             $staff = $r->request->get("tipo");
@@ -120,6 +128,10 @@ class ControllerAccount extends Controller
             }
         } else
             if ($attore == "calciatore") {
+                $account = $r->request->get("u");
+                $gg = GestoreAccount::getInstance();
+                $flag = $gg->ricercaAccount_G($account);
+                if($flag!="valore non esiste")  return $this->render("guest/ViewErroreRegistrazione.html.twig");
 
                 $data = str_replace("/", "-", $r->request->get("d"));
                 $a = new AccountCalciatore($r->request->get("u"),
@@ -149,7 +161,7 @@ class ControllerAccount extends Controller
      * @Route("/account/all/ricerca",name="ricercaAccountForm")
      * @Method("GET")
      */
-    public function ricercaAccountVista($attore)
+    public function ricercaAccountVista()
     {
 
         /*vista non completa*/
@@ -170,6 +182,7 @@ class ControllerAccount extends Controller
     */
     public function ricercaAccountStaff(Request $r)
     {
+
         $attore=$r->request->get("tipo");
         $g = GestoreAccount::getInstance();
 
@@ -177,7 +190,12 @@ class ControllerAccount extends Controller
             try {
                 $ast = $g->ricercaAccount_A_T_S($r->request->get("u"));
                 $staff = $g->ricercaAccount_A_T_S($_SESSION["username"]);
+
+
+                if($ast=="valore non esiste"){return $this->render("staff/erroreConvalida.html.twig", array('g' => $staff));}
+
                 $tipo = $ast->getTipo();
+
                 if ($tipo == "allenatore")
                     return $this->render("staff/visualizzaAccountStaffRicercato.html.twig", array('ricercato' => $ast,'staff' => $staff ));
                 else
@@ -197,6 +215,7 @@ class ControllerAccount extends Controller
                 try {
                     $ag = $g->ricercaAccount_G($r->request->get("u"));
                     $staff = $g->ricercaAccount_A_T_S($_SESSION["username"]);
+                    if($ag=="valore non esiste"){return $this->render("staff/erroreConvalida.html.twig", array('g' => $staff));}
                     return $this->render("staff/visualizzaAccountStaffRicercato.html.twig", array('ricercato' => $ag,'staff' => $staff));
                 } catch (\Exception $e) {
                     return new Response($e->getMessage(), 404);
@@ -406,9 +425,11 @@ class ControllerAccount extends Controller
         $u = $_SESSION["username"];
 
         $g = GestoreAccount::getInstance();
+        $staff = $g->ricercaAccount_A_T_S($u);
         try {
             $a = $g->dammiAccountDaConvalidare();
-            $staff = $g->ricercaAccount_A_T_S($u);
+            if($a=="vuoto")return $this->render("staff/erroreConvalida.html.twig", array('staff' => $staff));
+          else
             return $this->render("staff/utentiDaConvalidare.html.twig", array("utente" => $a, "staff" => $staff));
         } catch (\Exception $e) {
             return new Response($e->getMessage(), 404);
