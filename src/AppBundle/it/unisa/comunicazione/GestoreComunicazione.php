@@ -52,6 +52,21 @@ class GestoreComunicazione
         if (!$ris) throw new \Exception(("errore inserimento dati nel db " . $this->conn->error));
     }
 
+    public function inviaMessaggioCalciatore(Messaggio $msg)
+    {
+        if ($msg == null) throw new \Exception("valore nullo");
+
+        $sql = "INSERT INTO messaggio (testo,allenatore,calciatore,mittente,data,tipo) 
+                VALUES ('" . $msg->getTesto() . "','"
+            . $msg->getAllenatore() . "','"
+            . $msg->getCalciatore() . "','"
+            . $msg->getMittente() . "','"
+            . $msg->getData() . "','"
+            . $msg->getTipo() . "');";
+        $ris = $this->conn->query($sql);
+        if (!$ris) throw new \Exception(("errore inserimento dati nel db " . $this->conn->error));
+    }
+
 
 
 
@@ -92,8 +107,7 @@ class GestoreComunicazione
             }
 
             return $messaggi;
-        } else
-            throw new \Exception("non esistono messaggi");
+        }
     }
 
     /**
@@ -142,8 +156,7 @@ class GestoreComunicazione
 
             }
             return $messaggi;
-        } else
-            throw new \Exception("non esistono messaggi");
+        }
     }
 
     /**
