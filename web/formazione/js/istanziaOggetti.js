@@ -41,7 +41,7 @@ function caricaCalciatori()
 
 	};
 
-	xmlhttp.open("GET", "http://localhost/yourteam/web/app_dev.php/formazione/allenatore/ottieniCalciatori", false);
+	xmlhttp.open("GET", "{{ path('ottieniCalciatori') }}", false);
 	xmlhttp.send();
 
 }
@@ -66,7 +66,7 @@ function caricaTattica()
 
 	};
 
-	xmlhttp.open("GET", "http://localhost/yourteam/web/app_dev.php/formazione/allenatore/cambiaTattica", false);
+	xmlhttp.open("GET", "{{ path('cambiaTattica') }}", false);
 	xmlhttp.send();
 
 
