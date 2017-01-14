@@ -345,23 +345,20 @@ class GestoreAccount
     }
 
     public function convalidaAccount_A_G($u)
-    {
-
+    {  $sql = "UPDATE calciatore SET attivo='1' WHERE contratto='$u'";
+        $sql2 = "UPDATE utente SET attivo='1' WHERE username_codiceContratto='$u'";
         try {
-            $this->ricercaAccount_A_T_S($u);
-            $sql = "UPDATE utente SET attivo='1' WHERE username_codiceContratto='$u'";
+          //  $this->ricercaAccount_A_T_S($u);
+
             //questo controllo non funziona se passiamo un username che non esiste perciò abbiamo
             //fatto il controllo di ricercaAccount sopra
             //if (!$this->conn->query($sql))  throw new \Exception(("errore MODIFICA dati nel db"));
             $this->conn->query($sql);
+            $this->conn->query($sql2);
 
         } catch (\Exception $e) {
             //significa che in utente non c'è allora vado a vedere se è un giocatore
-            $sql = "UPDATE calciatore SET attivo='1' WHERE contratto='$u'";
-            //questo controllo non funziona se passiamo un username che non esiste perciò abbiamo
-            //fatto il controllo di ricercaAccount sopra
-            //if (!$this->conn->query($sql))  throw new \Exception(("errore MODIFICA dati nel db"));
-            $this->conn->query($sql);
+
 
         }
     }
@@ -377,7 +374,8 @@ class GestoreAccount
             $ris = $this->conn->query($sql);
             $ris2 = $this->conn->query($sql2);
 
-            if ($ris->num_rows <= 0) throw new Exception("Nessun utente trovato");
+            if ($ris->num_rows >= 0) //throw new Exception("Nessun utente trovato");
+            {
             while ($row = $ris->fetch_assoc()) {
                 $user = new Account($row["username_codiceContratto"], $row["password"],
                     $row["squadra"], $row["email"], $row["nome"],
@@ -386,8 +384,9 @@ class GestoreAccount
                     $row["immagine"], $row["tipo"]);
 
                 $utenti[] = $user;
-            }
-            if ($ris2->num_rows <= 0) throw new Exception("Nessun utente trovato");
+            }}
+            if ($ris2->num_rows >= 0) //throw new Exception("Nessun utente trovato");
+            {
             while ($row = $ris2->fetch_assoc()) {
                 $user = new Account($row["contratto"], $row["password"],
                     $row["squadra"], $row["email"], $row["nome"],
@@ -396,7 +395,7 @@ class GestoreAccount
                     $row["immagine"], "");
 
                 $utenti[] = $user;
-            }
+            }}
 
         } catch (\Exception $e) {
 
