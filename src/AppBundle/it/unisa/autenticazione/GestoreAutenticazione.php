@@ -145,8 +145,8 @@ class GestoreAutenticazione
     {
         $rotte = array(new RottaUtente("/account/calciatore/aggiungi", array("staff")),
             new RottaUtente("/account/calciatore/aggiungi", array("staff")),
-            new RottaUtente("app_it_unisa_formazione_controllerformazione_verificaconvocazionivista", array("allenatore")),
-            new RottaUtente("app_it_unisa_formazione_controllerformazione_verificaformazionevista", array("allenatore")),
+            new RottaUtente("verificaConvocazioni", array("allenatore")),
+            new RottaUtente("verificaFormazione", array("allenatore")),
             new RottaUtente("infoPartita", array("allenatore", "calciatore", "staff", "tifoso")),
             new RottaUtente("lista_partite", array("allenatore", "calciatore", "staff", "tifoso")),
             new RottaUtente("inserisciPartitaForm", array("staff")),
