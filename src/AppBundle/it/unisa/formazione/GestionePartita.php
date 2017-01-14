@@ -19,7 +19,7 @@ class GestionePartita
 
     private function __construct()
     {
-        $this->db=new DB();
+        $this->db=DB::getInstance();
         $this->connessione=$this->db->connect();
     }
 

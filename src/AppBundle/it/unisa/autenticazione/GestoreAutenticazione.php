@@ -34,7 +34,7 @@ class GestoreAutenticazione
      */
     private function __construct()
     {
-        $this->db = new DB();
+        $this->db = DB::getInstance();
         $this->conn = $this->db->connect();
     }
 
