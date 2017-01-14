@@ -68,29 +68,24 @@ class GestoreAutenticazione
         $g = GestoreAccount::getInstance();
 
         $acc = $g->ricercaAccount_A_T_S($username);
-        if($acc=="valore non esiste")
-        {
+        if ($acc == "valore non esiste") {
             $acc = $g->ricercaAccount_G($username);
-            if ($acc=="valore non esiste") return false;
-            
+            if ($acc == "valore non esiste") return false;
+
             $check = $this->checkPassword($password, $acc->getPassword());
 
-            if ($check)
-            {
+            if ($check) {
                 $this->creaSession($acc->getUsernameCodiceContratto(), "calciatore", $acc->getSquadra());
                 return true;
-            }
-            else return false;
+            } else return false;
         }
 
         $check = $this->checkPassword($password, $acc->getPassword());
 
-        if ($check)
-        {
+        if ($check) {
             $this->creaSession($acc->getUsernameCodiceContratto(), $acc->getTipo(), $acc->getSquadra());
             return true;
-        }
-        else return false;
+        } else return false;
 
     }
 
@@ -167,31 +162,32 @@ class GestoreAutenticazione
             new RottaUtente("modificaStatistichePartita", array("staff")),
             new RottaUtente("getConvocatiPartita", array("staff")),
             new RottaUtente("lista_statistiche_partite", array("allenatore", "calciatore", "staff", "tifoso")),
-            new RottaUtente("sceglichat",array("allenatore")),
-            new RottaUtente("sceglivoce",array("allenatore")),
-            new RottaUtente("sceglicomportamento",array("allenatore")),
+            new RottaUtente("sceglichat", array("allenatore")),
+            new RottaUtente("sceglivoce", array("allenatore")),
+            new RottaUtente("sceglicomportamento", array("allenatore")),
             new RottaUtente("sceglisalute", array("allenatore")),
-            new RottaUtente("allenatore_chat_view",array("allenatore")),
-            new RottaUtente("inviaMessaggioVoce",array("allenatore")),
-            new RottaUtente("inviaMulta",array("allenatore")),
-            new RottaUtente("inviaAvvertimento",array("allenatore")),
-            new RottaUtente("inviaDieta",array("allenatore")),
-            new RottaUtente("inviaAllenamento",array("allenatore")),
-            new RottaUtente("allenatore_chat_view",array("allenatore")),
-            new RottaUtente("ottienivoceview",array("allenatore")),
-            new RottaUtente("ottienimultaview",array("allenatore")),
-            new RottaUtente("ottieniavvertimentoview",array("allenatore")),
-            new RottaUtente("ottienidietaview",array("allenatore")),
-            new RottaUtente("ottieniallenamentoview",array("allenatore")),
-            new RottaUtente("calciatoreInviaMessaggioChat",array("calciatore")),
-            new RottaUtente("ottieniMessaggioChatView",array("calciatore")),
-            new RottaUtente("ottieniMessaggioVoceView",array("calciatore")),
-            new RottaUtente("ottieniMulta",array("calciatore")),
-            new RottaUtente("ottieniAvvertimento",array("calciatore")),
-            new RottaUtente("ottieniDieta",array("calciatore")),
-            new RottaUtente("ottieniAllenamento",array("calciatore")),
-            new RottaUtente("calciatoreinviamessaggiovoce",array("calciatore")),
-            new RottaUtente("inviamessaggiovoce",array("calciatore")),
+            new RottaUtente("allenatore_chat_view", array("allenatore")),
+            new RottaUtente("inviaMessaggioVoce", array("allenatore")),
+            new RottaUtente("inviaMulta", array("allenatore")),
+            new RottaUtente("inviaAvvertimento", array("allenatore")),
+            new RottaUtente("inviaDieta", array("allenatore")),
+            new RottaUtente("inviaAllenamento", array("allenatore")),
+            new RottaUtente("allenatore_chat_view", array("allenatore")),
+            new RottaUtente("ottienivoceview", array("allenatore")),
+            new RottaUtente("ottienimultaview", array("allenatore")),
+            new RottaUtente("ottieniavvertimentoview", array("allenatore")),
+            new RottaUtente("ottienidietaview", array("allenatore")),
+            new RottaUtente("ottieniallenamentoview", array("allenatore")),
+            new RottaUtente("calciatoreInviaMessaggioChat", array("calciatore")),
+            new RottaUtente("ottieniMessaggioChatView", array("calciatore")),
+            new RottaUtente("ottieniMessaggioVoceView", array("calciatore")),
+            new RottaUtente("ottieniMulta", array("calciatore")),
+            new RottaUtente("ottieniAvvertimento", array("calciatore")),
+            new RottaUtente("ottieniDieta", array("calciatore")),
+            new RottaUtente("ottieniAllenamento", array("calciatore")),
+            new RottaUtente("calciatoreinviamessaggiovoce", array("calciatore")),
+            new RottaUtente("inviamessaggiovoce", array("calciatore")),
+            new RottaUtente("allenatoreInviaMessaggioChat", array("allenatore"))
         );
         return $rotte;
     }

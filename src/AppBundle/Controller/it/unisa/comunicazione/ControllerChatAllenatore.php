@@ -15,6 +15,7 @@ use AppBundle\it\unisa\comunicazione\Messaggio;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\Date;
@@ -24,6 +25,7 @@ class ControllerChatAllenatore extends Controller
 
     /**
      * @Route("/comunicazione/allenatore/inviaMessaggioChat", name="allenatoreInviaMessaggioChat")
+     * @Method("POST")
      * @param $richiesta
      */
 
@@ -45,10 +47,10 @@ class ControllerChatAllenatore extends Controller
                     "mittente" => $messaggio->getMittente(),
                     "data" => $messaggio->getData()), JSON_PRETTY_PRINT));
             } catch (\Exception $e) {
-                return new Response($e->getMessage(), 404);
+                return new JsonResponse(array("errore" => $e->getMessage()));
             }
         } else {
-            return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
+            return new JsonResponse(array("errore" => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
 
@@ -275,20 +277,20 @@ class ControllerChatAllenatore extends Controller
 
             $g = GestoreAccount::getInstance();
             $allenatoreMittente = $g->ricercaAccount_A_T_S($_SESSION["username"]);
-            var_dump($allenatoreMittente);
+            //var_dump($allenatoreMittente);
 
             $calciatoreDestinatario = $request->get("calciatore_destinatario");
-            var_dump($calciatoreDestinatario);
+            //var_dump($calciatoreDestinatario);
 
             $g = GestoreComunicazione::getInstance();
             try {
                 $messaggi = $g->ottieniMessaggiAllenatore($allenatoreMittente->getUsernameCodiceContratto(),
                     "chat", $calciatoreDestinatario);
 
-                return $this->render("allenatore/FormChatAllenatore2.html.twig", array("messaggi" => $messaggi, "destinatario" => $calciatoreDestinatario, "allenatore" => $allenatoreMittente));
+                return $this->render("allenatore/FormChatAllenatore.html.twig", array("messaggi" => $messaggi, "destinatario" => $calciatoreDestinatario, "allenatore" => $allenatoreMittente));
             } catch (\Exception $e) {
-                var_dump($e);
-                return $this->render("allenatore/FormChatAllenatore2.html.twig", array("messaggi" => array(), "destinatario" => $calciatoreDestinatario, "allenatore" => $allenatoreMittente));
+                //var_dump($e);
+                return $this->render("allenatore/FormChatAllenatore.html.twig", array("messaggi" => array(), "destinatario" => $calciatoreDestinatario, "allenatore" => $allenatoreMittente));
             }
         } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));

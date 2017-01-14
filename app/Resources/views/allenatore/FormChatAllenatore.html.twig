@@ -1,9 +1,13 @@
 {% extends "allenatore/template.html.twig" %}
 {% block head %}
     <link rel="stylesheet" href="{{ asset('css/chat2.css') }}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 {% endblock %}
 
-{% block contenuto %}{{ dump(messaggi) }}
+{% block contenuto %}
+    {{ dump(messaggi) }}
     <div class="container">
         <div class="row">
             <div class="col-md-6">
@@ -53,7 +57,18 @@
                             {% endfor %}
                         </ul>
                     </div>
-                    <div class="panel-footer">
+
+                    <form id="chat" action="{{ path('allenatoreInviaMessaggioChat') }}" method="post">
+                        <input type="hidden" name="destinatario" value="{{ destinatario }}"/>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="testo"/>
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-default">Invia</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    {#<div class="panel-footer">
                         <div class="input-group">
                             <!--<input id="message_target" type="hidden" value="{{ destinatario }}" name="destinatario">-->
                             <input id="chatInput" name="testo" type="text"
@@ -63,7 +78,7 @@
                                 <button class="btn btn-warning btn-sm" id="send">Invio</button>
                             </span>
                         </div>
-                    </div>
+                    </div>#}
                 </div>
             </div>
         </div>
@@ -192,4 +207,6 @@
             }
         }
     </script>
+
+    <script src="{{ asset('comunicazione/ChatAllenatore.js') }}"></script>
 {% endblock %}
