@@ -67,7 +67,7 @@ class ControllerChatGiocatore extends Controller
     }
 
     /**
-     * @Route("/comunicazione/giocatore/ottieniMessaggioChatView")
+     * @Route("/comunicazione/giocatore/ottieniMessaggioChatView", name="ottieniMessaggioChatView")
      * @Method("GET")
      */
     public function ottieniMessaggioChatView(Request $request)
@@ -103,7 +103,7 @@ class ControllerChatGiocatore extends Controller
     }
 
     /**
-     * @Route("/comunicazione/giocatore/ottieniMessaggioVoceView")
+     * @Route("/comunicazione/giocatore/ottieniMessaggioVoceView", name="ottieniMessaggioVoceView")
      * @Method("GET")
      */
     public function ottieniMessaggioVoceView(Request $request)
@@ -139,7 +139,7 @@ class ControllerChatGiocatore extends Controller
     }
 
     /**
-     * @Route("/comunicazione/giocatore/ottieniVistaRichiamoMulta")
+     * @Route("/comunicazione/giocatore/ottieniVistaRichiamoMulta", name="ottieniMulta")
      * @Method("GET")
      */
     public function ottieniVistaRichiamoMulta(Request $request){
@@ -161,7 +161,7 @@ class ControllerChatGiocatore extends Controller
     }
 
     /**
-     * @Route("/comunicazione/giocatore/ottieniVistaRichiamoAvvertimento")
+     * @Route("/comunicazione/giocatore/ottieniVistaRichiamoAvvertimento", name="ottieniAvvertimento")
      * @Method("GET")
      */
     public function ottieniVistaRichiamoAvvertimento(Request $request){
@@ -183,7 +183,7 @@ class ControllerChatGiocatore extends Controller
     }
 
     /**
-     * @Route("/comunicazione/giocatore/ottieniVistaRichiamoDieta")
+     * @Route("/comunicazione/giocatore/ottieniVistaRichiamoDieta", name="ottieniDieta")
      * @Method("GET")
      */
     public function ottieniVistaRichiamoDieta(Request $request){
@@ -205,7 +205,7 @@ class ControllerChatGiocatore extends Controller
     }
 
     /**
-     * @Route("/comunicazione/giocatore/ottieniVistaRichiamoAllenamento")
+     * @Route("/comunicazione/giocatore/ottieniVistaRichiamoAllenamento", name="ottieniAvvertimento")
      * @Method("GET")
      */
     public function ottieniVistaRichiamoAllenamento(Request $request){

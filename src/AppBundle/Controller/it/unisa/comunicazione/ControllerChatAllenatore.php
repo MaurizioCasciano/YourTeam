@@ -147,7 +147,7 @@ class ControllerChatAllenatore extends Controller
     }
 
     /**
-     * @Route("/comunicazione/allenatore/sceglicalciatore")
+     * @Route("/comunicazione/allenatore/sceglicalciatore", name="sceglichat")
      * @Method("GET")
      */
     public function scegliCalciatore(Request $request)
@@ -163,7 +163,7 @@ class ControllerChatAllenatore extends Controller
     }
 
     /**
-     * @Route("/comunicazione/allenatore/sceglicalciatorevoce")
+     * @Route("/comunicazione/allenatore/sceglicalciatorevoce", name="sceglivoce")
      * @Method("GET")
      */
     public function scegliCalciatoreVoce(Request $request)
@@ -178,7 +178,7 @@ class ControllerChatAllenatore extends Controller
     }
 
     /**
-    * @Route("/comunicazione/allenatore/sceglicalciatorecomportamento")
+    * @Route("/comunicazione/allenatore/sceglicalciatorecomportamento", name="sceglicomportamento")
     * @Method("GET")
     */
     public function scegliCalciatoreComportamento(Request $request)
@@ -195,7 +195,7 @@ class ControllerChatAllenatore extends Controller
 }
 
     /**
-     * @Route("/comunicazione/allenatore/sceglicalciatoresalute")
+     * @Route("/comunicazione/allenatore/sceglicalciatoresalute", name="sceglisalute")
      * @Method("GET")
      */
     public function scegliCalciatoreSalute(Request $request)
