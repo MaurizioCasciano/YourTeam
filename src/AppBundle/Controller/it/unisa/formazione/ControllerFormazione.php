@@ -31,7 +31,7 @@ class ControllerFormazione extends Controller
      * comunicazione di lista calciatori o
      * messaggio di errore in base alla disponibilità della partita.
      *
-     * @Route("/formazione/allenatore/verificaConvocazioni")
+     * @Route("/formazione/allenatore/verificaConvocazioni",name="verificaConvocazioni")
      * @Method("GET")
      */
     public function verificaConvocazioniVista(Request $r)
@@ -81,7 +81,7 @@ class ControllerFormazione extends Controller
      * comunicazione della schermata di selezione tattica o
      * messaggio di errore in base alla disponibilità della partita.
      *
-     * @Route("/formazione/allenatore/verificaFormazione")
+     * @Route("/formazione/allenatore/verificaFormazione",name="verificaFormazione")
      * @Method("GET")
      */
     public function verificaFormazioneVista(Request $r)
@@ -132,7 +132,7 @@ class ControllerFormazione extends Controller
      * Acquisizione in input delle convocazioni scelte e
      * scrittura su database delle scelte effettuate.
      *
-     * @Route("/formazione/allenatore/controlConvocazioni")
+     * @Route("/formazione/allenatore/controlConvocazioni",name="controlConvocazioni")
      * @Method("POST")
      * @param Request $r
      */
@@ -161,7 +161,7 @@ class ControllerFormazione extends Controller
      * Acquisizione in input della formazione scelta e
      * notifica ai calciatori via email.
      *
-     * @Route("/formazione/allenatore/schieraFormazione")
+     * @Route("/formazione/allenatore/schieraFormazione",name="schieraFormazione")
      * @Method("POST")
      * @param Request $r
      */
@@ -191,7 +191,7 @@ class ControllerFormazione extends Controller
     /**
      * Questo controller rimanda l'elenco dei calciatori convocati per quella partita
      *
-     * @Route("/formazione/allenatore/ottieniCalciatori")
+     * @Route("/formazione/allenatore/ottieniCalciatori",name="ottieniCalciatori")
      * @Method("GET")
      */
     public function ottieniCalciatori()
@@ -214,7 +214,7 @@ class ControllerFormazione extends Controller
     /**
      * Questo controller rimanda un modulo serializzato quando l'allenatore ne seleziona uno
      *
-     * @Route("/formazione/allenatore/cambiaTattica")
+     * @Route("/formazione/allenatore/cambiaTattica",name="cambiaTattica")
      * @Method("GET")
      */
     public function cambiaTattica()
