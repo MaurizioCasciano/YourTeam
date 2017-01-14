@@ -22,7 +22,7 @@ var calciatori=new Array();
 var tattiche=new Array();
 
 //funzione che caricherà i calciatori presenti nel database convocati per la partita
-function caricaCalciatori()
+function caricaCalciatori(url)
 {
 	var xmlhttp = new XMLHttpRequest();
 
@@ -41,13 +41,13 @@ function caricaCalciatori()
 
 	};
 
-	xmlhttp.open("GET", "{{ path('ottieniCalciatori') }}", false);
+	xmlhttp.open("GET", url, false);
 	xmlhttp.send();
 
 }
 
 //funzione che carica la tattica selezionata nella comboBox
-function caricaTattica()
+function caricaTattica(urlTattica)
 {
 	var xmlhttp = new XMLHttpRequest();
 
@@ -66,7 +66,7 @@ function caricaTattica()
 
 	};
 
-	xmlhttp.open("GET", "{{ path('cambiaTattica') }}", false);
+	xmlhttp.open("GET",urlTattica, false);
 	xmlhttp.send();
 
 
