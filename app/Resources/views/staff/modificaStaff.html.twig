@@ -9,7 +9,7 @@
 {% block contenuto %}
 
     <form class="form-horizontal" method="POST"
-          action="/yourteam/web/app_dev.php/account/staff_allenatore_tifoso/staff/modificaAccount" id="f"
+          action="{{ path('modificaUtente',{'attore':'staff_allenatore_tifoso','tipo':'staff'}) }}" id="f"
           enctype="multipart/form-data">
         <!--apro la form-->
 

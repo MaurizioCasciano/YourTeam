@@ -1,4 +1,4 @@
-{% extends 'giocatore/template.html.twig' %}
+{% extends 'staff/template.html.twig' %}
 {% block utente %}
 	<form method="post">
 		<button type="submit" style=" background: transparent; border: transparent">{{ g.getNome() }}  {{ g.getCognome() }}</button></form>
@@ -6,6 +6,6 @@
 {% endblock %}
 {% block contenuto %}
 	<div class="alert alert-success">
-		<strong>Giocatore modificato con successo!</strong>
+		<strong>Nessun Account da convalidare!</strong>
 	</div>
 {% endblock %}

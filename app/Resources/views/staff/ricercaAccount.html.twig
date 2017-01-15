@@ -4,7 +4,7 @@
         <button type="submit" style=" background: transparent; border: transparent">{{ staff.getNome() }}  {{ staff.getCognome() }}</button></form>
 {% endblock %}
 {% block contenuto %}
-    <form class="form-horizontal" method="POST" action="/yourteam/web/app_dev.php/account/ricercaAccountStaff/ricerca" id="f" enctype="multipart/form-data">
+    <form class="form-horizontal" method="POST" action="{{ path('ricercaAccountStaff') }}" id="f" enctype="multipart/form-data">
 
     <div class="form-group" id="divSceltaSquadre">
         <div class="row">
@@ -15,7 +15,7 @@
                 <div class="col-sm-10">
                     Staff  <input type="radio"  name="tipo"  value="staff_allenatore_tifoso" ><br>
                     Allenatore  <input type="radio"  name="tipo"  value="staff_allenatore_tifoso"><br>
-                    Tifoso  <input type="radio"  name="tipo"  value="staff_allenatore_tifoso"  checked><br>
+                    Tifoso  <input type="radio"  name="tipo"  value="staff_allenatore_tifoso" ><br>
                     Giocatore  <input type="radio"  name="tipo"  value="calciatore" ><br><br><hr>
                 </div>
             </div>

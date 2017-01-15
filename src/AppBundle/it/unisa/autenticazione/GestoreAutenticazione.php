@@ -67,29 +67,30 @@ class GestoreAutenticazione
 
         $g = GestoreAccount::getInstance();
 
-
-        try {
-            $acc = $g->ricercaAccount_A_T_S($username);
+        $acc = $g->ricercaAccount_A_T_S($username);
+        if($acc=="valore non esiste")
+        {
+            $acc = $g->ricercaAccount_G($username);
+            if ($acc=="valore non esiste") return false;
+            
             $check = $this->checkPassword($password, $acc->getPassword());
-            if ($check) {
-                $this->creaSession($acc->getUsernameCodiceContratto(), $acc->getTipo(), $acc->getSquadra());
-                return TRUE;
-            } else return false;
-        } catch (\Exception $e) {
-            /*perchè non è stato trovato un account di tipo allenatore, staff o tifoso vediamo se è un calciatore*/
-            //DA IMPLEMENTARE
-            try {
-                //implementare il metodo ricerca AccountC
-                $acc = $g->ricercaAccount_G($username);
-                $check = $this->checkPassword($password, $acc->getPassword());
-                if ($check) {
-                    $this->creaSession($acc->getUsernameCodiceContratto(), "calciatore", $acc->getSquadra());
-                    return TRUE;
-                } else return false;
-            } catch (\Exception $e) {
-                return false;
+
+            if ($check)
+            {
+                $this->creaSession($acc->getUsernameCodiceContratto(), "calciatore", $acc->getSquadra());
+                return true;
             }
+            else return false;
         }
+
+        $check = $this->checkPassword($password, $acc->getPassword());
+
+        if ($check)
+        {
+            $this->creaSession($acc->getUsernameCodiceContratto(), $acc->getTipo(), $acc->getSquadra());
+            return true;
+        }
+        else return false;
 
     }
 
@@ -143,8 +144,8 @@ class GestoreAutenticazione
 
     private function inizializzazioneRotte()
     {
-        $rotte = array(new RottaUtente("/account/calciatore/aggiungi", array("staff")),
-            new RottaUtente("/account/calciatore/aggiungi", array("staff")),
+        $rotte = array(new RottaUtente("convalidaAccountForm", array("staff")),
+            new RottaUtente("ricercaAccountForm", array("staff")),
             new RottaUtente("verificaConvocazioni", array("allenatore")),
             new RottaUtente("verificaFormazione", array("allenatore")),
             new RottaUtente("infoPartita", array("allenatore", "calciatore", "staff", "tifoso")),
@@ -165,7 +166,32 @@ class GestoreAutenticazione
             new RottaUtente("inserisciStatistichePartita", array("staff")),
             new RottaUtente("modificaStatistichePartita", array("staff")),
             new RottaUtente("getConvocatiPartita", array("staff")),
-            new RottaUtente("lista_statistiche_partite", array("allenatore", "calciatore", "staff", "tifoso"))
+            new RottaUtente("lista_statistiche_partite", array("allenatore", "calciatore", "staff", "tifoso")),
+            new RottaUtente("sceglichat",array("allenatore")),
+            new RottaUtente("sceglivoce",array("allenatore")),
+            new RottaUtente("sceglicomportamento",array("allenatore")),
+            new RottaUtente("sceglisalute", array("allenatore")),
+            new RottaUtente("allenatore_chat_view",array("allenatore")),
+            new RottaUtente("inviaMessaggioVoce",array("allenatore")),
+            new RottaUtente("inviaMulta",array("allenatore")),
+            new RottaUtente("inviaAvvertimento",array("allenatore")),
+            new RottaUtente("inviaDieta",array("allenatore")),
+            new RottaUtente("inviaAllenamento",array("allenatore")),
+            new RottaUtente("allenatore_chat_view",array("allenatore")),
+            new RottaUtente("ottienivoceview",array("allenatore")),
+            new RottaUtente("ottienimultaview",array("allenatore")),
+            new RottaUtente("ottieniavvertimentoview",array("allenatore")),
+            new RottaUtente("ottienidietaview",array("allenatore")),
+            new RottaUtente("ottieniallenamentoview",array("allenatore")),
+            new RottaUtente("calciatoreInviaMessaggioChat",array("calciatore")),
+            new RottaUtente("ottieniMessaggioChatView",array("calciatore")),
+            new RottaUtente("ottieniMessaggioVoceView",array("calciatore")),
+            new RottaUtente("ottieniMulta",array("calciatore")),
+            new RottaUtente("ottieniAvvertimento",array("calciatore")),
+            new RottaUtente("ottieniDieta",array("calciatore")),
+            new RottaUtente("ottieniAllenamento",array("calciatore")),
+            new RottaUtente("calciatoreinviamessaggiovoce",array("calciatore")),
+            new RottaUtente("inviamessaggiovoce",array("calciatore")),
         );
         return $rotte;
     }
