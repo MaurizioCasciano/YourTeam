@@ -382,7 +382,7 @@ class ControllerAccount extends Controller
     }
 
     /**
-     * @Route("/account/elimina/{attore}/eliminaAccount/{username}")
+     * @Route("/account/elimina/{attore}/eliminaAccount/{username}",name="eliminaAccount")
      * @Method("GET")
      */
     /*attore potrà essere:

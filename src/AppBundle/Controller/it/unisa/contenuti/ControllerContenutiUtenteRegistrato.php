@@ -22,6 +22,7 @@ class ControllerContenutiUtenteRegistrato extends Controller
      * @Route("/contenuti/utenteRegistrato/visualizzaElencoContenuti")
      * @Method("GET")
      */
+    /*
     public function visualizzaElencoContenuti(){
         $squadra=$_SESSION["squadra"];
         $gestore = GestioneContenuti::getInstance();
@@ -32,10 +33,10 @@ class ControllerContenutiUtenteRegistrato extends Controller
             return new Response($e->getMessage(), 404);
         }
 
-    }
+    }*/
 
     /**
-     * @Route("/contenuti/utenteRegistrato/visualizzaContenutoView/{id}")
+     * @Route("/contenuti/utenteRegistrato/visualizzaContenutoView/{id}", name="visualizzaContenutoUtenteRegistrato")
      * @Method("GET")
      */
     public function visualizzaContenutoView($id){
@@ -55,7 +56,7 @@ class ControllerContenutiUtenteRegistrato extends Controller
     }
 
     /**
-     * @Route("/contenuti/utenteRegistrato/visualizzaElencoContenutiPerTipo/{tipo}")
+     * @Route("/contenuti/utenteRegistrato/visualizzaElencoContenutiPerTipo/{tipo}",name="visualizzaElencoContenutiPerTipo")
      * @Method("GET")
      */
     public function visualizzaElencoContenutiPerTipo($tipo){

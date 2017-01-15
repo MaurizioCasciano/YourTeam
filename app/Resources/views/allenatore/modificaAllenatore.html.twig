@@ -6,7 +6,7 @@
 {% endblock %}
 {% block contenuto %}
 
-<form class="form-horizontal" method="POST" action="/yourteam/web/app_dev.php/account/staff_allenatore_tifoso/allenatore/modificaAccount" id="f" enctype="multipart/form-data">
+<form class="form-horizontal" method="POST" action="{{ path('modificaUtente',{'attore':'staff_allenatore_tifoso','tipo':'allenatore'}) }}" id="f" enctype="multipart/form-data">
 	<!--apro la form-->
 
 	<input type="text" name="tipo" value="x" class="form-control" id="t" style="visibility: hidden">
