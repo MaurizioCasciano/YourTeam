@@ -12,6 +12,7 @@ use AppBundle\it\unisa\account\GestoreAccount;
 use AppBundle\it\unisa\autenticazione\GestoreAutenticazione;
 use AppBundle\it\unisa\comunicazione\GestoreComunicazione;
 use AppBundle\it\unisa\comunicazione\Messaggio;
+use AppBundle\Utility\DB;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -27,8 +28,8 @@ class ControllerChatAllenatore extends Controller
      * @Route("/comunicazione/allenatore/inviaMessaggioChat", name="allenatoreInviaMessaggioChat")
      * @Method("POST")
      * @param $richiesta
+     * @return JsonResponse
      */
-
     public function inviaMessaggioChat(Request $richiesta)
     {
         $g = GestoreComunicazione::getInstance();
@@ -454,7 +455,19 @@ class ControllerChatAllenatore extends Controller
      */
     public function test()
     {
-        $messaggio = new Messaggio("CiaoCiaoMamma", "allentore", "123456", "allenatore", new \DateTime(), "chat");
+        $testo = "CiaoCiaoMamma";
+        $allenatore = "allentore";
+        $calciatore = "123456";
+        $mittente = "allenatore";
+        $data = new \DateTime();
+        $dataString = "2017-12-30 20:45";//$data->format("Y-m-d H:i:s");
+        $tipo = "chat";
+
+
+        $messaggio = new Messaggio($testo, $allenatore, $calciatore, $mittente, $data, $tipo);
+
+        GestoreComunicazione::getInstance()->inviaMessaggio($messaggio);
+
         return new Response(var_dump($messaggio->jsonSerialize()));
     }
 }

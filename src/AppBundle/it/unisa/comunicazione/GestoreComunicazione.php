@@ -37,20 +37,35 @@ class GestoreComunicazione
         return self::$instance;
     }
 
-    public function inviaMessaggio(Messaggio $msg)
+    public function inviaMessaggio(Messaggio $messaggio)
     {
-        if ($msg == null) throw new \Exception("valore nullo");
+        if ($messaggio == null) {
+            throw new \Exception("Il messaggio non può essere NULL");
+        }
 
-        $sql = "INSERT INTO messaggio (testo,allenatore,calciatore,mittente,data,tipo) 
-                VALUES ('" . $msg->getTesto() . "','"
-            . $msg->getAllenatore() . "','"
-            . $msg->getCalciatore() . "','"
-            . $msg->getMittente() . "','"
-            . $msg->getDataString(). "','"
-            . $msg->getTipo() . "');";
+        if ($statement = $this->conn->prepare("
+            INSERT INTO messaggio (testo, allenatore, calciatore, mittente, data, tipo)
+            VALUES (?, ?, ?, ?, ?, ?)")
+        ) {
+            $testo = $messaggio->getTesto();
+            $allenatore = $messaggio->getAllenatore();
+            $calciatore = $messaggio->getCalciatore();
+            $mittente = $messaggio->getMittente();
+            $data = $messaggio->getDataString();
+            $tipo = $messaggio->getTipo();
 
-        $ris = $this->conn->query($sql);
-        if (!$ris) throw new \Exception(("errore inserimento dati nel db " . $this->conn->error));
+            if ($statement->bind_param("ssssss", $testo, $allenatore, $calciatore, $mittente, $data, $tipo)) {
+                if ($statement->execute()) {
+                    return true;
+                } else {
+                    throw new \Exception("Messaggio non inserito nel database.");
+                }
+            } else {
+                throw new \Exception("Statement binding non eseguito.");
+            }
+        } else {
+            throw new \Exception("Statement non preparato.");
+        }
     }
 
     public function inviaMessaggioCalciatore(Messaggio $msg)
