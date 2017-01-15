@@ -79,64 +79,6 @@
         </div>
     </div>
 
-    {#<div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <span class="glyphicon glyphicon-comment"></span> Chat
-                    </div>
-                    <div id="chat_viewport">
-                        <ul id="chat" class="list-unstyled">
-                            {% for messaggio in messaggi %}
-                                {% if messaggio.getMittente() == "allenatore" %}
-                                    <li class="right clearfix">
-                                        <span class="chat-img pull-right">
-                                            <img src="http://placehold.it/50/FA6F57/fff&text=ME"
-                                                 class="img-circle"/>
-                                        </span>
-                                        <div class="chat-body clearfix">
-                                            <div class="header">
-                                                <span class="datetime glyphicon glyphicon-time pull-left">{{ messaggio.getDataString() }}</span>
-                                                <strong class="pull-right primary-font">{{ messaggio.getNomeMittente() }}
-                                                    &nbsp;{{ messaggio.getCognomeMittente() }}</strong>
-                                            </div>
-                                            <div>
-                                                <p>
-                                                    {{ messaggio.getTesto() }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-
-                                {% elseif messaggio.getMittente() == "calciatore" %}
-                                    <li class="left clearfix">
-                                        <span class="chat-img pull-left">
-                                            <img src="http://placehold.it/50/55C1E7/fff&text=U"
-                                                 class="img-circle"/>
-                                        </span>
-                                        <div class="chat-body clearfix">
-                                            <div class="header">
-                                                <strong class="primary-font">{{ messaggio.getNomeMittente() }}
-                                                    &nbsp;{{ messaggio.getCognomeMittente() }}</strong>
-                                                <span class="datetime glyphicon glyphicon-time pull-right">{{ messaggio.getDataString() }}</span>
-                                            </div>
-                                            <p class="pull-right">
-                                                {{ messaggio.getTesto() }}
-                                            </p>
-                                        </div>
-                                    </li>
-                                {% endif %}
-                            {% endfor %}
-                        </ul>
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-    </div>#}
-
     <script
             src="https://code.jquery.com/jquery-3.1.1.min.js"
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
