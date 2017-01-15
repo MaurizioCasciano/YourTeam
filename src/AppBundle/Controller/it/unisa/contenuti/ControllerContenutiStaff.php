@@ -22,7 +22,7 @@ class ControllerContenutiStaff extends Controller
 
 {
     /**
-     * @Route("/contenuti/staff/inserisciContenutoForm")
+     * @Route("/contenuti/staff/inserisciContenutoForm",name="inserisciContenutoForm")
      * @Method("GET")
      */
     public function inserisciContenutoForm(){
@@ -30,7 +30,7 @@ class ControllerContenutiStaff extends Controller
     }
 
     /**
-     * @Route("/contenuti/staff/inserisciContenuto")
+     * @Route("/contenuti/staff/inserisciContenuto",name="inserisciContenuto")
      * @Method("POST")
      */
     public function inserisciContenuto(Request $richiesta){
@@ -101,7 +101,7 @@ class ControllerContenutiStaff extends Controller
     }
 
     /**
-     * @Route("/contenuti/staff/cancellaContenuto/{id}")
+     * @Route("/contenuti/staff/cancellaContenuto/{id}", name="cancellaContenuto")
      * @Method("GET")
      */
     public function cancellaContenutoView($id){
@@ -122,10 +122,12 @@ class ControllerContenutiStaff extends Controller
         }
     }
 
+
     /**
      * @Route("/contenuti/staff/visualizzaElencoContenuti")
      * @Method("GET")
      */
+    /*
     public function visualizzaElencoContenuti(){
         $gestore = GestioneContenuti::getInstance();
         try {
@@ -134,10 +136,10 @@ class ControllerContenutiStaff extends Controller
             return new Response($e->getMessage(), 404);
         }
         return new Response();
-    }
+    }*/
 
     /**
-     * @Route("/contenuti/staff/visualizzaContenutoView/{id}")
+     * @Route("/contenuti/staff/visualizzaContenutoView/{id}", name="visualizzaContenuto")
      * @Method("GET")
      */
     public function visualizzaContenutoView($id){
@@ -158,7 +160,7 @@ class ControllerContenutiStaff extends Controller
     }
 
     /**
-     * @Route("/contenuti/staff/visualizzaElencoContenutiSquadra")
+     * @Route("/contenuti/staff/visualizzaElencoContenutiSquadra", name="visualizzaElencoContenutiSquadra")
      * @Method("GET")
      */
     public function visualizzaElencoContenutiSquadra(){

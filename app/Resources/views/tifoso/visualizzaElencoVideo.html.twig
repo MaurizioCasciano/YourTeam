@@ -23,7 +23,7 @@
             <!-- Wrapper for slides -->
             <div class="carousel-inner" role="listbox">
                 <div class="item active">
-                    <a href="/yourteam/web/app_dev.php/contenuti/utenteRegistrato/visualizzaContenutoView/{{ video[0].getId() }}">
+                    <a href="{{ path("visualizzaContenutoUtenteRegistrato",{ "id":video[0].getId()}) }}">
                         <video width="500" height="300" controls>
                             <source src="{{ asset("ImmaginiApp/contenuti/Video/") }}{{ video[0].getURL() }}"  type="video/mp4">
                         </video>
@@ -32,7 +32,7 @@
                 {% for vid in video %}
                     {% if loop.first== false %}
                         <div class="item">
-                            <a href="/yourteam/web/app_dev.php/contenuti/utenteRegistrato/visualizzaContenutoView/{{ vid.getId() }}">
+                            <a href="{{ path("visualizzaContenutoUtenteRegistrato",{ "id":vid.getId()}) }}">
                                 <video width="500" height="300" controls>
                                     <source src="{{ asset("ImmaginiApp/contenuti/Video/") }}{{ vid.getURL() }}"  type="video/mp4">
                                 </video>
