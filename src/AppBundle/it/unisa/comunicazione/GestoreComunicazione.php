@@ -46,8 +46,9 @@ class GestoreComunicazione
             . $msg->getAllenatore() . "','"
             . $msg->getCalciatore() . "','"
             . $msg->getMittente() . "','"
-            . $msg->getData() . "','"
+            . $msg->getDataString(). "','"
             . $msg->getTipo() . "');";
+
         $ris = $this->conn->query($sql);
         if (!$ris) throw new \Exception(("errore inserimento dati nel db " . $this->conn->error));
     }
@@ -61,7 +62,7 @@ class GestoreComunicazione
             . $msg->getAllenatore() . "','"
             . $msg->getCalciatore() . "','"
             . $msg->getMittente() . "','"
-            . $msg->getData() . "','"
+            . $msg->getData()->format('Y-m-d H:i:s') . "','"
             . $msg->getTipo() . "');";
         $ris = $this->conn->query($sql);
         if (!$ris) throw new \Exception(("errore inserimento dati nel db " . $this->conn->error));

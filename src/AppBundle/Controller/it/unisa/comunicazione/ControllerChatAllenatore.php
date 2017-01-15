@@ -34,23 +34,31 @@ class ControllerChatAllenatore extends Controller
         $g = GestoreComunicazione::getInstance();
         $autenticazione = GestoreAutenticazione::getInstance();
         if ($autenticazione->check($richiesta->get("_route"))) {
+            $messaggio = null;
+
             try {
                 $testo = $richiesta->request->get("testo");
-                $messaggio = new Messaggio($testo, $_SESSION["username"],
-                    $richiesta->get("destinatario"),
-                    "allenatore", time(), "chat");
+                $gestoreAccount = GestoreAccount::getInstance();
+                $usernameAllenatore = $_SESSION["username"];
+                $accountAllenatore = $gestoreAccount->ricercaAccount_A_T_S($usernameAllenatore);
+                $usernameCalciatore = $richiesta->get("destinatario");
+                $accountCalciatore = $gestoreAccount->ricercaAccount_G($usernameCalciatore);
+
+                $now = new \DateTime();
+
+                $messaggio = new Messaggio($testo, $usernameAllenatore, $usernameCalciatore, "allenatore", $now, "chat");
+                $messaggio->setNomeMittente($accountAllenatore->getNome());
+                $messaggio->setCognomeMittente($accountAllenatore->getCognome());
+                $messaggio->setNomeDestinatario($accountCalciatore->getNome());
+                $messaggio->setCognomeDestinatario($accountCalciatore->getCognome());
 
                 $g->inviaMessaggio($messaggio);
-                return new Response(json_encode(array("testo" => $messaggio->getTesto(),
-                    "nomeMittente" => $messaggio->getNomeMittente(),
-                    "cognomeMittente" => $messaggio->getCognomeMittente(),
-                    "mittente" => $messaggio->getMittente(),
-                    "data" => $messaggio->getData()), JSON_PRETTY_PRINT));
+                return new JsonResponse(array("messaggio" => $messaggio, "ok" => true));
             } catch (\Exception $e) {
-                return new JsonResponse(array("errore" => $e->getMessage()));
+                return new JsonResponse(array("messaggio" => $messaggio, "error" => $e->getMessage(), "ok" => false));
             }
         } else {
-            return new JsonResponse(array("errore" => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
+            return new JsonResponse(array("error" => "ACCOUNT NON ABILITATO A QUESTA AZIONE", "ok" => false));
         }
     }
 
@@ -441,5 +449,12 @@ class ControllerChatAllenatore extends Controller
         }
     }
 
-
+    /**
+     * @Route("/chat/test")
+     */
+    public function test()
+    {
+        $messaggio = new Messaggio("CiaoCiaoMamma", "allentore", "123456", "allenatore", new \DateTime(), "chat");
+        return new Response(var_dump($messaggio->jsonSerialize()));
+    }
 }

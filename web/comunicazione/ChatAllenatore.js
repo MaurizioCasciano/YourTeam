@@ -14,5 +14,17 @@ function inviaMessaggioChat(event) {
     console.log("DATA: " + data);
 
     var url = $($form).attr("action");
+    var type = $($form).attr("method");
     console.log("URL: " + url);
+
+    $.ajax({
+        url: url,
+        type: "POST",
+        dataType: "json",
+        data: data,
+        cache: false,
+        success: function (response, textStatus, jqXHR) {
+            console.log(response)
+        }
+    });
 }
