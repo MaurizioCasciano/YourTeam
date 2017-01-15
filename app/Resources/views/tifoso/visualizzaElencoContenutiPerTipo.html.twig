@@ -22,12 +22,12 @@
             <!-- Wrapper for slides -->
             <div class="carousel-inner" role="listbox">
                 <div class="item active">
-                    <a href="/yourteam/web/app_dev.php/contenuti/utenteRegistrato/visualizzaContenutoView/{{ elenco[0].getId() }}"> <img style="margin: 0 auto"src="{{ asset("ImmaginiApp/contenuti/") }}{{ elenco[0].getURL() }}" ></a>
+                    <a href="{{ path("visualizzaContenutoUtenteRegistrato",{ "id":elenco[0].getId()}) }}"> <img style="margin: 0 auto"src="{{ asset("ImmaginiApp/contenuti/") }}{{ elenco[0].getURL() }}" ></a>
                 </div>
                 {% for immagine in elenco %}
                     {% if loop.first== false %}
                         <div class="item">
-                            <a href="/yourteam/web/app_dev.php/contenuti/utenteRegistrato/visualizzaContenutoView/{{ immagine.getId() }}"> <img style="margin: 0 auto" src="{{ asset("ImmaginiApp/contenuti/") }}{{ immagine.getURL() }}" ></a>
+                            <a href="{{ path("visualizzaContenutoUtenteRegistrato",{ "id":immagine.getId()}) }}"> <img style="margin: 0 auto" src="{{ asset("ImmaginiApp/contenuti/") }}{{ immagine.getURL() }}" ></a>
                         </div>
                     {% endif %}
                 {% endfor %}
