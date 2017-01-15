@@ -33,4 +33,16 @@ class GestoreComunicazioneTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->gestoreComunicazione->inviaMessaggio($messaggio));
     }
+
+    public function testGetNuoviMessaggi()
+    {
+        $allenatore = "allentore";
+        $calciatore = "123456";
+        $tipo = "chat";
+        $data = "2015-01-15 15:52:37";
+
+        $messaggi = $this->gestoreComunicazione->getNuoviMessaggi($allenatore, $calciatore, $tipo, $data);
+
+        var_dump($messaggi);
+    }
 }

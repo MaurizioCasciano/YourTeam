@@ -470,4 +470,19 @@ class ControllerChatAllenatore extends Controller
 
         return new Response(var_dump($messaggio->jsonSerialize()));
     }
+
+    /**
+     * @Route("comunicazione/allenatore/chat/new", name = "nuoviMessaggi")
+     * @Method("POST")
+     */
+    public function getNuoviMessaggiChat(Request $request)
+    {
+        $allenatore = $_SESSION["username"];
+        $calciatore = $request->get("destinatario");
+        $data = $request->get("data");
+
+        $g = GestoreComunicazione::getInstance();
+        $messaggi = $g->getNuoviMessaggi($allenatore, $calciatore, "chat", $data);
+        return new JsonResponse(array("messaggi" => $messaggi));
+    }
 }

@@ -26,7 +26,7 @@
                                         </span>
                                         <div class="chat-body clearfix">
                                             <div class="header">
-                                                <span class="glyphicon glyphicon-time">{{ messaggio.getData() }}</span>
+                                                <span class="datetime glyphicon glyphicon-time">{{ messaggio.getDataString() }}</span>
                                                 <strong class="pull-right primary-font">{{ messaggio.getNomeMittente() }}
                                                     &nbsp;{{ messaggio.getCognomeMittente() }}</strong>
                                             </div>
@@ -46,7 +46,7 @@
                                             <div class="header">
                                                 <strong class="primary-font">{{ messaggio.getNomeMittente() }}
                                                     &nbsp;{{ messaggio.getCognomeMittente() }}</strong>
-                                                <span class="glyphicon glyphicon-time pull-right">{{ messaggio.getData() }}</span>
+                                                <span class="datetime glyphicon glyphicon-time pull-right">{{ messaggio.getDataString() }}</span>
                                             </div>
                                             <p class="pull-right">
                                                 {{ messaggio.getTesto() }}
@@ -60,6 +60,7 @@
 
                     <form id="chat" action="{{ path('allenatoreInviaMessaggioChat') }}" method="post">
                         <input type="hidden" name="destinatario" value="{{ destinatario }}"/>
+                        <input type="hidden" name="nuovimessaggi" value="{{ path('nuoviMessaggi') }}"/>
                         <div class="input-group">
                             <input type="text" class="form-control" name="testo"/>
                             <div class="input-group-btn">
@@ -161,7 +162,7 @@
                             //chatHeaderDiv BEGIN
                             var timeTextNode = document.createTextNode(data.data);
                             var timeSpan = document.createElement("span");
-                            timeSpan.setAttribute("class", "glyphicon glyphicon-time");
+                            timeSpan.setAttribute("class", "datetime glyphicon glyphicon-time");
                             timeSpan.appendChild(timeTextNode);
 
                             var senderNameSurnameTextNode = document.createTextNode(data.nomeMittente + " " + data.cognomeMittente);

@@ -155,7 +155,8 @@ class GestoreComunicazione
 
                             while ($row = $result->fetch_assoc()) {
                                 /*$t, $u, $c, $mitt,$data,$tipo*/
-                                $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $row["data"], $row["tipo"]);
+                                $data = new \DateTime($row["data"]);
+                                $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $data, $row["tipo"]);
                                 $m->setId($row["id"]);
                                 $messaggi[$i] = $m;
                                 $i++;
@@ -517,6 +518,77 @@ class GestoreComunicazione
 
             }
             return $messaggi;
+        }
+    }
+
+    /**
+     * Restituisce l'array di messaggi scambiati tra l'allenatore ed il calciatore, successivi alla data indicata.
+     * @param $allenatore l'username dell'allenatore
+     * @param $calciatore l'username del calciatore
+     * @param $tipo il tipo dei messaggi richiesti
+     * @param $data la data successiva alla quale sono richiesti i messaggi.
+     * @return array I nuovi messaggi scambiati tra il calciatore e l'allenatore, del tipo indicato.
+     */
+    public function getNuoviMessaggi($allenatore, $calciatore, $tipo, $data)
+    {
+        if ($statement = $this->conn->prepare("
+            SELECT * FROM messaggio
+            WHERE allenatore = ?
+            AND calciatore = ?
+            AND tipo = ?
+            AND data > ?
+            ORDER BY data")
+        ) {
+            if ($statement->bind_param("ssss", $allenatore, $calciatore, $tipo, $data)) {
+                if ($statement->execute()) {
+                    if ($result = $statement->get_result()) {
+                        $i = 0;
+                        if ($result->num_rows > 0) { //se la query ha dato risulatato
+                            // output data of each row
+                            $messaggi = array();
+
+                            while ($row = $result->fetch_assoc()) {
+                                /*$t, $u, $c, $mitt,$data,$tipo*/
+                                $data = new \DateTime($row["data"]);
+                                $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $data, $row["tipo"]);
+                                $m->setId($row["id"]);
+                                $messaggi[$i] = $m;
+                                $i++;
+
+                                $g = GestoreAccount::getInstance();
+                                $accountAllenatore = $g->ricercaAccount_A_T_S($allenatore);
+
+                                $accountCalciatore = $g->ricercaAccount_G($calciatore);
+
+                                if ($m->getMittente() == "allenatore") {
+                                    $m->setNomeMittente($accountAllenatore->getNome());
+                                    $m->setCognomeMittente($accountAllenatore->getCognome());
+
+                                    $m->setNomeDestinatario($accountCalciatore->getNome());
+                                    $m->setCognomeDestinatario($accountCalciatore->getCognome());
+                                } else if ($m->getMittente() == "calciatore") {
+                                    $m->setNomeMittente($accountCalciatore->getNome());
+                                    $m->setCognomeMittente($accountCalciatore->getCognome());
+
+                                    $m->setNomeDestinatario($accountAllenatore->getNome());
+                                    $m->setCognomeDestinatario($accountAllenatore->getCognome());
+                                }
+                            }
+                            return $messaggi;
+                        } else {
+                            return array();
+                        }
+                    } else {
+                        throw new \Exception("Statement get result fail");
+                    }
+                } else {
+                    throw new \Exception("Statement execution fail");
+                }
+            } else {
+                throw new \Exception("Statement binding fail");
+            }
+        } else {
+            throw new \Exception("Statement not prepared.");
         }
     }
 }
