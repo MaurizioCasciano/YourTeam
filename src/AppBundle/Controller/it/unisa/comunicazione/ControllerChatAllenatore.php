@@ -458,7 +458,7 @@ class ControllerChatAllenatore extends Controller
         $testo = "CiaoCiaoMamma";
         $allenatore = "allentore";
         $calciatore = "123456";
-        $mittente = "allenatore";
+        $mittente = "calciatore";
         $data = new \DateTime();
         $dataString = "2017-12-30 20:45";//$data->format("Y-m-d H:i:s");
         $tipo = "chat";
@@ -472,7 +472,7 @@ class ControllerChatAllenatore extends Controller
     }
 
     /**
-     * @Route("comunicazione/allenatore/chat/new", name = "nuoviMessaggi")
+     * @Route("comunicazione/allenatore/chat/new", name = "nuoviMessaggiAllenatore")
      * @Method("POST")
      */
     public function getNuoviMessaggiChat(Request $request)

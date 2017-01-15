@@ -2,10 +2,22 @@
  * Created by Maurizio on 14/01/2017.
  */
 $(function () {
+    var WORKING = false;
     $("form#chat").submit(inviaMessaggioChat);
+
     setInterval(function () {
-        getNuoviMessagi();
-    }, 2000);
+        console.log("WORKING: " + WORKING);
+        if (!WORKING) {
+            console.log("Start working");
+            WORKING = true;
+            $.when(getNuoviMessagi()).done(function () {
+                console.log("DONE");
+                WORKING = false;
+            });
+        }
+    }, 2500);
+
+    $('#chat-body').scrollTop($('#chat-body')[0].scrollHeight - $('#chat-body')[0].clientHeight);
 });
 
 function inviaMessaggioChat(event) {
@@ -14,6 +26,8 @@ function inviaMessaggioChat(event) {
 
     var $form = $(this);
     var data = $($form).serialize();
+    $($form).find("input[name='testo']").val("");
+
     console.log("DATA: " + data);
 
     var url = $($form).attr("action");
@@ -30,7 +44,7 @@ function inviaMessaggioChat(event) {
             var messaggio = response.messaggio;
             console.log(messaggio);
             if (response.ok === true) {
-                mostraMessaggio(messaggio);
+                //mostraMessaggio(messaggio);
             }
         }
     });
@@ -39,70 +53,125 @@ function inviaMessaggioChat(event) {
 
 function mostraMessaggio(messaggio) {
     console.log("Mostra messaggio");
+    console.log(messaggio);
 
-    var senderImg = document.createElement("img");
-    senderImg.setAttribute("src", "http://placehold.it/50/FA6F57/fff&text=ME");
-    senderImg.setAttribute("alt", "User Avatar");
-    senderImg.setAttribute("class", "img-circle");
-    var senderImgSpan = document.createElement("span");
-    senderImgSpan.setAttribute("class", "chat-img pull-right");
-    senderImgSpan.appendChild(senderImg);
-    //senderImgSpan END
-    //chatHeaderDiv BEGIN
-    var timeTextNode = document.createTextNode(messaggio.data);
-    var timeSpan = document.createElement("span");
-    timeSpan.setAttribute("class", "datetime glyphicon glyphicon-time");
-    timeSpan.appendChild(timeTextNode);
-
-    var senderNameSurnameTextNode = document.createTextNode(messaggio.nomeMittente + " " + messaggio.cognomeMittente);
-    var senderStrong = document.createElement("strong");
     if (messaggio.mittente === "allenatore") {
-        senderStrong.setAttribute("class", "pull-right primary-font");
+        mostraMessaggioAllenatore(messaggio);
     } else if (messaggio.mittente === "calciatore") {
-        senderStrong.setAttribute("class", "pull-left primary-font");
+        mostraMessaggioCalciatore(messaggio);
     }
 
-    senderStrong.appendChild(senderNameSurnameTextNode);
-
-    var chatHeaderDiv = document.createElement("div");
-    chatHeaderDiv.setAttribute("class", "header");
-    chatHeaderDiv.appendChild(timeSpan);
-    chatHeaderDiv.appendChild(senderStrong);
-    //chatHeaderDiv END
-
-    //chatBodyDiv BEGIN
-    var chatBodyDiv = document.createElement("div");
-    chatBodyDiv.setAttribute("class", "chat-body clearfix");
-    chatBodyDiv.appendChild(chatHeaderDiv);
-
-    var messageTextParagraph = document.createElement("p");
-    var messageTextNode = document.createTextNode(messaggio.testo);
-    messageTextParagraph.appendChild(messageTextNode);
-    chatBodyDiv.appendChild(messageTextParagraph);
-    //chatBodyDiv END
-
-    //messageListItem BEGIN
-    var listItem = document.createElement("li");
-    listItem.setAttribute("class", "right clearfix");
-    listItem.appendChild(senderImgSpan);
-    listItem.appendChild(chatBodyDiv);
-    var chat = document.getElementById("chat");
-    chat.appendChild(listItem);
-    //messageListItem END
-
-    $("#chat_viewport").scrollTop($("#chat").outerHeight());
+    $('#chat-body').scrollTop($('#chat-body')[0].scrollHeight - $('#chat-body')[0].clientHeight);
 }
+
+function mostraMessaggioAllenatore(messaggio) {
+    var li = document.createElement("li");
+    $(li).attr("class", "right clearfix");
+
+    var span = document.createElement("span");
+    $(span).attr("class", "chat-img pull-right");
+
+    var img = document.createElement("img");
+    $(img).attr("src", "http://placehold.it/50/FA6F57/fff&text=ME");
+    $(img).attr("alt", "User Avatar");
+    $(img).attr("class", "img-circle");
+    $(span).append(img);
+    $(li).append(span);
+
+    var body = document.createElement("div");
+    $(body).attr("class", "chat-body clearfix");
+
+    var header = document.createElement("div");
+    $(header).attr("class", "header");
+
+    var small = document.createElement("small");
+    $(small).attr("class", " text-muted");
+
+    var span2 = document.createElement("span");
+    $(span2).attr("class", "glyphicon glyphicon-time datetime");
+    $(small).append(span2);
+
+    var data = document.createTextNode(messaggio.data);
+    $(span2).append(data);
+
+    var strong = document.createElement("strong");
+    $(strong).attr("class", "pull-right primary-font");
+    var mittente = document.createTextNode(messaggio.nomeMittente + " " + messaggio.cognomeMittente);
+    $(strong).append(mittente);
+
+    $(header).append(small);
+    $(header).append(strong);
+    $(body).append(header);
+
+    var paragraph = document.createElement("p");
+    var testo = document.createTextNode(messaggio.testo);
+    $(paragraph).append(testo);
+    $(body).append(paragraph);
+    $(li).append(body);
+
+    $("#chat-list").append(li);
+}
+
+function mostraMessaggioCalciatore(messaggio) {
+    var li = document.createElement("li");
+    $(li).attr("class", "left clearfix");
+
+    var span = document.createElement("span");
+    $(span).attr("class", "chat-img pull-left");
+
+    var img = document.createElement("img");
+    $(img).attr("src", "http://placehold.it/50/55C1E7/fff&text=U");
+    $(img).attr("alt", "User Avatar");
+    $(img).attr("class", "img-circle");
+    $(span).append(img);
+    $(li).append(span);
+
+    var body = document.createElement("div");
+    $(body).attr("class", "chat-body clearfix");
+
+    var header = document.createElement("div");
+    $(header).attr("class", "header");
+
+    var small = document.createElement("small");
+    $(small).attr("class", "pull-right text-muted");
+
+    var span2 = document.createElement("span");
+    $(span2).attr("class", "glyphicon glyphicon-time datetime");
+    $(small).append(span2);
+
+    var data = document.createTextNode(" " + messaggio.data);
+    $(span2).append(data);
+
+    var strong = document.createElement("strong");
+    $(strong).attr("class", "primary-font");
+    var mittente = document.createTextNode(messaggio.nomeMittente + " " + messaggio.cognomeMittente);
+    $(strong).append(mittente);
+
+    $(header).append(strong);
+    $(header).append(small);
+    $(body).append(header);
+
+    var paragraph = document.createElement("p");
+    var testo = document.createTextNode(messaggio.testo);
+    $(paragraph).append(testo);
+    $(body).append(paragraph);
+    $(li).append(body);
+
+    $("#chat-list").append(li);
+}
+
+var AJAX;
 
 function getNuoviMessagi() {
     var data = $(".datetime").last().text();
     var destinatario = $("form#chat input[name='destinatario']").val();
     var url = $("form#chat input[name='nuovimessaggi']").val();
 
-    //console.log(data);
-    //console.log(destinatario);
-    //console.log(url);
+    console.log(data);
+    console.log(destinatario);
+    console.log(url);
 
-    $.ajax({
+    return $.ajax({
         url: url,
         type: "POST",
         dataType: "json",
@@ -114,9 +183,11 @@ function getNuoviMessagi() {
         success: function (response, textStatus, jqXHR) {
             console.log("GET_NUOVI_MESSAGGI_RESPONSE: " + response);
             var messaggi = response.messaggi;
-            console.log(messaggi);
+            console.log(messaggi.length);
 
-
+            $.each(messaggi, function (index, messaggio) {
+                mostraMessaggio(messaggio);
+            });
         }
     });
 }

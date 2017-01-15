@@ -1,14 +1,85 @@
 {% extends "allenatore/template.html.twig" %}
 {% block head %}
-    <link rel="stylesheet" href="{{ asset('css/chat2.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('comunicazione/css/chat.css') }}"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 {% endblock %}
 
 {% block contenuto %}
-    {{ dump(messaggi) }}
+
     <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" id="accordion">
+                        <span class="glyphicon glyphicon-comment">&nbsp;Chat</span>
+                    </div>
+                    <div id = "chat-body" class="panel-body">
+                        <ul class="chat" id="chat-list">
+
+                            {% for messaggio in messaggi %}
+                                {% if messaggio.getMittente() == "allenatore" %}
+                                    <li class="right clearfix">
+                                        <span class="chat-img pull-right">
+                                            <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar"
+                                                 class="img-circle"/>
+                                        </span>
+                                        <div class="chat-body clearfix">
+                                            <div class="header">
+                                                <small class=" text-muted">
+                                                    <span class="glyphicon glyphicon-time datetime">{{ messaggio.getDataString() }}</span>
+                                                </small>
+                                                <strong class="pull-right primary-font">
+                                                    {{ messaggio.getNomeMittente() | capitalize }}
+                                                    &nbsp;{{ messaggio.getCognomeMittente() | capitalize }}
+                                                </strong>
+                                            </div>
+                                            <p>
+                                                {{ messaggio.getTesto() }}
+                                            </p>
+                                        </div>
+                                    </li>
+                                {% else %}
+                                    <li class="left clearfix">
+                                        <span class="chat-img pull-left">
+                                            <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar"
+                                                 class="img-circle"/>
+                                        </span>
+                                        <div class="chat-body clearfix">
+                                            <div class="header">
+                                                <strong class="primary-font">{{ messaggio.getNomeMittente() | capitalize }}
+                                                    &nbsp;{{ messaggio.getCognomeMittente() | capitalize }}</strong>
+                                                <small class="pull-right text-muted">
+                                                    <span class="glyphicon glyphicon-time datetime">{{ messaggio.getDataString() }}</span>
+                                                </small>
+                                            </div>
+                                            <p>
+                                                {{ messaggio.getTesto() }}
+                                            </p>
+                                        </div>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="panel-footer">
+                        <form id="chat" action="{{ path('allenatoreInviaMessaggioChat') }}" method="post">
+                            <input type="hidden" name="destinatario" value="{{ destinatario }}"/>
+                            <input type="hidden" name="nuovimessaggi" value="{{ path('nuoviMessaggiAllenatore') }}"/>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="testo" placeholder="Scrivi un messaggio"/>
+                                <div class="input-group-btn">
+                                    <button type="submit" class="btn btn-warning">Invia</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {#<div class="container">
         <div class="row">
             <div class="col-md-6">
                 <div class="panel panel-primary">
@@ -21,25 +92,27 @@
                                 {% if messaggio.getMittente() == "allenatore" %}
                                     <li class="right clearfix">
                                         <span class="chat-img pull-right">
-                                            <img src="{{ asset("ImmaginiApp/account/") }}{{ allenatore.getImmagine() }}"
+                                            <img src="http://placehold.it/50/FA6F57/fff&text=ME"
                                                  class="img-circle"/>
                                         </span>
                                         <div class="chat-body clearfix">
                                             <div class="header">
-                                                <span class="datetime glyphicon glyphicon-time">{{ messaggio.getDataString() }}</span>
+                                                <span class="datetime glyphicon glyphicon-time pull-left">{{ messaggio.getDataString() }}</span>
                                                 <strong class="pull-right primary-font">{{ messaggio.getNomeMittente() }}
                                                     &nbsp;{{ messaggio.getCognomeMittente() }}</strong>
                                             </div>
-                                            <p>
-                                                {{ messaggio.getTesto() }}
-                                            </p>
+                                            <div>
+                                                <p>
+                                                    {{ messaggio.getTesto() }}
+                                                </p>
+                                            </div>
                                         </div>
                                     </li>
 
                                 {% elseif messaggio.getMittente() == "calciatore" %}
                                     <li class="left clearfix">
                                         <span class="chat-img pull-left">
-                                            <img src="{{ asset("ImmaginiApp/account/") }}{{ allenatore.getImmagine() }}"
+                                            <img src="http://placehold.it/50/55C1E7/fff&text=U"
                                                  class="img-circle"/>
                                         </span>
                                         <div class="chat-body clearfix">
@@ -58,156 +131,16 @@
                         </ul>
                     </div>
 
-                    <form id="chat" action="{{ path('allenatoreInviaMessaggioChat') }}" method="post">
-                        <input type="hidden" name="destinatario" value="{{ destinatario }}"/>
-                        <input type="hidden" name="nuovimessaggi" value="{{ path('nuoviMessaggi') }}"/>
-                        <div class="input-group">
-                            <input type="text" class="form-control" name="testo"/>
-                            <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default">Invia</button>
-                            </div>
-                        </div>
-                    </form>
 
-                    {#<div class="panel-footer">
-                        <div class="input-group">
-                            <!--<input id="message_target" type="hidden" value="{{ destinatario }}" name="destinatario">-->
-                            <input id="chatInput" name="testo" type="text"
-                                   placeholder="Scrivi un messaggio..."
-                                   class="form-control chat-input">
-                            <span class="input-group-btn">
-                                <button class="btn btn-warning btn-sm" id="send">Invio</button>
-                            </span>
-                        </div>
-                    </div>#}
                 </div>
             </div>
         </div>
-    </div>
-
+    </div>#}
 
     <script
             src="https://code.jquery.com/jquery-3.1.1.min.js"
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
             crossorigin="anonymous"></script>
-
-    <script>
-        var lastTimeID = 0;
-
-        $(document).ready(function () {
-            $("#chat_viewport").scrollTop($("#chat").outerHeight());
-
-            $('#send').click(function () {
-                sendChatText();
-                $('#chatInput').val("");
-            });
-            startChat();
-
-            $("#chatInput").keypress(function (event) {
-                var keycode = event.keyCode || event.which;
-                if (keycode == '13') {
-
-                }
-            });
-        });
-
-        function startChat() {
-            setInterval(function () {
-                //getChatText();
-            }, 2000);
-        }
-
-        function getChatText() {
-            alert("GettingChatText...");
-
-            $.ajax({
-                type: "GET",
-                url: "/refresh.php?lastTimeID=" + lastTimeID
-            }).done(function (data) {
-                var jsonData = JSON.parse(data);
-                var jsonLength = jsonData.results.length;
-                var html = "";
-                for (var i = 0; i < jsonLength; i++) {
-                    var result = jsonData.results[i];
-                    html += '<div style="color:' + result.color + '">(' + result.chattime + ') <b>' + result.usrname + '</b>: ' + result.chattext + '</div>';
-                    lastTimeID = result.id;
-                }
-                $('#view_ajax').append(html);
-            });
-        }
-
-        function sendChatText() {
-            var chatInput = $('#chatInput').val();
-            if (chatInput != "") {
-                $.ajax({
-                        url: "{{ path('allenatoreInviaMessaggioChat') }}",
-                        type: "POST",
-                        dataType: 'json',
-                        data: {
-                            "destinatario": "{{ destinatario }}",
-                            "testo": $("#chatInput").val()
-                        },
-                        cache: false,
-                        success: function (data, textStatus, jqXHR) {
-                            //senderImgSpan BEGIN
-                            //L'immagine del mittente
-                            var senderImg = document.createElement("img");
-                            senderImg.setAttribute("src", "http://placehold.it/50/FA6F57/fff&text=ME");
-                            senderImg.setAttribute("alt", "User Avatar");
-                            senderImg.setAttribute("class", "img-circle");
-                            var senderImgSpan = document.createElement("span");
-                            senderImgSpan.setAttribute("class", "chat-img pull-right");
-                            senderImgSpan.appendChild(senderImg);
-                            //senderImgSpan END
-                            //chatHeaderDiv BEGIN
-                            var timeTextNode = document.createTextNode(data.data);
-                            var timeSpan = document.createElement("span");
-                            timeSpan.setAttribute("class", "datetime glyphicon glyphicon-time");
-                            timeSpan.appendChild(timeTextNode);
-
-                            var senderNameSurnameTextNode = document.createTextNode(data.nomeMittente + " " + data.cognomeMittente);
-                            var senderStrong = document.createElement("strong");
-                            senderStrong.setAttribute("class", "pull-right primary-font");
-                            senderStrong.appendChild(senderNameSurnameTextNode);
-
-                            var chatHeaderDiv = document.createElement("div");
-                            chatHeaderDiv.setAttribute("class", "header");
-                            chatHeaderDiv.appendChild(timeSpan);
-                            chatHeaderDiv.appendChild(senderStrong);
-                            //chatHeaderDiv END
-
-                            //chatBodyDiv BEGIN
-                            var chatBodyDiv = document.createElement("div");
-                            chatBodyDiv.setAttribute("class", "chat-body clearfix");
-                            chatBodyDiv.appendChild(chatHeaderDiv);
-
-                            var messageTextParagraph = document.createElement("p");
-                            var messageTextNode = document.createTextNode(data.testo);
-                            messageTextParagraph.appendChild(messageTextNode);
-                            chatBodyDiv.appendChild(messageTextParagraph);
-                            //chatBodyDiv END
-
-                            //messageListItem BEGIN
-                            var listItem = document.createElement("li");
-                            listItem.setAttribute("class", "right clearfix");
-                            listItem.appendChild(senderImgSpan);
-                            listItem.appendChild(chatBodyDiv);
-                            var chat = document.getElementById("chat");
-                            chat.appendChild(listItem);
-                            //messageListItem END
-
-                            $("#chat_viewport").scrollTop($("#chat").outerHeight());
-                        }
-                        ,
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            alert("Errore nell'invio del messaggio.\nStato: " + textStatus + "\nError: " + errorThrown);
-                        }
-                    }
-                )
-                ;
-            }
-        }
-    </script>
-
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="{{ asset('comunicazione/ChatAllenatore.js') }}"></script>
 {% endblock %}
