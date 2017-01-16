@@ -165,7 +165,14 @@ class GestoreAutenticazione
             new RottaUtente("inserisciStatistichePartita", array("staff")),
             new RottaUtente("modificaStatistichePartita", array("staff")),
             new RottaUtente("getConvocatiPartita", array("staff")),
-            new RottaUtente("lista_statistiche_partite", array("allenatore", "calciatore", "staff", "tifoso"))
+            new RottaUtente("lista_statistiche_partite", array("allenatore", "calciatore", "staff", "tifoso")),
+            new RottaUtente("inserisciContenutoForm",array("staff")),
+            new RottaUtente("inserisciContenuto",array("staff")),
+            new RottaUtente("cancellaContenuto",array("staff")),
+            new RottaUtente("visualizzaContenuto",array("staff")),
+            new RottaUtente("visualizzaElencoContenutiSquadra",array("staff")),
+            new RottaUtente("visualizzaContenutoUtenteRegistrato",array("tifoso")),
+            new RottaUtente("visualizzaElencoContenutiPerTipo",array("tifoso"))
         );
         return $rotte;
     }

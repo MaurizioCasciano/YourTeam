@@ -45,6 +45,7 @@ class ControllerContenutiUtenteGuest extends Controller
      * @Route("/contenuti/utenteGuest/visualizzaContenutoView/{id}")
      * @Method("GET")
      */
+    /*
     public function visualizzaContenutoView($id)
     {
         $gestore = GestioneContenuti::getInstance();
@@ -57,8 +58,8 @@ class ControllerContenutiUtenteGuest extends Controller
             return new Response($e->getMessage(), 404);
         }
         return new Response();
-    }
-
+    }*/
+    
     /**
      * @Route("/", name = "home")
      * @Method("GET")
