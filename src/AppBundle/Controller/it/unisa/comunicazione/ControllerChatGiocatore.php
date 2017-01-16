@@ -73,7 +73,7 @@ class ControllerChatGiocatore extends Controller
                 $testo = $ora . " " . $luogo . " " . $data;
                 $tipo = "voce";
 
-                $messaggio = new Messaggio(testo, $allenatore, $calciatore, $mittente, $data, $tipo);
+                $messaggio = new Messaggio($testo, $allenatore, $calciatore, $mittente, $dateTime, $tipo);
                 $g->inviaMessaggio($messaggio);
 
                 return $this->render(":giocatore:MessaggioSuccesso.html.twig");

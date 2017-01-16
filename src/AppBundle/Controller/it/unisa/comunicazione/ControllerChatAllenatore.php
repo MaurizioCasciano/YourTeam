@@ -12,6 +12,7 @@ use AppBundle\it\unisa\account\GestoreAccount;
 use AppBundle\it\unisa\autenticazione\GestoreAutenticazione;
 use AppBundle\it\unisa\comunicazione\GestoreComunicazione;
 use AppBundle\it\unisa\comunicazione\Messaggio;
+use AppBundle\it\unisa\statistiche\GestoreStatisticheCalciatore;
 use AppBundle\Utility\DB;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -193,13 +194,13 @@ class ControllerChatAllenatore extends Controller
      */
     public function scegliCalciatore(Request $request)
     {
-        $g = GestoreComunicazione::getInstance();
+        $g = GestoreStatisticheCalciatore::getInstance();
         $autenticazione = GestoreAutenticazione::getInstance();
         if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["squadra"])) {
                 throw new \RuntimeException("Squadra is null");
             }
-            $calciatori = $g->getCalciatoriPerSquadra($_SESSION["squadra"]);
+            $calciatori = $g->getCalciatori($_SESSION["squadra"]);
 
             return $this->render(":allenatore:FormScegliCalciatore.html.twig", array("calciatori" => $calciatori));
         } else {
@@ -214,13 +215,13 @@ class ControllerChatAllenatore extends Controller
      */
     public function scegliCalciatoreVoce(Request $request)
     {
-        $g = GestoreComunicazione::getInstance();
+        $g = GestoreStatisticheCalciatore::getInstance();
         $autenticazione = GestoreAutenticazione::getInstance();
         if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["squadra"])) {
                 throw new \RuntimeException("Squadra is null");
             }
-            $calciatori = $g->getCalciatoriPerSquadra($_SESSION["squadra"]);
+            $calciatori = $g->getCalciatori($_SESSION["squadra"]);
 
             return $this->render(":allenatore:FormScegliCalciatoreVoce.html.twig", array("calciatori" => $calciatori));
         } else {
@@ -235,12 +236,13 @@ class ControllerChatAllenatore extends Controller
     public function scegliCalciatoreComportamento(Request $request)
     {
         $g = GestoreComunicazione::getInstance();
+        $g2 = GestoreStatisticheCalciatore::getInstance();
         $autenticazione = GestoreAutenticazione::getInstance();
         if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["squadra"])) {
                 throw new \RuntimeException("Squadra is null");
             }
-            $calciatori = $g->getCalciatoriPerSquadra($_SESSION["squadra"]);
+            $calciatori = $g2->getCalciatori($_SESSION["squadra"]);
             $messaggi = $g->ottieniMessaggiRichiamoMulta($calciatori);
             $messaggi2 = $g->ottieniMessaggioRichiamoAvvertimento($calciatori);
 
@@ -257,12 +259,13 @@ class ControllerChatAllenatore extends Controller
     public function scegliCalciatoreSalute(Request $request)
     {
         $g = GestoreComunicazione::getInstance();
+        $g2 = GestoreStatisticheCalciatore::getInstance();
         $autenticazione = GestoreAutenticazione::getInstance();
         if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["squadra"])) {
                 throw new \RuntimeException("Squadra is null");
             }
-            $calciatori = $g->getCalciatoriPerSquadra($_SESSION["squadra"]);
+            $calciatori = $g2->getCalciatori($_SESSION["squadra"]);
             $messaggi = $g->ottieniMessaggioRichiamoDieta($calciatori);
             $messaggi2 = $g->ottieniMessaggioRichiamoAllenamento($calciatori);
 
