@@ -65,7 +65,7 @@
             <ul class="nav nav-stacked">
 
                 <li>
-                    <a href="/yourteam/web/app_dev.php/contenuti/utenteRegistrato/visualizzaElencoContenutiPerTipo/notizia"><i
+                    <a href="{{ path('profilo') }}"><i
                                 class="glyphicon glyphicon-home"></i> Home</a></li>
                 <li>
                     <a href="{{ path('lista_partite') }}">
@@ -83,13 +83,15 @@
                     </a>
                 </li>
 
-                <li><a href="javascript:;"><i class="glyphicon glyphicon-star"></i> Rosa squadra preferita</a></li>
                 <li>
                     <a href="{{ path("visualizzaElencoContenutiPerTipo",{ "tipo":"video"}) }}"><i
                                 class="glyphicon glyphicon-facetime-video"></i> Video</a></li>
                 <li>
                     <a href="{{ path("visualizzaElencoContenutiPerTipo",{ "tipo":"immagine"}) }}"><i
                                 class="glyphicon glyphicon-camera"></i> Foto</a></li>
+                <li>
+                    <a href="{{ path("visualizzaElencoContenutiPerTipo",{ "tipo":"notizia"}) }}"><i
+                                class="glyphicon glyphicon-camera"></i> Notizie</a></li>
 
             </ul>
 
