@@ -42,7 +42,7 @@
                         <ul id="chat" class="list-group">
                             {% for messaggio in messaggi %}
                                 <li class="list-group-item"> <span>{{ messaggio.getTesto() }}</span>
-                                    <h6>  {{ messaggio.getData() }} </h6>
+                                    <h6>  {{ messaggio.getDataString() }} </h6>
                                     <strong> {{ messaggio.getNomeDestinatario()}} {{ messaggio.getCognomeDestinatario() }}</strong></li>
                             {% endfor %}
                         </ul>
@@ -61,7 +61,7 @@
                         <ul id="chat" class="list-group">
                             {% for messaggio in messaggi2 %}
                                 <li class="list-group-item"> <span>{{ messaggio.getTesto() }}</span>
-                                    <h6>  {{ messaggio.getData() }} </h6>
+                                    <h6>  {{ messaggio.getDataString() }} </h6>
                                     <strong> {{ messaggio.getNomeDestinatario()}} {{ messaggio.getCognomeDestinatario() }}</strong></li>
                             {% endfor %}
                         </ul>
