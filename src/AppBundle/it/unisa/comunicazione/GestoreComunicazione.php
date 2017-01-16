@@ -96,7 +96,8 @@ class GestoreComunicazione
             // output data of each row
             while ($row = $result->fetch_assoc()) {
                 /*$t, $u, $c, $mitt,$data,$tipo*/
-                $messaggio = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $row["data"], $row["tipo"]);
+                $data = new \DateTime($row["data"]);
+                $messaggio = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $data, $row["tipo"]);
                 $messaggio->setId($row["id"]);
                 $messaggi[$i] = $messaggio;
                 $i++;
@@ -216,7 +217,8 @@ class GestoreComunicazione
             // output data of each row
             while ($row = $result->fetch_assoc()) {
                 /*$t, $u, $c, $mitt,$data,$tipo*/
-                $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $row["data"], $row["tipo"]);
+                $data = new \DateTime($row["data"]);
+                $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $data, $row["tipo"]);
                 $m->setId($row["id"]);
                 $calciatori[$i] = $m;
                 $i++;

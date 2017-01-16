@@ -1,6 +1,7 @@
 {% extends 'giocatore/template.html.twig' %}
 {% block head %}
-    <link rel="stylesheet" href="{{ asset('css/chat2.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('comunicazione/css/chat.css') }}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 {% endblock %}
 
 {% block contenuto %}
@@ -8,43 +9,49 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <span class="glyphicon glyphicon-comment"></span> Chat
+                    <div class="panel-heading" id="accordion">
+                        <span class="glyphicon glyphicon-comment">&nbsp;Chat</span>
                     </div>
-                    <div id="chat_viewport">
-                        <ul id="chat" class="list-unstyled">
+                    <div id="chat-body" class="panel-body">
+                        <ul class="chat" id="chat-list">
+
                             {% for messaggio in messaggi %}
                                 {% if messaggio.getMittente() == "calciatore" %}
                                     <li class="right clearfix">
                                         <span class="chat-img pull-right">
-                                            {#<img src="{{ asset("ImmaginiApp/account/") }}{{ calciatore.getImmagine() }}"
-                                                 class="img-circle"/> #}
+                                            <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar"
+                                                 class="img-circle"/>
                                         </span>
                                         <div class="chat-body clearfix">
                                             <div class="header">
-                                                <span class="glyphicon glyphicon-time">{{ messaggio.getData() }}</span>
-                                                <strong class="pull-right primary-font">{{ messaggio.getNomeMittente() }}
-                                                    &nbsp;{{ messaggio.getCognomeMittente() }}</strong>
+                                                <small class=" text-muted">
+                                                    <span class="glyphicon glyphicon-time datetime">{{ messaggio.getDataString() }}</span>
+                                                </small>
+                                                <strong class="pull-right primary-font">
+                                                    {{ messaggio.getNomeMittente() | capitalize }}
+                                                    &nbsp;{{ messaggio.getCognomeMittente() | capitalize }}
+                                                </strong>
                                             </div>
                                             <p>
                                                 {{ messaggio.getTesto() }}
                                             </p>
                                         </div>
                                     </li>
-
-                                {% elseif messaggio.getMittente() == "allenatore" %}
+                                {% else %}
                                     <li class="left clearfix">
                                         <span class="chat-img pull-left">
-                                            {#<img src="{{ asset("ImmaginiApp/account/") }}{{ calciatore.getImmagine() }}"
-                                                 class="img-circle"/> #}
+                                            <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar"
+                                                 class="img-circle"/>
                                         </span>
                                         <div class="chat-body clearfix">
                                             <div class="header">
-                                                <strong class="primary-font">{{ messaggio.getNomeMittente() }}
-                                                    &nbsp;{{ messaggio.getCognomeMittente() }}</strong>
-                                                <span class="glyphicon glyphicon-time pull-right">{{ messaggio.getData() }}</span>
+                                                <strong class="primary-font">{{ messaggio.getNomeMittente() | capitalize }}
+                                                    &nbsp;{{ messaggio.getCognomeMittente() | capitalize }}</strong>
+                                                <small class="pull-right text-muted">
+                                                    <span class="glyphicon glyphicon-time datetime">{{ messaggio.getDataString() }}</span>
+                                                </small>
                                             </div>
-                                            <p class="pull-right">
+                                            <p>
                                                 {{ messaggio.getTesto() }}
                                             </p>
                                         </div>
@@ -53,217 +60,28 @@
                             {% endfor %}
                         </ul>
                     </div>
+
                     <div class="panel-footer">
-                        <div class="input-group">
-                            <!--<input id="message_target" type="hidden" value="{{ destinatario }}" name="destinatario">-->
-                            <input id="chatInput" name="testo" type="text"
-                                   placeholder="Scrivi un messaggio..."
-                                   class="form-control chat-input">
-                            <span class="input-group-btn">
-                                <button class="btn btn-warning btn-sm" id="send">Invio</button>
-                            </span>
-                        </div>
+                        <form id="chat" action="{{ path('calciatoreInviaMessaggioChat') }}" method="post">
+                            <input type="hidden" name="destinatario" value="{{ destinatario }}"/>
+                            <input type="hidden" name="nuovimessaggi" value="{{ path('nuoviMessaggiCalciatore') }}"/>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="testo" placeholder="Scrivi un messaggio"/>
+                                <div class="input-group-btn">
+                                    <button type="submit" class="btn btn-warning">Invia</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <script
             src="https://code.jquery.com/jquery-3.1.1.min.js"
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
             crossorigin="anonymous"></script>
-
-    <script>
-        var lastTimeID = 0;
-
-        $(document).ready(function () {
-            $("#chat_viewport").scrollTop($("#chat").outerHeight());
-
-            $('#send').click(function () {
-                sendChatText();
-                $('#chatInput').val("");
-            });
-            startChat();
-
-            $("#chatInput").keypress(function (event) {
-                var keycode = event.keyCode || event.which;
-                if (keycode == '13') {
-
-                }
-            });
-        });
-
-        function startChat() {
-            setInterval(function () {
-                //getChatText();
-            }, 2000);
-        }
-
-        function getChatText() {
-            alert("GettingChatText...");
-
-            $.ajax({
-                type: "GET",
-                url: "/refresh.php?lastTimeID=" + lastTimeID
-            }).done(function (data) {
-                var jsonData = JSON.parse(data);
-                var jsonLength = jsonData.results.length;
-                var html = "";
-                for (var i = 0; i < jsonLength; i++) {
-                    var result = jsonData.results[i];
-                    html += '<div style="color:' + result.color + '">(' + result.chattime + ') <b>' + result.usrname + '</b>: ' + result.chattext + '</div>';
-                    lastTimeID = result.id;
-                }
-                $('#view_ajax').append(html);
-            });
-        }
-
-        function sendChatText() {
-            //alert("Send Chat Text");
-
-
-            var chatInput = $('#chatInput').val();
-            if (chatInput != "") {
-                {#$.ajax({
-                            url: "{{ path('calciatoreInviaMessaggioChat') }}",
-                            type: "POST",
-                            dataType: 'json',
-                            data: {
-                                "destinatario": "{{ destinatario }}",
-                                "testo": $("#chatInput").val()
-                            },
-                            cache: false,
-                            success: function (data, textStatus, jqXHR) {
-                                //senderImgSpan BEGIN
-                                //L'immagine del mittente
-                                var senderImg = document.createElement("img");
-                                senderImg.setAttribute("src", "http://placehold.it/50/FA6F57/fff&text=ME");
-                                senderImg.setAttribute("alt", "User Avatar");
-                                senderImg.setAttribute("class", "img-circle");
-                                var senderImgSpan = document.createElement("span");
-                                senderImgSpan.setAttribute("class", "chat-img pull-right");
-                                senderImgSpan.appendChild(senderImg);
-                                //senderImgSpan END
-
-                                //chatHeaderDiv BEGIN
-                                var timeTextNode = document.createTextNode(data.data);
-                                var timeSpan = document.createElement("span");
-                                timeSpan.setAttribute("class", "glyphicon glyphicon-time");
-                                timeSpan.appendChild(timeTextNode);
-
-                                var senderNameSurnameTextNode = document.createTextNode(data.nomeMittente + " " + data.cognomeMittente);
-                                var senderStrong = document.createElement("strong");
-                                senderStrong.setAttribute("class", "pull-right primary-font");
-                                senderStrong.appendChild(senderNameSurnameTextNode);
-
-                                var chatHeaderDiv = document.createElement("div");
-                                chatHeaderDiv.setAttribute("class", "header");
-                                chatHeaderDiv.appendChild(timeSpan);
-                                chatHeaderDiv.appendChild(senderStrong);
-                                //chatHeaderDiv END
-
-                                //chatBodyDiv BEGIN
-                                var chatBodyDiv = document.createElement("div");
-                                chatBodyDiv.setAttribute("class", "chat-body clearfix");
-                                chatBodyDiv.appendChild(chatHeaderDiv);
-
-                                var messageTextParagraph = document.createElement("p");
-                                var messageTextNode = document.createTextNode(data.testo);
-                                messageTextParagraph.appendChild(messageTextNode);
-                                chatBodyDiv.appendChild(messageTextParagraph);
-                                //chatBodyDiv END
-
-                                //messageListItem BEGIN
-                                var listItem = document.createElement("li");
-                                listItem.setAttribute("class", "right clearfix");
-                                listItem.appendChild(senderImgSpan);
-                                listItem.appendChild(chatBodyDiv);
-                                var chat = document.getElementById("chat");
-                                chat.appendChild(listItem);
-                                //messageListItem END
-
-                                $("#chat_viewport").scrollTop($("#chat").outerHeight());
-                            }
-                            ,
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                alert("Errore nell'invio del messaggio.\nStato: " + textStatus + "\nError: " + errorThrown);
-                            }
-                        }
-                )
-                ;#}
-
-
-                $.ajax({
-                    url: "{{ path('calciatoreInviaMessaggioChat') }}",
-                    type: "POST",
-                    data: {
-                        "destinatario": "{{ destinatario }}",
-                        "testo": $("#chatInput").val()
-                    },
-                    cache: false,
-                    success: function (response, textStatus, jqXHR) {
-                        console.log("Response invia messaggio chat.");
-                        console.log(response);
-
-                        //5alert("Messaggio inviato con successo: " + response);
-
-                        //senderImgSpan BEGIN
-                        //L'immagine del mittente
-                        var senderImg = document.createElement("img");
-                        senderImg.setAttribute("src", "http://placehold.it/50/FA6F57/fff&text=ME");
-                        senderImg.setAttribute("alt", "User Avatar");
-                        senderImg.setAttribute("class", "img-circle");
-                        var senderImgSpan = document.createElement("span");
-                        senderImgSpan.setAttribute("class", "chat-img pull-right");
-                        senderImgSpan.appendChild(senderImg);
-                        //senderImgSpan END
-                        //chatHeaderDiv BEGIN
-                        var timeTextNode = document.createTextNode(response.data);
-                        var timeSpan = document.createElement("span");
-                        timeSpan.setAttribute("class", "glyphicon glyphicon-time");
-                        timeSpan.appendChild(timeTextNode);
-
-                        var senderNameSurnameTextNode = document.createTextNode(response.nomeMittente + " " + response.cognomeMittente);
-                        var senderStrong = document.createElement("strong");
-                        senderStrong.setAttribute("class", "pull-right primary-font");
-                        senderStrong.appendChild(senderNameSurnameTextNode);
-
-                        var chatHeaderDiv = document.createElement("div");
-                        chatHeaderDiv.setAttribute("class", "header");
-                        chatHeaderDiv.appendChild(timeSpan);
-                        chatHeaderDiv.appendChild(senderStrong);
-                        //chatHeaderDiv END
-
-                        //chatBodyDiv BEGIN
-                        var chatBodyDiv = document.createElement("div");
-                        chatBodyDiv.setAttribute("class", "chat-body clearfix");
-                        chatBodyDiv.appendChild(chatHeaderDiv);
-
-                        var messageTextParagraph = document.createElement("p");
-                        var messageTextNode = document.createTextNode(response.testo);
-                        messageTextParagraph.appendChild(messageTextNode);
-                        chatBodyDiv.appendChild(messageTextParagraph);
-                        //chatBodyDiv END
-
-                        //messageListItem BEGIN
-                        var listItem = document.createElement("li");
-                        listItem.setAttribute("class", "right clearfix");
-                        listItem.appendChild(senderImgSpan);
-                        listItem.appendChild(chatBodyDiv);
-                        var chat = document.getElementById("chat");
-                        chat.appendChild(listItem);
-                        //messageListItem END
-
-                        $("#chat_viewport").scrollTop($("#chat").outerHeight());
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log("TextStatus: " + textStatus);
-                        console.log("Status: " + jqXHR.status);
-                        console.log("ResponseText: " + jqXHR.responseText);
-                        console.log("Error: " + errorThrown);
-                    }
-                });
-            }
-        }
-    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="{{ asset('comunicazione/js/ChatCalciatore.js') }}"></script>
 {% endblock %}

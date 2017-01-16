@@ -22,10 +22,18 @@ $(function () {
 
 function inviaMessaggioChat(event) {
     event.preventDefault();
-    console.log("Ajax Invia Messaggio CHAT...");
 
     var $form = $(this);
     var data = $($form).serialize();
+
+    var messaggio = $.trim($($form).find("input[name='testo']").val());
+
+    if (messaggio.length == 0) {
+        return;
+    }
+
+    console.log("Ajax Invia Messaggio CHAT...");
+
     $($form).find("input[name='testo']").val("");
 
     console.log("DATA: " + data);
