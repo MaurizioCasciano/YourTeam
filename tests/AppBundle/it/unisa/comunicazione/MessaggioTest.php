@@ -23,7 +23,7 @@ class MessaggioTest extends \PHPUnit_Framework_TestCase
 
         $messaggio = new Messaggio($testo, $usernameAllenatore, $usernameCalciatore, $mittente, $data, $tipo);
 
-        echo $messaggio->getDataString();
+        //echo $messaggio->getDataString();
         $this->assertStringEndsNotWith(".000000", $messaggio->getDataString());
     }
 }

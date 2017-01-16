@@ -43,7 +43,7 @@ class GestoreComunicazioneTest extends \PHPUnit_Framework_TestCase
 
         $messaggi = $this->gestoreComunicazione->getNuoviMessaggi($allenatore, $calciatore, $tipo, $data);
 
-        var_dump($messaggi);
+        //var_dump($messaggi);
 
         $this->assertGreaterThan(0, count($messaggi));
     }
