@@ -5,7 +5,7 @@
     <div>
 
         <h1>Scegli Calciatore</h1>
-        <form action="/yourteam/web/app_dev.php/comunicazione/allenatore/ottieniRichiamoAvvertimentoView" method="post">
+        <form action="{{ path('ottieniavvertimentoview') }}" method="post">
             <select name="calciatore_destinatario">
                 {% for calciatore in calciatori %}
                     <option>
