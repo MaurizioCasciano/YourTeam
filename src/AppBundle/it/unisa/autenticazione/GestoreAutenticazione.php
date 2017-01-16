@@ -72,7 +72,7 @@ class GestoreAutenticazione
         {
             $acc = $g->ricercaAccount_G($username);
             if ($acc=="valore non esiste") return false;
-            
+
             $check = $this->checkPassword($password, $acc->getPassword());
 
             if ($check)
