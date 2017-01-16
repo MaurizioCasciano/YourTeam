@@ -44,7 +44,13 @@
             <ul class="nav navbar-nav navbar-right">
 
 
-                <li><a href="{{ path('profilo') }}">{% block utente %} {% endblock %}</a></li>
+                <li>
+                    <a href="{{ path('profilo') }}">
+                        {% block utente %}
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                        {% endblock %}
+                    </a>
+                </li>
                 <li><a href="{{ path('logout') }}" )><i
                                 class="glyphicon glyphicon-lock"></i> Logout</a></li>
 
