@@ -1,6 +1,6 @@
 {% extends 'staff/template.html.twig' %}
 {% block contenuto %}
-    <form action="inserisciContenuto" method="post" enctype="multipart/form-data" >
+    <form action="{{ path("inserisciContenuto") }}" method="post" enctype="multipart/form-data" >
         <div class="form-group">
             <label >Titolo:</label>
             <input type="text" name="t" class="form-control" id="titolo">
