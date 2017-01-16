@@ -11,7 +11,7 @@ use AppBundle\it\unisa\account\GestoreAccount;
  * Date: 20/12/2016
  * Time: 11:58
  */
-class Messaggio
+class Messaggio implements \JsonSerializable
 {
     private $mittente;
     private $calciatore;
@@ -44,16 +44,20 @@ class Messaggio
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getData()
     {
-        //return $this->data;
-        return date('d/m/Y H:i:s', $this->data);
+        return $this->data;
+    }
+
+    public function getDataString()
+    {
+        return $this->data->format("Y-m-d H:i:s");
     }
 
     /**
-     * @param mixed $data
+     * @param \DateTime $data
      */
     public function setData($data)
     {
@@ -285,4 +289,20 @@ class Messaggio
             " testo:" . $this->getTesto() . " data:" . $this->getData() . " tipo:" . $this->getTipo();
     }
 
+    function jsonSerialize()
+    {
+        return [
+            "mittente" => $this->getMittente(),
+            "calciatore" => $this->getCalciatore(),
+            "allenatore" => $this->getAllenatore(),
+            "testo" => $this->getTesto(),
+            "data" => $this->getDataString(),
+            "tipo" => $this->getTipo(),
+            "id" => $this->getId(),
+            "nomeMittente" => $this->getNomeMittente(),
+            "cognomeMittente" => $this->getCognomeMittente(),
+            "nomeDestinatario" => $this->getNomeDestinatario(),
+            "cognomeDestinatario" => $this->getCognomeDestinatario()
+        ];
+    }
 }

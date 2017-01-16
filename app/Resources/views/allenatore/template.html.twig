@@ -25,6 +25,7 @@
     <![endif]-->
     <link href="{{ asset("assetTemplate/css/styles.css") }}" rel="stylesheet">
     <link href="{{ asset("css/chat.css") }}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     {% block head %}
     {% endblock %}
@@ -37,13 +38,20 @@
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="icon-toggle"></span>
             </button>
-            <a class="navbar-brand" href="http://localhost/yourteam/web/app_dev.php/"><img src="{{ asset('immaginiStatiche/Logo.png') }}" width="30" height="30">Your
+            <a class="navbar-brand" href="http://localhost/yourteam/web/app_dev.php/"><img
+                        src="{{ asset('immaginiStatiche/Logo.png') }}" width="30" height="30">Your
                 Team</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
 
-                <li><a href="#">{% block utente %} {% endblock %}</a></li>
+                <li>
+                    <a href="{{ path('profilo') }}">
+                        {% block utente %}
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                        {% endblock %}
+                    </a>
+                </li>
                 <li><a href="{{ path('logout') }}"><i class="glyphicon glyphicon-lock"></i>
                         Logout</a></li>
 
@@ -65,7 +73,7 @@
 
             <ul class="nav nav-stacked">
 
-                <li><a href="javascript:;"><i class="glyphicon glyphicon-home"></i> Home</a></li>
+                <li><a href="{{ path('profilo') }}"><i class="glyphicon glyphicon-home"></i> Home</a></li>
                 <li>
                     <a href="{{ path('lista_partite') }}">
                         <i class="glyphicon glyphicon-calendar"></i> Partite
@@ -82,7 +90,6 @@
                     </a>
                 </li>
 
-                <li><a href="javascript:;"><i class="glyphicon glyphicon-book"></i> Rosa</a></li>
                 <li><a href="{{ path('verificaConvocazioni') }}"><i class="glyphicon glyphicon-bullhorn"></i> Dirama
                         convocazioni</a></li>
                 <li><a href="{{ path('verificaFormazione') }}"><i class="glyphicon glyphicon-pushpin"></i> Schiera
@@ -91,10 +98,10 @@
                         Chat</a></li>
                 <li><a href="{{ path('sceglivoce') }}"><i class="glyphicon glyphicon-sort-by-alphabet"></i> Colloquio
                         Voce</a></li>
-                <li><a href="{{ path('sceglicomportamento') }}"><i class="glyphicon glyphicon-warning-sign"></i> Richiamo Comportamento</a></li>
-                <li><a href="{{ path('sceglisalute') }}"><i class="glyphicon glyphicon-heart-empty"></i> Richiamo Salute</a></li>
-
-
+                <li><a href="{{ path('sceglicomportamento') }}"><i class="glyphicon glyphicon-warning-sign"></i>
+                        Richiamo Comportamento</a></li>
+                <li><a href="{{ path('sceglisalute') }}"><i class="glyphicon glyphicon-heart-empty"></i> Richiamo Salute</a>
+                </li>
             </ul>
 
             <hr>
