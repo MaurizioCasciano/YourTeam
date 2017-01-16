@@ -68,22 +68,6 @@ class GestoreComunicazione
         }
     }
 
-    public function inviaMessaggioCalciatore(Messaggio $msg)
-    {
-        if ($msg == null) throw new \Exception("valore nullo");
-
-        $sql = "INSERT INTO messaggio (testo,allenatore,calciatore,mittente,data,tipo) 
-                VALUES ('" . $msg->getTesto() . "','"
-            . $msg->getAllenatore() . "','"
-            . $msg->getCalciatore() . "','"
-            . $msg->getMittente() . "','"
-            . $msg->getData()->format('Y-m-d H:i:s') . "','"
-            . $msg->getTipo() . "');";
-        $ris = $this->conn->query($sql);
-        if (!$ris) throw new \Exception(("errore inserimento dati nel db " . $this->conn->error));
-    }
-
-
     public function ottieniMessaggiCalciatore($calciatore, $tipo)
     {
         if ($calciatore == null) throw new \Exception("Messaggio non trovato");
@@ -368,7 +352,7 @@ class GestoreComunicazione
     {
         if ($calciatore == null) throw new \Exception("Messaggio non trovato");
         $messaggi = array();
-        $sql = "SELECT * from messaggio WHERE messaggio.tipo = 'multa' AND messaggio.calciatore = '$calciatore' ORDER BY data;";
+        $sql = "SELECT * from messaggio WHERE tipo = 'multa' AND calciatore =" . '$calciatore' . " ORDER BY data;";
 
         $result = $this->conn->query($sql);
         $i = 0;
