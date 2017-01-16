@@ -14,8 +14,8 @@
                         <form action="{{ path('ottienidietaview') }}" method="post">
                             <select name="calciatore_destinatario">
                                 {% for calciatore in calciatori %}
-                                    <option>
-                                        {{ calciatore }}
+                                    <option value="{{ calciatore.getContratto() }}">
+                                        {{ calciatore.getNome() | capitalize }}&nbsp;{{ calciatore.getCognome() | capitalize }}
                                     </option>
                                 {% endfor %}
                             </select>
