@@ -45,7 +45,7 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
 
-                <li><a href="#">{% block utente %} {% endblock %}</a></li>
+                <li><a href="{{ path('profilo') }}">{% block utente %} {% endblock %}</a></li>
                 <li><a href="{{ path('logout') }}"><i class="glyphicon glyphicon-lock"></i> Logout</a></li>
 
 
