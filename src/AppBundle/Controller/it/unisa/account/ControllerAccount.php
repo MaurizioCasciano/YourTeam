@@ -61,107 +61,107 @@ class ControllerAccount extends Controller
     {
 
 
-      //  $autenticazione= GestoreAutenticazione::getInstance();
-      //  if ($autenticazione->check($r->get("_route"))) {
+        //  $autenticazione= GestoreAutenticazione::getInstance();
+        //  if ($autenticazione->check($r->get("_route"))) {
 
-            if ($attore == "staff_allenatore_tifoso") {
+        if ($attore == "staff_allenatore_tifoso") {
 
+            $account = $r->request->get("u");
+            $g = GestoreAccount::getInstance();
+            $flag = $g->ricercaAccount_A_T_S($account);
+            if ($flag != "valore non esiste") return $this->render("guest/ViewErroreRegistrazione.html.twig");
+
+            $data = str_replace("/", "-", $r->request->get("d"));
+
+            $staff = $r->request->get("tipo");
+            if ($staff == "staff") {
+                $s = new Squadra($r->request->get("nomeSquadra"),
+                    $r->request->get("sedeSquadra"),
+                    $r->request->get("stadioSquadra"),
+                    "", "", "", "", "", "", "", "", "", $r->request->get("scudettiSquadra"));
+
+                $a = new Account($r->request->get("u"),
+                    $r->request->get("p"),
+                    $r->request->get("nomeSquadra"),
+                    $r->request->get("e"), $r->request->get("n"),
+                    $r->request->get("c"), $data,
+                    $r->request->get("do"), $r->request->get("i"),
+                    $r->request->get("pr"), $r->request->get("t"),
+                    "", $r->request->get("tipo"));
+
+
+                $db = GestoreAccount::getInstance();
+                $pathSquadra = Utility::loadFileSquadra("fileSquadra", "account");
+                $path = Utility::loadFile("file", "account");
+                if ($pathSquadra != null || $path != null) {
+                    $s->setImmagine($pathSquadra);
+                    $a->setImmagine($path);
+
+                    $db->aggiungiSquadra($s);
+                    $db->aggiungiAccount_A_T_S($a);
+                    return $this->redirect("/yourteam/web/app_dev.php/");
+                }
+
+            } else {
+
+                $a = new Account($r->request->get("u"),
+                    $r->request->get("p"),
+                    $r->request->get("s"),
+                    $r->request->get("e"), $r->request->get("n"),
+                    $r->request->get("c"), $data,
+                    $r->request->get("do"), $r->request->get("i"),
+                    $r->request->get("pr"), $r->request->get("t"),
+                    "", $r->request->get("tipo"));
+
+                try {
+
+
+                    $g = GestoreAccount::getInstance();
+                    $path = Utility::loadFile("file", "account");
+                    if ($path != null) {
+                        $a->setImmagine($path);
+                        $g->aggiungiAccount_A_T_S($a);
+                        return $this->redirect("/yourteam/web/app_dev.php/");
+                    }
+                } catch (\Exception $e) {
+                    return new Response($e->getMessage(), 404);
+                }
+
+            }
+        } else
+            if ($attore == "calciatore") {
                 $account = $r->request->get("u");
-                $g = GestoreAccount::getInstance();
-                $flag = $g->ricercaAccount_A_T_S($account);
+                $gg = GestoreAccount::getInstance();
+                $flag = $gg->ricercaAccount_G($account);
                 if ($flag != "valore non esiste") return $this->render("guest/ViewErroreRegistrazione.html.twig");
 
                 $data = str_replace("/", "-", $r->request->get("d"));
-
-                $staff = $r->request->get("tipo");
-                if ($staff == "staff") {
-                    $s = new Squadra($r->request->get("nomeSquadra"),
-                        $r->request->get("sedeSquadra"),
-                        $r->request->get("stadioSquadra"),
-                        "", "", "", "", "", "", "", "", "", $r->request->get("scudettiSquadra"));
-
-                    $a = new Account($r->request->get("u"),
-                        $r->request->get("p"),
-                        $r->request->get("nomeSquadra"),
-                        $r->request->get("e"), $r->request->get("n"),
-                        $r->request->get("c"), $data,
-                        $r->request->get("do"), $r->request->get("i"),
-                        $r->request->get("pr"), $r->request->get("t"),
-                        "", $r->request->get("tipo"));
-
-
-                    $db = GestoreAccount::getInstance();
-                    $pathSquadra = Utility::loadFileSquadra("fileSquadra", "account");
+                $a = new AccountCalciatore($r->request->get("u"),
+                    $r->request->get("p"),
+                    $r->request->get("s"),
+                    $r->request->get("e"), $r->request->get("n"),
+                    $r->request->get("c"), $data,
+                    $r->request->get("do"), $r->request->get("i"),
+                    $r->request->get("pr"), $r->request->get("t"),
+                    $r->request->get("im"), $r->request->get("nazionalita"));
+                try {
+                    $g = GestoreAccount::getInstance();
                     $path = Utility::loadFile("file", "account");
-                    if ($pathSquadra != null || $path != null) {
-                        $s->setImmagine($pathSquadra);
+                    if ($path != null) {
                         $a->setImmagine($path);
-
-                        $db->aggiungiSquadra($s);
-                        $db->aggiungiAccount_A_T_S($a);
+                        $g->aggiungiAccount_C($a);
                         return $this->redirect("/yourteam/web/app_dev.php/");
                     }
-
-                } else {
-
-                    $a = new Account($r->request->get("u"),
-                        $r->request->get("p"),
-                        $r->request->get("s"),
-                        $r->request->get("e"), $r->request->get("n"),
-                        $r->request->get("c"), $data,
-                        $r->request->get("do"), $r->request->get("i"),
-                        $r->request->get("pr"), $r->request->get("t"),
-                        "", $r->request->get("tipo"));
-
-                    try {
-
-
-                        $g = GestoreAccount::getInstance();
-                        $path = Utility::loadFile("file", "account");
-                        if ($path != null) {
-                            $a->setImmagine($path);
-                            $g->aggiungiAccount_A_T_S($a);
-                            return $this->redirect("/yourteam/web/app_dev.php/");
-                        }
-                    } catch (\Exception $e) {
-                        return new Response($e->getMessage(), 404);
-                    }
-
+                } catch (\Exception $e) {
+                    return new Response($e->getMessage(), 404);
                 }
-            } else
-                if ($attore == "calciatore") {
-                    $account = $r->request->get("u");
-                    $gg = GestoreAccount::getInstance();
-                    $flag = $gg->ricercaAccount_G($account);
-                    if ($flag != "valore non esiste") return $this->render("guest/ViewErroreRegistrazione.html.twig");
-
-                    $data = str_replace("/", "-", $r->request->get("d"));
-                    $a = new AccountCalciatore($r->request->get("u"),
-                        $r->request->get("p"),
-                        $r->request->get("s"),
-                        $r->request->get("e"), $r->request->get("n"),
-                        $r->request->get("c"), $data,
-                        $r->request->get("do"), $r->request->get("i"),
-                        $r->request->get("pr"), $r->request->get("t"),
-                        $r->request->get("im"), $r->request->get("nazionalita"));
-                    try {
-                        $g = GestoreAccount::getInstance();
-                        $path = Utility::loadFile("file", "account");
-                        if ($path != null) {
-                            $a->setImmagine($path);
-                            $g->aggiungiAccount_C($a);
-                            return $this->redirect("/yourteam/web/app_dev.php/");
-                        }
-                    } catch (\Exception $e) {
-                        return new Response($e->getMessage(), 404);
-                    }
-                } else return new Response("la rotta non esiste", 404);
+            } else return new Response("la rotta non esiste", 404);
 
         //}
-      //  else
-       // {
-       //     return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
-       // }
+        //  else
+        // {
+        //     return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
+        // }
     }
 
     /**
@@ -171,17 +171,15 @@ class ControllerAccount extends Controller
     public function ricercaAccountVista(Request $r)
     {
 
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if ($autenticazione->check($r->get("_route")))
-        {
-        $u = $_SESSION["username"];
-        $g = GestoreAccount::getInstance();
-        $staff = $g->ricercaAccount_A_T_S($u);
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($r->get("_route"))) {
+            $u = $_SESSION["username"];
+            $g = GestoreAccount::getInstance();
+            $staff = $g->ricercaAccount_A_T_S($u);
 
-        return $this->render("staff/ricercaAccount.html.twig", array("staff" => $staff));
+            return $this->render("staff/ricercaAccount.html.twig", array("staff" => $staff));
 
-    } else
-        {
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
@@ -196,27 +194,29 @@ class ControllerAccount extends Controller
     public function ricercaAccountStaff(Request $r)
     {
 
-        $attore=$r->request->get("tipo");
+        $attore = $r->request->get("tipo");
         $g = GestoreAccount::getInstance();
 
-        if($attore== "staff_allenatore_tifoso") {
+        if ($attore == "staff_allenatore_tifoso") {
             try {
                 $ast = $g->ricercaAccount_A_T_S($r->request->get("u"));
                 $staff = $g->ricercaAccount_A_T_S($_SESSION["username"]);
 
 
-                if($ast=="valore non esiste"){return $this->render("staff/erroreRicerca.html.twig", array('g' => $staff));}
+                if ($ast == "valore non esiste") {
+                    return $this->render("staff/erroreRicerca.html.twig", array('g' => $staff));
+                }
 
                 $tipo = $ast->getTipo();
 
                 if ($tipo == "allenatore")
-                    return $this->render("staff/visualizzaAccountStaffRicercato.html.twig", array('ricercato' => $ast,'staff' => $staff ));
+                    return $this->render("staff/visualizzaAccountStaffRicercato.html.twig", array('ricercato' => $ast, 'staff' => $staff));
                 else
                     if ($tipo == "tifoso")
-                        return $this->render("staff/visualizzaAccountStaffRicercato.html.twig", array('ricercato' => $ast,'staff' => $staff));
+                        return $this->render("staff/visualizzaAccountStaffRicercato.html.twig", array('ricercato' => $ast, 'staff' => $staff));
                     else
                         if ($tipo == "staff")
-                            return $this->render("staff/visualizzaAccountStaffRicercato.html.twig", array('ricercato' => $ast,'staff' => $staff));
+                            return $this->render("staff/visualizzaAccountStaffRicercato.html.twig", array('ricercato' => $ast, 'staff' => $staff));
 
 
             } catch (\Exception $e) {
@@ -224,16 +224,18 @@ class ControllerAccount extends Controller
             }
         }
 
-            if ($attore == "calciatore") {
-                try {
-                    $ag = $g->ricercaAccount_G($r->request->get("u"));
-                    $staff = $g->ricercaAccount_A_T_S($_SESSION["username"]);
-                    if($ag=="valore non esiste"){return $this->render("staff/erroreRicerca.html.twig", array('g' => $staff));}
-                    return $this->render("staff/visualizzaAccountStaffRicercato.html.twig", array('ricercato' => $ag,'staff' => $staff));
-                } catch (\Exception $e) {
-                    return new Response($e->getMessage(), 404);
+        if ($attore == "calciatore") {
+            try {
+                $ag = $g->ricercaAccount_G($r->request->get("u"));
+                $staff = $g->ricercaAccount_A_T_S($_SESSION["username"]);
+                if ($ag == "valore non esiste") {
+                    return $this->render("staff/erroreRicerca.html.twig", array('g' => $staff));
                 }
+                return $this->render("staff/visualizzaAccountStaffRicercato.html.twig", array('ricercato' => $ag, 'staff' => $staff));
+            } catch (\Exception $e) {
+                return new Response($e->getMessage(), 404);
             }
+        }
         return new Response("tipo erratoo");
     }
     /**
@@ -280,44 +282,44 @@ class ControllerAccount extends Controller
      * @Route("/account/modificaForm/{tipo}/{u}/modifica",name="modificaAccountForm")
      * @Method("GET")
      */
-    public function modificaForm($tipo, $u,Request $r)
+    public function modificaForm($tipo, $u, Request $r)
     {
 
         //  $tipo = $_SESSION["tipo"];
         //  $u = $_SESSION["username"];
-     /*   $autenticazione= GestoreAutenticazione::getInstance();
-        if ($autenticazione->check($r->get("_route"))) {
-     */
-            $g = GestoreAccount::getInstance();
+        /*   $autenticazione= GestoreAutenticazione::getInstance();
+           if ($autenticazione->check($r->get("_route"))) {
+        */
+        $g = GestoreAccount::getInstance();
 
-            $s = $g->ottieniTutteLeSquadre();
-            try {
-                if ($tipo == "allenatore") {
-                    $ag = $g->ricercaAccount_A_T_S($u);
-                    return $this->render("allenatore/modificaAllenatore.html.twig", array('g' => $ag, 'squadre' => $s));
-                }
-                if ($tipo == "tifoso") {
-                    $ag = $g->ricercaAccount_A_T_S($u);
-                    return $this->render("tifoso/modificaTifoso.html.twig", array('g' => $ag, 'squadre' => $s));
-                }
-                if ($tipo == "staff") {
-                    $ag = $g->ricercaAccount_A_T_S($u);
-                    return $this->render("staff/modificaStaff.html.twig", array('g' => $ag, 'squadre' => $s));
-                }
-                if ($tipo == "calciatore") {
-                    $ag = $g->ricercaAccount_G($u);
-                    return $this->render("giocatore/modificaCalciatore.html.twig", array('g' => $ag, 'squadre' => $s));
-                }
-            } catch
-            (\Exception $e) {
-                return new Response($e->getMessage(), 404);
+        $s = $g->ottieniTutteLeSquadre();
+        try {
+            if ($tipo == "allenatore") {
+                $ag = $g->ricercaAccount_A_T_S($u);
+                return $this->render("allenatore/modificaAllenatore.html.twig", array('g' => $ag, 'squadre' => $s));
             }
-            return new Response("nessun tipo");
-       /* }else
-        {
-            return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
+            if ($tipo == "tifoso") {
+                $ag = $g->ricercaAccount_A_T_S($u);
+                return $this->render("tifoso/modificaTifoso.html.twig", array('g' => $ag, 'squadre' => $s));
+            }
+            if ($tipo == "staff") {
+                $ag = $g->ricercaAccount_A_T_S($u);
+                return $this->render("staff/modificaStaff.html.twig", array('g' => $ag, 'squadre' => $s));
+            }
+            if ($tipo == "calciatore") {
+                $ag = $g->ricercaAccount_G($u);
+                return $this->render("giocatore/modificaCalciatore.html.twig", array('g' => $ag, 'squadre' => $s));
+            }
+        } catch
+        (\Exception $e) {
+            return new Response($e->getMessage(), 404);
         }
-*/
+        return new Response("nessun tipo");
+        /* }else
+         {
+             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
+         }
+ */
     }
 
 
@@ -441,10 +443,10 @@ class ControllerAccount extends Controller
      */
     public function ConvalidaForm(Request $r)
     {
-       $autenticazione = GestoreAutenticazione::getInstance();
+        $autenticazione = GestoreAutenticazione::getInstance();
         if ($autenticazione->check($r->get("_route"))) {
 
-           $u = $_SESSION["username"];
+            $u = $_SESSION["username"];
 
             $g = GestoreAccount::getInstance();
             $staff = $g->ricercaAccount_A_T_S($u);
@@ -457,10 +459,42 @@ class ControllerAccount extends Controller
                 return new Response($e->getMessage(), 404);
             }
 
-        } else
-        {
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
 
+    /**
+     * @Route("/account/profilo", name = "profilo")
+     */
+    public function getProfilo()
+    {
+        if (isset($_SESSION) && isset($_SESSION["tipo"]) && isset($_SESSION["username"])) {
+            $g = GestoreAccount::getInstance();
+
+            switch ($_SESSION["tipo"]) {
+                case "allenatore": {
+                    $account = $g->ricercaAccount_A_T_S($_SESSION["username"]);
+                    return $this->render("allenatore/visualizzaAccountAllenatore.html.twig", array('allenatore' => $account));
+                }
+                case "calciatore": {
+                    $account = $g->ricercaAccount_G($_SESSION["username"]);
+                    return $this->render("giocatore/visualizzaAccountgiocatore.html.twig", array('giocatore' => $account));
+                }
+                case "tifoso": {
+                    $account = $g->ricercaAccount_A_T_S($_SESSION["username"]);
+                    return $this->render("tifoso/visualizzaAccountTifoso.html.twig", array('tifoso' => $account));
+                }
+                case "staff": {
+                    $account = $g->ricercaAccount_A_T_S($_SESSION["username"]);
+                    return $this->render("staff/visualizzaAccountStaff.html.twig", array('staff' => $account));
+                }
+                default: {
+                    return $this->redirectToRoute("home");
+                }
+            }
+        } else {
+            return $this->redirectToRoute("home");
+        }
+    }
 }

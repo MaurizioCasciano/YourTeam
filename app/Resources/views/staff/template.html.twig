@@ -44,7 +44,13 @@
             <ul class="nav navbar-nav navbar-right">
 
 
-                <li><a href="#">{% block utente %} {% endblock %}</a></li>
+                <li>
+                    <a href="{{ path('profilo') }}">
+                        {% block utente %}
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                        {% endblock %}
+                    </a>
+                </li>
                 <li><a href="{{ path('logout') }}" )><i
                                 class="glyphicon glyphicon-lock"></i> Logout</a></li>
 
@@ -65,7 +71,7 @@
             <hr>
 
             <ul class="nav nav-stacked">
-                <li><a href="javascript:;"><i class="glyphicon glyphicon-home"></i> Home</a></li>
+                <li><a href="{{ path('profilo') }}"><i class="glyphicon glyphicon-home"></i> Home</a></li>
                 <li>
                     <a href="{{ path('lista_partite') }}">
                         <i class="glyphicon glyphicon-calendar"></i> Partite
@@ -97,9 +103,11 @@
                         Inserisci Contenuto Squadra
                     </a>
                 </li>
-                <li><a href=""><i class="glyphicon glyphicon-book"></i> Rosa</a></li>
-                <li><a href="{{ path("visualizzaElencoContenutiSquadra") }}"><i
-                                class="glyphicon glyphicon-eye-open"></i> Contenuti</a></li>
+                <li>
+                    <a href="{{ path("visualizzaElencoContenutiSquadra") }}">
+                        <i class="glyphicon glyphicon-eye-open"></i> Contenuti
+                    </a>
+                </li>
 
 
             </ul>

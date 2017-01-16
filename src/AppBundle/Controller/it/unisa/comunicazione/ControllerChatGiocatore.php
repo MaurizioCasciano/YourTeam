@@ -9,6 +9,7 @@ use AppBundle\it\unisa\comunicazione\Messaggio;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,30 +23,33 @@ class ControllerChatGiocatore extends Controller
     public function inviaMessaggioChat(Request $richiesta)
     {
         $g = GestoreComunicazione::getInstance();
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($richiesta->get("_route"))){
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($richiesta->get("_route"))) {
+            $messaggio = null;
+
             try {
                 $testo = $richiesta->request->get("testo");
-                $allenatore = $richiesta->get("destinatario");
-                $calciatore = $_SESSION["username"];
-                $mittente = "calciatore";
-                $data = time();
-                $tipo = "chat";
+                $gestoreAccount = GestoreAccount::getInstance();
+                $usernameCalciatore = $_SESSION["username"];
+                $accountCalciatore = $gestoreAccount->ricercaAccount_G($usernameCalciatore);
+                $usernameAllenatore = $richiesta->get("destinatario");
+                $accountAllenatore = $gestoreAccount->ricercaAccount_A_T_S($usernameAllenatore);
 
-                //__construct($testo, $allenatore, $calciatore, $mittente, $data, $tipo)
-                $messaggio = new Messaggio($testo, $allenatore, $calciatore, $mittente, $data, $tipo);
+                $now = new \DateTime();
+
+                $messaggio = new Messaggio($testo, $usernameAllenatore, $usernameCalciatore, "calciatore", $now, "chat");
+                $messaggio->setNomeMittente($accountCalciatore->getNome());
+                $messaggio->setCognomeMittente($accountCalciatore->getCognome());
+                $messaggio->setNomeDestinatario($accountAllenatore->getNome());
+                $messaggio->setCognomeDestinatario($accountAllenatore->getCognome());
 
                 $g->inviaMessaggio($messaggio);
-                return new Response(json_encode(array("testo" => $messaggio->getTesto(),
-                    "nomeMittente" => $messaggio->getNomeMittente(),
-                    "cognomeMittente" => $messaggio->getCognomeMittente(),
-                    "mittente" => $messaggio->getMittente(),
-                    "data" => $messaggio->getData()), JSON_PRETTY_PRINT));
+                return new JsonResponse(array("messaggio" => $messaggio, "ok" => true));
             } catch (\Exception $e) {
-                return new Response($e->getMessage());
+                return new JsonResponse(array("messaggio" => $messaggio, "error" => $e->getMessage(), "ok" => false));
             }
-        }else{
-            return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
+        } else {
+            return new JsonResponse(array("error" => "ACCOUNT NON ABILITATO A QUESTA AZIONE", "ok" => false));
         }
     }
 
@@ -56,20 +60,20 @@ class ControllerChatGiocatore extends Controller
     public function inviaMessaggioVoce(Request $richiesta)
     {
         $g = GestoreComunicazione::getInstance();
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($richiesta->get("_route"))){
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($richiesta->get("_route"))) {
             try {
                 $ora = $richiesta->request->get("ora");
                 $luogo = $richiesta->request->get("luogo");
                 $data = $richiesta->request->get("data");
-                $testo = $ora." ".$luogo." ".$data;
+                $testo = $ora . " " . $luogo . " " . $data;
                 $g->inviaMessaggioCalciatore(new Messaggio($testo,
-                    $richiesta->get("d"),$_SESSION["username"], "calciatore", time(), "voce"));
+                    $richiesta->get("d"), $_SESSION["username"], "calciatore", time(), "voce"));
                 return $this->render(":giocatore:MessaggioSuccesso.html.twig");
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
@@ -80,8 +84,8 @@ class ControllerChatGiocatore extends Controller
      */
     public function ottieniMessaggioChatView(Request $request)
     {
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($request->get("_route"))){
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "calciatore") {
                 throw new \Exception("Calciatore non loggato");
             }
@@ -111,7 +115,7 @@ class ControllerChatGiocatore extends Controller
             } catch (\Exception $e) {
                 return new Response($e->getMessage());
             }
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
@@ -122,8 +126,8 @@ class ControllerChatGiocatore extends Controller
      */
     public function ottieniMessaggioVoceView(Request $request)
     {
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($request->get("_route"))){
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "calciatore") {
                 throw new \Exception("Calciatore non loggato");
             }
@@ -152,7 +156,7 @@ class ControllerChatGiocatore extends Controller
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }*/
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
@@ -161,9 +165,10 @@ class ControllerChatGiocatore extends Controller
      * @Route("/comunicazione/giocatore/ottieniVistaRichiamoMulta", name="ottieniMulta")
      * @Method("GET")
      */
-    public function ottieniVistaRichiamoMulta(Request $request){
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($request->get("_route"))){
+    public function ottieniVistaRichiamoMulta(Request $request)
+    {
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "calciatore") {
                 throw new \Exception("Calciatore non loggato");
             }
@@ -172,16 +177,16 @@ class ControllerChatGiocatore extends Controller
             $calciatoreMittente = $_SESSION["username"];
             $squadra = $_SESSION["squadra"];
             //$allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
-            try{
+            try {
                 $messaggi = $gestoreComunicazione->ottieniMessaggiRichiamoMulta($calciatoreMittente);
-                if(!$messaggi){
+                if (!$messaggi) {
                     return $this->render("giocatore/NonCiSonoMessaggi.html.twig");
                 }
                 return $this->render("giocatore/VistaRichiamoMulta.html.twig", array("messaggi" => $messaggi));
-            }catch (\Exception $e) {
+            } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
@@ -190,9 +195,10 @@ class ControllerChatGiocatore extends Controller
      * @Route("/comunicazione/giocatore/ottieniVistaRichiamoAvvertimento", name="ottieniAvvertimento")
      * @Method("GET")
      */
-    public function ottieniVistaRichiamoAvvertimento(Request $request){
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($request->get("_route"))){
+    public function ottieniVistaRichiamoAvvertimento(Request $request)
+    {
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "calciatore") {
                 throw new \Exception("Calciatore non loggato");
             }
@@ -201,16 +207,16 @@ class ControllerChatGiocatore extends Controller
             $calciatoreMittente = $_SESSION["username"];
             $squadra = $_SESSION["squadra"];
             //$allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
-            try{
+            try {
                 $messaggi = $gestoreComunicazione->ottieniMessaggioRichiamoAvvertimento($calciatoreMittente);
-                if(!$messaggi){
+                if (!$messaggi) {
                     return $this->render("giocatore/NonCiSonoMessaggi.html.twig");
                 }
                 return $this->render("giocatore/VistaRichiamoAvvertimento.html.twig", array("messaggi" => $messaggi));
-            }catch (\Exception $e) {
+            } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
@@ -219,9 +225,10 @@ class ControllerChatGiocatore extends Controller
      * @Route("/comunicazione/giocatore/ottieniVistaRichiamoDieta", name="ottieniDieta")
      * @Method("GET")
      */
-    public function ottieniVistaRichiamoDieta(Request $request){
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($request->get("_route"))){
+    public function ottieniVistaRichiamoDieta(Request $request)
+    {
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "calciatore") {
                 throw new \Exception("Calciatore non loggato");
             }
@@ -230,16 +237,16 @@ class ControllerChatGiocatore extends Controller
             $calciatoreMittente = $_SESSION["username"];
             $squadra = $_SESSION["squadra"];
             //$allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
-            try{
+            try {
                 $messaggi = $gestoreComunicazione->ottieniMessaggioRichiamoDieta($calciatoreMittente);
-                if(!$messaggi){
+                if (!$messaggi) {
                     return $this->render("giocatore/NonCiSonoMessaggi.html.twig");
                 }
                 return $this->render("giocatore/VistaRichiamoDieta.html.twig", array("messaggi" => $messaggi));
-            }catch (\Exception $e) {
+            } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
@@ -248,9 +255,10 @@ class ControllerChatGiocatore extends Controller
      * @Route("/comunicazione/giocatore/ottieniVistaRichiamoAllenamento", name="ottieniAllenamento")
      * @Method("GET")
      */
-    public function ottieniVistaRichiamoAllenamento(Request $request){
-        $autenticazione= GestoreAutenticazione::getInstance();
-        if($autenticazione->check($request->get("_route"))){
+    public function ottieniVistaRichiamoAllenamento(Request $request)
+    {
+        $autenticazione = GestoreAutenticazione::getInstance();
+        if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "calciatore") {
                 throw new \Exception("Calciatore non loggato");
             }
@@ -259,19 +267,32 @@ class ControllerChatGiocatore extends Controller
             $calciatoreMittente = $_SESSION["username"];
             $squadra = $_SESSION["squadra"];
             //$allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
-            try{
+            try {
                 $messaggi = $gestoreComunicazione->ottieniMessaggioRichiamoAllenamento($calciatoreMittente);
-                if(!$messaggi){
+                if (!$messaggi) {
                     return $this->render("giocatore/NonCiSonoMessaggi.html.twig");
                 }
                 return $this->render("giocatore/VistaRichiamoAllenamento.html.twig", array("messaggi" => $messaggi));
-            }catch (\Exception $e) {
+            } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
-        }else{
+        } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
     }
 
+    /**
+     * @Route("comunicazione/giocatore/chat/new", name = "nuoviMessaggiCalciatore")
+     * @Method("POST")
+     */
+    public function getNuoviMessaggiChat(Request $request)
+    {
+        $calciatore = $_SESSION["username"];
+        $allenatore = $request->get("destinatario");
+        $data = $request->get("data");
 
+        $g = GestoreComunicazione::getInstance();
+        $messaggi = $g->getNuoviMessaggi($allenatore, $calciatore, "chat", $data);
+        return new JsonResponse(array("messaggi" => $messaggi));
+    }
 }
