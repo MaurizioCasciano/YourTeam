@@ -5,7 +5,7 @@
  * Date: 14/01/2017
  * Time: 01:29
  */
-namespace Tests\AppBundle\it\unids\statistiche;
+namespace Tests\AppBundle\it\unisa\statistiche;
 
 use AppBundle\it\unisa\statistiche\Calciatore;
 

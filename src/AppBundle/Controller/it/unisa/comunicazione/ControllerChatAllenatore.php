@@ -12,9 +12,11 @@ use AppBundle\it\unisa\account\GestoreAccount;
 use AppBundle\it\unisa\autenticazione\GestoreAutenticazione;
 use AppBundle\it\unisa\comunicazione\GestoreComunicazione;
 use AppBundle\it\unisa\comunicazione\Messaggio;
+use AppBundle\Utility\DB;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\Date;
@@ -24,31 +26,40 @@ class ControllerChatAllenatore extends Controller
 
     /**
      * @Route("/comunicazione/allenatore/inviaMessaggioChat", name="allenatoreInviaMessaggioChat")
+     * @Method("POST")
      * @param $richiesta
+     * @return JsonResponse
      */
-
     public function inviaMessaggioChat(Request $richiesta)
     {
         $g = GestoreComunicazione::getInstance();
         $autenticazione = GestoreAutenticazione::getInstance();
         if ($autenticazione->check($richiesta->get("_route"))) {
+            $messaggio = null;
+
             try {
                 $testo = $richiesta->request->get("testo");
-                $messaggio = new Messaggio($testo, $_SESSION["username"],
-                    $richiesta->get("destinatario"),
-                    "allenatore", time(), "chat");
+                $gestoreAccount = GestoreAccount::getInstance();
+                $usernameAllenatore = $_SESSION["username"];
+                $accountAllenatore = $gestoreAccount->ricercaAccount_A_T_S($usernameAllenatore);
+                $usernameCalciatore = $richiesta->get("destinatario");
+                $accountCalciatore = $gestoreAccount->ricercaAccount_G($usernameCalciatore);
+
+                $now = new \DateTime();
+
+                $messaggio = new Messaggio($testo, $usernameAllenatore, $usernameCalciatore, "allenatore", $now, "chat");
+                $messaggio->setNomeMittente($accountAllenatore->getNome());
+                $messaggio->setCognomeMittente($accountAllenatore->getCognome());
+                $messaggio->setNomeDestinatario($accountCalciatore->getNome());
+                $messaggio->setCognomeDestinatario($accountCalciatore->getCognome());
 
                 $g->inviaMessaggio($messaggio);
-                return new Response(json_encode(array("testo" => $messaggio->getTesto(),
-                    "nomeMittente" => $messaggio->getNomeMittente(),
-                    "cognomeMittente" => $messaggio->getCognomeMittente(),
-                    "mittente" => $messaggio->getMittente(),
-                    "data" => $messaggio->getData()), JSON_PRETTY_PRINT));
+                return new JsonResponse(array("messaggio" => $messaggio, "ok" => true));
             } catch (\Exception $e) {
-                return new Response($e->getMessage(), 404);
+                return new JsonResponse(array("messaggio" => $messaggio, "error" => $e->getMessage(), "ok" => false));
             }
         } else {
-            return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
+            return new JsonResponse(array("error" => "ACCOUNT NON ABILITATO A QUESTA AZIONE", "ok" => false));
         }
     }
 
@@ -275,20 +286,20 @@ class ControllerChatAllenatore extends Controller
 
             $g = GestoreAccount::getInstance();
             $allenatoreMittente = $g->ricercaAccount_A_T_S($_SESSION["username"]);
-            var_dump($allenatoreMittente);
+            //var_dump($allenatoreMittente);
 
             $calciatoreDestinatario = $request->get("calciatore_destinatario");
-            var_dump($calciatoreDestinatario);
+            //var_dump($calciatoreDestinatario);
 
             $g = GestoreComunicazione::getInstance();
             try {
                 $messaggi = $g->ottieniMessaggiAllenatore($allenatoreMittente->getUsernameCodiceContratto(),
                     "chat", $calciatoreDestinatario);
 
-                return $this->render("allenatore/FormChatAllenatore2.html.twig", array("messaggi" => $messaggi, "destinatario" => $calciatoreDestinatario, "allenatore" => $allenatoreMittente));
+                return $this->render("allenatore/FormChatAllenatore.html.twig", array("messaggi" => $messaggi, "destinatario" => $calciatoreDestinatario, "allenatore" => $allenatoreMittente));
             } catch (\Exception $e) {
-                var_dump($e);
-                return $this->render("allenatore/FormChatAllenatore2.html.twig", array("messaggi" => array(), "destinatario" => $calciatoreDestinatario, "allenatore" => $allenatoreMittente));
+                //var_dump($e);
+                return $this->render("allenatore/FormChatAllenatore.html.twig", array("messaggi" => array(), "destinatario" => $calciatoreDestinatario, "allenatore" => $allenatoreMittente));
             }
         } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
@@ -439,5 +450,39 @@ class ControllerChatAllenatore extends Controller
         }
     }
 
+    /**
+     * @Route("/chat/test")
+     */
+    public function test()
+    {
+        $testo = "CiaoCiaoMamma";
+        $allenatore = "allentore";
+        $calciatore = "123456";
+        $mittente = "calciatore";
+        $data = new \DateTime();
+        $dataString = "2017-12-30 20:45";//$data->format("Y-m-d H:i:s");
+        $tipo = "chat";
 
+
+        $messaggio = new Messaggio($testo, $allenatore, $calciatore, $mittente, $data, $tipo);
+
+        GestoreComunicazione::getInstance()->inviaMessaggio($messaggio);
+
+        return new Response(var_dump($messaggio->jsonSerialize()));
+    }
+
+    /**
+     * @Route("comunicazione/allenatore/chat/new", name = "nuoviMessaggiAllenatore")
+     * @Method("POST")
+     */
+    public function getNuoviMessaggiChat(Request $request)
+    {
+        $allenatore = $_SESSION["username"];
+        $calciatore = $request->get("destinatario");
+        $data = $request->get("data");
+
+        $g = GestoreComunicazione::getInstance();
+        $messaggi = $g->getNuoviMessaggi($allenatore, $calciatore, "chat", $data);
+        return new JsonResponse(array("messaggi" => $messaggi));
+    }
 }

@@ -1,10 +1,11 @@
-{% extends 'giocatore/template.html.twig' %}
+{% extends "allenatore/template.html.twig" %}
 {% block head %}
     <link rel="stylesheet" href="{{ asset('comunicazione/css/chat.css') }}"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 {% endblock %}
 
 {% block contenuto %}
+
     <div class="container">
         <div class="row">
             <div class="col-md-6">
@@ -16,7 +17,7 @@
                         <ul class="chat" id="chat-list">
 
                             {% for messaggio in messaggi %}
-                                {% if messaggio.getMittente() == "calciatore" %}
+                                {% if messaggio.getMittente() == "allenatore" %}
                                     <li class="right clearfix">
                                         <span class="chat-img pull-right">
                                             <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar"
@@ -62,9 +63,9 @@
                     </div>
 
                     <div class="panel-footer">
-                        <form id="chat" action="{{ path('calciatoreInviaMessaggioChat') }}" method="post">
+                        <form id="chat" action="{{ path('allenatoreInviaMessaggioChat') }}" method="post">
                             <input type="hidden" name="destinatario" value="{{ destinatario }}"/>
-                            <input type="hidden" name="nuovimessaggi" value="{{ path('nuoviMessaggiCalciatore') }}"/>
+                            <input type="hidden" name="nuovimessaggi" value="{{ path('nuoviMessaggiAllenatore') }}"/>
                             <div class="input-group">
                                 <input type="text" class="form-control" name="testo" placeholder="Scrivi un messaggio"/>
                                 <div class="input-group-btn">
@@ -83,5 +84,5 @@
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
             crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="{{ asset('comunicazione/js/ChatCalciatore.js') }}"></script>
+    <script src="{{ asset('comunicazione/js/ChatAllenatore.js') }}"></script>
 {% endblock %}
