@@ -12,7 +12,7 @@
                         <ul id="chat" class="list-group">
                             {% for messaggio in messaggi %}
                                 <li class="list-group-item"> <span>{{ messaggio.getTesto() }}</span>
-                                    <h6>  {{ messaggio.getData() }} </h6>
+                                    <h6>  {{ messaggio.getDataString() }} </h6>
                                     <strong> {{ messaggio.getNomeMittente()}} {{ messaggio.getCognomeMittente() }}</strong></li>
                                     <h6> {{ messaggio.getNomeDestinatario()}} {{ messaggio.getCognomeDestinatario() }}</h6></li>
                             {% endfor %}

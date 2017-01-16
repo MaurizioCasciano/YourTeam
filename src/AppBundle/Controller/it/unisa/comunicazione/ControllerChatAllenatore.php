@@ -12,6 +12,7 @@ use AppBundle\it\unisa\account\GestoreAccount;
 use AppBundle\it\unisa\autenticazione\GestoreAutenticazione;
 use AppBundle\it\unisa\comunicazione\GestoreComunicazione;
 use AppBundle\it\unisa\comunicazione\Messaggio;
+use AppBundle\it\unisa\statistiche\GestoreStatisticheCalciatore;
 use AppBundle\Utility\DB;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -79,7 +80,7 @@ class ControllerChatAllenatore extends Controller
                 $data = $richiesta->request->get("data");
                 $messaggio = new Messaggio("ora:" . $ora . " luogo:" . $luogo . " data:" . $data,
                     $_SESSION["username"],
-                    $richiesta->get("d"), "allenatore", time(), "voce");
+                    $richiesta->get("d"), "allenatore", new \DateTime(), "voce");
 
                 $g->inviaMessaggio($messaggio);
                 return $this->render(":allenatore:MessaggioSuccesso.html.twig");
@@ -105,7 +106,7 @@ class ControllerChatAllenatore extends Controller
                 $testo = $richiesta->request->get("multa");
                 $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
                     $richiesta->get("d"),
-                    "allenatore", time(), "multa"));
+                    "allenatore", new \DateTime(), "multa"));
                 return $this->render(":allenatore:MessaggioSuccesso.html.twig");
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
@@ -129,7 +130,7 @@ class ControllerChatAllenatore extends Controller
                 $testo = $richiesta->request->get("avvertimento");
                 $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
                     $richiesta->get("d"),
-                    "allenatore", time(), "avvertimento"));
+                    "allenatore", new \DateTime(), "avvertimento"));
                 return $this->render(":allenatore:MessaggioSuccesso.html.twig");
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
@@ -153,7 +154,7 @@ class ControllerChatAllenatore extends Controller
                 $testo = $richiesta->request->get("dieta");
                 $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
                     $richiesta->get("d"),
-                    "allenatore", time(), "dieta"));
+                    "allenatore", new \DateTime(), "dieta"));
                 return $this->render(":allenatore:MessaggioSuccesso.html.twig");
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
@@ -177,7 +178,7 @@ class ControllerChatAllenatore extends Controller
                 $testo = $richiesta->request->get("allenamento");
                 $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
                     $richiesta->get("d"),
-                    "allenatore", time(), "allenamento"));
+                    "allenatore", new \DateTime(), "allenamento"));
                 return $this->render(":allenatore:MessaggioSuccesso.html.twig");
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
@@ -193,13 +194,13 @@ class ControllerChatAllenatore extends Controller
      */
     public function scegliCalciatore(Request $request)
     {
-        $g = GestoreComunicazione::getInstance();
+        $g = GestoreStatisticheCalciatore::getInstance();
         $autenticazione = GestoreAutenticazione::getInstance();
         if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["squadra"])) {
                 throw new \RuntimeException("Squadra is null");
             }
-            $calciatori = $g->getCalciatoriPerSquadra($_SESSION["squadra"]);
+            $calciatori = $g->getCalciatori($_SESSION["squadra"]);
 
             return $this->render(":allenatore:FormScegliCalciatore.html.twig", array("calciatori" => $calciatori));
         } else {
@@ -214,13 +215,13 @@ class ControllerChatAllenatore extends Controller
      */
     public function scegliCalciatoreVoce(Request $request)
     {
-        $g = GestoreComunicazione::getInstance();
+        $g = GestoreStatisticheCalciatore::getInstance();
         $autenticazione = GestoreAutenticazione::getInstance();
         if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["squadra"])) {
                 throw new \RuntimeException("Squadra is null");
             }
-            $calciatori = $g->getCalciatoriPerSquadra($_SESSION["squadra"]);
+            $calciatori = $g->getCalciatori($_SESSION["squadra"]);
 
             return $this->render(":allenatore:FormScegliCalciatoreVoce.html.twig", array("calciatori" => $calciatori));
         } else {
@@ -235,12 +236,13 @@ class ControllerChatAllenatore extends Controller
     public function scegliCalciatoreComportamento(Request $request)
     {
         $g = GestoreComunicazione::getInstance();
+        $g2 = GestoreStatisticheCalciatore::getInstance();
         $autenticazione = GestoreAutenticazione::getInstance();
         if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["squadra"])) {
                 throw new \RuntimeException("Squadra is null");
             }
-            $calciatori = $g->getCalciatoriPerSquadra($_SESSION["squadra"]);
+            $calciatori = $g2->getCalciatori($_SESSION["squadra"]);
             $messaggi = $g->ottieniMessaggiRichiamoMulta($calciatori);
             $messaggi2 = $g->ottieniMessaggioRichiamoAvvertimento($calciatori);
 
@@ -257,12 +259,13 @@ class ControllerChatAllenatore extends Controller
     public function scegliCalciatoreSalute(Request $request)
     {
         $g = GestoreComunicazione::getInstance();
+        $g2 = GestoreStatisticheCalciatore::getInstance();
         $autenticazione = GestoreAutenticazione::getInstance();
         if ($autenticazione->check($request->get("_route"))) {
             if (!isset($_SESSION["squadra"])) {
                 throw new \RuntimeException("Squadra is null");
             }
-            $calciatori = $g->getCalciatoriPerSquadra($_SESSION["squadra"]);
+            $calciatori = $g2->getCalciatori($_SESSION["squadra"]);
             $messaggi = $g->ottieniMessaggioRichiamoDieta($calciatori);
             $messaggi2 = $g->ottieniMessaggioRichiamoAllenamento($calciatori);
 
@@ -293,7 +296,7 @@ class ControllerChatAllenatore extends Controller
 
             $g = GestoreComunicazione::getInstance();
             try {
-                $messaggi = $g->ottieniMessaggiAllenatore($allenatoreMittente->getUsernameCodiceContratto(),
+                $messaggi = $g->ottieniMessaggi($allenatoreMittente->getUsernameCodiceContratto(),
                     "chat", $calciatoreDestinatario);
 
                 return $this->render("allenatore/FormChatAllenatore.html.twig", array("messaggi" => $messaggi, "destinatario" => $calciatoreDestinatario, "allenatore" => $allenatoreMittente));
@@ -321,7 +324,7 @@ class ControllerChatAllenatore extends Controller
             $calciatoreDestinatario = $request->get("calciatore_destinatario");
             $g = GestoreComunicazione::getInstance();
             try {
-                $messaggi = $g->ottieniMessaggi($allenatoreMittente, "chat", $calciatoreDestinatario);
+                $messaggi = $g->ottieniMessaggi($allenatoreMittente, "voce", $calciatoreDestinatario);
 
                 return $this->render("allenatore/FormVoceAllenatore.html.twig", array("messaggi" => $messaggi, "d" => $calciatoreDestinatario));
             } catch (\Exception $e) {
@@ -448,27 +451,6 @@ class ControllerChatAllenatore extends Controller
         } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
-    }
-
-    /**
-     * @Route("/chat/test")
-     */
-    public function test()
-    {
-        $testo = "CiaoCiaoMamma";
-        $allenatore = "allentore";
-        $calciatore = "123456";
-        $mittente = "calciatore";
-        $data = new \DateTime();
-        $dataString = "2017-12-30 20:45";//$data->format("Y-m-d H:i:s");
-        $tipo = "chat";
-
-
-        $messaggio = new Messaggio($testo, $allenatore, $calciatore, $mittente, $data, $tipo);
-
-        GestoreComunicazione::getInstance()->inviaMessaggio($messaggio);
-
-        return new Response(var_dump($messaggio->jsonSerialize()));
     }
 
     /**

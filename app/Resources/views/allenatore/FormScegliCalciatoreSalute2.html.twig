@@ -3,7 +3,7 @@
     <h1>Scegli Calciatore</h1>
 
     <div>
-        <form action="/yourteam/web/app_dev.php/comunicazione/allenatore/ottieniRichiamoAllenamentoView" method="post">
+        <form action="{{ path('ottieniallenamentoview') }}" method="post">
             <select name="calciatore_destinatario">
                 {% for calciatore in calciatori %}
                     <option>
