@@ -86,7 +86,7 @@ function inserisciPartitaHandler(event) {
                 heading.appendChild(title);
 
                 var button = document.createElement("button");
-                button.setAttribute("class", "collapsed");
+                button.setAttribute("class", "btn btn-default");
                 button.setAttribute("data-toggle", "collapse");
                 button.setAttribute("data-parent", "#accordion");
                 var nowID = "ID" + $.now().toString();
