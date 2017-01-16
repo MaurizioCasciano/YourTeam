@@ -293,7 +293,7 @@ class ControllerChatAllenatore extends Controller
 
             $g = GestoreComunicazione::getInstance();
             try {
-                $messaggi = $g->ottieniMessaggiAllenatore($allenatoreMittente->getUsernameCodiceContratto(),
+                $messaggi = $g->ottieniMessaggi($allenatoreMittente->getUsernameCodiceContratto(),
                     "chat", $calciatoreDestinatario);
 
                 return $this->render("allenatore/FormChatAllenatore.html.twig", array("messaggi" => $messaggi, "destinatario" => $calciatoreDestinatario, "allenatore" => $allenatoreMittente));
@@ -321,7 +321,7 @@ class ControllerChatAllenatore extends Controller
             $calciatoreDestinatario = $request->get("calciatore_destinatario");
             $g = GestoreComunicazione::getInstance();
             try {
-                $messaggi = $g->ottieniMessaggi($allenatoreMittente, "chat", $calciatoreDestinatario);
+                $messaggi = $g->ottieniMessaggi($allenatoreMittente, "voce", $calciatoreDestinatario);
 
                 return $this->render("allenatore/FormVoceAllenatore.html.twig", array("messaggi" => $messaggi, "d" => $calciatoreDestinatario));
             } catch (\Exception $e) {
