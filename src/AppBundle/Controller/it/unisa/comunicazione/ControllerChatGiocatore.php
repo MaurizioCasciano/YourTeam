@@ -68,7 +68,7 @@ class ControllerChatGiocatore extends Controller
                 $data = $richiesta->request->get("data");
                 $testo = $ora . " " . $luogo . " " . $data;
                 $g->inviaMessaggioCalciatore(new Messaggio($testo,
-                    $richiesta->get("d"), $_SESSION["username"], "calciatore", time(), "voce"));
+                    $richiesta->get("d"), $_SESSION["username"], "calciatore", new \DateTime(), "voce"));
                 return $this->render(":giocatore:MessaggioSuccesso.html.twig");
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);

@@ -8,6 +8,7 @@ namespace AppBundle\Controller\it\unisa\contenuti;
  * Time: 15:37
  */
 
+use AppBundle\it\unisa\autenticazione\GestoreAutenticazione;
 use AppBundle\Utility\DB;
 use AppBundle\it\unisa\contenuti\Contenuto;
 use AppBundle\it\unisa\contenuti\GestioneContenuti;
@@ -25,8 +26,17 @@ class ControllerContenutiStaff extends Controller
      * @Route("/contenuti/staff/inserisciContenutoForm",name="inserisciContenutoForm")
      * @Method("GET")
      */
-    public function inserisciContenutoForm(){
-        return $this->render("staff/inserisciContenutoForm.html.twig");
+    public function inserisciContenutoForm(Request $richiesta){
+        if (isset($_SESSION) && isset($_SESSION["tipo"])) {
+            $autenticazione = GestoreAutenticazione::getInstance();
+            if ($autenticazione->check($richiesta->get("_route"))) {
+                return $this->render("staff/inserisciContenutoForm.html.twig");
+            } else {
+                return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "Azione non consentita."));
+            }
+        }else{
+                return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "Effettuare il login."));
+        }
     }
 
     /**
@@ -34,35 +44,44 @@ class ControllerContenutiStaff extends Controller
      * @Method("POST")
      */
     public function inserisciContenuto(Request $richiesta){
-        $titolo = $richiesta->request->get("t");
-        $descrizione = $richiesta->request->get("d");
-        //$URL = $richiesta->request->get("u");
-        $tipo = $richiesta->request->get("tipo");
-        $data = date("Y-m-d");
-        /* per un test di prova iniziale la variabile squadra sarà inviata tramite form*/
-        //$squadra = $richiesta->request->get("squadra");
+        if (isset($_SESSION) && isset($_SESSION["tipo"])) {
+            $autenticazione = GestoreAutenticazione::getInstance();
+            if ($autenticazione->check($richiesta->get("_route"))) {
+                $titolo = $richiesta->request->get("t");
+                $descrizione = $richiesta->request->get("d");
+                //$URL = $richiesta->request->get("u");
+                $tipo = $richiesta->request->get("tipo");
+                $data = date("Y-m-d");
+                /* per un test di prova iniziale la variabile squadra sarà inviata tramite form*/
+                //$squadra = $richiesta->request->get("squadra");
 
-         /*quando verrà implementata la sessione, la squadra sarà ottenuta dalla sessione*/
-        $squadra= $_SESSION["squadra"];
+                /*quando verrà implementata la sessione, la squadra sarà ottenuta dalla sessione*/
+                $squadra = $_SESSION["squadra"];
 
-        if($tipo=="video") {
-            $path = Utility::loadFile("file", "contenuti/Video");
-        }else{
-            $path = Utility::loadFile("file", "contenuti");
-        }
-        if($path!=null){
+                if ($tipo == "video") {
+                    $path = Utility::loadFile("file", "contenuti/Video");
+                } else {
+                    $path = Utility::loadFile("file", "contenuti");
+                }
+                if ($path != null) {
 
-            $contenuto = new Contenuto($titolo,$descrizione,$path,$tipo,$data,$squadra);
-            $gestore = GestioneContenuti::getInstance();
-            try {
-                $gestore->inserisciContenuto($contenuto);
-                return $this->render("staff/alertInserisciContenuto.html.twig");
-            } catch (\Exception $e) {
-                return new Response($e->getMessage(), 404);
+                    $contenuto = new Contenuto($titolo, $descrizione, $path, $tipo, $data, $squadra);
+                    $gestore = GestioneContenuti::getInstance();
+                    try {
+                        $gestore->inserisciContenuto($contenuto);
+                        return $this->render("staff/alertInserisciContenuto.html.twig");
+                    } catch (\Exception $e) {
+                        return new Response($e->getMessage(), 404);
+                    }
+
+                }
+                return new Response("problema a caricare l'immagine");
+            } else {
+                return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "Azione non consentita."));
             }
-
+        }else{
+            return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "Effettuare il login."));
         }
-        return new Response("problema a caricare l'immagine");
     }
 
     /**
@@ -77,6 +96,7 @@ class ControllerContenutiStaff extends Controller
      * @Route("/contenuti/staff/modificaContenuto/{id}")
      * @Method("POST")
      */
+
     public function modificaContenuto($id,Request $richiesta){
         echo "controller modifica contenuto".$id;
         $titolo = $richiesta->request->get("titolo");
@@ -104,22 +124,31 @@ class ControllerContenutiStaff extends Controller
      * @Route("/contenuti/staff/cancellaContenuto/{id}", name="cancellaContenuto")
      * @Method("GET")
      */
-    public function cancellaContenutoView($id){
+    public function cancellaContenutoView($id,Request $richiesta){
+        if (isset($_SESSION) && isset($_SESSION["tipo"])) {
+            $autenticazione = GestoreAutenticazione::getInstance();
+            if ($autenticazione->check($richiesta->get("_route"))) {
+                $gestore = GestioneContenuti::getInstance();
 
-        $gestore = GestioneContenuti::getInstance();
+                try {
+                    $contenuto = $gestore->cancellaContenuto($id);
+                    if ($contenuto->getTipo() == "video") {
+                        unlink("../web/ImmaginiApp/contenuti/Video/" . $contenuto->getURL());
+                    } else {
+                        unlink("../web/ImmaginiApp/contenuti/" . $contenuto->getURL());
+                    }
 
-        try {
-            $contenuto = $gestore->cancellaContenuto($id);
-            if ($contenuto->getTipo()=="video"){
-                unlink("../web/ImmaginiApp/contenuti/Video/".$contenuto->getURL());
-            }else{
-                unlink("../web/ImmaginiApp/contenuti/".$contenuto->getURL());
+                    return $this->render("staff/alertCancellaContenuto.html.twig");
+                } catch (\Exception $e) {
+                    return new Response($e->getMessage(), 404);
+                }
+            } else {
+                return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "Azione non consentita."));
             }
-
-            return $this->render("staff/alertCancellaContenuto.html.twig");
-        } catch (\Exception $e) {
-            return new Response($e->getMessage(), 404);
+        }else{
+            return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "Effettuare il login."));
         }
+
     }
 
 
@@ -142,55 +171,73 @@ class ControllerContenutiStaff extends Controller
      * @Route("/contenuti/staff/visualizzaContenutoView/{id}", name="visualizzaContenuto")
      * @Method("GET")
      */
-    public function visualizzaContenutoView($id){
-        $gestore = GestioneContenuti::getInstance();
+    public function visualizzaContenutoView($id,Request $richiesta){
+        if (isset($_SESSION) && isset($_SESSION["tipo"])) {
+            $autenticazione = GestoreAutenticazione::getInstance();
+            if ($autenticazione->check($richiesta->get("_route"))) {
+                $gestore = GestioneContenuti::getInstance();
 
-            $contenuto=$gestore->visualizzaContenuto($id);
-            if($contenuto->getTipo()=="immagine" || $contenuto->getTipo()=="notizia") {
-                return $this->render("staff/visualizzaContenutoStaff.html.twig",
-                    array("contenuto" => $contenuto));
-            }else{
-                if($contenuto->getTipo()=="video"){
-                    return $this->render("staff/visualizzaVideoStaff.html.twig",
+                $contenuto = $gestore->visualizzaContenuto($id);
+                if ($contenuto->getTipo() == "immagine" || $contenuto->getTipo() == "notizia") {
+                    return $this->render("staff/visualizzaContenutoStaff.html.twig",
                         array("contenuto" => $contenuto));
+                } else {
+                    if ($contenuto->getTipo() == "video") {
+                        return $this->render("staff/visualizzaVideoStaff.html.twig",
+                            array("contenuto" => $contenuto));
+                    }
                 }
-            }
 
-        return new Response();
+                return new Response();
+            } else {
+                return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "Azione non consentita."));
+            }
+        }else{
+            return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "Effettuare il login."));
+        }
     }
 
     /**
      * @Route("/contenuti/staff/visualizzaElencoContenutiSquadra", name="visualizzaElencoContenutiSquadra")
      * @Method("GET")
      */
-    public function visualizzaElencoContenutiSquadra(){
-        $squadra=$_SESSION["squadra"];
-        $gestore = GestioneContenuti::getInstance();
-            $contenuti=$gestore->visualizzaElencoContenutiSquadra($squadra);
-            $immagini= array();
-            $video = array();
-            $notizie = array();
-            $i=0;
-            $j=0;
-            $z=0;
-            foreach ($contenuti as $c) {
-                if ($c->getTipo() == ("immagine")) {
-                    $immagini[$i] = $c;
-                    $i++;
-                }else {
-                    if ($c->getTipo() == ("video")) {
-                        $video[$j] = $c;
-                        $j++;
+    public function visualizzaElencoContenutiSquadra(Request $richiesta){
+        if (isset($_SESSION) && isset($_SESSION["tipo"])) {
+            $autenticazione = GestoreAutenticazione::getInstance();
+            if ($autenticazione->check($richiesta->get("_route"))) {
+                $squadra = $_SESSION["squadra"];
+                $gestore = GestioneContenuti::getInstance();
+                $contenuti = $gestore->visualizzaElencoContenutiSquadra($squadra);
+                $immagini = array();
+                $video = array();
+                $notizie = array();
+                $i = 0;
+                $j = 0;
+                $z = 0;
+                foreach ($contenuti as $c) {
+                    if ($c->getTipo() == ("immagine")) {
+                        $immagini[$i] = $c;
+                        $i++;
                     } else {
-                        if ($c->getTipo() == ("notizia")) {
-                            $notizie[$z] = $c;
-                            $z++;
+                        if ($c->getTipo() == ("video")) {
+                            $video[$j] = $c;
+                            $j++;
+                        } else {
+                            if ($c->getTipo() == ("notizia")) {
+                                $notizie[$z] = $c;
+                                $z++;
+                            }
                         }
                     }
                 }
+                return $this->render("staff/visualizzaElencoContenuti.html.twig", array("immagini" => $immagini, "video" => $video, "notizie" => $notizie));
+                return new Response();
+            } else {
+                return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "Azione non consentita."));
             }
-            return $this->render("staff/visualizzaElencoContenuti.html.twig",array("immagini"=>$immagini,"video"=>$video,"notizie"=>$notizie));
-        return new Response();
+        }else{
+            return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "Effettuare il login."));
+        }
     }
 
     /**

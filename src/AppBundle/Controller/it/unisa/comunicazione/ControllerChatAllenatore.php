@@ -79,7 +79,7 @@ class ControllerChatAllenatore extends Controller
                 $data = $richiesta->request->get("data");
                 $messaggio = new Messaggio("ora:" . $ora . " luogo:" . $luogo . " data:" . $data,
                     $_SESSION["username"],
-                    $richiesta->get("d"), "allenatore", time(), "voce");
+                    $richiesta->get("d"), "allenatore", new \DateTime(), "voce");
 
                 $g->inviaMessaggio($messaggio);
                 return $this->render(":allenatore:MessaggioSuccesso.html.twig");
@@ -105,7 +105,7 @@ class ControllerChatAllenatore extends Controller
                 $testo = $richiesta->request->get("multa");
                 $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
                     $richiesta->get("d"),
-                    "allenatore", time(), "multa"));
+                    "allenatore", new \DateTime(), "multa"));
                 return $this->render(":allenatore:MessaggioSuccesso.html.twig");
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
@@ -129,7 +129,7 @@ class ControllerChatAllenatore extends Controller
                 $testo = $richiesta->request->get("avvertimento");
                 $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
                     $richiesta->get("d"),
-                    "allenatore", time(), "avvertimento"));
+                    "allenatore", new \DateTime(), "avvertimento"));
                 return $this->render(":allenatore:MessaggioSuccesso.html.twig");
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
@@ -153,7 +153,7 @@ class ControllerChatAllenatore extends Controller
                 $testo = $richiesta->request->get("dieta");
                 $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
                     $richiesta->get("d"),
-                    "allenatore", time(), "dieta"));
+                    "allenatore", new \DateTime(), "dieta"));
                 return $this->render(":allenatore:MessaggioSuccesso.html.twig");
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
@@ -177,7 +177,7 @@ class ControllerChatAllenatore extends Controller
                 $testo = $richiesta->request->get("allenamento");
                 $g->inviaMessaggio(new Messaggio($testo, $_SESSION["username"],
                     $richiesta->get("d"),
-                    "allenatore", time(), "allenamento"));
+                    "allenatore", new \DateTime(), "allenamento"));
                 return $this->render(":allenatore:MessaggioSuccesso.html.twig");
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
@@ -448,27 +448,6 @@ class ControllerChatAllenatore extends Controller
         } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
         }
-    }
-
-    /**
-     * @Route("/chat/test")
-     */
-    public function test()
-    {
-        $testo = "CiaoCiaoMamma";
-        $allenatore = "allentore";
-        $calciatore = "123456";
-        $mittente = "calciatore";
-        $data = new \DateTime();
-        $dataString = "2017-12-30 20:45";//$data->format("Y-m-d H:i:s");
-        $tipo = "chat";
-
-
-        $messaggio = new Messaggio($testo, $allenatore, $calciatore, $mittente, $data, $tipo);
-
-        GestoreComunicazione::getInstance()->inviaMessaggio($messaggio);
-
-        return new Response(var_dump($messaggio->jsonSerialize()));
     }
 
     /**

@@ -20,5 +20,7 @@ class GestoreAutenticazioneTest extends \PHPUnit_Framework_TestCase
         $this->gestoreAutenticazione = GestoreAutenticazione::getInstance();
     }
 
-    
+    public function testLogin(){
+        
+    }
 }
