@@ -63,8 +63,6 @@ class GestoreAutenticazione
      */
     public function login($username, $password)
     {
-        $this->logout();
-
         $g = GestoreAccount::getInstance();
 
         $acc = $g->ricercaAccount_A_T_S($username);
