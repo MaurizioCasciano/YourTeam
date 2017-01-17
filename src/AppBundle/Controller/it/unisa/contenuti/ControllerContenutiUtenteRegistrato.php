@@ -85,7 +85,7 @@ class ControllerContenutiUtenteRegistrato extends Controller
                             array('video' => $elenco));
                     } else {
                         if ($tipo == "notizia") {
-                            return $this->render("tifoso/visualizzaElencoNotizie.html.twig",
+                            return $this->render("tifoso/VisualizzaElencoNotizie.html.twig",
                                 array('elenco' => $elenco));
                         }
                     }
