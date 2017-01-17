@@ -8,6 +8,7 @@
 
 namespace AppBundle\Controller\it\unisa\contenuti;
 
+use AppBundle\it\unisa\autenticazione\GestoreAutenticazione;
 use AppBundle\Utility\DB;
 use AppBundle\it\unisa\contenuti\Contenuto;
 use AppBundle\it\unisa\contenuti\GestioneContenuti;
