@@ -63,12 +63,19 @@ class ControllerChatGiocatore extends Controller
         $autenticazione = GestoreAutenticazione::getInstance();
         if ($autenticazione->check($richiesta->get("_route"))) {
             try {
+                $allenatore = $richiesta->get("d");
+                $calciatore = $_SESSION["username"];
+                $mittente = "calciatore";
                 $ora = $richiesta->request->get("ora");
                 $luogo = $richiesta->request->get("luogo");
                 $data = $richiesta->request->get("data");
+                $dateTime = new \DateTime($data . " " . $ora);
                 $testo = $ora . " " . $luogo . " " . $data;
-                $g->inviaMessaggioCalciatore(new Messaggio($testo,
-                    $richiesta->get("d"), $_SESSION["username"], "calciatore", time(), "voce"));
+                $tipo = "voce";
+
+                $messaggio = new Messaggio($testo, $allenatore, $calciatore, $mittente, $dateTime, $tipo);
+                $g->inviaMessaggio($messaggio);
+
                 return $this->render(":giocatore:MessaggioSuccesso.html.twig");
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);

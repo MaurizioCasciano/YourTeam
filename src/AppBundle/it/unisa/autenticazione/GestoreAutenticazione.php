@@ -94,6 +94,11 @@ class GestoreAutenticazione
      */
     private function creaSession($username, $tipo, $squadra)
     {
+        if (isset($_SESSION)) {
+            $this->logout();
+        }
+
+        // Finally, destroy the session.
         session_start();
         $_SESSION["username"] = $username;
         $_SESSION["tipo"] = $tipo;
@@ -105,7 +110,8 @@ class GestoreAutenticazione
      * @param $passwordSalvata
      * @return bool
      */
-    private function checkPassword($passwordInserita, $passwordSalvata)
+    private
+    function checkPassword($passwordInserita, $passwordSalvata)
     {
         //if(strcmp(md5($passwordInserita),$passwordSalvata) == 0){
         if (strcmp($passwordInserita, $passwordSalvata) == 0) {
@@ -118,7 +124,8 @@ class GestoreAutenticazione
     /**
      * @param $ogg
      */
-    public function check($rotta)
+    public
+    function check($rotta)
     {
 
         $rotteStabilite = $this->inizializzazioneRotte();
@@ -135,7 +142,8 @@ class GestoreAutenticazione
         return false;
     }
 
-    private function inizializzazioneRotte()
+    private
+    function inizializzazioneRotte()
     {
         $rotte = array(new RottaUtente("convalidaAccountForm", array("staff")),
             new RottaUtente("ricercaAccountForm", array("staff")),
@@ -201,7 +209,8 @@ class GestoreAutenticazione
      * Verifica che l'account sia validato
      * @param $account
      */
-    public function verificaValidaAccount($account)
+    public
+    function verificaValidaAccount($account)
     {
         if ($_SESSION["tipo"] == "staff") {
             return 1;
@@ -235,7 +244,8 @@ class GestoreAutenticazione
     /**
      * @return bool
      */
-    public function logout()
+    public
+    function logout()
     {
         if (isset($_SESSION)) {
             /*
@@ -262,7 +272,8 @@ class GestoreAutenticazione
     /**
      *
      */
-    public function __destruct()
+    public
+    function __destruct()
     {
         // TODO: Implement __destruct() method.
         $this->db->close($this->conn);

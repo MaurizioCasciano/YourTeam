@@ -12,9 +12,10 @@
                             <form action="{{ path('ottienimultaview') }}" method="post">
                                 <select name="calciatore_destinatario">
                                      {% for calciatore in calciatori %}
-                                      <option>
-                                         {{ calciatore }}
-                                       </option>
+                                         <option value="{{ calciatore.getContratto() }}">
+                                            {{ calciatore.getNome() | capitalize }}
+                                             &nbsp;{{ calciatore.getCognome() | capitalize }}
+                                         </option>
                                      {% endfor %}
                                  </select>
 
@@ -39,7 +40,7 @@
                         <ul id="chat" class="list-group">
                             {% for messaggio in messaggi %}
                                 <li class="list-group-item"> <span>{{ messaggio.getTesto() }}</span>
-                                <h6>  {{ messaggio.getData() }} </h6>
+                                <h6>  {{ messaggio.getDataString() }} </h6>
                                 <strong> {{ messaggio.getNomeDestinatario() }} {{ messaggio.getCognomeDestinatario() }}</strong></li></li>
                             {% endfor %}
                         </ul>
@@ -58,8 +59,8 @@
                         <ul id="chat" class="list-group">
                             {% for messaggio in messaggi2 %}
                                 <li class="list-group-item"> <span>{{ messaggio.getTesto() }}</span>
-                                <h6>  {{ messaggio.getData() }} </h6>
-                                    <strong> {{ messaggio.getNomeDestinatario()}} {{ messaggio.getCognomeDestinatario() }}</strong></li>
+                                <h6>  {{ messaggio.getDataString() }} </h6>
+                                    <strong> {{ messaggio.getNomeDestinatario() }} {{ messaggio.getCognomeDestinatario() }}</strong></li>
                             {% endfor %}
                         </ul>
                     </div>
