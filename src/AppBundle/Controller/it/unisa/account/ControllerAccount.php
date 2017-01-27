@@ -61,6 +61,7 @@ class ControllerAccount extends Controller
     {
 
 
+
         //  $autenticazione= GestoreAutenticazione::getInstance();
         //  if ($autenticazione->check($r->get("_route"))) {
 
