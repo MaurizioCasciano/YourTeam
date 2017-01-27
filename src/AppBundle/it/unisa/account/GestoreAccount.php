@@ -283,8 +283,9 @@ class GestoreAccount
         try {
             /*forziamo il metodo e lo utilizziamo come controllo, perchè se l'account non esiste viene lanciata
             l'eccezione*/
-            $this->ricercaAccount_A_T_S($u);
-            $query = "DELETE FROM utente WHERE  username_codiceContratto='$u'";
+           $ris= $this->ricercaAccount_A_T_S($u);
+            $id=$ris->getUsernameCodiceContratto();
+            $query = "DELETE FROM utente WHERE  username_codiceContratto='$id'";
             //questo controllo non funziona se passiamo un username che non esiste perciò abbiamo
             //fatto il controllo di ricercaAccount sopra
             //if (!$this->conn->query($sql))  throw new \Exception(("errore MODIFICA dati nel db"));
@@ -301,8 +302,9 @@ class GestoreAccount
         try {
             /*forziamo il metodo e lo utilizziamo come controllo, perchè se l'account non esiste viene lanciata
             l'eccezione*/
-            $this->ricercaAccount_G($u);
-            $query = "DELETE FROM calciatore WHERE  contratto='$u'";
+          $ris= $this->ricercaAccount_G($u);
+            $id=$ris->getUsernameCodiceContratto();
+            $query = "DELETE FROM calciatore WHERE  contratto='$id'";
             //questo controllo non funziona se passiamo un username che non esiste perciò abbiamo
             //fatto il controllo di ricercaAccount sopra
             //if (!$this->conn->query($sql))  throw new \Exception(("errore MODIFICA dati nel db"));

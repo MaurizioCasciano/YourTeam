@@ -6,7 +6,7 @@
 {% block contenuto %}
     <div class="panel panel-info">
         <div class="panel-heading">
-            <h3 class="panel-title">{{ staff.getNome() }} {{ staff.getCognome() }} <b>Staff</b></h3>
+            <h3 class="panel-title">{{ ricercato.getNome() }} {{ ricercato.getCognome() }} <b>profilo</b></h3>
         </div>
         <div class="panel-body">
             <div class="row">
@@ -27,6 +27,14 @@
                 <div class=" col-md-9 col-lg-9 ">
                     <table class="table table-user-information">
                         <tbody>
+                        <tr>
+                            <td><b>Nome:</b></td>
+                            <td>{{ricercato.getNome() }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Cognome:</b></td>
+                            <td>{{ricercato.getCognome() }}</td>
+                        </tr>
                         <tr>
                             <td><b>Email:</b></td>
                             <td>{{ricercato.getEmail() }}</td>
@@ -62,6 +70,13 @@
                             </td>
 
                         </tr>
+                        <tr>
+
+                            <td><b>Squadra</b></td>
+                            <td>   {{ ricercato.getSquadra() }}
+                            </td>
+
+                        </tr>
 
                         </tbody>
                     </table>
@@ -69,6 +84,11 @@
 
                 </div>
             </div>
+            <td>
+
+                <button type="button" class="btn btn-info" onclick="window.location.href='{{ path('eliminaAccount',{'attore':'ricercato','username':ricercato.getUsernamecodiceContratto() }) }}'"> Elimina </button> &nbsp &nbsp
+
+            </td>
         </div>
         <div class="panel-footer">
 
