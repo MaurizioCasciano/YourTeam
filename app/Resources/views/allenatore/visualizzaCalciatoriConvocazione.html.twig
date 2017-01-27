@@ -14,19 +14,35 @@
 
         <div class="row">
 
-            <div>Convocazioni per la partita {{ partita.getNome }} </div>
-
             <form action="{{ path('controlConvocazioni') }}" method="post">
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Convocazioni per la partita {{ partita.getNome }}</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
 
                 {% for calciatore in calciatori %}
 
-                    <input type="checkbox" name="calciatori[]" value="{{ calciatore.getUsernameCodiceContratto }}">   {{ calciatore.getNome }} {{ calciatore.getCognome }}<br>
+                    <tr>
+                        <td><input type="checkbox" name="calciatori[]" value="{{ calciatore.getUsernameCodiceContratto }}">   {{ calciatore.getNome }} {{ calciatore.getCognome }}</td>
+                    </tr>
+
+
 
                 {% endfor %}
 
-                <br>
+                <tr>
+                    <td> <input type="submit" value="Submit"></td>
+                </tr>
 
-                <input type="submit" value="Submit">
+                    </tbody>
+                </table>
+
+
 
             </form>
 
