@@ -78,8 +78,14 @@
                                             </td>
 
                                         </tr>
-
                                         <tr>
+                                        <td>
+
+                                            <button type="button" class="btn btn-info" onclick="window.location.href='{{ path('eliminaAccount',{'attore':'allenatore','username':allenatore.getUsernamecodiceContratto() }) }}'"> Elimina </button> &nbsp &nbsp
+
+                                        </td>
+
+
 
                                             <td> <button type="button" class="btn btn-info" onclick="window.location.href='{{ path('modificaAccountForm',{'tipo':'allenatore','u':allenatore.getUsernamecodiceContratto() }) }}'"> Modifica </button></td>
                                         </tr>
