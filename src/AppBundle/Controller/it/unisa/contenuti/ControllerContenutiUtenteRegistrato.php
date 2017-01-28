@@ -8,6 +8,7 @@
 
 namespace AppBundle\Controller\it\unisa\contenuti;
 
+use AppBundle\it\unisa\autenticazione\GestoreAutenticazione;
 use AppBundle\Utility\DB;
 use AppBundle\it\unisa\contenuti\Contenuto;
 use AppBundle\it\unisa\contenuti\GestioneContenuti;
@@ -84,7 +85,7 @@ class ControllerContenutiUtenteRegistrato extends Controller
                             array('video' => $elenco));
                     } else {
                         if ($tipo == "notizia") {
-                            return $this->render("tifoso/visualizzaElencoNotizie.html.twig",
+                            return $this->render("tifoso/VisualizzaElencoNotizie.html.twig",
                                 array('elenco' => $elenco));
                         }
                     }
