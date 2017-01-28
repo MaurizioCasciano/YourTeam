@@ -16,6 +16,7 @@ class DB
     private $dbname;
     private $port;
     private static $instance = null;
+    private $conn;
 
     private function __construct()
     {
@@ -52,17 +53,27 @@ class DB
 
     public function connect()
     {
-        $conn = new \mysqli($this->host, $this->username, $this->password, $this->dbname, $this->port);
+        if ($this->conn === null) {
+            $this->conn = new \mysqli($this->host, $this->username, $this->password, $this->dbname, $this->port);
+        }
+
         // Check connection
-        if ($conn->connect_error) {
+        if ($this->conn->connect_error) {
             die("Connection failed: " . $this->conn->connect_error);
         } else {
-            return $conn;
+            return $this->conn;
         }
     }
 
     public function close($con)
     {
-        $con->close();
+        //$con->close();
+    }
+
+    function __destruct()
+    {
+        if ($this->conn != null) {
+            $this->conn->close();
+        }
     }
 }
