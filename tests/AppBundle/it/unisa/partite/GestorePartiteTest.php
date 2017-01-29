@@ -51,6 +51,11 @@ class GestorePartiteTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testInserisciPartita()
+    {
+        $this->assertTrue($this->gestorePartite->inserisciPartita($this->partita));
+    }
+
     public function testInserisciGetModificaPartita()
     {
         $this->assertTrue($this->gestorePartite->inserisciPartita($this->partita));

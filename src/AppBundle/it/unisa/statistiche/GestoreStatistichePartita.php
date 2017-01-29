@@ -59,6 +59,10 @@ class GestoreStatistichePartita
         $golSubiti = $statistiche->getGolSubiti();
         $possessoPalla = $statistiche->getPossessoPalla();
 
+        if ($golFatti < 0 || $golSubiti < 0 || $possessoPalla < 0 || $possessoPalla > 100) {
+            throw new \InvalidArgumentException("Dati non validi");
+        }
+
         /**
          * Array contenente i marcatori come elementi, un elemento è ripetuto tante volte quanti sono i suoi gol.
          */
@@ -174,6 +178,10 @@ class GestoreStatistichePartita
         $golFatti = $statistiche->getGolFatti();
         $golSubiti = $statistiche->getGolSubiti();
         $possessoPalla = $statistiche->getPossessoPalla();
+
+        if ($golFatti < 0 || $golSubiti < 0 || $possessoPalla < 0 || $possessoPalla > 100) {
+            throw new \InvalidArgumentException("Dati non validi");
+        }
 
         /**
          * Array contenente i marcatori come elementi, un elemento è ripetuto tante volte quanti sono i suoi gol.
