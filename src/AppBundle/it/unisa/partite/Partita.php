@@ -216,7 +216,7 @@ class Partita implements PartitaInterface, \JsonSerializable
 
     function __toString()
     {
-        return "Partita[nome: " . $this->getNome() . ", data: " . $this->data . ", squadra: " . $this->getSquadra() . ", stadio: " . $this->getStadio() . "]";
+        return "Partita[nome: " . $this->getNome() . ", data: " . $this->getDataString() . ", squadra: " . $this->getSquadra() . ", stadio: " . $this->getStadio() . "]";
     }
 
 
