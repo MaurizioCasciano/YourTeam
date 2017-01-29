@@ -138,7 +138,7 @@ class GestoreAccount
           in tutti gli altri casi ritorna un oggetto con info che non ci serve
           nota: se il cmpo prevede 10 caratteri, e passiamo una stringa di 12 caratteri, mysql la tronca -> non va in errore*/
         if (!$ris) throw new \Exception(("errore inserimento dati nel db"));
-
+        return $ris;
     }
 
 
