@@ -13,40 +13,46 @@ use AppBundle\it\unisa\comunicazione\Messaggio;
 class MessaggioTest extends \PHPUnit_Framework_TestCase
 {
 
-    protected $messaggio;
-    private $mittente = "allenatore";
-    private $calciatore = "Bonucci";
-    private $allenatore = "Allegri";
-    private $testo = "CI vediamo il giorno x alle xx:xx il yy/yy/yyyy";
+    private $messaggio;
+    private $allenatore;
+    private $nomeAll;
+    private $cognomeAll;
+    private $calciatore;
+    private $nomeCalc;
+    private $cognomeCalc;
+    private $mittente;
+    private $testo;
     private $data;
-    private $tipo = "voce";
-    private $id = "01";
-
-    //nome cognome
-    private $nomeMittente = "Massimiliano";
-    private $cognomeMittente = "Allegri";
-    private $nomeDestinatario = "Leonardo";
-    private $cognomeDestinatario = "Bonucci";
+    private $tipo;
+    private $id;
 
     protected function setUp()
     {
+        /*=================MESSAGGIO=====================*/
+        $this->allenatore = "Allenatore";
+        $this->nomeAll = "NomeAllenatore";
+        $this->cognomeAll = "ConomeAllenatore";
+
+        $this->calciatore = "Calciatore";
+        $this->nomeCalc = "NomeCalciatore";
+        $this->cognomeCalc = "CognomeCalciatore";
+
+        $this->mittente = "allenatore";
+        $this->testo = "Ciao, ci vediamo domani";
         $this->data = new \DateTime();
+        $this->tipo = "chat";
+        $this->id = "123";
+
         $this->messaggio = new Messaggio($this->testo, $this->allenatore, $this->calciatore, $this->mittente, $this->data, $this->tipo);
-        $this->markTestSkipped("TEST SKIPPED");
+        $this->messaggio->setNomeMittente($this->nomeAll);
+        $this->messaggio->setCognomeMittente($this->cognomeAll);
+        $this->messaggio->setNomeDestinatario($this->nomeCalc);
+        $this->messaggio->setCognomeDestinatario($this->cognomeCalc);
+        /*=================MESSAGGIO=====================*/
     }
 
     public function testGetDataString()
     {
-        /*$testo = "Ciaone";
-        $usernameAllenatore = "allentore";
-        $usernameCalciatore = "123456";
-        $mittente = "allenatore";
-        $data = new \DateTime();
-        $tipo = "chat";*/
-
-        $this->messaggio = new Messaggio($this->testo, $this->allenatore, $this->calciatore, $this->mittente, $this->data, $this->tipo);
-
-        //ecnho $messaggio->getDataString();
         $this->assertStringEndsNotWith(".000000", $this->messaggio->getDataString());
     }
 
@@ -96,15 +102,7 @@ class MessaggioTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetNomeMittente()
     {
-        $this->assertEquals($this->nomeMittente, $this->messaggio->getNomeMittente());
-    }
-
-    /**
-     * @param mixed $nomeMittente
-     */
-    public function testSetNomeMittente($nomeMittente)
-    {
-
+        $this->assertEquals($this->nomeAll, $this->messaggio->getNomeMittente());
     }
 
     /**
@@ -112,15 +110,7 @@ class MessaggioTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetCognomeMittente()
     {
-        $this->assertEquals($this->cognomeMittente, $this->messaggio->getCognomeMittente());
-    }
-
-    /**
-     * @param mixed $cognomeMittente
-     */
-    public function testSetCognomeMittente()
-    {
-
+        $this->assertEquals($this->cognomeAll, $this->messaggio->getCognomeMittente());
     }
 
     /**
@@ -128,15 +118,7 @@ class MessaggioTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetNomeDestinatario()
     {
-        $this->assertEquals($this->nomeDestinatario, $this->messaggio->getNomeDestinatario());
-    }
-
-    /**
-     * @param mixed $nomeDestinatario
-     */
-    public function testSetNomeDestinatario()
-    {
-
+        $this->assertEquals($this->nomeCalc, $this->messaggio->getNomeDestinatario());
     }
 
     /**
@@ -144,15 +126,7 @@ class MessaggioTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetCognomeDestinatario()
     {
-        $this->assertEquals($this->cognomeDestinatario, $this->messaggio->getCognomeDestinatario());
-    }
-
-    /**
-     * @param mixed $cognomeDestinatario
-     */
-    public function testSetCognomeDestinatario()
-    {
-
+        $this->assertEquals($this->cognomeCalc, $this->messaggio->getCognomeDestinatario());
     }
 
     /**
@@ -164,28 +138,11 @@ class MessaggioTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Restituisce il tipo dell'account mittente: allenatore o calciatore.
-     * @param mixed $mittente
-     */
-    public function testSetMittente()
-    {
-
-    }
-
-    /**
      * @return mixed
      */
     public function testGetCalciatore()
     {
-        $this->assertEquals($this->calciatore, $this->messaggio->getCakciatore());
-    }
-
-    /**
-     * @param mixed $calciatore
-     */
-    public function testSetCalciatore()
-    {
-
+        $this->assertEquals($this->calciatore, $this->messaggio->getCalciatore());
     }
 
     /**
@@ -197,26 +154,10 @@ class MessaggioTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param mixed $allenatore
-     */
-    public function testSetAllenatore()
-    {
-
-    }
-
-    /**
      * @return mixed
      */
     public function testGetTesto()
     {
         $this->assertEquals($this->testo, $this->messaggio->getTesto());
-    }
-
-    /**
-     * @param mixed $testo
-     */
-    public function testSetTesto()
-    {
-
     }
 }
