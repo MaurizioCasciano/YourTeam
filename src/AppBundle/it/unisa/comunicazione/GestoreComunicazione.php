@@ -303,7 +303,7 @@ class GestoreComunicazione
     {
         if ($calciatore == null) throw new \Exception("Messaggio non trovato");
         $messaggi = array();
-        $sql = "SELECT * from messaggio WHERE tipo = 'multa' AND calciatore =" . '$calciatore' . " ORDER BY data;";
+        $sql = "SELECT * from messaggio WHERE tipo = 'multa' ORDER BY data;";
 
         $result = $this->conn->query($sql);
         $i = 0;
@@ -341,7 +341,7 @@ class GestoreComunicazione
     {
         if ($calciatore == null) throw new \Exception("Messaggio non trovato");
         $messaggi = array();
-        $sql = "SELECT * from messaggio WHERE messaggio.tipo = 'avvertimento' AND messaggio.calciatore =" . '$calciatore' . "ORDER BY data;";
+        $sql = "SELECT * from messaggio WHERE messaggio.tipo = 'avvertimento' ORDER BY data;";
 
         $result = $this->conn->query($sql);
         $i = 0;
@@ -380,7 +380,7 @@ class GestoreComunicazione
     {
         if ($calciatore == null) throw new \Exception("Messaggio non trovato");
         $messaggi = array();
-        $sql = "SELECT * from messaggio WHERE messaggio.tipo = 'dieta' AND messaggio.calciatore =" . '$calciatore' ." ORDER BY data;";
+        $sql = "SELECT * from messaggio WHERE messaggio.tipo = 'dieta' ORDER BY data;";
 
         $result = $this->conn->query($sql);
         $i = 0;
@@ -419,7 +419,7 @@ class GestoreComunicazione
     {
         if ($calciatore == null) throw new \Exception("Messaggio non trovato");
         $messaggi = array();
-        $sql = "SELECT * from messaggio WHERE messaggio.tipo = 'allenamento' AND messaggio.calciatore =". '$calciatore' ." ORDER BY data;";
+        $sql = "SELECT * from messaggio WHERE messaggio.tipo = 'allenamento' ORDER BY data;";
 
         $result = $this->conn->query($sql);
         $i = 0;
