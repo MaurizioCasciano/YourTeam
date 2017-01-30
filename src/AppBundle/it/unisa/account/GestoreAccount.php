@@ -191,7 +191,7 @@ class GestoreAccount
             //questo controllo non funziona se passiamo un username che non esiste perciò abbiamo
             //fatto il controllo di ricercaAccount sopra
             //if (!$this->conn->query($sql))  throw new \Exception(("errore MODIFICA dati nel db"));
-            $this->conn->query($sql);
+            return $this->conn->query($sql);
 
         } catch (\Exception $e) {
             throw new \Exception(("errore MODIFICA dati nel db" . $e->getMessage()));
