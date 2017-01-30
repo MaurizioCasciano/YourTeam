@@ -28,6 +28,14 @@
                     <table class="table table-user-information">
                         <tbody>
                         <tr>
+                            <td><b>Nome:</b></td>
+                            <td>{{ staff.getNome() }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Cognome:</b></td>
+                            <td>{{ staff.getCognome() }}</td>
+                        </tr>
+                        <tr>
                             <td><b>E-mail:</b></td>
                             <td>{{staff.getEmail() }}</td>
                         </tr>
@@ -63,9 +71,16 @@
 
                         </tr>
                         <tr>
+
+                            <td><b>Squadra</b></td>
+                            <td>   {{ staff.getSquadra() }}
+                            </td>
+
+                        </tr>
+                        <tr>
                             <td>
 
-                                <button type="button" class="btn btn-info" onclick="window.location.href='{{ path('eliminaAccount',{'attore':'staff_allenatore_tifoso','username':staff.getUsernamecodiceContratto() }) }}'"> Elimina </button> &nbsp &nbsp
+                                <button type="button" class="btn btn-info" onclick="window.location.href='{{ path('eliminaAccount',{'attore':'staff','username':staff.getUsernamecodiceContratto() }) }}'"> Elimina </button> &nbsp &nbsp
 
                             </td>
                             <td> <button type="button" class="btn btn-info" onclick="window.location.href='{{ path('modificaAccountForm',{'tipo':'staff','u':staff.getUsernamecodiceContratto()}) }}'"> Modifica </button></td>

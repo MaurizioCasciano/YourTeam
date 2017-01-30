@@ -138,7 +138,7 @@ class GestoreAccount
           in tutti gli altri casi ritorna un oggetto con info che non ci serve
           nota: se il cmpo prevede 10 caratteri, e passiamo una stringa di 12 caratteri, mysql la tronca -> non va in errore*/
         if (!$ris) throw new \Exception(("errore inserimento dati nel db"));
-
+        return $ris;
     }
 
 
@@ -191,7 +191,7 @@ class GestoreAccount
             //questo controllo non funziona se passiamo un username che non esiste perciò abbiamo
             //fatto il controllo di ricercaAccount sopra
             //if (!$this->conn->query($sql))  throw new \Exception(("errore MODIFICA dati nel db"));
-            $this->conn->query($sql);
+            return $this->conn->query($sql);
 
         } catch (\Exception $e) {
             throw new \Exception(("errore MODIFICA dati nel db" . $e->getMessage()));
@@ -283,8 +283,9 @@ class GestoreAccount
         try {
             /*forziamo il metodo e lo utilizziamo come controllo, perchè se l'account non esiste viene lanciata
             l'eccezione*/
-            $this->ricercaAccount_A_T_S($u);
-            $query = "DELETE FROM utente WHERE  username_codiceContratto='$u'";
+           $ris= $this->ricercaAccount_A_T_S($u);
+            $id=$ris->getUsernameCodiceContratto();
+            $query = "DELETE FROM utente WHERE  username_codiceContratto='$id'";
             //questo controllo non funziona se passiamo un username che non esiste perciò abbiamo
             //fatto il controllo di ricercaAccount sopra
             //if (!$this->conn->query($sql))  throw new \Exception(("errore MODIFICA dati nel db"));
@@ -301,8 +302,9 @@ class GestoreAccount
         try {
             /*forziamo il metodo e lo utilizziamo come controllo, perchè se l'account non esiste viene lanciata
             l'eccezione*/
-            $this->ricercaAccount_G($u);
-            $query = "DELETE FROM calciatore WHERE  contratto='$u'";
+          $ris= $this->ricercaAccount_G($u);
+            $id=$ris->getUsernameCodiceContratto();
+            $query = "DELETE FROM calciatore WHERE  contratto='$id'";
             //questo controllo non funziona se passiamo un username che non esiste perciò abbiamo
             //fatto il controllo di ricercaAccount sopra
             //if (!$this->conn->query($sql))  throw new \Exception(("errore MODIFICA dati nel db"));

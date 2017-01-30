@@ -61,6 +61,7 @@ class ControllerAccount extends Controller
     {
 
 
+
         //  $autenticazione= GestoreAutenticazione::getInstance();
         //  if ($autenticazione->check($r->get("_route"))) {
 
@@ -393,29 +394,78 @@ class ControllerAccount extends Controller
     */
     public function eliminaAccount($attore, $username)
     {
+        $ss = GestoreAccount::getInstance();
+        $staff= $ss->ricercaAccount_A_T_S($_SESSION["username"]);
+if($attore=="ricercato"){
+    $g = GestoreAccount::getInstance();
+    try {                                                           //attore deve essere proprio attore, che gli passo da ricercato.getTipo()
+       $ris= $g->ricercaAccount_A_T_S($username);
+        if($ris=="valore non esiste"){
+            $gg = GestoreAccount::getInstance();
+            $gg->eliminaAccount_G($username);
+            $log = GestoreAutenticazione::getInstance();
+            $log->logout();
+            return $this->render("staff/accountRicercatoEliminato.html.twig", array('staff' => $staff));}
+        else {
+            $gg = GestoreAccount::getInstance();
+            $gg->eliminaAccount_A_T_S($username);
+            $log = GestoreAutenticazione::getInstance();
+            $log->logout();
+            return $this->render("staff/accountRicercatoEliminato.html.twig", array('staff' => $staff));
+        }
 
+    } catch (\Exception $e) {
+        return new Response($e->getMessage(), 404);
+    }
+
+}
 
         //  $username=$_SESSION["username"];
-
-        if ($attore == "staff_allenatore_tifoso") {
+        if ($attore == "allenatore") {
             $g = GestoreAccount::getInstance();
-            try {
+            try {                                                           //attore deve essere proprio attore, che gli passo da ricercato.getTipo()
                 $g->eliminaAccount_A_T_S($username);
+                $log = GestoreAutenticazione::getInstance();
+                $log->logout();
                 return $this->render("guest/eliminato.html.twig");
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
-        } else if ($attore == "calciatore") {
+        }
+        if ($attore == "tifoso") {
+            $g = GestoreAccount::getInstance();
+            try {                                                           //attore deve essere proprio attore, che gli passo da ricercato.getTipo()
+                $g->eliminaAccount_A_T_S($username);
+                $log = GestoreAutenticazione::getInstance();
+                $log->logout();
+                return $this->render("guest/eliminato.html.twig");
+            } catch (\Exception $e) {
+                return new Response($e->getMessage(), 404);
+            }
+        }
+        if ($attore == "staff") {
+            $g = GestoreAccount::getInstance();
+            try {                                                           //attore deve essere proprio attore, che gli passo da ricercato.getTipo()
+                $g->eliminaAccount_A_T_S($username);
+                $log = GestoreAutenticazione::getInstance();
+                $log->logout();
+                return $this->render("guest/eliminato.html.twig");
+            } catch (\Exception $e) {
+                return new Response($e->getMessage(), 404);
+            }
+        } if ($attore == "calciatore") {
             $g = GestoreAccount::getInstance();
             try {
                 $g->eliminaAccount_G($username);
+                $log = GestoreAutenticazione::getInstance();
+                $log->logout();
                 return $this->render("guest/eliminato.html.twig");
             } catch (\Exception $e) {
                 return new Response($e->getMessage(), 404);
             }
         }
 
-        return new Response("tipo non esiste");
+        return new Response("Il tipo non esiste");
 
 
     }
