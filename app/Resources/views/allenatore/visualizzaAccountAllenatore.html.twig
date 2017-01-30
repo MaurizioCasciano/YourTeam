@@ -29,6 +29,14 @@
                                     <table class="table table-user-information">
                                         <tbody>
                                         <tr>
+                                            <td><b>Nome:</b></td>
+                                            <td>{{ allenatore.getNome() }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Cognome:</b></td>
+                                            <td>{{ allenatore.getCognome() }}</td>
+                                        </tr>
+                                        <tr>
                                             <td><b>E-mail:</b></td>
                                             <td>{{ allenatore.getEmail() }}</td>
                                         </tr>
@@ -65,11 +73,20 @@
                                         </tr>
                                         <tr>
 
-                                            <td>
-
-                                                <button type="button" class="btn btn-info" onclick="window.location.href='{{ path('eliminaAccount',{'attore':'staff_allenatore_tifoso','username':allenatore.getUsernamecodiceContratto() }) }}'"> Elimina </button> &nbsp &nbsp
-
+                                            <td><b>Squadra</b></td>
+                                            <td>   {{ allenatore.getSquadra() }}
                                             </td>
+
+                                        </tr>
+                                        <tr>
+                                        <td>
+
+                                            <button type="button" class="btn btn-info" onclick="window.location.href='{{ path('eliminaAccount',{'attore':'allenatore','username':allenatore.getUsernamecodiceContratto() }) }}'"> Elimina </button> &nbsp &nbsp
+
+                                        </td>
+
+
+
                                             <td> <button type="button" class="btn btn-info" onclick="window.location.href='{{ path('modificaAccountForm',{'tipo':'allenatore','u':allenatore.getUsernamecodiceContratto() }) }}'"> Modifica </button></td>
                                         </tr>
 

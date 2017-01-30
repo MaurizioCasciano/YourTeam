@@ -12,22 +12,29 @@ function confermaSelezione(urlFormazione)
 
     var buttons=document.getElementsByClassName("buttonModal");
 
-    var stringaSelezione="Formazione scelta:</br>";
+    var stringaSelezione="<table class=\"table table-striped\"><thead><tr><th>Ruolo</th><th>Calciatore</th></tr></thead><tbody>";
 
     for (var i=0;i<buttons.length;i++)
     {
 
         if(buttons[i].name=='' )
         {
-            stringaSelezione+="<div>"+buttons[i].value+"   NON SELEZIONATO</div>";
+            stringaSelezione+="<tr>";
+            stringaSelezione+="<td>"+buttons[i].value+"</td>";
+            stringaSelezione+="<td>NON SELEZIONATO</td>";
+            stringaSelezione+="</tr>";
             selezionati.push("non selezionato");
         }
         else
         {
-            stringaSelezione+="<div>"+buttons[i].value+"   "+buttons[i].firstChild.nodeValue+"</div>";
+            stringaSelezione+="<tr>";
+            stringaSelezione+="<td>"+buttons[i].value+"</td>";
+            stringaSelezione+="<td>"+buttons[i].firstChild.nodeValue+"</td>";
+            stringaSelezione+="</tr>";
             selezionati.push(buttons[i].name);
         }
     }
+    stringaSelezione+="</tbody></table>";
 
     selezionati=JSON.stringify(selezionati);
 
@@ -37,7 +44,7 @@ function confermaSelezione(urlFormazione)
     {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
         {
-            stringaSelezione+=xmlhttp.responseText;
+            //stringaSelezione+=xmlhttp.responseText;
             elenco[0].innerHTML=stringaSelezione;
         }
 

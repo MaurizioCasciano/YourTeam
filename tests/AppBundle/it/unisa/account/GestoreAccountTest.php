@@ -2,23 +2,23 @@
 /**
  * Created by PhpStorm.
  * User: Maurizio
- * Date: 16/01/2017
- * Time: 17:32
+ * Date: 30/01/2017
+ * Time: 11:21
  */
 
-namespace Tests\AppBundle\it\unisa\autenticazione;
+namespace Tests\AppBundle\it\unisa\account;
 
 use AppBundle\it\unisa\account\Account;
 use AppBundle\it\unisa\account\GestoreAccount;
-use AppBundle\it\unisa\autenticazione\GestoreAutenticazione;
 use AppBundle\Utility\DB;
 
-class GestoreAutenticazioneTest extends \PHPUnit_Framework_TestCase
+
+class GestoreAccountTest extends \PHPUnit_Framework_TestCase
 {
     private $db;
     private $connection;
-    private $gestoreAutenticazione;
     private $gestoreAccount;
+
     private $account;
     private $username;
     private $password;
@@ -30,7 +30,6 @@ class GestoreAutenticazioneTest extends \PHPUnit_Framework_TestCase
         $this->connection = $this->db->connect();
         $this->connection->begin_transaction();
 
-        $this->gestoreAutenticazione = GestoreAutenticazione::getInstance();
         $this->gestoreAccount = GestoreAccount::getInstance();
 
         try {
@@ -58,37 +57,37 @@ class GestoreAutenticazioneTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    /**
-     * The following annotation is required to prevent the error: "session_start(): Cannot send session cookie - headers already sent by..."
-     * @runInSeparateProcess
-     */
-    public function testLogin()
+    public function testAggiungiAccount_A_T_S()
     {
         $this->assertTrue($this->gestoreAccount->aggiungiAccount_A_T_S($this->account));
-        $this->assertTrue($this->gestoreAccount->ricercaAccount_A_T_S($this->username) instanceof Account);
-
-        $this->assertTrue($this->gestoreAutenticazione->login($this->username, $this->password));
-        $this->assertFalse($this->gestoreAutenticazione->login($this->username, "WRONG_PASSWORD"));
-
-        $this->expectException(\Exception::class);
-        $this->gestoreAutenticazione->login(null, null);
     }
 
-    /**
-     * @runInSeparateProcess
-     */
-    public function testLogout()
+    public function testModificaAccount_A_T_S()
     {
         $this->assertTrue($this->gestoreAccount->aggiungiAccount_A_T_S($this->account));
-        $this->assertTrue($this->gestoreAccount->ricercaAccount_A_T_S($this->username) instanceof Account);
 
-        $this->assertTrue($this->gestoreAutenticazione->login($this->username, $this->password));
-        $this->assertTrue($this->gestoreAutenticazione->logout());
+        $this->username = "qwertyuiopqwertyuiop";
+        $this->password = "P@ssw0rd24234234234";
+        $email = "user1234@gmail.com";
+        $nome = "Nome2";
+        $cognome = "Cognome2";
+        $dataDiNascita = date_format(new \DateTime(), "YYYY-mm-dd H:i:s");
+        $domicilio = "Salerno 2";
+        $indirizzo = "Via da qui ora";
+
+        $provincia = "SA";
+        $telefono = "3332333333";
+        $immagine = "immagine2.jpg";
+        $tipo = "staff";
+
+        $newAccount = new Account($this->username, $this->password, $this->squadra, $email,
+            $nome, $cognome, $dataDiNascita, $domicilio, $indirizzo, $provincia, $telefono, $immagine, $tipo);
+
+        $this->assertTrue($this->gestoreAccount->modificaAccount_A_T_S($this->username, $this->account));
     }
 
     protected function tearDown()
     {
-        $this->gestoreAutenticazione->logout();
         $this->connection->rollback();
     }
 }
