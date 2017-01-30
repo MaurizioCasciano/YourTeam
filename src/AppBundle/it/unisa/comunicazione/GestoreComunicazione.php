@@ -187,7 +187,8 @@ class GestoreComunicazione
     {
         if ($allenatore == null) throw new \Exception("Messaggio non trovato");
         $messaggi = array();
-        $sql = "SELECT * from messaggio WHERE allenatore='$allenatore' AND messaggio.tipo='multa';";
+        $usernameAllenatore=$allenatore->getUsernameCodiceContratto();
+        $sql = "SELECT * from messaggio WHERE allenatore='$usernameAllenatore' AND messaggio.tipo='multa';";
 
         $result = $this->conn->query($sql);
         $i = 0;
@@ -221,7 +222,8 @@ class GestoreComunicazione
     {
         if ($allenatore == null) throw new \Exception("Messaggio non trovato");
         $messaggi = array();
-        $sql = "SELECT * from calciatore WHERE allenatore='$allenatore' AND messaggio.tipo='avvertimento';";
+        $usernameAllenatore=$allenatore->getUsernameCodiceContratto();
+        $sql = "SELECT * from calciatore WHERE allenatore='$usernameAllenatore' AND messaggio.tipo='avvertimento';";
 
         $result = $this->conn->query($sql);
         $i = 0;
@@ -254,7 +256,8 @@ class GestoreComunicazione
     {
         if ($allenatore == null) throw new \Exception("Messaggio non trovato");
         $messaggi = array();
-        $sql = "SELECT * from calciatore WHERE allenatore='$allenatore' AND messaggio.tipo='dieta';";
+        $usernameAllenatore=$allenatore->getUsernameCodiceContratto();
+        $sql = "SELECT * from calciatore WHERE allenatore='$usernameAllenatore' AND messaggio.tipo='dieta';";
 
         $result = $this->conn->query($sql);
         $i = 0;
@@ -287,7 +290,8 @@ class GestoreComunicazione
     {
         if ($allenatore == null) throw new \Exception("Messaggio non trovato");
         $messaggi = array();
-        $sql = "SELECT * from calciatore WHERE allenatore='$allenatore' AND messaggio.tipo='allenamento';";
+        $usernameAllenatore=$allenatore->getUsernameCodiceContratto();
+        $sql = "SELECT * from calciatore WHERE allenatore='$usernameAllenatore' AND messaggio.tipo='allenamento';";
 
         $result = $this->conn->query($sql);
         $i = 0;

@@ -191,7 +191,7 @@ class ControllerChatGiocatore extends Controller
                 }
                 return $this->render("giocatore/VistaRichiamoMulta.html.twig", array("messaggi" => $messaggi));
             } catch (\Exception $e) {
-                return new Response($e->getMessage(), 404);
+                return $this->render("giocatore/NonCiSonoMessaggi.html.twig");
             }
         } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
@@ -221,7 +221,7 @@ class ControllerChatGiocatore extends Controller
                 }
                 return $this->render("giocatore/VistaRichiamoAvvertimento.html.twig", array("messaggi" => $messaggi));
             } catch (\Exception $e) {
-                return new Response($e->getMessage(), 404);
+                return $this->render("giocatore/NonCiSonoMessaggi.html.twig");
             }
         } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
@@ -251,7 +251,7 @@ class ControllerChatGiocatore extends Controller
                 }
                 return $this->render("giocatore/VistaRichiamoDieta.html.twig", array("messaggi" => $messaggi));
             } catch (\Exception $e) {
-                return new Response($e->getMessage(), 404);
+                return $this->render("giocatore/NonCiSonoMessaggi.html.twig");
             }
         } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
@@ -281,7 +281,7 @@ class ControllerChatGiocatore extends Controller
                 }
                 return $this->render("giocatore/VistaRichiamoAllenamento.html.twig", array("messaggi" => $messaggi));
             } catch (\Exception $e) {
-                return new Response($e->getMessage(), 404);
+                return $this->render("giocatore/NonCiSonoMessaggi.html.twig");
             }
         } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
