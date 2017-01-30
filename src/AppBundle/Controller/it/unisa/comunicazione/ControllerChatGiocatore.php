@@ -243,9 +243,9 @@ class ControllerChatGiocatore extends Controller
 
             $calciatoreMittente = $_SESSION["username"];
             $squadra = $_SESSION["squadra"];
-            //$allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
+            $allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
             try {
-                $messaggi = $gestoreComunicazione->ottieniMessaggioDieta($calciatoreMittente);
+                $messaggi = $gestoreComunicazione->ottieniMessaggioDieta($allenatoreDestinatario);
                 if (!$messaggi) {
                     return $this->render("giocatore/NonCiSonoMessaggi.html.twig");
                 }
@@ -273,9 +273,9 @@ class ControllerChatGiocatore extends Controller
 
             $calciatoreMittente = $_SESSION["username"];
             $squadra = $_SESSION["squadra"];
-            //$allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
+            $allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
             try {
-                $messaggi = $gestoreComunicazione->ottieniMessaggioAllenamento($calciatoreMittente);
+                $messaggi = $gestoreComunicazione->ottieniMessaggioAllenamento($allenatoreDestinatario);
                 if (!$messaggi) {
                     return $this->render("giocatore/NonCiSonoMessaggi.html.twig");
                 }
