@@ -1,5 +1,10 @@
 {% extends 'guest/template.html.twig' %}
 {% block contenuto %}
+    {% if elenco is empty %}
+        <div class="alert alert-danger">
+            <strong>Attenzione</strong> Siamo spiacenti ma al momento non sono presenti contenuti
+        </div>
+    {% else %}
     <div class="container-fluid ">
     <div class="container col-md-6">
         <h1 class="text-center"> Ecco un'anteprima</h1>
@@ -40,6 +45,7 @@
         </a>
     </div>
     </div>
+        {% endif %}
         <div class="container-fluid">
         <div class="col-md-6 text-center">
             <div class="box">
