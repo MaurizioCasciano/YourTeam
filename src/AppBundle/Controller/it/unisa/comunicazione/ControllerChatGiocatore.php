@@ -183,15 +183,15 @@ class ControllerChatGiocatore extends Controller
 
             $calciatoreMittente = $_SESSION["username"];
             $squadra = $_SESSION["squadra"];
-            //$allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
+            $allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
             try {
-                $messaggi = $gestoreComunicazione->ottieniMessaggiRichiamoMulta($calciatoreMittente);
+                $messaggi = $gestoreComunicazione->ottieniMessaggiMulta($allenatoreDestinatario);
                 if (!$messaggi) {
                     return $this->render("giocatore/NonCiSonoMessaggi.html.twig");
                 }
                 return $this->render("giocatore/VistaRichiamoMulta.html.twig", array("messaggi" => $messaggi));
             } catch (\Exception $e) {
-                return new Response($e->getMessage(), 404);
+                return $this->render("giocatore/NonCiSonoMessaggi.html.twig");
             }
         } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
@@ -213,15 +213,15 @@ class ControllerChatGiocatore extends Controller
 
             $calciatoreMittente = $_SESSION["username"];
             $squadra = $_SESSION["squadra"];
-            //$allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
+            $allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
             try {
-                $messaggi = $gestoreComunicazione->ottieniMessaggioRichiamoAvvertimento($calciatoreMittente);
+                $messaggi = $gestoreComunicazione->ottieniMessaggioAvvertimento($allenatoreDestinatario);
                 if (!$messaggi) {
                     return $this->render("giocatore/NonCiSonoMessaggi.html.twig");
                 }
                 return $this->render("giocatore/VistaRichiamoAvvertimento.html.twig", array("messaggi" => $messaggi));
             } catch (\Exception $e) {
-                return new Response($e->getMessage(), 404);
+                return $this->render("giocatore/NonCiSonoMessaggi.html.twig");
             }
         } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
@@ -243,15 +243,15 @@ class ControllerChatGiocatore extends Controller
 
             $calciatoreMittente = $_SESSION["username"];
             $squadra = $_SESSION["squadra"];
-            //$allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
+            $allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
             try {
-                $messaggi = $gestoreComunicazione->ottieniMessaggioRichiamoDieta($calciatoreMittente);
+                $messaggi = $gestoreComunicazione->ottieniMessaggioDieta($allenatoreDestinatario);
                 if (!$messaggi) {
                     return $this->render("giocatore/NonCiSonoMessaggi.html.twig");
                 }
                 return $this->render("giocatore/VistaRichiamoDieta.html.twig", array("messaggi" => $messaggi));
             } catch (\Exception $e) {
-                return new Response($e->getMessage(), 404);
+                return $this->render("giocatore/NonCiSonoMessaggi.html.twig");
             }
         } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
@@ -273,15 +273,15 @@ class ControllerChatGiocatore extends Controller
 
             $calciatoreMittente = $_SESSION["username"];
             $squadra = $_SESSION["squadra"];
-            //$allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
+            $allenatoreDestinatario = $gestoreComunicazione->getAllenatorePerSquadra($squadra);
             try {
-                $messaggi = $gestoreComunicazione->ottieniMessaggioRichiamoAllenamento($calciatoreMittente);
+                $messaggi = $gestoreComunicazione->ottieniMessaggioAllenamento($allenatoreDestinatario);
                 if (!$messaggi) {
                     return $this->render("giocatore/NonCiSonoMessaggi.html.twig");
                 }
                 return $this->render("giocatore/VistaRichiamoAllenamento.html.twig", array("messaggi" => $messaggi));
             } catch (\Exception $e) {
-                return new Response($e->getMessage(), 404);
+                return $this->render("giocatore/NonCiSonoMessaggi.html.twig");
             }
         } else {
             return $this->render("guest/accountNonAttivo.html.twig", array('messaggio' => "ACCOUNT NON ABILITATO A QUESTA AZIONE"));
