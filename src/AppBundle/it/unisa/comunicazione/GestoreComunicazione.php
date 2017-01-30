@@ -309,7 +309,8 @@ class GestoreComunicazione
         $i = 0;
         if ($result && $result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $row["data"], $row["tipo"]);
+                $data = new \DateTime($row["data"]);
+                $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $data, $row["tipo"]);
                 $m->setId($row["id"]);
                 $messaggi[$i] = $m;
                 $i++;
@@ -348,7 +349,8 @@ class GestoreComunicazione
         if ($result && $result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 /*$t, $u, $c, $mitt,$data,$tipo*/
-                $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $row["data"], $row["tipo"]);
+                $data = new \DateTime($row["data"]);
+                $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $data, $row["tipo"]);
                 $m->setId($row["id"]);
                 $messaggi[$i] = $m;
                 $i++;
@@ -387,7 +389,8 @@ class GestoreComunicazione
         if ($result && $result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 /*$t, $u, $c, $mitt,$data,$tipo*/
-                $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $row["data"], $row["tipo"]);
+                $data = new \DateTime($row["data"]);
+                $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $data , $row["tipo"]);
                 $m->setId($row["id"]);
                 $messaggi[$i] = $m;
                 $i++;
@@ -426,7 +429,8 @@ class GestoreComunicazione
         if ($result && $result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 /*$t, $u, $c, $mitt,$data,$tipo*/
-                $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $row["data"], $row["tipo"]);
+                $data = new \DateTime($row["data"]);
+                $m = new Messaggio($row["testo"], $row["allenatore"], $row["calciatore"], $row["mittente"], $data, $row["tipo"]);
                 $m->setId($row["id"]);
                 $messaggi[$i] = $m;
                 $i++;
