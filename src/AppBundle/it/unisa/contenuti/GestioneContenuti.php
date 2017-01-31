@@ -9,6 +9,7 @@ namespace AppBundle\it\unisa\contenuti;
  */
 use AppBundle\Utility\DB;
 use AppBundle\it\unisa\contenuti\Contenuto;
+
 class GestioneContenuti
 {
 
@@ -18,8 +19,8 @@ class GestioneContenuti
 
     private function __construct()
     {
-        $this->db=DB::getInstance();
-        $this->conn=$this->db->connect();
+        $this->db = DB::getInstance();
+        $this->conn = $this->db->connect();
     }
 
     function __destruct()
@@ -40,59 +41,85 @@ class GestioneContenuti
         return self::$instance;
     }
 
-    public function inserisciContenuto(Contenuto $contenuto){
-        $sql = "INSERT INTO contenuto(squadra,titolo,descrizione,URL,tipo,data)
-        VALUES ('".$contenuto->getSquadra()."','"
-            .$contenuto->getTitolo()."','"
-            .$contenuto->getDescrizione()."','"
-            .$contenuto->getURL()."','"
-            .$contenuto->getTipo()."','"
-            .$contenuto->getData()."');";
+    public function inserisciContenuto(Contenuto $contenuto)
+    {
+
+        if ($statement = $this->conn->prepare("
+            INSERT INTO contenuto(squadra,titolo,descrizione,URL,tipo,data)
+            VALUES (?,?,?,?,?,?)")
+        ) {
+
+            $squadra = $contenuto->getSquadra();
+            $titolo = $contenuto->getTitolo();
+            $descrizione = $contenuto->getDescrizione();
+            $url = $contenuto->getURL();
+            $tipo = $contenuto->getTipo();
+            $data = $contenuto->getData();
+
+            if ($statement->bind_param("ssssss", $squadra, $titolo, $descrizione, $url, $tipo, $data)) {
+                if ($statement->execute()) {
+                    return true;
+                }
+            }
+        }
+
+        throw new \Exception(("errore inserimento dati nel db: " . $this->conn->error));
+
+        /*$sql = "INSERT INTO contenuto(squadra,titolo,descrizione,URL,tipo,data)
+        VALUES ('" . $contenuto->getSquadra() . "','"
+            . $contenuto->getTitolo() . "','"
+            . $contenuto->getDescrizione() . "','"
+            . $contenuto->getURL() . "','"
+            . $contenuto->getTipo() . "','"
+            . $contenuto->getData() . "');";
 
         $res = $this->conn->query($sql);
-        if(!$res) throw new \Exception(("errore inserimento dati nel db"));
+        if (!$res) throw new \Exception(("errore inserimento dati nel db: " . $this->conn->error));*/
     }
 
-    public function cancellaContenuto($id){
-        try{
+    public function cancellaContenuto($id)
+    {
+        try {
             $contenuto = $this->visualizzaContenuto($id);
             $sql = "DELETE FROM contenuto WHERE id='$id'";
             $this->conn->query($sql);
             return $contenuto;
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             throw new \Exception("il contenuto da eliminare non esiste");
         }
     }
 
-    public function modificaContenuto($id,Contenuto $contenuto){
-        try{
+    public function modificaContenuto($id, Contenuto $contenuto)
+    {
+        try {
             $this->visualizzaContenuto($id);
             $sql = "UPDATE contenuto 
-                    SET titolo='".$contenuto->getTitolo()
-               ."', descrizione='".$contenuto->getDescrizione()
-               ."', url='".$contenuto->getURL()
-               ."', tipo='".$contenuto->getTipo()
-               ."', data='".date("Y-m-d")
-                ."' WHERE id='$id'";
+                    SET titolo='" . $contenuto->getTitolo()
+                . "', descrizione='" . $contenuto->getDescrizione()
+                . "', url='" . $contenuto->getURL()
+                . "', tipo='" . $contenuto->getTipo()
+                . "', data='" . date("Y-m-d")
+                . "' WHERE id='$id'";
             $this->conn->query($sql);
 
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             throw new \Exception("il contenuto da modificare non esiste");
         }
     }
 
-    public function visualizzaElencoContenuti(){
-        $sql="SELECT * FROM contenuto ORDER BY data DESC";
+    public function visualizzaElencoContenuti()
+    {
+        $sql = "SELECT * FROM contenuto ORDER BY data DESC";
         $elenco = array();
         $res = $this->conn->query($sql);
-        $i=0;
-        if($res->num_rows <= 0) return $elenco;
-            while($row = $res->fetch_assoc()){
-                $contenuto = new Contenuto($row["titolo"],$row["descrizione"], $row["url"],$row["tipo"],$row["data"],$row["squadra"]);
-                $contenuto->setId($row{"id"});
-                $elenco[$i]=$contenuto;
-                $i++;
-            }
+        $i = 0;
+        if ($res->num_rows <= 0) return $elenco;
+        while ($row = $res->fetch_assoc()) {
+            $contenuto = new Contenuto($row["titolo"], $row["descrizione"], $row["url"], $row["tipo"], $row["data"], $row["squadra"]);
+            $contenuto->setId($row{"id"});
+            $elenco[$i] = $contenuto;
+            $i++;
+        }
         /*
         for ($i=0;$i<count($elenco);$i++){
             echo $elenco[$i]."<br/>";
@@ -100,55 +127,59 @@ class GestioneContenuti
         return $elenco;
     }
 
-    public function visualizzaElencoContenutiPerTipo($tipo,$squadra){
-        $sql="SELECT * FROM contenuto WHERE tipo='$tipo' AND squadra='$squadra' ORDER BY data DESC";
+    public function visualizzaElencoContenutiPerTipo($tipo, $squadra)
+    {
+        $sql = "SELECT * FROM contenuto WHERE tipo='$tipo' AND squadra='$squadra' ORDER BY data DESC";
         $elenco = array();
         $res = $this->conn->query($sql);
-        $i=0;
-        while($row = $res->fetch_assoc()){
-            $contenuto = new Contenuto($row["titolo"],$row["descrizione"], $row["url"],$row["tipo"],$row["data"],$row["squadra"]);
+        $i = 0;
+        while ($row = $res->fetch_assoc()) {
+            $contenuto = new Contenuto($row["titolo"], $row["descrizione"], $row["url"], $row["tipo"], $row["data"], $row["squadra"]);
             $contenuto->setId($row["id"]);
-            $elenco[$i]=$contenuto;
+            $elenco[$i] = $contenuto;
             $i++;
         }
         return $elenco;
     }
 
-    public function visualizzaElencoContenutiUtenteGuest($tipo){
-        $sql="SELECT * FROM contenuto WHERE tipo='$tipo' ORDER BY data DESC";
+    public function visualizzaElencoContenutiUtenteGuest($tipo)
+    {
+        $sql = "SELECT * FROM contenuto WHERE tipo='$tipo' ORDER BY data DESC";
         $elenco = array();
         $res = $this->conn->query($sql);
-        $i=0;
-        if($res->num_rows <= 0) return $elenco;
-        while($row = $res->fetch_assoc()){
-            $contenuto = new Contenuto($row["titolo"],$row["descrizione"], $row["url"],$row["tipo"],$row["data"],$row["squadra"]);
+        $i = 0;
+        if ($res->num_rows <= 0) return $elenco;
+        while ($row = $res->fetch_assoc()) {
+            $contenuto = new Contenuto($row["titolo"], $row["descrizione"], $row["url"], $row["tipo"], $row["data"], $row["squadra"]);
             $contenuto->setId($row["id"]);
-            $elenco[$i]=$contenuto;
+            $elenco[$i] = $contenuto;
             $i++;
         }
         return $elenco;
     }
 
-    public function visualizzaElencoContenutiSquadra($squadra){
-        $sql="SELECT * FROM contenuto WHERE squadra='$squadra'ORDER BY data DESC ";
+    public function visualizzaElencoContenutiSquadra($squadra)
+    {
+        $sql = "SELECT * FROM contenuto WHERE squadra='$squadra'ORDER BY data DESC ";
         $elenco = array();
         $res = $this->conn->query($sql);
-        $i=0;
-        while($row = $res->fetch_assoc()){
-            $contenuto = new Contenuto($row["titolo"],$row["descrizione"], $row["url"],$row["tipo"],$row["data"],$row["squadra"]);
+        $i = 0;
+        while ($row = $res->fetch_assoc()) {
+            $contenuto = new Contenuto($row["titolo"], $row["descrizione"], $row["url"], $row["tipo"], $row["data"], $row["squadra"]);
             $contenuto->setId($row{"id"});
-            $elenco[$i]=$contenuto;
+            $elenco[$i] = $contenuto;
             $i++;
         }
-       return $elenco;
+        return $elenco;
     }
 
-    public function visualizzaContenuto($id){
+    public function visualizzaContenuto($id)
+    {
         $sql = "SELECT * FROM contenuto WHERE id='$id' ";
         $res = $this->conn->query($sql);
         $row = $res->fetch_assoc();
 
-        $contenuto = new Contenuto($row["titolo"],$row["descrizione"], $row["url"],$row["tipo"],$row["data"],$row["squadra"]);
+        $contenuto = new Contenuto($row["titolo"], $row["descrizione"], $row["url"], $row["tipo"], $row["data"], $row["squadra"]);
         $contenuto->setId($row["id"]);
 
         return $contenuto;
@@ -160,57 +191,59 @@ class GestioneContenuti
         $res = $this->conn->query($sql);
         if ($res->num_rows <= 0) {
             $totale = 0;
-        }
-        else {
+        } else {
             $row = $res->fetch_assoc();
             $totale = $row['total'];
         }
         return $totale;
     }
 
-    public function contaCalciatori(){
+    public function contaCalciatori()
+    {
         $sql = "SELECT COUNT(*) as total FROM calciatore  ";
         $res = $this->conn->query($sql);
         if ($res->num_rows <= 0) {
             $totale = 0;
-        }
-        else {
+        } else {
             $row = $res->fetch_assoc();
             $totale = $row['total'];
         }
         return $totale;
     }
-    public function contaAllenatori(){
+
+    public function contaAllenatori()
+    {
         $sql = "SELECT COUNT(*) as total FROM utente WHERE tipo='allenatore'  ";
         $res = $this->conn->query($sql);
         if ($res->num_rows <= 0) {
             $totale = 0;
-        }
-        else {
+        } else {
             $row = $res->fetch_assoc();
             $totale = $row['total'];
         }
         return $totale;
     }
-    public function contaTifosi(){
+
+    public function contaTifosi()
+    {
         $sql = "SELECT COUNT(*) as total FROM utente WHERE tipo='tifoso'  ";
         $res = $this->conn->query($sql);
         if ($res->num_rows <= 0) {
             $totale = 0;
-        }
-        else {
+        } else {
             $row = $res->fetch_assoc();
             $totale = $row['total'];
         }
         return $totale;
     }
-    public function contaStaff(){
+
+    public function contaStaff()
+    {
         $sql = "SELECT COUNT(*) as total FROM utente WHERE tipo='staff'  ";
         $res = $this->conn->query($sql);
         if ($res->num_rows <= 0) {
             $totale = 0;
-        }
-        else {
+        } else {
             $row = $res->fetch_assoc();
             $totale = $row['total'];
         }

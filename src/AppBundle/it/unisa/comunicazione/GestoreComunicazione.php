@@ -538,7 +538,7 @@ class GestoreComunicazione
     public function getNuoviMessaggi($allenatore, $calciatore, $tipo, $data)
     {
         if ($statement = $this->conn->prepare("
-            SELECT * FROM messaggi o
+            SELECT * FROM messaggio
             WHERE allenatore = ?
             AND calciatore = ?
             AND tipo = ?
